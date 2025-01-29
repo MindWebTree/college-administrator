@@ -1,0 +1,33 @@
+<div class="block p-8 Waiting_for_Approval w-full">
+    <h1>Waiting for Approval(05)</h1>
+    <form class="form">
+        <div class="grid grid-cols-3 block pt-4 flex gap-6">
+            <div class="grid_1" [dataSource]="dataSource.ExamList" *ngFor="let exam of dataSource.ExamList,let i = index;">
+                <div class="flex">
+                    <div class="w-2/4 text-lg">{{exam.name}}</div>
+                    <div class="w-2/4 text-right cursor-pointer">
+                        <mat-icon routerLink="/exam/create">edit</mat-icon>
+                        <mat-icon >delete</mat-icon>
+                    </div>
+                </div>
+                <p>{{exam.description}}</p>
+                <div class="flex numbers_div">
+                    <div class="w-4/12 text-primary">{{exam.noOfStudents}}<br><span>Students</span></div>
+                    <div class="w-4/12 text-primary">{{exam.noOfQuestions}}<br><span>Questions</span></div>
+                    <div class="w-4/12 text-primary">{{exam.examDuration}}<br><span>Hours</span></div>
+                </div>
+                <h2 class="pt-1">Year : First Year, Second Year</h2>
+                <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
+                <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
+                <h2 class="pt-1">Questions : Free Question</h2>
+                <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                <div class="pt-6 flex justify-around gap-4">
+                    <button mat-button class="start_exam">Approve</button>
+                    <button mat-button class="cancel_btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="_sitePreference.PAGE.GridRowViewCount" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
+</div>

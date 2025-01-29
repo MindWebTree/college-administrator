@@ -1,0 +1,74 @@
+::ng-deep .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex{
+    border: 0 !important;
+    color: rgba(var(--fuse-primary-500-rgb), var(--tw-text-opacity)) !important;
+    border-color: rgba(var(--fuse-primary-500-rgb), var(--tw-text-opacity)) !important;
+}
+::ng-deep mat-form-field.mat-form-field .mat-form-field-wrapper .mat-form-field-flex{
+    color: #0C529A !important;
+    border-color: red !important;
+}
+.mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex{
+    border-color: rgba(var(--fuse-primary-500-rgb), var(--tw-text-opacity)) !important;
+}
+.logo h1 {
+    padding-left: 20px;
+    color: #505050;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+}
+.logo span {
+    padding-left: 20px;
+    color: #505050;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+}
+.login_left_section {
+    width: 50% !important;
+    position: relative;
+}
+.login_right_section{
+    background-image: url(../../../../../public/my-images/bg-loginpage.png);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 90px;
+    padding-left: 60px;
+    width: 50% !important;
+}
+.text-purple-100{
+    color: #CB96FF !important;
+    font-family: 'Lexend Deca', sans-serif;
+    font-weight: 600;
+}
+.tree-text {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+}
+.tree-text-right{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.login-form .mat-form-field-label-wrapper {
+    margin-top: -10px !important;
+}
+.footer{
+    display: none !important;
+}
+@media only screen and (max-width:1199px) {
+    .login_left_section {
+        width: 90% !important;
+    }
+    .tree-text{
+        width: 90%;
+    }
+    .max-w-100{
+        max-width: inherit !important;
+        width: auto !important;
+    }
+}

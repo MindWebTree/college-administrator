@@ -1,0 +1,133 @@
+<div class="block p-8 ADrPlexus_list w-full">
+    <div class="container block ADrPlexus_list_filters">
+        <form [formGroup]="secondfilter">
+            <div class="flex flex-col md:flex-row justify-between py-2 items-start lg:items-center">
+                <div>
+                    <h2 class="text-xl font-medium text-[#505050]">Total Questions ({{dataSource?.paginationData?.count}})</h2>
+                </div>
+                <div class="flex gap-3 flex-col lg:flex-row items-start lg:items-center lg:w-max w-full">
+                    <div class="filter_heading font-medium">
+                        Competency :
+                    </div>
+                    <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-max w-full">
+                        <!-- <mat-select disableRipple placeholder="Competency">
+                            <mat-option [value]="0" selected>All</mat-option>
+                            <mat-option>1</mat-option>
+                        </mat-select> -->
+                        <mat-select disableRipple [(ngModel)]="LevelID" (selectionChange)="search()" formControlName="Level">
+                            <mat-option [value]="0" selected>All</mat-option>
+                            <mat-option *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="filter_heading font-medium">
+                        Level of questions :
+                    </div>
+                    <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-max w-full">
+                        <!-- <mat-select disableRipple placeholder="Level">
+                            <mat-option>All</mat-option>
+                            <mat-option>1</mat-option>
+                        </mat-select> -->
+                        <mat-select disableRipple [(ngModel)]="LevelIDOfQuestion" (selectionChange)="search()" formControlName="LevelOfquestion">
+                            <mat-option [value]="0">All</mat-option>
+                            <mat-option *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="filter_heading font-medium">
+                        Tags :
+                    </div>
+                    <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-min w-full">
+                        <mat-select matNativeControl [(ngModel)]="TagID" (selectionChange)="search()" formControlName="tags">
+                            <mat-option [value]="0">All</mat-option>
+                            <mat-option *ngFor="let tag of Tags,let i = index;" [value]="tag.id">{{tag.name}}</mat-option>
+
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+        </form>
+
+        <div class="accordian-outer adrplexus-questions" [dataSource]="dataSource.QuestionList" *ngFor="let question of dataSource.QuestionList,let i = index;">
+            <mat-accordion>
+                <mat-expansion-panel hideToggle class="mt-4" >
+                    <mat-expansion-panel-header class="h-24 bg-white">
+                        <mat-panel-title class="font-semibold" [innerHtml]="question.questionTitle">
+
+                        </mat-panel-title>
+
+                    </mat-expansion-panel-header>
+                    <div class="expension_div rounded " >
+                        <!-- <p class="text-black font-semibold mt-9">A 73-Year-old hypertensive patient was rushed to the casualty following a transient ischemic attack. Angiography revealed
+                        <br> stenosis of the internal carotid artery. Which part of this artery does not give any branch</p> -->
+                        <h6 class="mt-44 font-medium">Select option any one</h6>
+
+                        <div *ngFor=" let choices of question?.choices; let i = index;">
+                            <h6 *ngIf="choices.isCorrect" class="mt-3.5 font-medium correct_heading">Correct Answer</h6>
+                            <div class="bg-white mt-3.5 flex p-2.5 border" [ngClass]="{'correct_div':choices.isCorrect===true}">
+                                <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded"><B>{{i + 1}}</B></span>
+                                <h2 class="font-medium">{{choices.choiceText}}</h2>
+                            </div>
+                        </div>
+
+
+                        <h3 class="mt-3.5 text-primary font-bold text-lg">Competency / Levels</h3>
+                        <div class="flex gap-20 qtn-level">
+                            <div class=" mt-3.5">
+                                <p class="font-bold text-base">*Set Competency Level
+                                    <br>
+                                    <span class="font-normal text-base">{{question?.competencyLevel}}</span>
+                                </p>
+                            </div>
+                            <div class=" mt-3.5">
+                                <p class="font-bold text-base">*Set level of questions
+                                    <br>
+                                    <span class="font-normal text-base">{{question?.levelofQuestion}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="question?.tags>0">Integration / Tags</h3>
+                        
+                        <p class=" mt-3.5 font-bold text-base" *ngIf="question?.horizontalInegration?.length>0">Horizontal Integration</p>
+                        <mat-chip-list aria-label="Vertical Integration" *ngIf="question?.horizontalInegration?.length>0">
+                            <div *ngFor="let tag of question?.horizontalInegration,let i=index">
+                                <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.title}}</mat-chip>
+                            </div>
+                        </mat-chip-list>
+                        <p class=" mt-3.5 font-bold text-base" *ngIf="question?.verticalInegration?.length>0">Vertical Integration</p>
+                        <mat-chip-list aria-label="Vertical Integration" *ngIf="question?.verticalInegration?.length>0">
+                            <div *ngFor="let tag of question?.verticalInegration,let i=index">
+                                <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.title}}</mat-chip>
+                            </div>
+                        </mat-chip-list>
+                        <p class=" mt-3.5 font-bold text-base" *ngIf="question.tags?.length>0">*Tags</p>
+                        <mat-chip-list aria-label="Tags" *ngIf="question?.tags?.length>0">
+                            <div *ngFor="let tag of question.tags,let i=index">
+                                <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.name}}</mat-chip>
+                            </div>
+                        </mat-chip-list>
+                        <hr class="h-px my-8 bg-gray-200 border-[#C6C7C7] dark:bg-gray-700">
+                        <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="question.explanation?.length>0">Solutions</h3>
+                        <div *ngFor="let explanantion of question.explanation,let i=index">
+                            <h4 class="font-bold text-base mt-3.5" *ngIf="explanantion.content.length>0">Explanation {{i+1}}</h4>
+                            <p class="mt-3.5 font-medium" [innerHtml]="explanantion.content"></p>
+                        </div>
+
+
+                        <h4 class="font-bold text-base mt-3.5" *ngIf="question.video?.length>0">*Related Video Link</h4>
+                        <p class="mt-3.5 font-medium text-primary" *ngFor="let video of question.video,let i=index">
+                            {{video.VideoLink}}</p>
+                        <h4 class="font-bold text-base mt-3.5" *ngIf="question.books.length>0">*Reference Books</h4>
+                        <p class="mt-3.5 font-medium" *ngFor="let book of question.books,let i=index">{{book.bookTitle}}, {{book.edition}}, {{book.pageNumber}}</p>
+                        <h4 class="font-bold text-base mt-3.5 ">Question ID : {{question.questionDetailId}}</h4>
+                    </div>
+
+                </mat-expansion-panel>
+                <div class="demo-section">{{i + 1}}</div>
+                <!-- <mat-icon class="demo-section">done</mat-icon> -->
+            </mat-accordion>
+        </div>
+        <p *ngIf="dataSource.QuestionList?.length <= 0">No records found</p>
+    </div>
+    <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="_sitePreference.PAGE.GridRowViewCount" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
+</div>

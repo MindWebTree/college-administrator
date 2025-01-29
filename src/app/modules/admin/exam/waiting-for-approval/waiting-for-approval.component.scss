@@ -1,0 +1,133 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div {
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+::ng-deep .mat-stepper-horizontal-line {
+    display: none;
+}
+
+::ng-deep .Waiting_for_Approval mat-step-header:first-child {
+    pointer-events: none;
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    border-bottom: 4px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    margin-bottom: -3px;
+}
+
+::ng-deep mat-step-header[tabindex="0"] {
+    // border-bottom: 3px solid #00AEEF;
+    border-bottom: 3px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    margin-bottom: -3px;
+}
+
+::ng-deep mat-step-header[tabindex="0"] .mat-step-text-label {
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+}
+
+::ng-deep .Waiting_for_Approval mat-step-header .mat-step-icon {
+    display: none;
+}
+
+::ng-deep .Waiting_for_Approval mat-step-header:first-child .mat-step-label {
+    color: white !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+    border-bottom: 3px solid #b3b3b3;
+}
+
+::ng-deep mat-stepper {
+    background: transparent !important;
+}
+
+::ng-deep .Waiting_for_Approval .mat-horizontal-content-container {
+    padding: 0 !important;
+}
+
+.premium_ques {
+    display: flex;
+    background: #FFF9E4;
+    color: #E2AD00;
+    border-radius: 50px;
+    padding: 0px 10px;
+}
+
+.grid_1 {
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    padding: 20px 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), .3);
+    border-radius: 4px;
+}
+
+.grid_1 p {
+    padding: 20px 0;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.numbers_div {
+    padding-bottom: 20px;
+}
+
+.grid_1 h2 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    color: #505050;
+}
+
+h1 {
+    font-size: 23px;
+    color: #505050;
+    font-weight: 400;
+}
+
+.numbers_div div {
+    color: #00AEEF;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    border-left: 1px solid #DCDCDC;
+    padding: 0 10px;
+}
+
+.numbers_div div:first-child {
+    border: 0 !important;
+}
+
+.numbers_div div span {
+    color: #A6A6A6;
+    font-size: 12px;
+}
+
+.start_exam {
+    background-color: #28C397 !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 16px;
+    font-weight: 400;
+    width: 50%;
+    min-height: 50px !important;
+}
+
+.cancel_btn {
+    background-color: #0C529A !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 16px;
+    font-weight: 400;
+    width: 50%;
+    min-height: 50px !important;
+}
+
+::ng-deep .delete-choice .mat-dialog-container.mat-dialog-container {
+    height: inherit !important;
+}

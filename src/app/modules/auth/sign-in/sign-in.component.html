@@ -1,0 +1,135 @@
+<div class="flex flex-col sm:flex-row items-center md:items-start justify-center md:justify-start flex-auto min-w-0">
+    <div class="login_left_section md:flex md:items-center md:justify-center w-full sm:w-auto md:h-full py-8 px-4 sm:p-12 md:p-16 sm:rounded-2xl md:rounded-none sm:shadow md:shadow-none sm:bg-card" style="background-color: #fff !important;">
+        <div class="w-full max-w-100 sm:w-100 mx-auto sm:mx-0">
+            <!-- Logo -->
+            <div class="logo flex items-center">
+                <img  src="my-images/logo.png" class="w-30">
+                <!-- <h1>ADrPLEXUS<span> Q'Bank Portal</span></h1> -->
+            </div>
+
+            <!-- Title -->
+            <div class="mt-8 text-2xl text-[#505050] font-semibold tracking-tight leading-tight">Login your Account</div>
+            <!-- <div class="flex items-baseline mt-0.5 font-medium">
+                <div>Don't have an account?</div>
+                <a
+                    class="ml-1 text-primary-500 hover:underline"
+                    [routerLink]="['/sign-up']">Sign up
+                </a>
+            </div> -->
+
+            <!-- Alert -->
+            <fuse-alert
+                class="mt-8 -mb-4"
+                *ngIf="showAlert"
+                [appearance]="'outline'"
+                [showIcon]="false"
+                [type]="alert.type"
+                [@shake]="alert.type === 'error'">
+                {{alert.message}}
+            </fuse-alert>
+            <!-- <div *ngIf="!signInForm.invalid && showAlert" class="mt-4 p-4 bg-[#ff000010] border border-[#ff0000]">
+                <h2 class="text-[#ff0000] font-medium">Wrong email or password</h2>
+            </div> -->
+
+            <!-- Sign in form -->
+            <form
+                class="mt-8 login-form"
+                [formGroup]="signInForm"
+                #signInNgForm="ngForm">
+
+                <!-- Email field -->
+                <mat-form-field class="w-full login_input">
+                    <mat-label class="text-[#A9A9A9] text-lg font-normal">Username</mat-label>
+                    <input class="text-primary text-lg font-medium"
+                        id="email"
+                        matInput
+                        [formControlName]="'email'">
+                    <mat-error *ngIf="signInForm.get('email').hasError('required')">
+                        Username is required
+                    </mat-error>
+                    <mat-error *ngIf="signInForm.get('email').hasError('email')">
+                        Please enter a valid Username
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Password field -->
+                <mat-form-field class="w-full mt-4">
+                    <mat-label class="text-[#A9A9A9] text-lg font-normal">Password</mat-label>
+                    <input class="text-primary text-lg"
+                        id="password"
+                        matInput
+                        type="password"
+                        [formControlName]="'password'"
+                        #passwordField>
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                        matSuffix>
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'password'"
+                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                        <mat-icon
+                            class="icon-size-5"
+                            *ngIf="passwordField.type === 'text'"
+                            [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                    </button>
+                    <mat-error>
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Actions -->
+               
+
+                <!-- Submit button -->
+                <button
+                    class="fuse-mat-button-large w-full mt-6 text-lg py-8 rounded bg-primary"
+                    mat-flat-button
+                    [color]="'primary'"
+                    [disabled]="signInForm.disabled"
+                    (click)="signIn()">
+                    <span >
+                        Login
+                    </span>
+                    <!-- <mat-progress-spinner
+                        *ngIf="signInForm.disabled"
+                        [diameter]="24"
+                        [mode]="'indeterminate'"></mat-progress-spinner> -->
+                </button>
+                <div class="inline-flex items-center justify-center w-full mt-1.5">
+                    <!-- <mat-checkbox
+                        [color]="'primary'"
+                        [formControlName]="'rememberMe'">
+                        Remember me
+                    </mat-checkbox> -->
+                    <a [routerLink]="['/forgot-password']"
+                        class="text-lg pt-4 font-medium text-primary-500 underline hover:underline"
+                        >Forgot password
+                    </a>
+                </div>
+                <!-- Separator -->
+                <div class="flex items-center mt-8">
+                    <!-- <div class="flex-auto mt-px border-t"></div> -->
+                    <!-- <div class="mx-2 text-secondary text-center w-full">Call Us Now: +(91) 8220345678</div> -->
+                    <!-- <div class="flex-auto mt-px border-t"></div> -->
+                </div>
+            </form>
+            <!-- <div *ngIf="!signInForm.invalid">Wrong email or password</div> -->
+        </div>
+        <div class="tree-text">
+            <h2 class="text-[#505050] font-normal">More Info : <span class="underline text-primary font-normal">www.adrplexus.com</span></h2>
+            <h3 class="text-[#505050] font-normal"><a href="tel:+8220345678">Call Us Now: +(91) 8220345678</a></h3>
+        </div>
+    </div>
+    <div class="relative login_right_section hidden md:flex flex-auto w-1/2 h-full overflow-hidden bg-gray-800 dark:border-l">
+        <div class="z-10 relative w-full max-w-2xl">
+            <div class="text-2xl font-semi-bold leading-none ">
+            </div>           
+        </div>
+        <div class="tree-text-right">
+            <!-- <h2 class="font-normal text-white">© {{currentYear}} ADrPlexus | All Rights Reserved.</h2> -->
+        </div>
+    </div>
+</div>
