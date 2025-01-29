@@ -1,1 +1,168 @@
-<p>exam-list works!</p>
+<div class="block p-8 list_account w-full">
+    <form class="form">
+        <mat-stepper #stepper [selectedIndex]="1">
+            <ng-template matStepperIcon="edit">
+                <mat-icon>done</mat-icon>
+            </ng-template>
+
+            <ng-template matStepperIcon="number">
+                <mat-icon>done</mat-icon>
+            </ng-template>
+
+            <mat-step>
+                <ng-template matStepLabel class="text-lg">First Year Exams</ng-template>
+            </mat-step>
+
+            <mat-step>
+                <ng-template matStepLabel>Upcoming Exams (02)</ng-template>
+                <div class="block pt-4 flex gap-6">
+                    <div class="w-4/12 grid_1">
+                        <div class="flex">
+                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
+                            <div class="w-2/4 text-right">
+                                <mat-icon>edit</mat-icon>
+                                <mat-icon (click)="deleteExam()">delete</mat-icon>
+                            </div>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <div class="flex numbers_div">
+                            <div class="w-4/12">432<br><span>Students</span></div>
+                            <div class="w-4/12">100<br><span>Students</span></div>
+                            <div class="w-4/12">01:30<br><span>Hours</span></div>
+                        </div>
+                        <h2 class="pt-1">Year : First Year, Second Year</h2>
+                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
+                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
+                        <h2 class="pt-1">Questions : Free Question</h2>
+                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <div class="pt-6 flex justify-around gap-4">
+                            <button mat-button class="start_exam">Starts on 48hrs</button>
+                            <button mat-button class="cancel_btn">Cancel</button>
+                        </div>
+                    </div>
+                    <div class="w-4/12 grid_1">
+                        <div class="flex">
+                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
+                            <div class="w-2/4 text-right">
+                                <mat-icon>edit</mat-icon>
+                                <mat-icon (click)="deleteExam()">delete</mat-icon>
+                            </div>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <div class="flex numbers_div">
+                            <div class="w-4/12">432<br><span>Students</span></div>
+                            <div class="w-4/12">100<br><span>Students</span></div>
+                            <div class="w-4/12">01:30<br><span>Hours</span></div>
+                        </div>
+                        <h2 class="pt-1">Year : First Year, Second Year</h2>
+                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
+                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
+                        <h2 class="pt-1">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
+                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <div class="pt-6 flex justify-around gap-4">
+                            <button mat-button class="start_exam">Starts on 48hrs</button>
+                            <button mat-button class="cancel_btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-step>
+
+            <mat-step>
+                <ng-template matStepLabel>Completed (15)</ng-template>
+                <div class="block pt-4 flex gap-6">
+                    <div class="w-4/12 grid_1">
+                        <div class="flex">
+                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <div class="flex numbers_div">
+                            <div class="w-4/12">432/457<br><span>Students</span></div>
+                            <div class="w-4/12">87/100<br><span>Students</span></div>
+                            <div class="w-4/12">01:30<br><span>Averg. Hours</span></div>
+                        </div>
+                        <h2 class="pt-1">Year : First Year, Second Year</h2>
+                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
+                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
+                        <h2 class="pt-1">Questions : Free Question</h2>
+                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <div class="pt-6 flex justify-around">
+                            <button mat-button class="exam_report" (click)="openReportCard()">View Exam Report</button>
+                        </div>
+                    </div>
+                    <div class="w-4/12 grid_1">
+                        <div class="flex">
+                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <div class="flex numbers_div">
+                            <div class="w-4/12">432/432<br><span>Students</span></div>
+                            <div class="w-4/12">75/100<br><span>Students</span></div>
+                            <div class="w-4/12">01:12<br><span>Averg. Hours</span></div>
+                        </div>
+                        <h2 class="pt-1">Year : First Year, Second Year</h2>
+                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
+                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
+                        <h2 class="pt-1">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
+                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <div class="pt-6 flex justify-around">
+                            <button mat-button class="exam_report">View Exam Report</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-step>
+
+            <mat-step>
+                <ng-template matStepLabel>Cancelled (03)</ng-template>
+                <div class="block pt-4 flex gap-6">
+                    <div class="w-4/12 grid_1">
+                        <div class="flex">
+                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
+                            <div class="w-2/4 text-right">
+                                <mat-icon (click)="deleteExam()">delete</mat-icon>
+                            </div>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <div class="flex numbers_div">
+                            <div class="w-4/12">432<br><span>Students</span></div>
+                            <div class="w-4/12">100<br><span>Students</span></div>
+                            <div class="w-4/12">01:30<br><span>Hours</span></div>
+                        </div>
+                        <h2 class="pt-1">Year : First Year, Second Year</h2>
+                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
+                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
+                        <h2 class="pt-1">Questions : Free Question</h2>
+                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <div class="pt-6 flex justify-around gap-4">
+                            <button mat-button class="start_exam">Re-Schedule</button>
+                            <button mat-button disabled class="cancelled_btn">Cancelled</button>
+                        </div>
+                    </div>
+                    <div class="w-4/12 grid_1">
+                        <div class="flex">
+                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
+                            <div class="w-2/4 text-right">
+                                <mat-icon (click)="deleteExam()">delete</mat-icon>
+                            </div>
+                        </div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <div class="flex numbers_div">
+                            <div class="w-4/12">432<br><span>Students</span></div>
+                            <div class="w-4/12">100<br><span>Students</span></div>
+                            <div class="w-4/12">01:30<br><span>Hours</span></div>
+                        </div>
+                        <h2 class="pt-1">Year : First Year, Second Year</h2>
+                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
+                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
+                        <h2 class="pt-1">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
+                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <div class="pt-6 flex justify-around gap-4">
+                            <button mat-button class="start_exam">Re-Schedule</button>
+                            <button mat-button disabled class="cancelled_btn">Cancelled</button>
+                        </div>
+                    </div>
+                </div>
+            </mat-step>
+
+        </mat-stepper>
+    </form>
+</div>

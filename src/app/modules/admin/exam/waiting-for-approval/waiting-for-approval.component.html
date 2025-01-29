@@ -17,9 +17,11 @@
                     <div class="w-4/12 text-primary">{{exam.examDuration}}<br><span>Hours</span></div>
                 </div>
                 <h2 class="pt-1">Year : First Year, Second Year</h2>
-                <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
-                <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
-                <h2 class="pt-1">Questions : Free Question</h2>
+                <h2 class="pt-1">Subject : {{exam.topics}}</h2>
+                <h2 class="pt-1">Exam Create by : {{exam.createdBy}}</h2>
+                <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
+                <h2 class="flex gap-1 pt-1" *ngIf="exam.qbankCategory == 2">Questions : <span class="premium_ques">Premium Question
+                    <mat-icon class="text-[#E2AD00] text-base">star</mat-icon></span></h2>
                 <h2 class="pt-1">Exam Date : 25/02/2023</h2>
                 <div class="pt-6 flex justify-around gap-4">
                     <button mat-button class="start_exam">Approve</button>
