@@ -1,0 +1,543 @@
+<div class="block p-8 create_account w-full" *ngIf="!isFormSubmitted">
+    <div>
+        <div class="text-primary text-xl font-medium">Exams<span class="text-[#505050]"> / Create Exam</span></div>
+    </div>
+
+    <mat-stepper #stepper [linear]="isLinear">
+        <ng-template matStepperIcon="edit">
+            <mat-icon>done</mat-icon>
+        </ng-template>
+        <ng-template matStepperIcon="number">
+            <mat-icon>done</mat-icon>
+        </ng-template>
+
+        <mat-step [stepControl]="CreateExamQbank">
+            <form [formGroup]="CreateExamQbank" class="form">
+                <ng-template matStepLabel>Select Q'Bank</ng-template>
+
+                <div class="container block pt-4">
+                    <mat-form-field class="form-element block mw-100">
+                        <mat-label>Exam Name</mat-label>
+                        <input matInput placeholder="Exam Name" #first formControlName="ExamName" required>
+                    </mat-form-field>
+                    <control-messages [control]="CreateExamQbank.controls.ExamName" fieldName="ExamName" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                    <!-- <mat-form-field class="form-element block mw-100">
+                        <mat-label>Description of Exam</mat-label>
+                        <textarea matInput placeholder="Description of Exam" formControlName="ExamDescription"
+                            required></textarea>
+
+                    </mat-form-field> -->
+                    <h2>Description of Exam</h2>
+                    <div class="border">
+                        <ckeditor placeholder="Title" formControlName="ExamDescription">
+                        </ckeditor>
+
+                    </div>
+
+                    <control-messages [control]="CreateExamQbank.controls.ExamDescription" fieldName="Description" [showSubmitError]="isQbankformHaserror"></control-messages>
+                </div>
+
+                <div class="mt-4">
+                </div>
+                <div class="linestep">
+                    <div class="flex items-center sm-block stepper_div">
+                        <div class="md:px-8 sm:px-0 sm-pt-2 min-w-212">
+                            <label>Q'Bank</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+
+                            <mat-select formControlName="Qbank" placeholder="select Qbnak">
+                                <!-- <mat-label>Select Qbank</mat-label> -->
+                                <mat-option disabled value=''>Select Qbank</mat-option>
+                                <mat-option *ngFor="let qbank of Qbank" [value]="qbank.id">{{qbank.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.Qbank" fieldName="Qbank" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                    <div class="flex items-center sm-block stepper_div">
+                        <div class="md:px-8 sm:px-0 min-w-212">
+                            <label>Studies</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <!-- <input matInput placeholder="Studies" formControlName="Studies"> -->
+                            <mat-select formControlName="Studies" placeholder="select Studies">
+                                <!-- <mat-label>Select Qbank</mat-label> -->
+                                <mat-option disabled value=''>Select Studies</mat-option>
+                                <mat-option *ngFor="let banktype of qbanktype" [value]="banktype.id" (click)="getQbanksubject(banktype.id)">{{banktype.title}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.Studies" fieldName="Studies" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                    <div class="flex items-center sm-block stepper_div">
+                        <div class="md:px-8 sm:px-0 min-w-212">
+                            <label>Subject</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <!-- <input matInput placeholder="Subject" formControlName="Subject"> -->
+                            <mat-select formControlName="Subject" placeholder="select Subject">
+                                <!-- <mat-label>Select Qbank</mat-label> -->
+                                <mat-option disabled value=''>Select Subject</mat-option>
+                                <mat-option *ngFor="let subject of subjects" [value]="subject.subjectID" (click)="selectSubject(subject.subjectID)">{{subject.subjectName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.Subject" fieldName="Subject" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                    <div class="flex items-center sm-block stepper_div">
+                        <div class="md:px-8 sm:px-0 min-w-212">
+                            <label>Topics</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <!-- <input matInput placeholder="Topic" > -->
+                            <mat-select multiple formControlName="Topic" placeholder="Select Topics">
+                                <mat-option [value]="topic.topicID" *ngFor="let topic of topics;let i=index" (click)="OnclickTopic(topic)">{{topic.topicName}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-chip-list #chipList class="Topic_chips">
+                            <mat-chip *ngFor="let topic of TopicsList,let i = index;" [selectable]="true" selected="true" [removable]="false">
+                                {{topic.Name}} <button (click)="removeTopic(i,topic.ID)"><mat-icon>cancel</mat-icon></button>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.Topic" fieldName="Topic" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                    <div class="flex items-center sm-block stepper_div cbme-code">
+                        <div class="md:px-8 sm:px-0 min-w-212">
+                            <label>CBME Code</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <!-- <input matInput placeholder="Topic" > -->
+                            <mat-select #select multiple formControlName="CBMECode" placeholder="Select CBMECode">
+                                <mat-option *ngFor="let Cbme of CBME" [value]="Cbme.cmbeid" (click)="OnclickCmbeCode(Cbme)">{{Cbme.title}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-chip-list #chipList class="Topic_chips">
+                            <mat-chip *ngFor="let code of CBMEcodeList,let i = index;" [selectable]="true" selected="true" [removable]="false">
+                                {{code.Name}} <button class="pl-0.5 pt-1" (click)="removeCBME(i,code.ID)"><mat-icon>cancel</mat-icon></button>
+                            </mat-chip>
+                        </mat-chip-list>
+                        <div>
+                            <div class="cbme-code-description border bg-white  p-2 gap-2 mt-2" *ngIf="CBMEcodeList.length>0">
+                                <ng-container *ngFor="let code of CBMEcodeList; let i = index">
+                                    <div class="flex items-center gap-2.5">
+                                        <mat-icon class="text-primary/25">error</mat-icon>
+                                        <div class="text-primary text-sm  flex gap-2.5">
+                                            <h2 class="min-w-10">OP1.2 :</h2>
+                                            <span class="text-sm font-normal text-[#505050] " [innerHTML]="code.Description"></span>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.CBMECode" fieldName="CBMECode" [showSubmitError]="isQbankformHaserror"></control-messages>
+                    <!-- <div *ngFor="let code of CBMEcodeList,let i = index;">
+                    <p>{{code.Description}}</p>
+                </div> -->
+                    <div class="flex items-center sm-block stepper_div">
+                        <div class="md:px-8 sm:px-0 min-w-212">
+                            <label>Competency Level</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <!-- <input matInput placeholder="CompetencyLevel" formControlName="CompetencyLevel"> -->
+                            <mat-select formControlName="CompetencyLevel" placeholder="Select CompetencyLevel">
+                                <!-- <mat-label>Select Qbank</mat-label> -->
+                                <mat-option disabled value=''>Select CompetencyLevel</mat-option>
+                                <mat-option *ngFor="let level of competenecyLevel" [value]="level.levelID">{{level.title}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.CompetencyLevel" fieldName="CompetencyLevel" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                    <div class="flex items-center sm-block stepper_div">
+                        <div class="md:px-8 sm:px-0 min-w-212">
+                            <label>Level of Questions</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <!-- <input matInput placeholder="LevelofQuestions" formControlName="LevelofQuestions"> -->
+                            <mat-select formControlName="LevelofQuestions" placeholder="Select LevelofQuestions">
+                                <!-- <mat-label>Select Qbank</mat-label> -->
+                                <mat-option disabled value=''>Select LevelofQuestions</mat-option>
+                                <mat-option *ngFor="let level of levelquestion" [value]="level.levelID">{{level.title}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.LevelofQuestions" fieldName="LevelofQuestions" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                    <div class="flex items-center sm-block stepper_div last-stepper">
+                        <div class="md:px-8 sm:px-0 sm-pt-2 min-w-212">
+                            <label>Number of Questions</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <!-- <input matInput placeholder="NumberofQuestions" formControlName="NumberofQuestions"> -->
+                            <mat-select formControlName="NumberofQuestions" placeholder="Select number of Question">
+                                <mat-option disabled value=''>Select any</mat-option>
+                                <mat-option [value]="2">2</mat-option>
+                                <mat-option [value]="5">5</mat-option>
+                                <mat-option [value]="10">10</mat-option>
+                                <mat-option [value]="15">15</mat-option>
+                                <mat-option [value]="20">20</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                </div>
+                <control-messages class="exam-error" [control]="CreateExamQbank.controls.NumberofQuestions" fieldName="NumberofQuestions" [showSubmitError]="isQbankformHaserror"></control-messages>
+
+                <div class="form-element flex w-full justify-center gap-3 flex-wrap">
+                    <button mat-raised-button type="submit" class="create_btn rounded bg-primary text-white" matStepperNext (click)="getExamListing()">Continue</button>
+                    <button mat-raised-button class="clearall_btn rounded text-primary" type="button" (click)="ClearQbankForm()">Clear All</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="CreateListFilter">
+            <form [formGroup]="CreateListFilter">
+                <ng-template matStepLabel>Select Questions</ng-template>
+                <div class="container block pt-4 filters">
+                    <div class="flex justify-between py-2 items-center">
+                        <div>
+                            <h2 class="text-2xl font-semibold">Total Questions ({{dataSource?.QuestionList?.length}})
+                            </h2>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <div class="filter_heading">
+                                Competency :
+                            </div>
+                            <mat-form-field appearance="fill" class="flex filter_input xyz">
+
+                                <mat-select disableRipple [(ngModel)]="LevelID" (selectionChange)="search()" formControlName="Level">
+                                    <mat-option [value]="0" selected>All</mat-option>
+                                    <mat-option *ngFor="let level of competenecyLevel" [value]="level.levelID">{{level.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="filter_heading">
+                                Level of questions :
+                            </div>
+                            <mat-form-field appearance="fill" class="flex filter_input xyz">
+                                <mat-select disableRipple [(ngModel)]="LevelIDOfQuestion" (selectionChange)="search()" formControlName="LevelOfquestion">
+                                    <mat-option [value]="0">All</mat-option>
+                                    <mat-option *ngFor="let level of levelquestion" [value]="level.levelID">{{level.title}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <div class="filter_heading">
+                                Tags :
+                            </div>
+                            <mat-form-field appearance="fill" class="flex filter_input xyz">
+                                <mat-select matNativeControl [(ngModel)]="TagID" (selectionChange)="search()" formControlName="tags">
+                                    <mat-option [value]="0">All</mat-option>
+                                    <mat-option *ngFor="let tag of Tags,let i = index;" [value]="tag.tagID">{{tag.name}}</mat-option>
+
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                    <div class="accordian-outer" [dataSource]="dataSource?.QuestionList" *ngFor="let question of dataSource?.QuestionList,let i = index;">
+                        <mat-accordion>
+                            <mat-expansion-panel hideToggle class="mt-4" (click)="getquestiondetails(question.questionDetailID)">
+                                <mat-expansion-panel-header class="h-24 bg-white">
+                                    <mat-panel-title class="font-semibold " [innerHtml]="question.questionTitle">
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                    </mat-panel-description>
+
+                                </mat-expansion-panel-header>
+                                <div class="expension_div rounded " *ngIf="questionDetails && selectedQuestionId==question.questionDetailID">
+                                    <!-- <p class="text-black font-semibold mt-9">A 73-Year-old hypertensive patient was rushed to the casualty following a transient ischemic attack. Angiography revealed
+                                    <br> stenosis of the internal carotid artery. Which part of this artery does not give any branch</p> -->
+                                    <h6 class="mt-3.5 font-medium">Select option any one</h6>
+                                    <div *ngFor=" let choices of questionDetails?.choices; let i = index;">
+                                        <h6 *ngIf="choices.IsCorrect" class="mt-3.5 font-medium correct_heading">Correct Answer
+                                        </h6>
+                                        <div class="bg-white mt-3.5 flex p-2.5 border" [ngClass]="{'correct_div':choices.isCorrect===true}">
+                                            <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded"><B>{{i
+                                                    + 1}}</B></span>
+                                            <h2 class="font-medium">{{choices.choiceText}}</h2>
+                                        </div>
+                                    </div>
+                                    <h3 class="mt-3.5 text-primary font-bold text-lg">Competency / Levels</h3>
+                                    <div class="flex gap-20 qtn-level">
+                                        <div class=" mt-3.5">
+                                            <p class="font-bold text-base">*Set Competency Level
+                                                <br>
+                                                <span class="font-normal text-base">{{questionDetails?.level}}</span>
+                                            </p>
+                                        </div>
+                                        <div class=" mt-3.5">
+                                            <p class="font-bold text-base">*Set level of questions
+                                                <br>
+                                                <span class="font-normal text-base">{{questionDetails?.questionLevel}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="questionDetails?.tags>0">
+                                        Integration / Tags</h3>
+                                    <p class=" mt-3.5 font-bold text-base" *ngIf="questionDetails?.horizontalIntegration
+                        ?.length>0">Horizontal Integration</p>
+                                    <mat-chip-list class="question-listing" aria-label="Horizontal Integration" *ngIf="questionDetails?.horizontalIntegration
+                        ?.length>0">
+                                        <div *ngFor="let tag of questionDetails?.horizontalIntegration
+                            ,let i=index">
+                                            <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.title}}</mat-chip>
+                                        </div>
+                                    </mat-chip-list>
+                                    <p class=" mt-3.5 font-bold text-base" *ngIf="questionDetails.verticalIntegration?.length>0">Vertical Integration</p>
+                                    <mat-chip-list class="question-listing" aria-label="Vertical Integration" *ngIf="questionDetails?.verticalIntegration.length>0">
+                                        <div *ngFor="let tag of questionDetails?.verticalIntegration,let i=index">
+                                            <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.title}}</mat-chip>
+                                        </div>
+                                    </mat-chip-list>
+                                    <p class=" mt-3.5 font-bold text-base" *ngIf="questionDetails.tags?.length>0">*Tags
+                                    </p>
+                                    <mat-chip-list class="question-listing" aria-label="Tags" *ngIf="questionDetails.tags.length>0">
+                                        <div *ngFor="let tag of questionDetails.tags,let i=index">
+                                            <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.name}}</mat-chip>
+                                        </div>
+                                    </mat-chip-list>
+                                    <hr class="h-px my-8 bg-gray-200 border-[#C6C7C7] dark:bg-gray-700">
+                                    <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="questionDetails.explanation?.length>0">Solutions</h3>
+                                    <div *ngFor="let explanantion of questionDetails.explanation,let i=index">
+                                        <h4 class="font-bold text-base mt-3.5" *ngIf="explanantion.content.length>0">
+                                            Explanation {{i+1}}</h4>
+                                        <p class="mt-3.5 font-medium" [innerHtml]="explanantion.content"></p>
+                                    </div>
+
+
+                                    <h4 class="font-bold text-base mt-3.5" *ngIf="questionDetails.videos.length>0">
+                                        *Related Video Link</h4>
+                                    <p class="mt-3.5 font-medium text-primary" *ngFor="let video of questionDetails.videos,let i=index">
+                                        {{video.VideoLink}}</p>
+                                    <h4 class="font-bold text-base mt-3.5" *ngIf="questionDetails.books.length>0">
+                                        *Reference Books</h4>
+                                    <p class="mt-3.5 font-medium" *ngFor="let book of questionDetails.books,let i=index">{{book.title}}, {{book.edition}}, {{book.pageNumber}}</p>
+                                    <h4 class="font-bold text-base mt-3.5 " *ngIf="questionDetails.QuestionDetailID?.length>0">Question ID : {{question.questionDetailID}}
+                                    </h4>
+                                </div>
+
+                            </mat-expansion-panel>
+                            <div class="demo-section">
+                                <mat-checkbox [checked]="isQuestionSelected(question.questionDetailID)" (change)="onChange($event,question.questionDetailID)" class="checkbox-question"></mat-checkbox>
+                            </div>
+                        </mat-accordion>
+                    </div>
+                    <div class="flex gap-2 bg-[#FFE4E4] text-[#E23D3D] border-[#E23D3D] w-fit p-2 mb-4 rounded-full border">
+                        <mat-icon class="text-[#E23D3D]">error</mat-icon>
+                        <p class="text-[#E23D3D]">Number of Question Selected {{TotalSelectQuestion>0?TotalSelectQuestion:0}}/{{NoofSelectedQuestion}}. Please choose exact number of questions
+                        </p>
+                    </div>
+                    <p *ngIf="dataSource?.QuestionList.length <= 0">No records found</p>
+                </div>
+                <!--[disabled]="TotalSelectQuestion!= NoofSelectedQuestion"-->
+                <div class="form-element flex w-full justify-center gap-3 flex-wrap">
+                    <button mat-raised-button class="clearall_btn rounded" matStepperPrevious>Back to Q'Bank</button>
+                    <button mat-raised-button type="submit" class="create_btn rounded bg-primary text-white" matStepperNext [disabled]="TotalSelectQuestion !== NoofSelectedQuestion">Create Exam</button>
+                    <button mat-raised-button class="clearall_btn rounded text-primary" type="button">Clear All</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="CreateExamSchedule" [completed]="false" [editable]="false">
+            <form [formGroup]="CreateExamSchedule">
+                <ng-template matStepLabel>Schedule</ng-template>
+
+                <div class="container block pt-4">
+                    <label>Exam Schedule</label>
+
+                    <div class="flex items-center sm-block">
+                        <div class="sm-pt-2 min-w-165">
+                            <label>Select Courses</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <mat-select multiple formControlName="students" placeholder="Select Course">
+                                <!-- <mat-option disabled value=''>Select any</mat-option> -->
+                                <mat-option [value]="Course.id" *ngFor="let Course of Courses;let i=index " (click)="OnclickCourse(Course.id,Course.title,Course.nofOfStudents)">{{Course.title}}({{Course.nofOfStudents}})</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                    <mat-chip-list #chipList class="student_chips">
+                        <mat-chip *ngFor="let student of studentCourseList,let i = index;" [selectable]="true" selected="true" [removable]="false">
+                            {{student.CourseYear}}({{student.noOfStudent}}) <button (click)="removeCouse(i,student.ID)"><mat-icon>cancel</mat-icon></button>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <control-messages class="exam-error" [control]="CreateExamSchedule.controls.students" fieldName="Courses" [showSubmitError]="IsSheduleFormHasError"></control-messages>
+                    <mat-radio-group aria-label="Select an option" formControlName="examType">
+                        <mat-radio-button [value]="0">Live Exam</mat-radio-button>
+                        <mat-radio-button [value]="1" class="pl-8">Schedule</mat-radio-button>
+                    </mat-radio-group>
+                    <div class="quiz_scheduling" *ngIf="CreateExamSchedule.controls.examType.value === 1">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Date</mat-label>
+                            <input matInput type="date" formControlName="ExamDate" [(ngModel)]="date" (change)="calculateDuration()" [min]="getCurrentDate()">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Starts on</mat-label>
+                            <input matInput type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()">
+                        </mat-form-field>
+
+                        <h3>to</h3>
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Ends with</mat-label>
+                            <input matInput type="time" formControlName="EndTime" [(ngModel)]="endTime" (change)="calculateDuration()" [disabled]="invalidTime">
+                        </mat-form-field>
+                        <control-messages [control]="CreateExamSchedule.controls.ExamDate && CreateExamSchedule.controls.StartTime && CreateExamSchedule.controls.EndTime" fieldName="Calcluate Duration" [showSubmitError]="IsSheduleFormHasError"></control-messages>
+
+                        <p>{{duration}}</p>
+                    </div>
+                    <section class="pt-4">
+                        <p>
+                            <mat-checkbox [value]="true" formControlName="ShuffleAnswer" color="primary">Shuffle Answers</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox [value]="true" formControlName="ShuffleQuestion" color="primary">Shuffle Question
+                            </mat-checkbox>
+                        </p>
+                    </section>
+                    <h2 class="py-4 heading">Result</h2>
+                    <mat-checkbox [value]="true" formControlName="viewResult" color="primary">Can a user view the results ?
+                    </mat-checkbox>
+
+                    <div class="flex items-center sm-block small_input">
+                        <div class="sm-pt-2">
+                            <label>Percentage Pass</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block pr-2">
+                            <input matInput type="number" formControlName="Percentage" (input)="validatePercentage($event)">
+                        </mat-form-field>%
+
+                    </div>
+                    <control-messages [control]="CreateExamSchedule.controls.Percentage" fieldName="Percentage" [showSubmitError]="IsSheduleFormHasError"></control-messages>
+                    <section>
+                        <mat-checkbox [value]="true" formControlName="Evaluation" color="primary">Does Evaluation required?
+                        </mat-checkbox>
+                    </section>
+
+                    <div class="flex items-center sm-block small_input">
+                        <div class="sm-pt-2">
+                            <label>Evaluation Complete on</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block pr-2">
+                            <input matInput type="number" formControlName="Evaluationtime">
+                        </mat-form-field>Hours
+                    </div>
+                    <control-messages [control]="CreateExamSchedule.controls.Evaluationtime" fieldName="Evaluationtime" [showSubmitError]="IsSheduleFormHasError"></control-messages>
+                    <h2 class="py-4 heading">Awards</h2>
+                    <section>
+                        <p>
+                            <mat-checkbox class="pb-4" [value]="true" formControlName="AwardCertificate" ormControlName="Awards" color="primary">Certificate Provision</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox [value]="true" formControlName="AwardGift" color="primary">Gift Vouchres</mat-checkbox>
+                        </p>
+                    </section>
+
+                </div>
+                <div class="form-element flex w-full justify-center gap-3 flex-wrap">
+                    <button mat-raised-button class="clearall_btn rounded" (click)="goToFirStep()">Back to
+                        Q'Bank</button>
+                    <button mat-raised-button type="submit" class="create_btn rounded bg-primary text-white" (click)="Onsubmit()">Continue</button>
+                    <button mat-raised-button class="clearall_btn rounded text-primary" type="button" (click)="clearsheduleForm()">Clear All</button>
+                </div>
+            </form>
+        </mat-step>
+
+    </mat-stepper>
+
+    <!--Dialogbox for listing -->
+    <ng-template #dialogNotAcceptable>
+        <div class="icon" style="text-align: center;">
+            <span class="material-icons yellow-color" style="color:#ebeb53;">warning </span>
+        </div>
+        <h1 mat-dialog-title class="text-center pt-4">Are you sure want to delete the Account</h1>
+        <div mat-dialog-actions class="flex pt-4 gap-1">
+            <button mat-button color="primary" class="yes_delete_button">Yes, Delete
+                it</button>
+            <button mat-button mat-dialog-close (click)="back()">May be later</button>
+        </div>
+    </ng-template>
+    <ng-template #myDialog1 class="w-94">
+        <section class="p-4 pb-4">
+            <div class="grid">
+                <mat-icon class="ml-auto cursor-pointer" (click)="closedialog()">close</mat-icon>
+            </div>
+            <div class="py-10 text-center">
+                <h3 class="text-red-500 text-xl font-medium pb-2">You Already Selected {{NoofSelectedQuestion}} Question's
+                </h3>
+                <h4 class="ml-2 text-base text-[#6E6E6E] font-medium">Total {{NoofSelectedQuestion}} Question's Needed to Select</h4>
+            </div>
+            <!-- <div class="flex justify-center gap-4 pb-3">
+                <button mat-raised-button class="bg-[#0C529A] text-[#FFFFFF] rounded w-48 py-6 text-lg font-normal">Back to
+                    review</button>
+                <button mat-raised-button class="bg-[#00AEEF] text-[#FFFFFF] rounded w-48 py-6 text-lg font-normal" (click)="closedialog()">Finish</button>
+            </div> -->
+        </section>
+    </ng-template>
+</div>
+
+
+<div class="after_submit_screen w-full justify-center items-center mt-8 p-4" *ngIf="isFormSubmitted">
+    <!-- <mat-icon class="justify-center  flex w-full text-cyan-500 text-6xl">how_to_reg</mat-icon> -->
+    <img class="justify-center flex w-12 mx-auto" src="../../../../../assets/images/Successfully_acc_added.svg">
+    <h2 class="justify-center flex w-full text-2xl py-6 font-semibold">Ophthalmology Clinical studies - Academic test 2023
+    </h2>
+    <h3 class="justify-center flex w-full pb-6 text-primary font-semibold text-center">Successfully Created the Exams !
+    </h3>
+    <p class="justify-center flex w-full pb-8 mx-auto max-w-3xl text-center font-medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis non libero sit amet pulvinar. Pellentesque et tortor nec orci tempus convallis. Vestibulum eleifend molestee.</p>
+    <div class="last_screen">
+        <div class="exam_code">
+            <div class="text-center">
+                <label>Exam code</label>
+                <input matInput placeholder="Copy below text in Firefox" [value]="'KMCHEXAM12345 '" id="customerName" readonly>
+            </div>
+
+            <div class="icon_codecopy bg-primary/10" (click)="copyText('customerName')">
+                <mat-icon class="text-primary">file_copy</mat-icon>
+            </div>
+        </div>
+        <button (click)="SendMessage()">
+            <div class="sms_div">
+                <div class="code_div">
+                    <div class="text-lg flex justify-center"><mat-icon>phone_android</mat-icon>Send a SMS</div>
+                    <div class="text-sm pt-1">First year & Second Year</div>
+                </div>
+            </div>
+        </button>
+    </div>
+    <div class="flex mx-auto py-2">
+        <div class="exam_code">
+            <div class="code_div gap-1 py-0 flex items-center w-200">Link:
+                <input matInput placeholder="Copy below text in Firefox" class="text-primary underline" [value]="'https://adrplexus.zoom.us/j/3996455621119018?pwd=TGdpWDZiigiZk03K0F6aDNyNE1rOVhoQT09#success'" id="ExamLink">
+                <!-- <span>https://adrplexus.zoom.us/j/3996455621119018?pwd=TGdpWDZiigiZk03K0F6aDNyNE1rOVhoQT09#success</span> -->
+            </div>
+            <div class="icon_codecopy bg-primary/10 border-0 py-2" (click)="copyText('ExamLink')">
+                <mat-icon class="text-primary">file_copy</mat-icon>
+            </div>
+        </div>
+    </div>
+
+</div>

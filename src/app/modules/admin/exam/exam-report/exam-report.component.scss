@@ -1,0 +1,115 @@
+::ng-deep mat-dialog-container {
+    background: #F4F6F8 !important;
+    overflow-y: scroll !important;
+    height: 100vh !important;
+    border-radius: 4px !important;
+}
+
+::ng-deep mat-dialog-container::-webkit-scrollbar {
+    display: none;
+}
+
+.float-right {
+    float: right !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div {
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+h2 {
+    font-size: 16px;
+    color: #3C3C3C;
+    line-height: 24px;
+}
+
+.download_report_btn {
+    display: flex;
+    border: 1px solid #28C397;
+    color: #28C397;
+    align-items: center;
+    border-radius: 4px;
+    width: fit-content;
+    padding: 5px 5px;
+    margin: 20px 0;
+}
+
+.download_report_btn mat-icon.mat-icon {
+    color: #28C397;
+}
+
+.ranks img {
+    width: auto;
+    margin: 0 auto;
+}
+
+.ranks {
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    padding: 20px 0;
+    border-radius: 4px;
+    background: white;
+    margin-bottom: 10px;
+}
+
+.percentage {
+    color: #28C397;
+    font-size: 24px;
+    padding: 6px 0;
+}
+
+.stats div {
+    border-right: 1px solid #DCDCDC;
+    padding: 0 19px;
+}
+
+.stats div:last-child {
+    border: 0;
+}
+
+.color-red {
+    color: #28C397 !important;
+}
+
+.status-pass {
+    background: #F8FFFA;
+    border: 1px solid #28C397;
+    border-radius: 20px;
+    width: fit-content;
+    padding: 1px 10px;
+    color: #28C397;
+    margin: 0 auto;
+}
+
+.cdk-column-result.mat-column-result {
+    text-align: center;
+}
+
+::ng-deep table {
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    box-shadow: none !important;
+}
+
+::ng-deep table th {
+    background: rgba(var(--fuse-primary-rgb), 0.08) !important;
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+}
+
+::ng-deep .mat-cell.cdk-column-studentname.mat-column-studentname {
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+}
+
+::ng-deep .mat-cell.cdk-column-studentname.mat-column-studentname img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+    padding: 4px;
+    border: 1px solid;
+}

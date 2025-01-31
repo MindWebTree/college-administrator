@@ -2,22 +2,28 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ExamService } from '../exam.service';
 import { BehaviorSubject, catchError, finalize, Observable, of, Subject, takeUntil } from 'rxjs';
-import { ExamList } from '../exam.model';
+import { ExamList, ExamStatus } from '../exam.model';
 import { DataSource } from '@angular/cdk/collections';
 import { CommanService } from 'app/modules/common/comman.service';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { SitePreference } from 'app/core/auth/app.configs';
 import { CommonModule } from '@angular/common';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DurationPipe } from '../../pipes/duration.pipe';
 
 @Component({
   selector: 'app-waiting-for-approval',
   standalone: true,
   providers: [ExamService],
-  imports: [MatIconModule,MatPaginatorModule,CommonModule],
+  imports: [MatIconModule,MatPaginatorModule,CommonModule,ConfirmDialogComponent, MatButtonModule, MatFormFieldModule, DurationPipe],
   templateUrl: './waiting-for-approval.component.html',
   styleUrl: './waiting-for-approval.component.scss'
 })
 export class WaitingForApprovalComponent implements OnInit {
+  confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
   
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   dataSource: ExamlistDataSource;
@@ -26,7 +32,8 @@ export class WaitingForApprovalComponent implements OnInit {
   private _unsubscribeAll: any;
 
   constructor(
-    private _examService: ExamService
+    private _examService: ExamService,
+    public dialog: MatDialog
   ){
     this._unsubscribeAll = new Subject();
   }
@@ -47,11 +54,61 @@ export class WaitingForApprovalComponent implements OnInit {
         pageSize: this.paginator?.pageSize == undefined ? SitePreference.PAGE.GridRowViewCount : this.paginator.pageSize,
         orderBy: '',
         sortOrder: '',
-        examStatus: 0,
-        courseYearId: 0
+        examStatus: ExamStatus.WaitingForApproval,
+        courseYearId: null
       };
       this.dataSource.getExamList(gridFilter, this.status)
     })
+  }
+  deleteExam(id){
+    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: false,
+      panelClass: 'delete-choice',
+
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
+       this.confirmDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log("sdsd",id)
+            this._examService.deleteExam(id).subscribe(res=>{
+              console.log("sdsd",res);              
+              this._examService.onExamListChanged.next(true)
+            });
+        }
+        this.confirmDialogRef = null;
+    });
+  }
+  approveExam(id){
+    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: false,
+      panelClass: 'aprrove-choice',
+
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to Approve Exam?';
+       this.confirmDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            this._examService.approveExam(id).subscribe(res=>{   
+              this._examService.onExamListChanged.next(true)
+            });
+        }
+        this.confirmDialogRef = null;
+    });
+  }
+  cancelExam(id){
+    this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
+      disableClose: false,
+      panelClass: 'cancel-choice',
+
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to Cancel Exam?';
+       this.confirmDialogRef.afterClosed().subscribe(result => {
+        if (result) {
+            this._examService.cancelExam(id).subscribe(res=>{              
+              this._examService.onExamListChanged.next(true)
+            });
+        }
+        this.confirmDialogRef = null;
+    });
   }
 }
 export class ExamlistDataSource extends DataSource<any>

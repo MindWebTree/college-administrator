@@ -26,7 +26,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-adrplexus-qbank',
   standalone: true,
-  providers: [QuestionService],
+  // providers: [QuestionService],
   imports: [MatPaginatorModule,MatFormFieldModule,MatSelectModule,MatIconModule, CommonModule, MatExpansionModule, MatChipsModule,
     MatSelectModule,
     MatInputModule,
@@ -50,7 +50,8 @@ export class AdrplexusQbankComponent implements OnInit {
   QuestionList: Array<QuestionListModel> = []
   QuestionCount: number;
   public paginationData: any;
-  private _unsubscribeAll: any;
+  // private _unsubscribeAll: any;
+  private _unsubscribeAll: Subject<void> = new Subject<void>();
   _sitePreference: any = SitePreference;
   QuestionForm: any;
   competenecyLevel: Array<CompetenecyLevel> = []
@@ -66,8 +67,8 @@ export class AdrplexusQbankComponent implements OnInit {
   QbankTypeList: any = [];
   QbankTypeId: number = 0;
   Subjectid: number = 0;
-  TopicId: number = 0;
-  CbmeId: number = 0;
+  TopicId: any = [];
+  CbmeId: any = [];
   questionDetails:any;
   selectedQuestionId:number;
   QuestionData:any=[];
@@ -111,11 +112,11 @@ export class AdrplexusQbankComponent implements OnInit {
           pageSize: this.paginator?.pageSize == undefined ? SitePreference.PAGE.GridRowViewCount : this.paginator.pageSize,
           orderBy: '',
           sortOrder: '',
-          qBankTypeId: 0,
+          qBankTypeId: this.QbankTypeId,
           qBankCategory: "General",
           subjectId: this.Subjectid,
-          topicId: [],
-          cbmeCodeId: [  ],
+          topicId: this.TopicId,
+          cbmeCodeId: this.CbmeId,
           competencyLevelId: this.LevelID,
           levelofQuestionId: this.LevelIDOfQuestion,
           tags: this.TagID
@@ -123,21 +124,17 @@ export class AdrplexusQbankComponent implements OnInit {
         this.dataSource.getQuestionList(gridFilter, this.status)
       })
       
-    // this._questionfilter.QbanksfilterValues$.subscribe(res=>{console.log(res,"ssa")})
     this._questionfilter.QbanksfilterValues$.pipe().subscribe((values: any) => {
-      console.log(this._unsubscribeAll,"_unsubscribeAll")
-      console.log(values,"valuesq")
-      this.QbankTypeId = values.QbankType;
-      this.Subjectid = values.Subject;
-      this.TopicId = values.Topic;
-      this.CbmeId = values.CBMECode;
+      this.QbankTypeId = values.QbankType?values.QbankType:0;
+      this.Subjectid = values.Subject?values.Subject:0;
+      this.TopicId = Array.isArray(values.Topic) ? values.Topic : values.Topic ? [values.Topic] : [];
+      this.CbmeId = Array.isArray(values.CBMECode) ? values.CBMECode : values.CBMECode ? [values.CBMECode] : [];
       this._questionService.question_list.next(this.Question_List_status);
-      this.cdref.detectChanges();
     })
   }
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next(true);
+    this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
 }
   loadPage() {

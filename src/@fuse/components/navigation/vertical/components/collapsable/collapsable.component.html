@@ -47,10 +47,18 @@
         }
 
         <!-- Arrow -->
-        <mat-icon
+        <!-- <mat-icon
             class="fuse-vertical-navigation-item-arrow icon-size-4"
             [svgIcon]="'heroicons_solid:chevron-right'"
-        ></mat-icon>
+        ></mat-icon> -->
+        @if(isCollapsed){
+            <mat-icon class="fuse-vertical-navigation-item-arrow icon-size-4 text-primary plus-icon" style="font-size:20px !important" >add_circle</mat-icon>
+        }
+        
+        @if(!isCollapsed){
+       <mat-icon class="fuse-vertical-navigation-item-arrow icon-size-4 text-primary minus-icon" style="font-size:20px !important" style="transform:none !important">remove_circle</mat-icon>
+        }
+       
     </div>
 </div>
 

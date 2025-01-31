@@ -160,7 +160,7 @@ export class NavigationMockApi {
                                     if (!existingNavItem) {
                                         nav.children.push({
                                             id: category.name,
-                                            title: category.name + ' ' + `(${category.noOfExam})`,
+                                            title: category.name + ' ' + `(${category.count})`,
                                             type: 'basic',
                                             link: this.getNavigationLink(nav.title, category),
                                         });

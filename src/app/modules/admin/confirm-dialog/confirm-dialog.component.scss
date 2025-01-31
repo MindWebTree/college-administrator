@@ -1,0 +1,16 @@
+::ng-deep .confirm{
+    background: #00AEEF;
+    color: white;
+    width: 44%;
+    padding: 10px;
+    border-radius: 10px;
+}
+::ng-deep .pt-6{
+padding-top: 1.5rem !important;
+}
+::ng-deep mat-dialog-container.mat-dialog-container {
+    background: #F4F6F8 !important;
+    width: inherit !important;
+    overflow-y: inherit !important;
+    height: inherit !important;
+}

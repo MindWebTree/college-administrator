@@ -104,7 +104,6 @@ export class CommanService {
   getQuestion(_gridFilter: QuestionSearchList): Observable<QuestionListModel[]> {
     return this._httpClient.post<QuestionListModel[]>(`${environment.apiURL}/qbank/search/`, { ..._gridFilter });
   }
-
   getQuestionbyID(questionDetailID: number): Observable<QuestionListModel[]> {
     return this._httpClient.get<QuestionListModel[]>(`${environment.apiURL}/qbank/` + questionDetailID, {});
   }

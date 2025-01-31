@@ -23,7 +23,6 @@ export class QuestionService {
 
   setQbanksfilterValues(values: any): void {
     this.Qbanksfilter.next(values);
-    this.QbanksfilterValues$.subscribe(res=>{console.log(res,"ss")})
   }
   setQustionFiltervalue(values: number[]) {
     this.QuestionFilter.next(values);

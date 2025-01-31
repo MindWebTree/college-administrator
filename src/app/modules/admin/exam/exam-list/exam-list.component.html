@@ -10,159 +10,203 @@
             </ng-template>
 
             <mat-step>
-                <ng-template matStepLabel class="text-lg">First Year Exams</ng-template>
+                <ng-template matStepLabel class="text-lg">{{this.CourseYearName}} Exams</ng-template>
             </mat-step>
 
             <mat-step>
-                <ng-template matStepLabel>Upcoming Exams (02)</ng-template>
-                <div class="block pt-4 flex gap-6">
-                    <div class="w-4/12 grid_1">
+                <ng-template matStepLabel>Upcoming Exams ({{dataSource?.paginationData?.count?dataSource?.paginationData?.count:0}})</ng-template>
+                <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
+                    <div class="grid_1" [dataSource]="dataSource.ExamList" *ngFor="let exam of dataSource.ExamList,let i = index;">
                         <div class="flex">
-                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
-                            <div class="w-2/4 text-right">
+                            <div class="w-4/5 text-lg">{{exam.name}}</div>
+                            <div class="w-1/5 text-right">
                                 <mat-icon>edit</mat-icon>
-                                <mat-icon (click)="deleteExam()">delete</mat-icon>
+                                <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
                             </div>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <p>{{exam.description}}</p>
                         <div class="flex numbers_div">
-                            <div class="w-4/12">432<br><span>Students</span></div>
-                            <div class="w-4/12">100<br><span>Students</span></div>
-                            <div class="w-4/12">01:30<br><span>Hours</span></div>
+                            <div class="w-4/12">{{exam.noOfStudents}}<br><span>Students</span></div>
+                            <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
+                            <div class="w-4/12">{{exam.examDuration | duration }}<br><span>Hours</span></div>
                         </div>
-                        <h2 class="pt-1">Year : First Year, Second Year</h2>
-                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
-                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
-                        <h2 class="pt-1">Questions : Free Question</h2>
-                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <h2 class="pt-1 truncate">Year : {{exam.courseYears}}</h2>
+                        <h2 class="pt-1 truncate">Subject : {{exam.topics}}</h2>
+                        <h2 class="pt-1">Exam Create by : {{exam.createdBy}}</h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory == 2">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
+                        
+                        <h2 class="pt-1">Exam Date : {{exam.examDate | date: 'dd/MM/yyyy, h:mm a'}}</h2>
                         <div class="pt-6 flex justify-around gap-4">
-                            <button mat-button class="start_exam">Starts on 48hrs</button>
-                            <button mat-button class="cancel_btn">Cancel</button>
-                        </div>
-                    </div>
-                    <div class="w-4/12 grid_1">
-                        <div class="flex">
-                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
-                            <div class="w-2/4 text-right">
-                                <mat-icon>edit</mat-icon>
-                                <mat-icon (click)="deleteExam()">delete</mat-icon>
-                            </div>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
-                        <div class="flex numbers_div">
-                            <div class="w-4/12">432<br><span>Students</span></div>
-                            <div class="w-4/12">100<br><span>Students</span></div>
-                            <div class="w-4/12">01:30<br><span>Hours</span></div>
-                        </div>
-                        <h2 class="pt-1">Year : First Year, Second Year</h2>
-                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
-                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
-                        <h2 class="pt-1">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
-                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
-                        <div class="pt-6 flex justify-around gap-4">
-                            <button mat-button class="start_exam">Starts on 48hrs</button>
-                            <button mat-button class="cancel_btn">Cancel</button>
+                            <a mat-button class="start_exam flex items-center justify-center text-center">{{gettimeleft(exam.examDate)}}</a>
+                            <a class="cancel_btn flex items-center justify-center cursor-pointer" (click)="cancelExam(exam.id)">Cancel</a>
                         </div>
                     </div>
                 </div>
+                
+                <p *ngIf="dataSource.ExamList?.length <= 0">No records found</p>
+                <mat-paginator #paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="_sitePreference.PAGE.GridRowViewCount" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
             </mat-step>
 
             <mat-step>
-                <ng-template matStepLabel>Completed (15)</ng-template>
-                <div class="block pt-4 flex gap-6">
-                    <div class="w-4/12 grid_1">
+                <ng-template matStepLabel>Completed ({{completeddataSource?.paginationData?.count ? completeddataSource?.paginationData?.count : 0}})</ng-template>
+                <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
+                    <div class="grid_1"  [dataSource]="completeddataSource.ExamList" *ngFor="let exam of completeddataSource.ExamList,let i = index;">
                         <div class="flex">
-                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
+                            <div class="text-lg">{{exam.name}}</div>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <p>{{exam.description}}</p>
                         <div class="flex numbers_div">
-                            <div class="w-4/12">432/457<br><span>Students</span></div>
-                            <div class="w-4/12">87/100<br><span>Students</span></div>
-                            <div class="w-4/12">01:30<br><span>Averg. Hours</span></div>
+                            <div class="w-4/12">{{exam.numberOfAttendees}}/{{exam.noOfStudents}}<br><span>Students</span></div>
+                            <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
+                            <div class="w-4/12">{{exam.averageDuration | duration}}<br><span>Averg. Hours</span></div>
                         </div>
-                        <h2 class="pt-1">Year : First Year, Second Year</h2>
-                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
-                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
-                        <h2 class="pt-1">Questions : Free Question</h2>
-                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <h2 class="pt-1 truncate">Year : {{exam.courseYears}}</h2>
+                        <h2 class="pt-1 truncate">Subject : {{exam.topics}}</h2>
+                        <h2 class="pt-1">Exam Create by : {{exam.createdBy}}</h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory == 2">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
+                        <h2 class="pt-1">Exam Date : {{exam.examDate | date: 'dd/MM/yyyy, h:mm a'}}</h2>
                         <div class="pt-6 flex justify-around">
-                            <button mat-button class="exam_report" (click)="openReportCard()">View Exam Report</button>
+                            <button mat-button class="exam_report min-h-12" (click)="openReportCard()">View Exam Report</button>
                         </div>
                     </div>
-                    <div class="w-4/12 grid_1">
-                        <div class="flex">
-                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
-                        <div class="flex numbers_div">
-                            <div class="w-4/12">432/432<br><span>Students</span></div>
-                            <div class="w-4/12">75/100<br><span>Students</span></div>
-                            <div class="w-4/12">01:12<br><span>Averg. Hours</span></div>
-                        </div>
-                        <h2 class="pt-1">Year : First Year, Second Year</h2>
-                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
-                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
-                        <h2 class="pt-1">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
-                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
-                        <div class="pt-6 flex justify-around">
-                            <button mat-button class="exam_report">View Exam Report</button>
-                        </div>
-                    </div>
-                </div>
+                </div>                
+                <p *ngIf="completeddataSource.ExamList?.length <= 0">No records found</p>
+                <mat-paginator #completedpaginator class="mt-8 flex justify-end" [length]="completeddataSource.paginationData? completeddataSource.paginationData.count:0" [pageSize]="_sitePreference.PAGE.GridRowViewCount" (page)="getNext1($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
             </mat-step>
 
             <mat-step>
-                <ng-template matStepLabel>Cancelled (03)</ng-template>
-                <div class="block pt-4 flex gap-6">
-                    <div class="w-4/12 grid_1">
+                <ng-template matStepLabel>Cancelled ({{cancelleddataSource?.paginationData?.count?cancelleddataSource?.paginationData?.count:0}})</ng-template>
+                <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
+                    <div class="grid_1" [dataSource]="cancelleddataSource.ExamList" *ngFor="let exam of cancelleddataSource.ExamList,let i = index;">
                         <div class="flex">
-                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
-                            <div class="w-2/4 text-right">
-                                <mat-icon (click)="deleteExam()">delete</mat-icon>
+                            <div class="w-4/5 text-lg">{{exam.name}}</div>
+                            <div class="w-1/5 text-right">
+                                <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
                             </div>
                         </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
+                        <p>{{exam.description}}</p>
                         <div class="flex numbers_div">
-                            <div class="w-4/12">432<br><span>Students</span></div>
-                            <div class="w-4/12">100<br><span>Students</span></div>
-                            <div class="w-4/12">01:30<br><span>Hours</span></div>
+                            <div class="w-4/12">{{exam.noOfStudents}}<br><span>Students</span></div>
+                            <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
+                            <div class="w-4/12">{{exam.examDuration | duration}}<br><span>Hours</span></div>
                         </div>
-                        <h2 class="pt-1">Year : First Year, Second Year</h2>
-                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
-                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
-                        <h2 class="pt-1">Questions : Free Question</h2>
-                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
+                        <h2 class="pt-1 truncate">Year : {{exam.courseYears}}</h2>
+                        <h2 class="pt-1 truncate">Subject : {{exam.topics}}</h2>
+                        <h2 class="pt-1">Exam Create by : {{exam.createdBy}}</h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory == 2">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
+                        <h2 class="pt-1">Exam Date : {{exam.examDate | date: 'dd/MM/yyyy, h:mm a'}}</h2>
                         <div class="pt-6 flex justify-around gap-4">
-                            <button mat-button class="start_exam">Re-Schedule</button>
-                            <button mat-button disabled class="cancelled_btn">Cancelled</button>
-                        </div>
-                    </div>
-                    <div class="w-4/12 grid_1">
-                        <div class="flex">
-                            <div class="w-2/4 text-lg">Exam Name Here 01 Second line heading</div>
-                            <div class="w-2/4 text-right">
-                                <mat-icon (click)="deleteExam()">delete</mat-icon>
-                            </div>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia faucibus. Donec interdum lacus.</p>
-                        <div class="flex numbers_div">
-                            <div class="w-4/12">432<br><span>Students</span></div>
-                            <div class="w-4/12">100<br><span>Students</span></div>
-                            <div class="w-4/12">01:30<br><span>Hours</span></div>
-                        </div>
-                        <h2 class="pt-1">Year : First Year, Second Year</h2>
-                        <h2 class="pt-1">Subject : Anatomy, Chemistry, …+3</h2>
-                        <h2 class="pt-1">Exam Create by : Muthumanikan</h2>
-                        <h2 class="pt-1">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
-                        <h2 class="pt-1">Exam Date : 25/02/2023</h2>
-                        <div class="pt-6 flex justify-around gap-4">
-                            <button mat-button class="start_exam">Re-Schedule</button>
-                            <button mat-button disabled class="cancelled_btn">Cancelled</button>
+                            <a mat-button class="start_exam flex items-center justify-center cursor-pointer" (click)="reschedule(exam)">Re-Schedule</a>
+                            <a mat-button  class="cancelled_btn flex items-center justify-center cursor-pointer" (click)="deleteExam(exam.id)">Delete</a>
                         </div>
                     </div>
                 </div>
+                <p *ngIf="cancelleddataSource.ExamList?.length <= 0">No records found</p>
+                <mat-paginator #cancelledpaginator class="mt-8 flex justify-end" [length]="cancelleddataSource.paginationData? cancelleddataSource.paginationData.count:0" [pageSize]="_sitePreference.PAGE.GridRowViewCount" (page)="getNext2($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
             </mat-step>
 
         </mat-stepper>
     </form>
+    
 </div>
+<ng-template #examExit class="w-94">
+    <div class="reschedule-popup">
+        <form [formGroup]="ExamReSchedule">
+            <div class="quiz_scheduling">
+                <mat-form-field appearance="fill">
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="picker" 
+                           formControlName="ExamDate" 
+                           [min]="minDate"
+                           (dateChange)="calculateDuration()"
+                           required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="ExamReSchedule.get('ExamDate')?.errors?.['required'] && 
+                                    (ExamReSchedule.get('ExamDate')?.touched || submitted)">
+                        Exam date is required
+                    </mat-error>
+                </mat-form-field>
+
+                <div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Starts on</mat-label>
+                        <input matInput type="time" 
+                               formControlName="StartTime" 
+                               min="16:00"
+                               (change)="calculateDuration()"
+                               required>
+                        <mat-error *ngIf="ExamReSchedule.get('StartTime')?.errors?.['required'] && 
+                                        (ExamReSchedule.get('StartTime')?.touched || submitted)">
+                            Start time is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Ends with</mat-label>
+                        <input matInput type="time" 
+                               formControlName="EndTime" 
+                               (change)="calculateDuration()" 
+                               required>
+                        <mat-error *ngIf="ExamReSchedule.get('EndTime')?.errors?.['required'] && 
+                                        (ExamReSchedule.get('EndTime')?.touched || submitted)">
+                            End time is required
+                        </mat-error>
+                        <mat-error *ngIf="ExamReSchedule.get('EndTime')?.errors?.['invalidEndTime'] && 
+                                        (ExamReSchedule.get('EndTime')?.touched || submitted)">
+                            End time must be after start time
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- General form error message -->
+                <div class="error-message" *ngIf="submitted && ExamReSchedule.invalid">
+                    <p class="text-red-500 text-sm mt-2 mb-2">Please fill in all required fields correctly</p>
+                </div>
+                <div class="error-message" *ngIf="invalidStartTime || invalidEndTime">
+                    <p class="text-red-500 text-sm mt-2 mb-2">Please enter a time later than the current time. </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <a class="submit-btn cursor-pointer" (click)="rescheduleSubmit()">Submit</a>
+                <a class="cancel-btn cursor-pointer" (click)="closedialog()">Close</a>
+            </div>
+        </form>
+    </div>
+</ng-template>
+<!-- <ng-template #examExit class="w-94">
+    <div class="reschedule-popup">
+        <form [formGroup]="ExamReSchedule">
+        <div class="quiz_scheduling" >
+            <mat-form-field appearance="fill">
+                <mat-label>Date</mat-label>
+                <input matInput type="date" formControlName="ExamDate" [(ngModel)]="date" (change)="calculateDuration()" [min]="getCurrentDate()">
+            </mat-form-field>
+            <div>
+            <mat-form-field appearance="fill">
+                <mat-label>Starts on</mat-label>
+                <input matInput type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Ends with</mat-label>
+                <input matInput type="time" formControlName="EndTime" [(ngModel)]="endTime" (change)="calculateDuration()" [disabled]="invalidTime">
+            </mat-form-field>
+            </div>
+            <control-messages [control]="ExamReSchedule.controls.ExamDate && ExamReSchedule.controls.StartTime && ExamReSchedule.controls.EndTime" fieldName="Calcluate Duration" [showSubmitError]="IsSheduleFormHasError"></control-messages>
+
+        </div>
+        <div class="flex justify-between">
+            <a class="submit-btn" (click)="rescheduleSubmit()">Submit</a>
+            <a class="cancel-btn" (click)="closedialog()">Close</a>
+        </div>
+    </form>
+    </div>
+</ng-template> -->

@@ -15,7 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
   standalone: true,
   imports: [CommonModule,ReactiveFormsModule,MatFormFieldModule,MatSelectModule],
   templateUrl: './adrplexus-filter.component.html',
-  providers:[QuestionService],
+  // providers:[QuestionService],
   styleUrl: './adrplexus-filter.component.scss'
 })
 export class AdrplexusFilterComponent implements OnInit {
@@ -39,13 +39,9 @@ export class AdrplexusFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._questionservice.onQuestionSetChanged.next('Lovish');
     this._commonService.getQBankTypes('General').subscribe(res => {
       this.qbanktype = res;
     });
-    this._questionservice.onQuestionSetChanged.subscribe(res=>{
-      console.log(res,"datta")
-    })
   }
   getQbanksubject(QbankTypeID: number) {
     this._commonService.getSubjects(QbankTypeID,"General").subscribe((response: any) => {
@@ -82,8 +78,8 @@ export class AdrplexusFilterComponent implements OnInit {
     // const filterValues: number[] = Object.values(this.AdrPlexusQBankFilter.value).map(Number);
     const filterValues = this.AdrPlexusQBankFilter.value;
     // console.log(filterValues);
-    // this._questionservice.setQbanksfilterValues(filterValues);
-    this._questionservice.onQuestionSetChanged.next(filterValues);
+    this._questionservice.setQbanksfilterValues(filterValues);
+    // this._questionservice.onQuestionSetChanged.next(filterValues);
   }
   clearall() {
     this.AdrPlexusQBankFilter.get('QbankType').setValue('');
@@ -94,7 +90,7 @@ export class AdrplexusFilterComponent implements OnInit {
     this.AdrPlexusQBankFilter.get('CBMECode').setValue('');
     this.cbmecode = [];
     const filterValues = this.AdrPlexusQBankFilter.value;
-    // this._questionservice.setQbanksfilterValues(filterValues);
+    this._questionservice.setQbanksfilterValues(filterValues);
   }
 
 }
