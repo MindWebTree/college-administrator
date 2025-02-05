@@ -28,13 +28,13 @@ export class ExamList {
 
 
 export class Subjects {
-    subjectID: number;
+    id: number;
     qbankTypeID: number;
     subjectName: string;
     isActive: boolean;
     description: string;
     constructor(subject) {
-        this.subjectID = subject.subjectID;
+        this.id = subject.id;
         this.qbankTypeID = subject.qbankTypeID;
         this.subjectName = subject.subjectName;
         this.isActive = subject.isActive;
@@ -49,6 +49,7 @@ export class Course {
    noOfQuestions: number;
    nofOfStudents: number;
    id:string;
+  count: any;
     constructor(course) {
          {
             this.title=course.title;
@@ -78,9 +79,9 @@ export class QbankType {
 
 export class Topic {
     subjectID: number;
-    topicID: number;
+    id: number;
     OrderNo: number;
-    topicName: string;
+    title: string;
     isDeleted: boolean;
     isActive: boolean;
     // Modules: Array<Module>
@@ -94,8 +95,8 @@ export class Topic {
         {
             this.subjectID = topic.subjectID || 0; 
             this.OrderNo = topic.OrderNo || 0;
-            this.topicName = topic.topicName || '';
-            this.topicID = topic.topicID || 0;
+            this.title = topic.title || '';
+            this.id = topic.id || 0;
             this.isDeleted = topic.isDeleted;
             this.isActive = topic.isActive;
             // this.Modules = topic.Modules || '';
@@ -106,25 +107,25 @@ export class Topic {
     
 }
 export class QbankcmbCode {
-    cmbeid: number;
+    id: number;
     title: string;
-    Code: string;
+    code: string;
     OrderNo: number;
     noOfQuestionAttempted:number;
     noOfQuestions:number;
-    topicID:number;
+    topicId:number;
     description:string;
     examStatus:number;
     constructor(qbankcmbCode) {
         {
-        this.cmbeid=qbankcmbCode.cmbeid;
+        this.id=qbankcmbCode.id;
         this.title=qbankcmbCode.title;
-        this.Code=qbankcmbCode.Code;
+        this.code=qbankcmbCode.code;
         this.OrderNo=qbankcmbCode.OrderNo;
         this.noOfQuestionAttempted=qbankcmbCode.noOfQuestionAttempted;
         this.noOfQuestions=qbankcmbCode.noOfQuestions;
         this.examStatus=qbankcmbCode.examStatus;
-this.topicID=qbankcmbCode.topicID;
+this.topicId=qbankcmbCode.topicId;
 this.description=qbankcmbCode.description;
 
         }

@@ -4,11 +4,13 @@ import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
 import { environment } from 'environments/environment';
 import { catchError, Observable, of, switchMap, tap, throwError } from 'rxjs';
+import { DataGuardService } from './data.guard';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private _authenticated: boolean = false;
     private _httpClient = inject(HttpClient);
+    private _dataGuard = inject(DataGuardService);
     private _userService = inject(UserService);
 
     // -----------------------------------------------------------------------------------------------------
@@ -175,6 +177,7 @@ export class AuthService {
      * Check the authentication status
      */
     check(): Observable<boolean> {
+        this.accessToken = this._dataGuard.getLocalData('accessToken')
         // Check if the user is logged in
         if (this._authenticated) {
             return of(true);

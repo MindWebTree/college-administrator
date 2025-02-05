@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { initialDataResolver } from 'app/app.resolvers';
-import { AuthGuard } from 'app/core/auth/guards/auth.guard';
+import { AuthGuard, ChildAuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 
@@ -79,8 +79,8 @@ export const appRoutes: Route[] = [
     },
     {
         path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
         component: LayoutComponent,
         resolve: {
             initialData: initialDataResolver
@@ -91,14 +91,38 @@ export const appRoutes: Route[] = [
     },
     {
         path: '',
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
         component: LayoutComponent,
         resolve: {
             initialData: initialDataResolver
         },
         children: [
             {path: 'exam', loadChildren: () => import('app/modules/admin/exam/exam.routes')},
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'student', loadChildren: () => import('app/modules/admin/student-management/student-management.routes')},
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'lecturer', loadChildren: () => import('app/modules/admin/lecturer-management/lecturer-management.routes')},
         ]
     }
 ];

@@ -108,9 +108,9 @@ export class NavigationMockApi {
             case 'Exams':
                 return await this._CommanService.getexamCategory().toPromise();
             case 'Students':
-                return await this._CommanService.getexamCategory().toPromise();
+                return await this._CommanService.getstudentNavigationList().toPromise();
             case 'Lecturers':
-                return await this._CommanService.getexamCategory().toPromise();
+                return await this._CommanService.getstudentNavigationList().toPromise();
             default:
                 return [];
         }
@@ -125,9 +125,9 @@ export class NavigationMockApi {
                 return `/exam/list/${category.guid}`;
                 }
             case 'Students':
-                return `/student-management/${category.id}/${category.name}`;
+                return `/student/list/${category.guid}`;
             case 'Lecturers':
-                return `/lecturer-management/${category.id}/${category.name}`;
+                return `/lecturer/list/${category.guid}`;
             default:
                 return '';
         }

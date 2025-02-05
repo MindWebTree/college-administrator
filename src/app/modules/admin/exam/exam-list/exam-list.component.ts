@@ -218,6 +218,9 @@ export class ExamListComponent implements OnInit{
       this.cancelleddataSource.getExamList(gridFilter, this.status);
     })
   }
+  editExam(id){
+    this._router.navigate([`/exam/edit/${{id}}`]);
+  }
   deleteExam(id){
     this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
       disableClose: false,

@@ -1,0 +1,88 @@
+<div class="block p-6  w-full list-student-management">
+    <div class="container block filters">
+        <form>
+            <div class="flex flex-wrap sm:flex-nowrap justify-between py-2 items-center">
+                <div>
+                    <h2 class="text-xl font-medium text-[#505050]">Second Year ({{dataSource.paginationData? dataSource.paginationData.count:0}})</h2>
+                </div>
+            
+          
+                <div class="flex flex-wrap sm:flex-nowrap gap-2 items-center">
+                       <!-- filter -->
+                    <div class="filter_heading">
+                         Average 
+                    </div>
+                <div class="w-full">
+                  <mat-form-field appearance="fill" class="w-full average">
+                     <mat-select [(ngModel)]="average" placeholder="Select Average" (selectionChange)="onAverageChange($event)">
+                     <mat-option value="0">All</mat-option>
+                       <mat-option value=">33">>33%</mat-option>
+                        <mat-option value=">66">>66%</mat-option>
+                         <mat-option value=">99">>99%</mat-option>
+                          <mat-option value="<33"> < 33% </mat-option>
+                           <mat-option value="<66"> < 66% </mat-option>
+                            <mat-option value="<99"> < 99% </mat-option>
+    </mat-select>
+</mat-form-field>
+
+
+                </div>
+                <!-- search -->
+                 <div class="filter_heading">
+                        Search 
+                    </div>
+                 <div class="search-input">
+                <mat-icon class="">search</mat-icon>
+                <mat-form-field mat-no-float class="m-0" floatLabel="never">
+                    <input matInput id="search" placeholder="Search" [formControl]="searchInput" class="">
+                </mat-form-field>
+            </div>
+                <button class="add-data"(click)="addStudent()"><mat-icon class="text-white cursor-pointer">add</mat-icon> ADD</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="flex grid  grid-cols-1 sm:grid-cols-2 gap-6 pt-6">
+        
+        <div class="student_div" [dataSource]="dataSource.data" *ngFor="let user of dataSource.data,let i = index;">
+            <div class="flex grid grid-cols-6 first_div gap-5 relative lg:static">
+                <img class="w-min rounded-full min-h-[70px]  min-w-[70px] max-w-[70px] max-h-[70px]" [src]="user.imageUrl || 'my-images/default-img.png'">
+                <div class="students_details col-span-3 content-center">
+                    <h2 class="text-lg">{{user.firstName}} {{user.lastName}}</h2>
+                    <h3 class="font-normal flex text-[#505050]" *ngFor="let course of user.course">{{course.courseYear}}</h3>
+                    <div class="flex items-center gap-2 pt-4">
+                        <h4 class="float-left flex font-normal text-[#505050]">Roll No. {{user.rollNo}}</h4>
+                        <button class="active_btn" [ngClass]="{ 'active': user.isActive, 'inactive': !user.isActive }"><mat-icon>circle</mat-icon>{{ user.isActive ? 'Active' : 'Inactive' }}</button>
+                    </div>
+                </div>
+                <div class="flex col-span-2 justify-end lg:static absolute left-0 right-4 md:right-4 sm:right-4">
+                    <mat-icon class="cursor-pointer text-[#505050]" (click)="editStudent(user)">edit</mat-icon>
+                    <mat-icon class="cursor-pointer text-[#505050]" (click)="deleteStudent(user)">delete</mat-icon>
+                </div>
+            </div>
+            <div class="flex grid grid-cols-6 second_div"  [ngClass]="{'year-one': user.course[0]?.courseYear === 'First Year','year-two': user.course[0]?.courseYear === 'Second Year',
+                'year-three': user.course[0]?.courseYear === 'Third Year',
+               'year-four': user.course[0]?.courseYear === 'Fourth Year'}">
+                <div></div>
+                <div class="students_details col-span-5">
+                    <div class="flex grid grid-cols-2 stats">
+                        <div class="font-normal">Average<br><span>{{user.averageMarks}}%</span></div>
+                        <div class="font-normal">Exam<br><span>{{user.attendedExam<=0?'0':user.attendedExam}}/{{user.attendedExam<=0?'0':user.attendedExam}}</span></div>
+                      
+                    </div>
+                    <div class="flex grid grid-cols-2 stats-3 py-3">
+                        <div class="font-normal text-[#A9A9A9]">Mobile No.<br><span class="text-[#505050]">{{user.phoneCountryCode}} {{user.phoneNumber}}</span></div>
+                        <div class="font-normal text-[#A9A9A9]" >Email<br><span class="text-[#505050]">{{user.email}}</span></div>
+                    </div>
+                    <a>
+                        <button class="view_report_card text-white" (click)="onNavigate(user)">View Report Card</button>
+                    </a>
+                </div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <p *ngIf="dataSource.data?.length<=0">No records found</p>
+
+    <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="paginator.pageSize" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+</div>

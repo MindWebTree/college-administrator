@@ -117,3 +117,112 @@ export const data={
         return this.isUserAuthenticated;
     }
 }
+// import { inject } from '@angular/core';
+// import { CanActivateChildFn, CanActivateFn, CanLoadFn, Router, UrlSegment } from '@angular/router';
+// import { AuthService } from 'app/core/auth/auth.service';
+// import { helperService } from '../helper';
+// import { defaultNavigation } from 'app/mock-api/common/navigation/data';
+// import { Observable, of, switchMap } from 'rxjs';
+// import { User } from 'app/modules/admin/example/models/user';
+
+// // Helper class to maintain state and shared logic
+// class AuthGuardHelper {
+//     private router: Router = inject(Router);
+//     private authService: AuthService = inject(AuthService);
+//     private helperService: helperService = inject(helperService);
+//     private navigation = defaultNavigation;
+//     private isUserAuthenticated: boolean = false;
+//     private roleId: User;
+
+//     check(redirectURL: string, url: string): Observable<boolean> {
+//         const baseUrl = url.split('?')[0];
+//         return this.authService.check().pipe(
+//             switchMap((authenticated) => {
+//                 if (!authenticated) {
+//                     this.router.navigate(['sign-in'], { queryParams: { redirectURL } });
+//                     return of(false);
+//                 }
+                
+//                 this.roleId = this.helperService.getUserDetail();
+//                 // if(this.roleId == null){
+//                 //     this.router.navigate(['/sign-out']);
+//                 // }
+//                 console.log(this.roleId,"")
+//                 this.isUserAuthenticated = false;
+
+//                 // Check route permissions
+//                 this.navigation.forEach(route => {
+//                     if (route.link === baseUrl && route.roles.includes(this.roleId.Roles)) {
+//                         this.isUserAuthenticated = true;
+//                         return true;
+//                     } else if (route.children) {
+//                         this.checkRouteChildren(route.children, baseUrl);
+//                     }
+//                 });
+
+//                 // Special case for sign-out
+//                 if (baseUrl === '/sign-out') {
+//                     return of(true);
+//                 }
+
+//                 if (!this.isUserAuthenticated) {
+//                     this.router.navigate(['/sign-out']);
+//                 }
+
+//                 return of(this.isUserAuthenticated);
+//             })
+//         );
+//     }
+
+//     private checkRouteChildren(children: any[], currentUrl: string): boolean {
+//         for (const child of children) {
+//             if (child.link === currentUrl && child.roles.includes(this.roleId.Roles)) {
+//                 this.isUserAuthenticated = true;
+//                 return true;
+//             }
+            
+//             if (child.children?.length > 0) {
+//                 this.checkRouteChildren(child.children, currentUrl);
+//             }
+//         }
+//         return this.isUserAuthenticated;
+//     }
+
+//     buildFullPath(route: any): string {
+//         let parentPath = '';
+//         const childPath = route.routeConfig?.path || '';
+
+//         if (route.parent?.url.length > 0) {
+//             parentPath = route.parent.url.map(url => url.path).join('/') + '/';
+//         }
+
+//         let fullPath = `/${parentPath}${childPath}`;
+//         return fullPath.endsWith('/') ? fullPath.slice(0, -1) : fullPath;
+//     }
+// }
+
+// export const AuthGuard: CanActivateFn = (route, state) => {
+//     const helper = new AuthGuardHelper();
+
+//     // Allow access to empty path
+//     if (route.routeConfig?.path === '') {
+//         return true;
+//     }
+
+//     const fullPath = helper.buildFullPath(route);
+//     const redirectUrl = state.url === '/sign-out' ? '/' : state.url;
+//     return helper.check(redirectUrl, fullPath);
+// };
+
+// export const ChildAuthGuard: CanActivateChildFn = (childRoute, state) => {
+//     const helper = new AuthGuardHelper();
+    
+//     const fullPath = helper.buildFullPath(childRoute);
+//     const redirectUrl = state.url === '/sign-out' ? '/' : state.url;
+//     return helper.check(redirectUrl, fullPath);
+// };
+
+// export const LoadGuard: CanLoadFn = (route, segments: UrlSegment[]) => {
+//     const helper = new AuthGuardHelper();
+//     return helper.check('/', '');
+// };

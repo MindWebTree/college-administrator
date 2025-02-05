@@ -107,15 +107,13 @@ export class AuthSignInComponent implements OnInit {
         // Sign in
         this._authService.signInWithPassword(request).subscribe(
             (response) => {
-                console.log(response, "responsev")
                 if (response.token) {
                     // if(response.Data.RoleID===3){
                     // const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
                     // this._router.navigateByUrl(redirectURL);
                     if (response) {
-                        console.log(response, "r");
-                        this.dataService.setLocalData('accessToken', JSON.stringify(response.token));
-                        this.dataService.setLocalData('refreshToken', JSON.stringify(response.refreshToken));
+                        this.dataService.setLocalData('accessToken', response.token);
+                        this.dataService.setLocalData('refreshToken', response.refreshToken);
                         this._router.navigate(['/example']);
                     }
                     // }

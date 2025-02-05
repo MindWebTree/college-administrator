@@ -1,0 +1,174 @@
+<div class="px-6 py-8 w-full">
+    <div class="flex items-center heading">
+        <mat-icon class="cursor-pointer" (click)="backClicked()">arrow_back</mat-icon>
+        <h2 class="ml-2 text-lg">Back to Second Year List</h2>
+    </div>
+    <div class="report_card_div mt-6">
+        <div class="student_div">
+            <div class="flex grid grid-cols-6  first_div  relative lg:static">
+                <img class="w-36 lg:mx-auto rounded-full fisrt_div_img" [src]="studentReportCardDetails?.imageUrl || 'images/avatars/download.png'">
+                <div  class="flex flex-col grid-cols-6 col-span-5">
+                    <div class="grid lg:grid-cols-6 students_details">
+                        <div class="col-span-2">
+                            <h2 class="text-lg font-bold capitalize text-[#3C3C3C]">{{studentReportCardDetails?.firstName}} {{studentReportCardDetails?.lastName}}</h2>
+                            <h3 class="font-normal pt-1 text-[#505050]" *ngFor="let course of studentReportCardDetails?.course">{{course.courseYear}}</h3>
+                            <div class="flex items-center gap-3 pt-2.5">
+                                <h4 class="float-left flex font-normal text-[#505050]">Roll No. {{studentReportCardDetails?.rollNo}}</h4>
+                               
+                                   <button class="active_btn" [ngClass]="{ 'active': studentReportCardDetails?.isActive, 'inactive': !studentReportCardDetails?.isActive }"><mat-icon>circle</mat-icon>{{ studentReportCardDetails?.isActive ? 'Active' : 'Inactive' }}</button>
+                            </div>
+                        </div>
+
+                        <div class="flex col-span-2 justify-end col-span-4 lg:static absolute top-5 right-2.5 md:right-2.4 sm:right-2.4">
+                            <div class="flex edit_btn text-primary cursor-pointer" (click)="editStudent()">
+                                <mat-icon class="text-primary">edit</mat-icon>
+                                Edit Profile
+                            </div>
+                            <mat-icon (click)="deleteStudent()" class="mt-1 cursor-pointer text-[#505050]">delete</mat-icon>
+                        </div>
+                    </div>
+                    <div class="pt-4">
+                        <div class="col-span-5">
+                            <div class="flex grid grid-cols-3 stats">
+                                <div class="font-normal text-[#A9A9A9]">Average<br><span>{{studentReportCardDetails?.averageMarks}}</span></div>
+                                <div class="font-normal text-[#A9A9A9]">Exam<br><span>{{studentReportCardDetails?.attendedExam}}</span></div>
+                                <!-- <div>Awards<br><span>02</span></div> -->
+                            </div>
+                            <div class="flex grid grid-cols-3 stats-2 py-3">
+                                <div class="font-normal text-[#A9A9A9]">Mobile No.<br><span class="text-[#505050]">{{studentReportCardDetails?.phoneCountryCode}} {{studentReportCardDetails?.phoneNumber}}</span></div>
+                                <div class="font-normal text-[#A9A9A9]">Email<br><span class="text-[#505050]">{{studentReportCardDetails?.email}}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="second_div">
+                  <h3 class="font-normal text-[#3C3C3C] text-[16px]">Subject wise scoring</h3>
+                  <div class="flex justify-center">
+                <div class="w-full max-w-4xl">
+              
+                <h6 class="flex gap-10 text-[16px] pl-10 pt-10 font-medium text-[#505050]"><p>Subjects</p> <p>Average Marks</p></h6>
+                <div id="linearchart" >
+                    <div class="">
+                    <apx-chart [series]="linearChartOptions.series" [chart]="linearChartOptions.chart"
+                        [dataLabels]="linearChartOptions.dataLabels" [plotOptions]="linearChartOptions.plotOptions"
+                        [xaxis]="linearChartOptions.xaxis"></apx-chart>
+                        </div>
+                        </div>
+                </div>
+                </div>
+            </div>
+            <div class="third_div overflow-x-scroll">
+                <h3 class="mb-2 text-[#3C3C3C] font-normal">Attended Exam's ({{ attendedExamsDataSource.length }})</h3>
+                <table *ngIf="attendedExamsDataSource.length > 0" mat-table [dataSource]="attendedExamsDataSource" class="mat-elevation-z8 w-full shadow-none">
+
+                    <!-- Date Column -->
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let element" class="text-[#3C3C3C] font-medium"> {{element.examDate | date: 'dd/MM/yyyy'}} </td>
+                    </ng-container>
+                  
+                    <!-- Exam Name Column -->
+                    <ng-container matColumnDef="examname">
+                      <th mat-header-cell *matHeaderCellDef class="max-sm:min-w-48"> Exam Name </th>
+                      <td mat-cell *matCellDef="let element" class="max-sm:min-w-48 text-[#0C529A] font-medium"> {{element.name}} </td>
+                    </ng-container>
+                  
+                    <!-- Subject Column -->
+                    <ng-container matColumnDef="subject">
+                      <th mat-header-cell *matHeaderCellDef> Subject </th>
+                      <td mat-cell *matCellDef="let element" class="text-[#3C3C3C] font-medium"> {{element.subject}} </td>
+                    </ng-container>
+                  
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="rank">
+                      <th mat-header-cell *matHeaderCellDef> Rank </th>
+                      <td mat-cell *matCellDef="let element" class="text-[#3C3C3C] font-medium"> {{element.rank}} </td>
+                    </ng-container>
+
+                    <!-- Avg.Score Column -->
+                    <ng-container matColumnDef="avgscore">
+                        <th mat-header-cell *matHeaderCellDef> Avg.Score </th>
+                        <td mat-cell *matCellDef="let element" class="text-[#3C3C3C] font-medium"> {{element.averageScore}} </td>
+                      </ng-container>
+
+                    <!-- Result Column -->
+                    <ng-container matColumnDef="result">
+                        <th mat-header-cell *matHeaderCellDef class="text-end"> Result </th>
+                        <td mat-cell *matCellDef="let element"> 
+                          <div class="result-pass text-[#3C3C3C] font-medium" >{{element.subject}}</div>
+                         </td>
+                      </ng-container>  
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                   <!-- Show "No data found" message when data is empty -->
+                  <div *ngIf="attendedExamsDataSource.length === 0" class="text-center font-bold text-lg no_data">No data found</div>
+            </div>
+            <div class="fourth_div overflow-x-scroll">
+                <h3 class="mb-2  text-[#3C3C3C] font-normal">Non Attended Exam's ({{ nonAttendedExamsDataSource.length }})</h3>
+                <table mat-table  *ngIf="nonAttendedExamsDataSource.length > 0"[dataSource]="nonAttendedExamsDataSource" class="mat-elevation-z8 w-full shadow-none">
+
+                    <!-- Date Column -->
+                    <ng-container matColumnDef="date">
+                      <th mat-header-cell *matHeaderCellDef> Date </th>
+                      <td mat-cell *matCellDef="let element"> {{element.examDate | date: 'dd/MM/yyyy'}} </td>
+                    </ng-container>
+                  
+                    <!-- Exam Name Column -->
+                    <ng-container matColumnDef="examname">
+                      <th mat-header-cell *matHeaderCellDef class="max-sm:min-w-48"> Exam Name </th>
+                      <td mat-cell *matCellDef="let element" class="max-sm:min-w-48"> {{element.name}} </td>
+                    </ng-container>
+                  
+                    <!-- Subject Column -->
+                    <ng-container matColumnDef="subject">
+                      <th mat-header-cell *matHeaderCellDef> Subject </th>
+                      <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
+                    </ng-container>
+                  
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="rank">
+                      <th mat-header-cell *matHeaderCellDef> Rank </th>
+                      <td mat-cell *matCellDef="let element"> {{element.rank}} </td>
+                    </ng-container>
+
+                    <!-- Avg.Score Column -->
+                    <ng-container matColumnDef="avgscore">
+                        <th mat-header-cell *matHeaderCellDef> Avg.Score </th>
+                        <td mat-cell *matCellDef="let element"> {{element.percentage}} </td>
+                      </ng-container>
+
+                    <!-- Result Column -->
+                    <ng-container matColumnDef="result">
+                        <th mat-header-cell *matHeaderCellDef class="text-end"> Result </th>
+                        <td mat-cell *matCellDef="let element"> 
+                          <div *ngIf="element.resultStatus==0" class="result-fail">Fail</div>
+                          <div  *ngIf="element.resultStatus==1" class="result-pass">Pass</div>
+                        </td>
+                      </ng-container>  
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                      <!-- Show "No data found" message when data is empty -->
+                  <div *ngIf="nonAttendedExamsDataSource.length === 0" class="text-center font-bold text-lg no_data">No data found</div>
+            </div>
+            <!-- <div class="fifth_div">
+                <h3 class="mb-2">Non Attended Exam's (04)</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <div class="awards flex items-center">
+                        <img class="w-min trophy_1" src="images/avatars/trophy_1.jpg">
+                        <div class="pl-4">
+                            <h3>Anatomy Exam 2023</h3>
+                            <h4>98% - First Rank</h4>
+                            <h5>Rs. 5000 Cash Prize</h5>
+                        </div>
+                          <img class="trophy_2" src="images/avatars/trophy_2.jpg">
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>

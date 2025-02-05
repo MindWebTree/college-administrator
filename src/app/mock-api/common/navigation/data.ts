@@ -6,7 +6,8 @@ export const AdminNavigation: FuseNavigationItem[] = [
         title: 'Dashboard',
         type : 'basic',
         // icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link : '/example',
+        roles : ["Lecturer", "CollegeAdministrator"]
     },
     {
         id   : "ADrPLEXUS Q'Bank",
@@ -14,39 +15,43 @@ export const AdminNavigation: FuseNavigationItem[] = [
         type: 'basic',
         SubType: 'collapsable', 
         // icon : 'heroicons_outline:chart-pie',
-        link : '/qbank/adrplexus-qbank'
+        link : '/qbank/adrplexus-qbank',
+        roles : ["Lecturer", "CollegeAdministrator"]
     },
     {
         id: 'Exams',
         title: 'Exams',
         type: 'collapsable',
-        children: []
+        children: [],
+        roles : ["CollegeAdministrator"]
     },
     {
         id: 'Students',
         title: 'Students',
         type: 'collapsable',
         children: [
-            {
-                id: 'createaccount',
-                title: 'Create Account',
-                type: 'basic',
-                link: ''
-        },
-        ]
+        //     {
+        //         id: 'createaccount',
+        //         title: 'Create Account',
+        //         type: 'basic',
+        //         link: ''
+        // },
+        ],
+        roles : ["CollegeAdministrator"]
     },
     {
         id: 'Lecturers',
         title: 'Lecturers',
         type: 'collapsable',
         children: [
-            {
-                id: 'createaccount',
-                title: 'Create Account',
-                type: 'basic',
-                link: ''
-        },
-        ]
+        //     {
+        //         id: 'createaccount',
+        //         title: 'Create Account',
+        //         type: 'basic',
+        //         link: ''
+        // },
+        ],
+        roles : ["CollegeAdministrator"]
     }
 ];
 export const LecturerNavigation: FuseNavigationItem[] = [
@@ -58,11 +63,35 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         link : '/example'
     },
     {
-        id: 'exams management',
-        title: 'Exams',
+        id   : "ADrPLEXUS Q'Bank",
+        title: "ADrPLEXUS Q'Bank",
+        type: 'basic',
+        SubType: 'collapsable',
+        link : '/qbank/adrplexus-qbank',
+        roles : ["Lecturer", "CollegeAdministrator"]
+    },
+    {
+        id: 'Exam',
+        title: 'Exam',
         type: 'collapsable',
-        children: []
-    }
+        children: [
+            {
+                id: 'createexam',
+                title: 'Create Exam',
+                type: 'basic',
+                link: '/exam/create',
+                roles : ["Lecturer"]
+            },
+            {
+                id: 'examlist',
+                title: 'Exam List',
+                type: 'basic',
+                link: '/exam/listing',
+                roles : ["Lecturer"]
+            },
+        ],
+        roles : ["Lecturer"]
+    },
 ];
 export const StudentNavigation: FuseNavigationItem[] = [];
 export const defaultNavigation: FuseNavigationItem[] = [
@@ -71,14 +100,46 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Example',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link : '/example',
+        
+        roles : ["Lecturer", "CollegeAdministrator"]
     },
     {
         id   : 'example',
         title: 'Example',
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
-        link : '/examples'
+        link : '/examples',
+        roles : ["Lecturer", "CollegeAdministrator"]
+    },
+    {
+        id   : "ADrPLEXUS Q'Bank",
+        title: "ADrPLEXUS Q'Bank",
+        type: 'basic',
+        SubType: 'collapsable', 
+        link : '/qbank/adrplexus-qbank',
+        roles : ["Lecturer", "CollegeAdministrator"]
+    },
+    {
+        id: 'Exams',
+        title: 'Exams',
+        type: 'collapsable',
+        children: [],
+        roles : ["CollegeAdministrator"]
+    },
+    {
+        id: 'Students',
+        title: 'Students',
+        type: 'collapsable',
+        children: [],
+        roles : ["CollegeAdministrator"]
+    },
+    {
+        id: 'Lecturers',
+        title: 'Lecturers',
+        type: 'collapsable',
+        children: [],
+        roles : ["CollegeAdministrator"]
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [

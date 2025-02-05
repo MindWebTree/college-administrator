@@ -38,8 +38,13 @@ export class ExamService {
   }
   
   CreateExam(data): Observable<any> {
-    return this._httpClient.post<any[]>(`${environment.apiURL}/qbank/search/`, {  });
+    return this._httpClient.post<any[]>(`${environment.apiURL}/exam/create/`, data);
   }
-
+  getExamByid(id) {
+    return this._httpClient.get(`${environment.apiURL}/exam/get-by-id/${id}`, {});
+  }
+  getCourseYear(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/course/courseyear`)
+  }
 
 }

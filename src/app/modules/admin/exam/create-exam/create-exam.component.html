@@ -12,7 +12,7 @@
         </ng-template>
 
         <mat-step [stepControl]="CreateExamQbank">
-            <form [formGroup]="CreateExamQbank" class="form">
+            <form [formGroup]="CreateExamQbank" class="form create-exam-first-step">
                 <ng-template matStepLabel>Select Q'Bank</ng-template>
 
                 <div class="container block pt-4">
@@ -28,11 +28,16 @@
                             required></textarea>
 
                     </mat-form-field> -->
-                    <h2>Description of Exam</h2>
-                    <div class="border">
-                        <ckeditor placeholder="Title" formControlName="ExamDescription">
-                        </ckeditor>
-
+                    <!-- <h2>Description of Exam</h2> -->
+                    <div class="">
+                        <mat-label class="font-semibold">Description of Exam</mat-label>
+                        <!-- <ckeditor placeholder="Title" formControlName="ExamDescription">
+                        </ckeditor> -->
+                        <ckeditor [config]="ckeConfig" placeholder="Description"  formControlName="ExamDescription"></ckeditor>
+                        <!-- <mat-form-field class="form-element block mw-100">
+                            <mat-label>Description of Exam</mat-label>
+                            <input matInput placeholder="Description" #first formControlName="ExamDescription" required>
+                        </mat-form-field> -->
                     </div>
 
                     <control-messages [control]="CreateExamQbank.controls.ExamDescription" fieldName="Description" [showSubmitError]="isQbankformHaserror"></control-messages>
@@ -48,15 +53,15 @@
                         <span class="semicolm_span">:</span>
                         <mat-form-field class="form-element block">
 
-                            <mat-select formControlName="Qbank" placeholder="select Qbnak">
+                            <mat-select formControlName="QbankCategory" placeholder="select Qbnak">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
-                                <mat-option disabled value=''>Select Qbank</mat-option>
-                                <mat-option *ngFor="let qbank of Qbank" [value]="qbank.id">{{qbank.name}}</mat-option>
+                                <mat-option disabled value=''>Select Qbank Category</mat-option>
+                                <mat-option *ngFor="let qbankcategory of QbankCategory" (click)="getQbank(qbankcategory.name)" [value]="qbankcategory.id">{{qbankcategory.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
                     </div>
-                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.Qbank" fieldName="Qbank" [showSubmitError]="isQbankformHaserror"></control-messages>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.QbankCategory" fieldName="QbankCategory" [showSubmitError]="isQbankformHaserror"></control-messages>
 
                     <div class="flex items-center sm-block stepper_div">
                         <div class="md:px-8 sm:px-0 min-w-212">
@@ -68,7 +73,7 @@
                             <mat-select formControlName="Studies" placeholder="select Studies">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select Studies</mat-option>
-                                <mat-option *ngFor="let banktype of qbanktype" [value]="banktype.id" (click)="getQbanksubject(banktype.id)">{{banktype.title}}</mat-option>
+                                <mat-option *ngFor="let qbanktype of qbanktype" [value]="qbanktype.id" (click)="getQbanksubject(qbanktype.id)">{{qbanktype.title}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -85,7 +90,7 @@
                             <mat-select formControlName="Subject" placeholder="select Subject">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select Subject</mat-option>
-                                <mat-option *ngFor="let subject of subjects" [value]="subject.subjectID" (click)="selectSubject(subject.subjectID)">{{subject.subjectName}}</mat-option>
+                                <mat-option *ngFor="let subject of subjects" [value]="subject.id" (click)="selectSubject(subject.id)">{{subject.title}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -100,13 +105,13 @@
                         <mat-form-field class="form-element block">
                             <!-- <input matInput placeholder="Topic" > -->
                             <mat-select multiple formControlName="Topic" placeholder="Select Topics">
-                                <mat-option [value]="topic.topicID" *ngFor="let topic of topics;let i=index" (click)="OnclickTopic(topic)">{{topic.topicName}}</mat-option>
+                                <mat-option [value]="topic.id" *ngFor="let topic of topics;let i=index" (click)="OnclickTopic(topic.id)">{{topic.title}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
                         <mat-chip-list #chipList class="Topic_chips">
-                            <mat-chip *ngFor="let topic of TopicsList,let i = index;" [selectable]="true" selected="true" [removable]="false">
-                                {{topic.Name}} <button (click)="removeTopic(i,topic.ID)"><mat-icon>cancel</mat-icon></button>
+                            <mat-chip *ngFor="let selectedtopic of TopicsList,let i = index;" [selectable]="true" selected="true" [removable]="false">
+                                {{getTopicName(selectedtopic.ID)}} <button class="pl-0.5 pt-1" (click)="removeTopic(i,selectedtopic.ID)"><mat-icon>cancel</mat-icon></button>
                             </mat-chip>
                         </mat-chip-list>
                     </div>
@@ -120,13 +125,13 @@
                         <mat-form-field class="form-element block">
                             <!-- <input matInput placeholder="Topic" > -->
                             <mat-select #select multiple formControlName="CBMECode" placeholder="Select CBMECode">
-                                <mat-option *ngFor="let Cbme of CBME" [value]="Cbme.cmbeid" (click)="OnclickCmbeCode(Cbme)">{{Cbme.title}}</mat-option>
+                                <mat-option *ngFor="let Cbme of CBME" [value]="Cbme.id" (click)="OnclickCmbeCode(Cbme.id)">{{getCBMETitle(Cbme.id)}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
                         <mat-chip-list #chipList class="Topic_chips">
                             <mat-chip *ngFor="let code of CBMEcodeList,let i = index;" [selectable]="true" selected="true" [removable]="false">
-                                {{code.Name}} <button class="pl-0.5 pt-1" (click)="removeCBME(i,code.ID)"><mat-icon>cancel</mat-icon></button>
+                                {{getCBMETitle(code.ID)}} <button class="pl-0.5 pt-1" (click)="removeCBME(i,code.ID)"><mat-icon>cancel</mat-icon></button>
                             </mat-chip>
                         </mat-chip-list>
                         <div>
@@ -135,8 +140,8 @@
                                     <div class="flex items-center gap-2.5">
                                         <mat-icon class="text-primary/25">error</mat-icon>
                                         <div class="text-primary text-sm  flex gap-2.5">
-                                            <h2 class="min-w-10">OP1.2 :</h2>
-                                            <span class="text-sm font-normal text-[#505050] " [innerHTML]="code.Description"></span>
+                                            <h2 class="min-w-10">{{getCBMECode(code.ID)}}:</h2>
+                                            <span class="text-sm font-normal text-[#505050] " [innerHTML]="getCBMEDescription(code.ID)"></span>
                                         </div>
                                     </div>
                                 </ng-container>
@@ -157,7 +162,7 @@
                             <mat-select formControlName="CompetencyLevel" placeholder="Select CompetencyLevel">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select CompetencyLevel</mat-option>
-                                <mat-option *ngFor="let level of competenecyLevel" [value]="level.levelID">{{level.title}}</mat-option>
+                                <mat-option *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -174,7 +179,7 @@
                             <mat-select formControlName="LevelofQuestions" placeholder="Select LevelofQuestions">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select LevelofQuestions</mat-option>
-                                <mat-option *ngFor="let level of levelquestion" [value]="level.levelID">{{level.title}}</mat-option>
+                                <mat-option *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -210,63 +215,66 @@
         </mat-step>
 
         <mat-step [stepControl]="CreateListFilter">
-            <form [formGroup]="CreateListFilter">
+            <form class="create-exam-second-step">
                 <ng-template matStepLabel>Select Questions</ng-template>
                 <div class="container block pt-4 filters">
-                    <div class="flex justify-between py-2 items-center">
+                    <div class="block md:flex justify-between py-2 items-center">
                         <div>
                             <h2 class="text-2xl font-semibold">Total Questions ({{dataSource?.QuestionList?.length}})
                             </h2>
                         </div>
-                        <div class="flex gap-2 items-center">
+                        <form [formGroup]="CreateExamQbank">
+                        <div class="md:flex grid grid-cols-2 gap-2 items-center">
                             <div class="filter_heading">
                                 Competency :
                             </div>
                             <mat-form-field appearance="fill" class="flex filter_input xyz">
 
-                                <mat-select disableRipple [(ngModel)]="LevelID" (selectionChange)="search()" formControlName="Level">
+                                <mat-select disableRipple [(ngModel)]="examDetails.CompetencyLevel" (selectionChange)="search()" formControlName="CompetencyLevel">
                                     <mat-option [value]="0" selected>All</mat-option>
-                                    <mat-option *ngFor="let level of competenecyLevel" [value]="level.levelID">{{level.title}}</mat-option>
+                                    <mat-option *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                             <div class="filter_heading">
                                 Level of questions :
                             </div>
                             <mat-form-field appearance="fill" class="flex filter_input xyz">
-                                <mat-select disableRipple [(ngModel)]="LevelIDOfQuestion" (selectionChange)="search()" formControlName="LevelOfquestion">
+                                <mat-select disableRipple [(ngModel)]="examDetails.LevelofQuestions" (selectionChange)="search()" formControlName="LevelofQuestions">
                                     <mat-option [value]="0">All</mat-option>
-                                    <mat-option *ngFor="let level of levelquestion" [value]="level.levelID">{{level.title}}</mat-option>
+                                    <mat-option *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                             <div class="filter_heading">
                                 Tags :
                             </div>
+                            <form [formGroup]="CreateListFilter" >
                             <mat-form-field appearance="fill" class="flex filter_input xyz">
                                 <mat-select matNativeControl [(ngModel)]="TagID" (selectionChange)="search()" formControlName="tags">
                                     <mat-option [value]="0">All</mat-option>
-                                    <mat-option *ngFor="let tag of Tags,let i = index;" [value]="tag.tagID">{{tag.name}}</mat-option>
+                                    <mat-option *ngFor="let tag of Tags,let i = index;" [value]="tag.id">{{tag.name}}</mat-option>
 
                                 </mat-select>
                             </mat-form-field>
+                            </form>
                         </div>
+                        
+                    </form>
 
                     </div>
 
                     <div class="accordian-outer" [dataSource]="dataSource?.QuestionList" *ngFor="let question of dataSource?.QuestionList,let i = index;">
                         <mat-accordion>
-                            <mat-expansion-panel hideToggle class="mt-4" (click)="getquestiondetails(question.questionDetailID)">
+                            <mat-expansion-panel hideToggle class="mt-4" >
                                 <mat-expansion-panel-header class="h-24 bg-white">
                                     <mat-panel-title class="font-semibold " [innerHtml]="question.questionTitle">
                                     </mat-panel-title>
-                                    <mat-panel-description>
-                                    </mat-panel-description>
 
                                 </mat-expansion-panel-header>
-                                <div class="expension_div rounded " *ngIf="questionDetails && selectedQuestionId==question.questionDetailID">
+                                <div class="expension_div rounded " >
                                     <!-- <p class="text-black font-semibold mt-9">A 73-Year-old hypertensive patient was rushed to the casualty following a transient ischemic attack. Angiography revealed
                                     <br> stenosis of the internal carotid artery. Which part of this artery does not give any branch</p> -->
-                                    <h6 class="mt-3.5 font-medium">Select option any one</h6>
-                                    <div *ngFor=" let choices of questionDetails?.choices; let i = index;">
+                                    <h6 class="mt-44 font-medium">Select option any one</h6>
+                                    <div *ngFor=" let choices of question?.choices; let i = index;">
                                         <h6 *ngIf="choices.IsCorrect" class="mt-3.5 font-medium correct_heading">Correct Answer
                                         </h6>
                                         <div class="bg-white mt-3.5 flex p-2.5 border" [ngClass]="{'correct_div':choices.isCorrect===true}">
@@ -280,63 +288,63 @@
                                         <div class=" mt-3.5">
                                             <p class="font-bold text-base">*Set Competency Level
                                                 <br>
-                                                <span class="font-normal text-base">{{questionDetails?.level}}</span>
+                                                <span class="font-normal text-base">{{question?.competencyLevel}}</span>
                                             </p>
                                         </div>
                                         <div class=" mt-3.5">
                                             <p class="font-bold text-base">*Set level of questions
                                                 <br>
-                                                <span class="font-normal text-base">{{questionDetails?.questionLevel}}</span>
+                                                <span class="font-normal text-base">{{question?.levelofQuestion}}</span>
                                             </p>
                                         </div>
                                     </div>
-                                    <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="questionDetails?.tags>0">
+                                    <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="question?.tags>0">
                                         Integration / Tags</h3>
-                                    <p class=" mt-3.5 font-bold text-base" *ngIf="questionDetails?.horizontalIntegration
+                                    <p class=" mt-3.5 font-bold text-base" *ngIf="question?.horizontalInegration
                         ?.length>0">Horizontal Integration</p>
-                                    <mat-chip-list class="question-listing" aria-label="Horizontal Integration" *ngIf="questionDetails?.horizontalIntegration
+                                    <mat-chip-list class="question-listing" aria-label="Horizontal Integration" *ngIf="question?.horizontalInegration
                         ?.length>0">
-                                        <div *ngFor="let tag of questionDetails?.horizontalIntegration
+                                        <div *ngFor="let tag of question?.horizontalInegration
                             ,let i=index">
                                             <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.title}}</mat-chip>
                                         </div>
                                     </mat-chip-list>
-                                    <p class=" mt-3.5 font-bold text-base" *ngIf="questionDetails.verticalIntegration?.length>0">Vertical Integration</p>
-                                    <mat-chip-list class="question-listing" aria-label="Vertical Integration" *ngIf="questionDetails?.verticalIntegration.length>0">
-                                        <div *ngFor="let tag of questionDetails?.verticalIntegration,let i=index">
+                                    <p class=" mt-3.5 font-bold text-base" *ngIf="question?.verticalInegration?.length>0">Vertical Integration</p>
+                                    <mat-chip-list class="question-listing" aria-label="Vertical Integration" *ngIf="question?.verticalInegration.length>0">
+                                        <div *ngFor="let tag of question?.verticalInegration,let i=index">
                                             <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.title}}</mat-chip>
                                         </div>
                                     </mat-chip-list>
-                                    <p class=" mt-3.5 font-bold text-base" *ngIf="questionDetails.tags?.length>0">*Tags
+                                    <p class=" mt-3.5 font-bold text-base" *ngIf="question.tags?.length>0">*Tags
                                     </p>
-                                    <mat-chip-list class="question-listing" aria-label="Tags" *ngIf="questionDetails.tags.length>0">
-                                        <div *ngFor="let tag of questionDetails.tags,let i=index">
+                                    <mat-chip-list class="question-listing" aria-label="Tags" *ngIf="question.tags.length>0">
+                                        <div *ngFor="let tag of question.tags,let i=index">
                                             <mat-chip class="text-primary border-2  bg-white mt-3.5">{{tag?.name}}</mat-chip>
                                         </div>
                                     </mat-chip-list>
                                     <hr class="h-px my-8 bg-gray-200 border-[#C6C7C7] dark:bg-gray-700">
-                                    <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="questionDetails.explanation?.length>0">Solutions</h3>
-                                    <div *ngFor="let explanantion of questionDetails.explanation,let i=index">
+                                    <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="question.explanation?.length>0">Solutions</h3>
+                                    <div *ngFor="let explanantion of question.explanation,let i=index">
                                         <h4 class="font-bold text-base mt-3.5" *ngIf="explanantion.content.length>0">
                                             Explanation {{i+1}}</h4>
                                         <p class="mt-3.5 font-medium" [innerHtml]="explanantion.content"></p>
                                     </div>
 
 
-                                    <h4 class="font-bold text-base mt-3.5" *ngIf="questionDetails.videos.length>0">
+                                    <h4 class="font-bold text-base mt-3.5" *ngIf="question?.video?.length>0">
                                         *Related Video Link</h4>
-                                    <p class="mt-3.5 font-medium text-primary" *ngFor="let video of questionDetails.videos,let i=index">
+                                    <p class="mt-3.5 font-medium text-primary" *ngFor="let video of question?.video,let i=index">
                                         {{video.VideoLink}}</p>
-                                    <h4 class="font-bold text-base mt-3.5" *ngIf="questionDetails.books.length>0">
+                                    <h4 class="font-bold text-base mt-3.5" *ngIf="question.books.length>0">
                                         *Reference Books</h4>
-                                    <p class="mt-3.5 font-medium" *ngFor="let book of questionDetails.books,let i=index">{{book.title}}, {{book.edition}}, {{book.pageNumber}}</p>
-                                    <h4 class="font-bold text-base mt-3.5 " *ngIf="questionDetails.QuestionDetailID?.length>0">Question ID : {{question.questionDetailID}}
+                                    <p class="mt-3.5 font-medium" *ngFor="let book of question.books,let i=index">{{book.title}}, {{book.edition}}, {{book.pageNumber}}</p>
+                                    <h4 class="font-bold text-base mt-3.5" >Question ID : {{question.questionDetailId}}
                                     </h4>
                                 </div>
 
                             </mat-expansion-panel>
                             <div class="demo-section">
-                                <mat-checkbox [checked]="isQuestionSelected(question.questionDetailID)" (change)="onChange($event,question.questionDetailID)" class="checkbox-question"></mat-checkbox>
+                                <mat-checkbox [checked]="isQuestionSelected(question.questionDetailId)" (change)="onChange($event,question.questionDetailId)" class="checkbox-question"></mat-checkbox>
                             </div>
                         </mat-accordion>
                     </div>
@@ -351,13 +359,13 @@
                 <div class="form-element flex w-full justify-center gap-3 flex-wrap">
                     <button mat-raised-button class="clearall_btn rounded" matStepperPrevious>Back to Q'Bank</button>
                     <button mat-raised-button type="submit" class="create_btn rounded bg-primary text-white" matStepperNext [disabled]="TotalSelectQuestion !== NoofSelectedQuestion">Create Exam</button>
-                    <button mat-raised-button class="clearall_btn rounded text-primary" type="button">Clear All</button>
+                    <button mat-raised-button class="clearall_btn rounded text-primary" type="button" (click)="clearAllSecondStep()">Clear All</button>
                 </div>
             </form>
         </mat-step>
 
         <mat-step [stepControl]="CreateExamSchedule" [completed]="false" [editable]="false">
-            <form [formGroup]="CreateExamSchedule">
+            <form [formGroup]="CreateExamSchedule" class="create-exam-third-step">
                 <ng-template matStepLabel>Schedule</ng-template>
 
                 <div class="container block pt-4">
@@ -371,14 +379,14 @@
                         <mat-form-field class="form-element block">
                             <mat-select multiple formControlName="students" placeholder="Select Course">
                                 <!-- <mat-option disabled value=''>Select any</mat-option> -->
-                                <mat-option [value]="Course.id" *ngFor="let Course of Courses;let i=index " (click)="OnclickCourse(Course.id,Course.title,Course.nofOfStudents)">{{Course.title}}({{Course.nofOfStudents}})</mat-option>
+                                <mat-option [value]="Course.id" *ngFor="let Course of Courses;let i=index " (click)="OnclickCourse(Course)">{{Course.name}}({{Course.count}})</mat-option>
                             </mat-select>
                         </mat-form-field>
 
                     </div>
                     <mat-chip-list #chipList class="student_chips">
                         <mat-chip *ngFor="let student of studentCourseList,let i = index;" [selectable]="true" selected="true" [removable]="false">
-                            {{student.CourseYear}}({{student.noOfStudent}}) <button (click)="removeCouse(i,student.ID)"><mat-icon>cancel</mat-icon></button>
+                            {{student.CourseYear}}({{student.noOfStudent}}) <button (click)="removeCouse(i,student.courseYearId)"><mat-icon>cancel</mat-icon></button>
                         </mat-chip>
                     </mat-chip-list>
                     <control-messages class="exam-error" [control]="CreateExamSchedule.controls.students" fieldName="Courses" [showSubmitError]="IsSheduleFormHasError"></control-messages>
@@ -386,10 +394,12 @@
                         <mat-radio-button [value]="0">Live Exam</mat-radio-button>
                         <mat-radio-button [value]="1" class="pl-8">Schedule</mat-radio-button>
                     </mat-radio-group>
-                    <div class="quiz_scheduling" *ngIf="CreateExamSchedule.controls.examType.value === 1">
+                    <div class="quiz_scheduling" >
                         <mat-form-field appearance="fill">
                             <mat-label>Date</mat-label>
-                            <input matInput type="date" formControlName="ExamDate" [(ngModel)]="date" (change)="calculateDuration()" [min]="getCurrentDate()">
+                            <input matInput [matDatepicker]="picker" formControlName="ExamDate" (dateChange)="calculateDuration()" [min]="minTime">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill">
@@ -431,12 +441,12 @@
 
                     </div>
                     <control-messages [control]="CreateExamSchedule.controls.Percentage" fieldName="Percentage" [showSubmitError]="IsSheduleFormHasError"></control-messages>
-                    <section>
+                    <!-- <section>
                         <mat-checkbox [value]="true" formControlName="Evaluation" color="primary">Does Evaluation required?
                         </mat-checkbox>
-                    </section>
+                    </section> -->
 
-                    <div class="flex items-center sm-block small_input">
+                    <!-- <div class="flex items-center sm-block small_input">
                         <div class="sm-pt-2">
                             <label>Evaluation Complete on</label>
                         </div>
@@ -454,7 +464,7 @@
                         <p>
                             <mat-checkbox [value]="true" formControlName="AwardGift" color="primary">Gift Vouchres</mat-checkbox>
                         </p>
-                    </section>
+                    </section> -->
 
                 </div>
                 <div class="form-element flex w-full justify-center gap-3 flex-wrap">
@@ -502,17 +512,17 @@
 
 <div class="after_submit_screen w-full justify-center items-center mt-8 p-4" *ngIf="isFormSubmitted">
     <!-- <mat-icon class="justify-center  flex w-full text-cyan-500 text-6xl">how_to_reg</mat-icon> -->
-    <img class="justify-center flex w-12 mx-auto" src="../../../../../assets/images/Successfully_acc_added.svg">
-    <h2 class="justify-center flex w-full text-2xl py-6 font-semibold">Ophthalmology Clinical studies - Academic test 2023
+    <img class="justify-center flex w-12 mx-auto" src="my-images/Icon feather-check-circle.svg">
+    <h2 class="justify-center flex w-full text-2xl py-6 font-semibold">{{createdExamDetails.name}}
     </h2>
     <h3 class="justify-center flex w-full pb-6 text-primary font-semibold text-center">Successfully Created the Exams !
     </h3>
-    <p class="justify-center flex w-full pb-8 mx-auto max-w-3xl text-center font-medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer iaculis non libero sit amet pulvinar. Pellentesque et tortor nec orci tempus convallis. Vestibulum eleifend molestee.</p>
+    <p class="justify-center flex w-full pb-8 mx-auto max-w-3xl text-center font-medium" [innerHTML]="createdExamDetails.description"></p>
     <div class="last_screen">
         <div class="exam_code">
-            <div class="text-center">
+            <div class="text-center flex flex-col">
                 <label>Exam code</label>
-                <input matInput placeholder="Copy below text in Firefox" [value]="'KMCHEXAM12345 '" id="customerName" readonly>
+                <input class="text-center" matInput placeholder="Copy below text in Firefox" [value]="createdExamDetails.mcqCode" id="customerName" readonly>
             </div>
 
             <div class="icon_codecopy bg-primary/10" (click)="copyText('customerName')">
@@ -523,15 +533,19 @@
             <div class="sms_div">
                 <div class="code_div">
                     <div class="text-lg flex justify-center"><mat-icon>phone_android</mat-icon>Send a SMS</div>
-                    <div class="text-sm pt-1">First year & Second Year</div>
+                    <div class="text-sm pt-1 courses">
+                        <div *ngFor="let course of createdExamDetails?.courses">
+                            <span class="text-white no-underline">{{course.courseYear}}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </button>
     </div>
     <div class="flex mx-auto py-2">
         <div class="exam_code">
-            <div class="code_div gap-1 py-0 flex items-center w-200">Link:
-                <input matInput placeholder="Copy below text in Firefox" class="text-primary underline" [value]="'https://adrplexus.zoom.us/j/3996455621119018?pwd=TGdpWDZiigiZk03K0F6aDNyNE1rOVhoQT09#success'" id="ExamLink">
+            <div class="code_div gap-1 py-0 flex items-center md:w-200 w-200">Link:
+                <input matInput placeholder="Copy below text in Firefox" class="w-full text-primary underline" [value]="'https://adrplexus.zoom.us/j/&'+createdExamDetails?.mcqCode" id="ExamLink">
                 <!-- <span>https://adrplexus.zoom.us/j/3996455621119018?pwd=TGdpWDZiigiZk03K0F6aDNyNE1rOVhoQT09#success</span> -->
             </div>
             <div class="icon_codecopy bg-primary/10 border-0 py-2" (click)="copyText('ExamLink')">

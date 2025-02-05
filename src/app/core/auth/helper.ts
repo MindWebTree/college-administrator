@@ -40,7 +40,6 @@ export class helperService {
 
   public getUserDetail(): User {
     let user: User = null;
-
     const _user = this._dataGuardService.getLocalData('accessToken');
     if (_user) {
       try {

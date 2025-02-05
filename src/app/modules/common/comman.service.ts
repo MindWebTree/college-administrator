@@ -50,8 +50,14 @@ export class CommanService {
   setCourseId(values: any): void {
     this.Coursefilter.next(values);
   }
-    getexamCategory(): Observable<any> {
+  getexamCategory(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/exam-navigation/`).pipe(
+      tap((response: any) => {
+      })
+    );
+  }
+  getstudentNavigationList(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/student-navigation/`).pipe(
       tap((response: any) => {
       })
     );
@@ -64,6 +70,9 @@ export class CommanService {
   }
   geTags(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/tags`, {  });
+  }
+  getQBankCategory(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/qbankcategories/`);
   }
   getQBankTypes(qBankCategory): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/`+ qBankCategory );
@@ -105,7 +114,7 @@ export class CommanService {
     return this._httpClient.post<QuestionListModel[]>(`${environment.apiURL}/qbank/search/`, { ..._gridFilter });
   }
   getQuestionbyID(questionDetailID: number): Observable<QuestionListModel[]> {
-    return this._httpClient.get<QuestionListModel[]>(`${environment.apiURL}/qbank/` + questionDetailID, {});
+    return this._httpClient.get<QuestionListModel[]>(`${environment.apiURL}/qbank/get-by-id/` + questionDetailID, {});
   }
 //   deleteQuestion(questionDetailID: number): Observable<QuestionListModel[]> {
 //     return this._httpClient.post<QuestionListModel[]>(`${environment.apiURL}/qbank/search/delete/` + questionDetailID, {});

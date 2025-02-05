@@ -36,17 +36,9 @@ import {MatBadgeModule} from '@angular/material/badge';
 // import { CKEditorModule } from 'ng2-ckeditor';
 // import { CKEDITOR_CONFIG } from 'app/modules/admin/common/';
 import { environment } from 'environments/environment';
-
-export const CKEDITOR_CONFIG = {
-  allowedContent: true,
-  extraPlugins: 'tableresize,uploadimage,elementspath',
-  extraAllowedContent: '*{*}[*]',
-  filebrowserBrowseUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/ckfinder.html',
-  filebrowserImageBrowseUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/ckfinder.html?type=Images',
-  filebrowserUploadUrl: environment.apiURL + '/files/upload?',
-  filebrowserImageUploadUrl: environment.apiURL + '/files/upload?',
-
-};
+import { CKEDITOR_CONFIG } from '../../common/comman-ckeditor-config';
+import { CKEditorModule } from 'ckeditor4-angular';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-create-exam',
@@ -73,7 +65,9 @@ export const CKEDITOR_CONFIG = {
     MatExpansionModule,
     MatBadgeModule,
     MatChipsModule,
-    // CKEditorModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    CKEditorModule,
   ],
   templateUrl: './create-exam.component.html',
   styleUrl: './create-exam.component.scss'
@@ -88,7 +82,7 @@ export class CreateExamComponent implements OnInit {
   endTime: string;
   isLinear = true;
   date: string;
-  qbanktype: Array<QbankType> = [];
+  qbanktype: any = [];
   Qbank: Array<Qbank> = [];
   subjects: Array<Subjects> = [];
   CBME: Array<QbankcmbCode> = [];
@@ -128,11 +122,20 @@ export class CreateExamComponent implements OnInit {
   NoofSelectedQuestion: string;
   TotalSelectQuestion: any = 0;
   durationMinuts: any;
+  QbankCategory: any;
   ckeConfig: any;
+  qBankCategorySelected:any;
+  examDetails:any =[];
   // public Editor = ClassicEditor;
   // ckeConfig: { allowedContent: boolean; forcePasteAsPlainText: boolean; extraPlugins: string; filebrowserBrowseUrl: string; filebrowserImageBrowseUrl: string; filebrowserUploadUrl: string; filebrowserImageUploadUrl: string; };
   userid: string;
+  minDate: Date = new Date();
+  minTime: number =0;
   ReadOnlyStyleGuideNotes: boolean;
+  createdExamDetails :any
+  examId:number=0;
+  editExamDetails : any;
+
   constructor(
     private _formbuilder: FormBuilder,
     private _snackBar: MatSnackBar,
@@ -143,6 +146,7 @@ export class CreateExamComponent implements OnInit {
     private _examService: ExamService,
     private _errorHendling: ApiErrorHandlerService
   ) {
+    
     this.ckeConfig = CKEDITOR_CONFIG;
 
     this._unsubscribeAll = new Subject();
@@ -150,7 +154,7 @@ export class CreateExamComponent implements OnInit {
     this.CreateExamQbank = this._formbuilder.group({
       ExamName: ['', Validators.required],
       ExamDescription: ['', Validators.required],
-      Qbank: ['', Validators.required],
+      QbankCategory: ['', Validators.required],
       Studies: ['', Validators.required],
       Subject: ['', Validators.required],
       Topic: ['', Validators.required],
@@ -160,8 +164,8 @@ export class CreateExamComponent implements OnInit {
       NumberofQuestions: ['', Validators.required]
     }),
       this.CreateListFilter = this._formbuilder.group({
-        Level: [0],
-        LevelOfquestion: [0],
+        // Level: [0],
+        // LevelOfquestion: [0],
         tags: [0]
       }),
       this.CreateExamSchedule = this._formbuilder.group({
@@ -173,11 +177,11 @@ export class CreateExamComponent implements OnInit {
         ShuffleAnswer: [false],
         ShuffleQuestion: [false],
         viewResult: [false],
-        Percentage: [{ value: '', disabled: true }, [Validators.required, Validators.min(0), Validators.max(100)]],
-        Evaluation: [false],
-        Evaluationtime: [{ value: '', disabled: true }, Validators.required],
-        AwardCertificate: [false],
-        AwardGift: [false]
+        Percentage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0), Validators.max(100)]],
+        // Evaluation: [false],
+        // Evaluationtime: [{ value: '', disabled: true }, Validators.required],
+        // AwardCertificate: [false],
+        // AwardGift: [false]
 
       }),
       this.ckeConfig = {
@@ -189,12 +193,79 @@ export class CreateExamComponent implements OnInit {
         filebrowserUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files',
         filebrowserImageUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Images',
       };
+      this._commonService.getstudentNavigationList().subscribe(res=>{
+        this.Courses = res;
+      })
   }
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe(res=>{
+      this.examId = res.id;
+      if(this.examId){
+      this._examService.getExamByid(this.examId).subscribe(res=>{
+        this.editExamDetails = res;
+        this.qBankCategorySelected = this.editExamDetails.qbankCategory;
+       
+        this.getQbank(this.qBankCategorySelected,true);
+        this.getQbanksubject(this.editExamDetails.qBankTypeId);
+        this.selectSubject(this.editExamDetails.subjectId);
+        this.editExamDetails?.topics.forEach((topicId) => {
+          this.OnclickTopic(topicId, "");
+        });
+        this.editExamDetails?.cbmeCodeId.forEach((cbmeCodeId) => {
+          this.OnclickCmbeCode(cbmeCodeId);
+        });
+        let courseSelected :any=[];
+        this.editExamDetails?.courses.forEach((course) => {
+          courseSelected.push(course.courseYearId);
+          const selectedCourseCount =  this.Courses.find(c=>c.id == course.courseYearId)?.count
+          this.studentCourseList.push({ courseYearId: course.courseYearId, CourseYear: course.courseYear, noOfStudent: selectedCourseCount, courseId : course.courseId });
+         
+        });
+
+        this.TotalSelectQuestion = this.editExamDetails.noOfQuestions;
+        this.QuestionSelected = this.editExamDetails.questions;
+
+        this.CreateExamQbank.patchValue({
+          ExamName: this.editExamDetails.name,
+          ExamDescription: this.editExamDetails.description,
+          QbankCategory: this.editExamDetails.qbankCategoryId,
+          Studies: this.editExamDetails.qBankTypeId,
+          Subject: this.editExamDetails.subjectId,
+          Topic: this.editExamDetails.topics,
+          CBMECode: this.editExamDetails.cbmeCodeId,
+          CompetencyLevel: this.editExamDetails.competencyLevelId,
+          LevelofQuestions: this.editExamDetails.levelOfQuestionId,
+          NumberofQuestions: this.editExamDetails.noOfQuestions
+        });
+        this.CreateListFilter.patchValue({
+          // tags: this.editExamDetails.tags
+        }),
+        this.CreateExamSchedule.patchValue({
+          students: courseSelected,
+          examType: this.editExamDetails.examMode,
+          ExamDate: this.editExamDetails.examDate,
+          StartTime: this.editExamDetails.examEndDate,
+          EndTime: this.editExamDetails.examEndDate,
+          ShuffleAnswer: this.editExamDetails.shuffleAnswer,
+          ShuffleQuestion: this.editExamDetails.shuffleQuestion,
+          viewResult: this.editExamDetails.canViewResult,
+          Percentage: this.editExamDetails.percentagePassMarks
+        })
+      })
+    }
+    })
+    this.minTime = parseInt(this.minDate.toTimeString().split(' ')[0]);
     this.status = 0;
-    this._commonService.getQBankTypes('General').subscribe(res => {
-      console.log(res, 'q bank')
-      this.Qbank = res;
+    this._commonService.getQBankCategory().subscribe(res => {
+      this.QbankCategory = res;
+
+    }, (error) => {
+      this._errorHendling.handleError(error);
+    }
+    )
+    this._commonService.geTags().subscribe(res => {
+      this.Tags = res;
+
     }, (error) => {
       this._errorHendling.handleError(error);
     }
@@ -206,11 +277,11 @@ export class CreateExamComponent implements OnInit {
     //   this._errorHendling.handleError(error);
     // })
 
-    this.competenecyLevel = this.activatedRoute.snapshot.data.competenecyLevel;//get capetencyLevel
-    this.levelquestion = this.activatedRoute.snapshot.data.levelquestion; // get LevelofQuestion
-    this.Tags = this.activatedRoute.snapshot.data.tags; // get tags 
-    this.userid = this._helpservice.getUserDetail().Id; // get userId
-    this.qbanktype = this.activatedRoute.snapshot.data.qbanktype;   //Get Qbanks 
+    // this.competenecyLevel = this.activatedRoute.snapshot.data.competenecyLevel;//get capetencyLevel
+    // this.levelquestion = this.activatedRoute.snapshot.data.levelquestion; // get LevelofQuestion
+    // this.Tags = this.activatedRoute.snapshot.data.tags; // get tags 
+    // this.userid = this._helpservice.getUserDetail().Id; // get userId
+    // this.qbanktype = this.activatedRoute.snapshot.data.qbanktype;   //Get Qbanks 
 
 
     //to enable diable % Subscribe to changes in the 'viewResult' control
@@ -237,38 +308,50 @@ export class CreateExamComponent implements OnInit {
         }
       }
     });
+      this._commonService.getLevel().subscribe(res=>{
+        this.competenecyLevel = res;
+      })
+      this._commonService.getLevelofQuestions().subscribe(res=>{
+        this.levelquestion = res;
+      })
+    
   }
 
   getExamListing() {
-    this.dataSource = new QuestionlistDataSource(this._commonService)
-    this._commonService.question_list.pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(response => {
-        let gridFilter: QuestionSearchList = {
-          keyword: '',
-          pageNumber: 1,
-          pageSize: 100,
-          orderBy: '',
-          sortOrder: '',
-          // status: -1,
-          // tagIds: this.TagID > 0 ? [this.TagID] : [],
-          // qBankTypeId: this.CreateExamQbank.get('Studies').value > 0 ? [this.CreateExamQbank.get('Studies').value] : [],
-          qBankTypeId: 0,
-          levelofQuestionId: this.LevelIDOfQuestion,
-          competencyLevelId: this.LevelID,
-          qBankCategory: '',
-          // qBankCategoryId: this.CreateExamQbank.get('Qbank').value.length > 0 ? this.CreateExamQbank.get('Qbank').value : '',
-          // subjectId: this.CreateExamQbank.get('Subject').value > 0 ? [this.CreateExamQbank.get('Subject').value] : [],
-          subjectId: 0,
-          // topicIds: this.CreateExamQbank.get('Topic').value.length > 0 ? this.CreateExamQbank.get('Topic').value : [],
-          topicId: 0,
-          // cmbeCodeIds: this.CreateExamQbank.get('CBMECode').value.length > 0 ? this.CreateExamQbank.get('CBMECode').value : [],
-          cbmeCodeId: 0,
-          tags: 0
-        };
-        this.dataSource.getQuestionList(gridFilter)
-        this.NoofSelectedQuestion = this.CreateExamQbank.get('NumberofQuestions').value
-      })
-    this.isQbankformHaserror = true;
+    this.examDetails = this.CreateExamQbank.value;
+    if(this.CreateExamQbank.invalid){
+      this.isQbankformHaserror = true;
+    }else{
+      this.dataSource = new QuestionlistDataSource(this._commonService)
+      this._commonService.question_list.pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(response => {
+          let gridFilter: QuestionSearchList = {
+            keyword: '',
+            pageNumber: 1,
+            pageSize: 100,
+            orderBy: '',
+            sortOrder: '',
+            // status: -1,
+            // tagIds: this.TagID > 0 ? [this.TagID] : [],
+            // qBankTypeId: this.CreateExamQbank.get('Studies').value > 0 ? [this.CreateExamQbank.get('Studies').value] : [],
+            qBankTypeId: this.CreateExamQbank.get('Studies').value,
+            levelofQuestionId: this.CreateExamQbank.get('LevelofQuestions').value,
+            competencyLevelId: this.CreateExamQbank.get('CompetencyLevel').value,
+            qBankCategory: this.qBankCategorySelected,
+            // qBankCategoryId: this.CreateExamQbank.get('Qbank').value.length > 0 ? this.CreateExamQbank.get('Qbank').value : '',
+            // subjectId: this.CreateExamQbank.get('Subject').value > 0 ? [this.CreateExamQbank.get('Subject').value] : [],
+            subjectId: this.CreateExamQbank.get('Subject').value > 0 ? this.CreateExamQbank.get('Subject').value : 0,
+            // topicIds: this.CreateExamQbank.get('Topic').value.length > 0 ? this.CreateExamQbank.get('Topic').value : [],
+            topicId: this.CreateExamQbank.get('Topic').value.length > 0 ? this.CreateExamQbank.get('Topic').value : [],
+            // cmbeCodeIds: this.CreateExamQbank.get('CBMECode').value.length > 0 ? this.CreateExamQbank.get('CBMECode').value : [],
+            cbmeCodeId: this.CreateExamQbank.get('CBMECode').value.length > 0 ? this.CreateExamQbank.get('CBMECode').value : [],
+            tags: this.CreateListFilter.get('tags').value > 0 ? this.CreateListFilter.get('tags').value :0
+          };
+          this.dataSource.getQuestionList(gridFilter)
+          this.NoofSelectedQuestion = this.CreateExamQbank.get('NumberofQuestions').value
+        })
+    }
+    
   }
   search() {
     this._commonService.question_list.next(this.Question_List_status)
@@ -289,11 +372,28 @@ export class CreateExamComponent implements OnInit {
       self.selectedQuestionId = questionDetailID;
     }
   }
+  // Get Qbank
+  getQbank(CategoryName,isInit=false){
+    this._commonService.getQBankTypes(CategoryName).subscribe((response: any) => {
+      this.qBankCategorySelected =  CategoryName
+      this.qbanktype = response;
+      if (!this.qbanktype.find(s => s.id == this.CreateExamQbank.get('Studies').value)) {
+        this.CreateExamQbank.get('Studies').setValue('');
+        this.CreateExamQbank.get('Subject').setValue('');
+        this.topics = [];
+        this.CreateExamQbank.get('Topic').setValue('');
+        this.CreateExamQbank.get('CBMECode').setValue('');
+        this.CBME = [];
+        this.TopicsList = [];
+        this.CBMEcodeList = [];
+      }
+    })
+  } 
   // Get Qbank Subject 
   getQbanksubject(QbankTypeID: number) {
-    this._commonService.getSubjects(QbankTypeID,"General").subscribe((response: any) => {
+    this._commonService.getSubjects(QbankTypeID,this.qBankCategorySelected).subscribe((response: any) => {
       this.subjects = response;
-      if (!this.subjects.find(s => s.subjectID == this.CreateExamQbank.get('Subject').value)) {
+      if (!this.subjects.find(s => s.id == this.CreateExamQbank.get('Subject').value)) {
         this.CreateExamQbank.get('Subject').setValue('');
         this.topics = [];
         this.CreateExamQbank.get('Topic').setValue('');
@@ -306,9 +406,9 @@ export class CreateExamComponent implements OnInit {
   }
   // get Topics here 
   selectSubject(subjectID: number, onload: boolean = false) {
-    this._commonService.getTopics(subjectID,'General').subscribe(res => {
+    this._commonService.getTopics(subjectID,this.qBankCategorySelected).subscribe(res => {
       this.topics = res;
-      if (!this.topics.find(t => t.topicID == this.CreateExamQbank.get('Topic').value)) {
+      if (!this.topics.find(t => t.id == this.CreateExamQbank.get('Topic').value)) {
         this.CreateExamQbank.get('Topic').setValue('');
         this.CreateExamQbank.get('CBMECode').setValue('');
         this.CBME = [];
@@ -318,30 +418,37 @@ export class CreateExamComponent implements OnInit {
     })
   }
   //Get CBme here and push data in topic chip.
-  OnclickTopic(topic: Topic, Cbme: any) {
-    // debugger;
-    var index = this.TopicsList.findIndex(i => i.ID == topic.topicID);
+  OnclickTopic(topic, Cbme: any) {
+
+    const topicTitle = this.topics.find(t => t.id === topic)?.title;
+    var index = this.TopicsList.findIndex(i => i.ID == topic);
     if (index > -1) {
       this.TopicsList.splice(index, 1);
-      this.removeCbmEOnRemovalOfTopic(topic.topicID);
+      this.removeCbmEOnRemovalOfTopic(topic);
     }
     else {
-      this.TopicsList.push({ ID: topic.topicID, Name: topic.topicName });
-      this._commonService.getCBMECode(topic.topicID,'General').subscribe(res => {
+      this.TopicsList.push({ ID: topic, Name: topicTitle });
+      this._commonService.getCBMECode(topic,this.qBankCategorySelected).subscribe(res => {
         for (let i = 0; i < res.length; i++) {
           this.CBME.push(res[i]);
           if (Cbme) {
             if (Cbme.find(t => t == res[i])) {
-              this.CBMEcodeList.push({ ID: res[i].cmbeid, TopicId: res[i].topicID, Name: res[i].title });
+              this.CBMEcodeList.push({ ID: res[i].id, TopicId: res[i].topicId, Name: res[i].title });
             }
           }
         }
       })
     }
+    console.log(this.TopicsList,"TopicsList")
+  }
+  getTopicName(ID){
+    return this.topics.find(t => t.id === ID)?.title;
   }
   //Remove Topic on Topic click
   removeTopic(index: number, value: any) {
     this.TopicsList.splice(index, 1);
+    this.CBMEcodeList = [];    
+    this.CreateExamQbank.get('CBMECode').setValue('');
     const topic = this.CreateExamQbank.get('Topic').value as string[];
     this.removeFirst(topic, value);
     this.removeCbmEOnRemovalOfTopic(value);
@@ -359,18 +466,33 @@ export class CreateExamComponent implements OnInit {
     }
     this.CreateExamQbank.get('CBMECode').setValue(cbmeTag);
     for (var i = this.CBME.length - 1; i >= 0; i--) {
-      if (this.CBME[i].topicID == TopicId)
+      if (this.CBME[i].topicId == TopicId)
         this.CBME.splice(i, 1);
     }
   }
   // Push Cmbe detail on click cbme for chip 
-  OnclickCmbeCode(CBME: QbankcmbCode) {
-    var index = this.CBMEcodeList.findIndex(i => i.ID == CBME.cmbeid);
+  OnclickCmbeCode(CBME) {
+
+    const selectedCBMECode = this.CBME.find(c=> c.id == CBME)?.code;
+    const selectedTopicId = this.CBME.find(c=> c.id == CBME)?.topicId;
+    const selectedtitle = this.CBME.find(c=> c.id == CBME)?.title;
+    const selecteddescription = this.CBME.find(c=> c.id == CBME)?.description;
+
+    var index = this.CBMEcodeList.findIndex(i => i.ID == CBME);
     if (index > -1) {
       this.CBMEcodeList.splice(index, 1)
     } else {
-      this.CBMEcodeList.push({ ID: CBME.cmbeid, TopicId: CBME.topicID, Name: CBME.title, Description: CBME.description });
+      this.CBMEcodeList.push({ ID: CBME, Code: selectedCBMECode, TopicId: selectedTopicId, Name: selectedtitle, Description: selecteddescription });
     }
+  }
+  getCBMETitle(ID){
+    return this.CBME.find(c=> c.id == ID)?.title;
+  }
+  getCBMEDescription(ID){
+    return this.CBME.find(c=> c.id == ID)?.description;
+  }
+  getCBMECode(ID){
+    return this.CBME.find(c=> c.id == ID)?.code;
   }
   //Remove Cbme Code 
   removeCBME(index: number, text: any) {
@@ -386,12 +508,12 @@ export class CreateExamComponent implements OnInit {
     }
   }
   // Remove Course from List 
-  OnclickCourse(StudentId: number, StudentCourse: string, noOfStudent) {
-    var index = this.studentCourseList.findIndex(i => i.ID == StudentId);
+  OnclickCourse(course) {
+    var index = this.studentCourseList.findIndex(i => i.courseYearId == course.id);
     if (index > -1) {
       this.studentCourseList.splice(index, 1)
     } else {
-      this.studentCourseList.push({ ID: StudentId, CourseYear: StudentCourse, noOfStudent: noOfStudent });
+      this.studentCourseList.push({ courseYearId: course.id, CourseYear: course.name, noOfStudent: course.count, courseId : course.courseId });
     }
   }
 
@@ -403,34 +525,58 @@ export class CreateExamComponent implements OnInit {
   }
   // Calclute Exam Duration 
   calculateDuration() {
-    if (this.date && this.startTime && this.endTime) {
-      const dateTimeStr = `${this.date}T${this.startTime}:00Z`;
-      const start = new Date(dateTimeStr);
-      const end = new Date(`${this.date}T${this.endTime}:00Z`);
-
-      if (end < start) {
-        this.endTime = '';
-        this.duration = '';
-        this._snackBar.open("End time cannot be earlier than start time", 'Close', {
-          duration: 2000,
-        });
-      } else {
-        const diffMs = end.getTime() - start.getTime();
-        const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
-        const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
-
-        if (diffHrs === 0) {
-          // If less than 1 hour, display minutes
-          this.duration = `${diffMins} mins`;
-          this.durationMinuts = diffMins;
-        } else {
-          // Otherwise, display hours and minutes
-          this.duration = `${diffHrs}:${diffMins} hours`;
-          this.durationMinuts = diffHrs * 60 + diffMins;
-        }
-      }
+    if (this.CreateExamSchedule.valid) {
+      const formData = this.CreateExamSchedule.value;
+      // Get the date from ExamDate
+      const examDate = new Date(formData.ExamDate);
+      
+      // Create the start date-time by combining date and start time
+      const [startHours, startMinutes] = formData.StartTime.split(':');
+      const examStartDate = new Date(examDate);
+      examStartDate.setHours(parseInt(startHours), parseInt(startMinutes), 0);
+      
+      // Create the end date-time by combining date and end time
+      const [endHours, endMinutes] = formData.EndTime.split(':');
+      const examEndDate = new Date(examDate);
+      examEndDate.setHours(parseInt(endHours), parseInt(endMinutes), 0);
+      
+      
+    } else {
+      Object.keys(this.CreateExamSchedule.controls).forEach(key => {
+        const control = this.CreateExamSchedule.get(key);
+        control?.markAsTouched();
+      });
     }
+    // if (this.date && this.startTime && this.endTime) {
+    //   const dateTimeStr = `${this.date}T${this.startTime}:00Z`;
+    //   const start = new Date(dateTimeStr);
+    //   const end = new Date(`${this.date}T${this.endTime}:00Z`);
+
+    //   if (end < start) {
+    //     this.endTime = '';
+    //     this.duration = '';
+    //     this._snackBar.open("End time cannot be earlier than start time", 'Close', {
+    //       duration: 2000,
+    //     });
+    //   } else {
+    //     const diffMs = end.getTime() - start.getTime();
+    //     const diffHrs = Math.floor((diffMs % 86400000) / 3600000);
+    //     const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+
+    //     if (diffHrs === 0) {
+    //       // If less than 1 hour, display minutes
+    //       this.duration = `${diffMins} mins`;
+    //       this.durationMinuts = diffMins;
+    //     } else {
+    //       // Otherwise, display hours and minutes
+    //       this.duration = `${diffHrs}:${diffMins} hours`;
+    //       this.durationMinuts = diffHrs * 60 + diffMins;
+    //     }
+    //   }
+    // }
   }
+  
+
 
   // calculateDuration() {
   //   if (this.date && this.startTime && this.endTime) {
@@ -508,41 +654,66 @@ export class CreateExamComponent implements OnInit {
   // Create Exam 
   Onsubmit() {
     // this.isFormSubmitted = true;
+    
     if (this.CreateExamSchedule.invalid) {
       this.IsSheduleFormHasError = true;
     }
+
     else {
+      
+
+    const selectedDate: Date = this.CreateExamSchedule.get('ExamDate')?.value;
+    const startTime: string = this.CreateExamSchedule.get('StartTime')?.value;
+    const endTime: string = this.CreateExamSchedule.get('EndTime')?.value;
+
+    // Convert date and time to UTC format (yyyy-MM-ddTHH:mm:ss.SSZ)
+    const formattedExamStartDate  = this.combineDateTime(selectedDate, startTime);
+    const formattedExamEndDate  = this.combineDateTime(selectedDate, endTime);
+
       var FormData: CreateExam = {
         name: this.CreateExamQbank.get('ExamName').value,
         description: this.CreateExamQbank.get('ExamDescription').value,
-        qbankCategory: this.CreateExamQbank.get('Qbank').value,
-        qbankTypeId: this.CreateExamQbank.get('Studies').value,
+        // qbankCategory: this.CreateExamQbank.get('Qbank').value,
+        // qbankTypeId: this.CreateExamQbank.get('Studies').value,
         subjectId: this.CreateExamQbank.get('Subject').value,
         topics: this.CreateExamQbank.get('Topic').value,
-        cmbeCodes: this.CreateExamQbank.get('CBMECode').value,
-        levelId: this.CreateExamQbank.get('CompetencyLevel').value,
-        levelIdOfQuestion: this.CreateExamQbank.get('LevelofQuestions').value,
+        // cmbeCodes: this.CreateExamQbank.get('CBMECode').value,
+        // levelId: this.CreateExamQbank.get('CompetencyLevel').value,
+        // levelIdOfQuestion: this.CreateExamQbank.get('LevelofQuestions').value,
         noOfQuestions: this.CreateExamQbank.get('NumberofQuestions').value,
-        courses: this.CreateExamSchedule.get('students').value,
-        examType: this.CreateExamSchedule.get('examType').value,
+        courses: this.studentCourseList?.length > 0 ? this.studentCourseList : [],
+        // examType: this.CreateExamSchedule.get('examType').value,
         examStatus: 0,
-        startOn: this.CreateExamSchedule.get('ExamDate').value,
-        endOn: this.CreateExamSchedule.get('ExamDate').value,
-        duration: this.durationMinuts,
-        examQuestions: this.QuestionSelected,
-        shuffleAnswers: this.CreateExamSchedule.get('ShuffleAnswer').value,
-        shuffleQuestions: this.CreateExamSchedule.get('ShuffleQuestion').value,
-        canUserViewResults: this.CreateExamSchedule.get('viewResult').value,
-        // Percentage: this.schedule.get('Percentage').value,
-        evaluationPeriodRequired: this.CreateExamSchedule.get('Evaluation').value,
-        evaluationCompleteOn: this.CreateExamSchedule.get('Evaluationtime').value,
-        certificateProvision: this.CreateExamSchedule.get('AwardCertificate').value,
-        giftProvision: this.CreateExamSchedule.get('AwardGift').value,
+        id: 0,
+        mcqCode: '',
+        cbmeCodeId: this.CreateExamQbank.get('CBMECode').value,
+        qBankTypeId: this.CreateExamQbank.get('Studies').value,
+        competencyLevelId: this.CreateExamQbank.get('CompetencyLevel').value,
+        levelOfQuestionId: this.CreateExamQbank.get('LevelofQuestions').value,
+        examDuration: 0,
+        examMode: this.CreateExamSchedule.get('examType').value,
+        tags: [this.CreateListFilter.get('tags').value],
+        configuration: '',
+        questions: this.QuestionSelected,
+        examDate: formattedExamStartDate,
+        examEndDate: formattedExamEndDate,
+        qbankCategoryId: this.CreateExamQbank.get('QbankCategory').value,
+        shuffleAnswer: this.CreateExamSchedule.get('ShuffleAnswer').value,
+        shuffleQuestion: this.CreateExamSchedule.get('ShuffleQuestion').value,
+        canViewResult: this.CreateExamSchedule.get('viewResult').value,
+        percentagePassMarks: this.CreateExamSchedule.get('Percentage').value,
+        evaluationCompleteOn: null,
+        noOfStudents: this.CreateExamQbank.get('NumberofQuestions').value,
+        numberOfAttendees: 0,
+        averageDuration: 0
       }
 
       this._examService.CreateExam(FormData).subscribe(response => {
         if (response) {
           this.isFormSubmitted = true;
+          this._examService.getExamByid(response.id).subscribe(res=>{
+            this.createdExamDetails = res;
+          })
         }
       }, (error) => {
         this._errorHendling.handleError(error)
@@ -550,6 +721,22 @@ export class CreateExamComponent implements OnInit {
       )
     }
   }
+  combineDateTime(date: Date, time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+    const formattedDate = new Date(date);
+
+    formattedDate.setHours(hours, minutes, 0, 0); // Set hours & minutes
+
+    // Format manually to prevent automatic UTC conversion
+    const year = formattedDate.getFullYear();
+    const month = ('0' + (formattedDate.getMonth() + 1)).slice(-2); // Ensure 2-digit month
+    const day = ('0' + formattedDate.getDate()).slice(-2);
+    const hour = ('0' + formattedDate.getHours()).slice(-2);
+    const minute = ('0' + formattedDate.getMinutes()).slice(-2);
+
+    return `${year}-${month}-${day}T${hour}:${minute}:00.000Z`; // Preserve original time
+}
+
   copyText(fieldName) {
     const copyText = (document.getElementById(fieldName)) as HTMLInputElement;
     copyText.disabled = false;
@@ -573,6 +760,10 @@ export class CreateExamComponent implements OnInit {
     this.CreateExamSchedule.patchValue({
       examType: 2
     })
+  }
+  clearAllSecondStep(){
+    this.TotalSelectQuestion = 0;
+    this.QuestionSelected = [];
   }
 
   getNext(event: PageEvent) {
@@ -609,10 +800,10 @@ export class QuestionlistDataSource extends DataSource<QuestionListModel>
       })
     )
       .subscribe((res: any) => {
-        this.QuestionList = res.data;
+        this.QuestionList = res?.data;
         this.paginationData = {
-          count: res.Count,
-          pageNumber: res.CurrentFilter?.PageNumber
+          count: res?.Count,
+          pageNumber: res?.CurrentFilter?.PageNumber
         };
       }
       );

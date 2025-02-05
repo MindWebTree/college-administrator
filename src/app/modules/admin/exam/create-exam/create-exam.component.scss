@@ -4,7 +4,9 @@
     font-family: 'Inter var';
     font-weight: 600 !important;
 }
-
+::ng-deep .create-exam-first-step mat-form-field {
+    min-width: 400px;
+}
 mat-form-field {
     padding-top: 20px;
 }
@@ -79,10 +81,42 @@ mat-form-field {
     height: 35px;
 }
 
-::ng-deep .demo-section mat-checkbox.mat-checkbox {
+::ng-deep .demo-section mat-checkbox.checkbox-question {
     position: relative;
-    top: -13px;
-    left: -6px;
+    top:  -16px;
+    left: -16px;
+}
+::ng-deep .create-exam-second-step mat-panel-title.mat-expansion-panel-header-title {
+    display: block !important;
+}
+::ng-deep .create-exam-second-step mat-expansion-panel-header {
+    align-items: start !important;
+    height: 100px !important;
+    padding: 20px 30px !important;
+}
+::ng-deep .create-exam-second-step mat-panel-title.mat-expansion-panel-header-title img {
+    max-width: 200px !important;
+    max-height: 200px;
+}
+::ng-deep .create-exam-second-step mat-form-field {
+    min-width: 160px;
+}
+::ng-deep .create-exam-second-step .mat-mdc-form-field .mat-mdc-form-field-infix {
+    min-height: 40px !important;
+}
+::ng-deep .create-exam-third-step mat-form-field {
+    min-width: 200px;
+}
+::ng-deep .create-exam-third-step mat-chip-list.student_chips {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    margin-left: 190px;
+}
+
+::ng-deep mat-checkbox.checkbox-question .mdc-checkbox__background {
+    border: 0 !important;
+    background-color: transparent !important;
 }
 
 ::ng-deep .demo-section span.mat-checkbox-frame {
@@ -196,13 +230,13 @@ input[type=number] {
     margin: 0 auto;
     display: inline-flex;
     border-radius: 4px;
-    width: 220px;
+    width: max-content;
 }
 
 .last_screen {
     display: flex;
     margin: 0 auto;
-    width: 460px;
+    width: max-content;
     padding-bottom: 20px;
     gap: 10px;
 }
@@ -306,18 +340,37 @@ input[type=number] {
     left: 0 !important;
 }
 
-::ng-deep .create_account mat-chip-list {
+::ng-deep .create-exam-first-step mat-chip-list {
     flex-basis: 100%;
     max-width: 84% !important;
     position: relative;
     left: 16%;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    // padding-bottom: 10px;
+}
+::ng-deep .create-exam-second-step mat-chip-list {
+    flex-basis: 100%;
+    max-width: 84% !important;
+    position: relative;
+    left: 16%;
+    display: flex;
+    gap: 10px;
     // padding-bottom: 10px;
 }
 
  ::ng-deep .create_account mat-chip {
-    background-color: #e9d5ff !important;
+    background-color: rgba(var(--fuse-primary-rgb), .1) !important;
     color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
     border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+}
+::ng-deep .create_account mat-chip span.mdc-evolution-chip__text-label.mat-mdc-chip-action-label {
+    display: flex;
+    align-items: center;
+}
+::ng-deep .create_account mat-chip span.mdc-evolution-chip__text-label.mat-mdc-chip-action-label .mat-icon {
+    color: rgba(var(--fuse-primary-rgb), 1) !important;
 }
 
 // ::ng-deep control-messages div{
@@ -343,7 +396,7 @@ input[type=number] {
     position: absolute;
     top: 33px;
     left: 10px;
-    bottom: 33px;
+    bottom: 57px;
 }
 
 .stepper_div:after {
@@ -469,14 +522,48 @@ body .light .mat-step-header .mat-step-icon {
 .student_chips button {
     display: flex;
 }
+.courses{
+    display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0px 10px;
+}
 
 @media only screen and (max-width: 1199px) {
     .min-w-212 {
         padding-left: 30px !important;
     }
+    ::ng-deep .create-exam-second-step mat-form-field {
+        min-width: auto;
+    }
+   
+    .mat-horizontal-content-container {
+        padding: 0px 0px 0px 15px !important;
+    }
+    .create-exam-first-step mat-chip-list {
+        left: 190px;
+    }
 }
 
 @media only screen and (max-width: 767px) {
+    ::ng-deep .create_account mat-step-header {
+        min-width: 170px;
+    }
+    .create-exam-first-step mat-chip-list {
+        left: 0px;
+    }
+    ::ng-deep .create-exam-first-step mat-form-field {
+        min-width: auto;
+    }
+    .cbme-code-description{
+        margin-left: 0px;
+    }
+    .linestep:before{
+        display: none;
+    }
+    ::ng-deep .create_account .mat-horizontal-stepper-header-container{
+        overflow-x: scroll;
+    }
      :host ::ng-deep form .mat-form-field.mat-form-field {
         min-width: 83vw;
         max-width: 83vw;

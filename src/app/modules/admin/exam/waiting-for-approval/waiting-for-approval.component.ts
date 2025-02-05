@@ -13,6 +13,7 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DurationPipe } from '../../pipes/duration.pipe';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-waiting-for-approval',
@@ -33,6 +34,7 @@ export class WaitingForApprovalComponent implements OnInit {
 
   constructor(
     private _examService: ExamService,
+    private _router: Router,
     public dialog: MatDialog
   ){
     this._unsubscribeAll = new Subject();
@@ -59,6 +61,9 @@ export class WaitingForApprovalComponent implements OnInit {
       };
       this.dataSource.getExamList(gridFilter, this.status)
     })
+  }
+  editExam(id){
+    this._router.navigate([`/exam/edit/${id}`]);
   }
   deleteExam(id){
     this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {

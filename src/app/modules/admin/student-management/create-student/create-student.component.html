@@ -1,0 +1,103 @@
+<div class="p-2 add-student">
+    <div class="flex item-center justify-between">
+        <h2 class="text-xl">{{dialogTitle}}</h2>
+        <button (click)="CloseMatdilog()" class="float-right"><mat-icon>close</mat-icon></button>
+    </div>
+
+    <form [formGroup]="studentForm">
+        <div class="py-4 flex justify-center">
+            <div class="w-30 h-30 flex">
+                <img class="rounded-full w-full h-full"   [src]="studentImage || 'images/avatars/download.png'">
+            </div>
+
+            <div class="flex flex-col justify-center gap-2 ml-4">
+                <!-- <button mat-button class="change_btn">Change Photo</button> -->
+                <input type="file" class="image-upload" (change)="onselectFile($event)" formControlName="StudentImage">
+                <button mat-button class="delete_btn text-primary bg-primary/10" (click)="removeSelectedFile()">Delete Photo</button>
+            </div>
+        </div>
+
+        <div class="sm:flex items-baseline edit_profile w-full gap-4" >
+            <label class="">Roll Number</label><span>:</span>
+            <h2 class="pb-4" *ngIf="!isEditing">{{Student.rollNo}}</h2>
+            <mat-form-field class="w-full"  *ngIf="isEditing">
+                <input matInput type="number" class="border" formControlName="RollNumber" placeholder="A2321313"  required >
+                  <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('RollNumber').invalid &&  studentForm.get('RollNumber').touched ">Please Write RollNumber</mat-error>
+            </mat-form-field>
+          
+        </div>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">First Name</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input matInput class="border" formControlName="FirstName" placeholder="Student First Name"  required>
+                  <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('FirstName').invalid &&  studentForm.get('FirstName').touched ">Please Type FirstName</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Last Name</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input matInput class="border" formControlName="LastName" placeholder="Student last  Name"  required>
+                  <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('LastName').invalid &&  studentForm.get('LastName').touched ">Please Type LastName</mat-error>
+            </mat-form-field>
+        </div>
+        <!-- <div class="flex items-baseline edit_profile w-full gap-4">
+            <label class="">Course</label><span>:</span>
+            <mat-form-field appearance="fill"  class="w-full">
+                <mat-select matNativeControl  required formControlName="Course" placeholder="Course">
+                    <mat-option [value]="c.id" *ngFor="let c of courseDetails;let i=index" (click)="getCourseYear(c.guid)">{{c.name}}</mat-option>
+                </mat-select>
+                 <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('Course').invalid &&  studentForm.get('Course').touched ">Please Type Course</mat-error>
+            </mat-form-field>
+        </div> -->
+     
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Year</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select matNativeControl  required formControlName="CourseYear" placeholder="Year">
+                    <mat-option [value]="Course.id" *ngFor="let Course of courses;let i=index">{{Course.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!-- <mat-chip-listbox #chipList class="subject_chips error-lecturer">
+            <mat-chip-option *ngFor="let c of courseList,let i = index;" [selectable]="true" selected="true" [removable]="false">
+                {{c.CourseYear}} <button (click)="removeSubjects(i,c.ID)"><mat-icon>cancel</mat-icon></button>
+            </mat-chip-option>
+        </mat-chip-listbox> -->
+      
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Mobile No.</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input matInput class="border" formControlName="PhoneNumber" placeholder="Phone Number"  required>
+                 <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('PhoneNumber').invalid &&  studentForm.get('PhoneNumber').touched ">Please Type PhoneNumber</mat-error>
+            </mat-form-field>
+        </div>
+      
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Email</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input type="email" matInput class="border" formControlName="Email" placeholder="Email"  required>
+         <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('Email').invalid &&  studentForm.get('Email').touched ">Please Type Email</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Password</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input type="email" matInput class="border" formControlName="Password" placeholder="Password"  >
+         <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('Password').invalid &&  studentForm.get('Password').touched">
+             <ng-container *ngIf="studentForm.get('Password').errors?.required">Please Type  Password</ng-container>
+                <ng-container *ngIf="studentForm.get('Password').errors?.minlength">Password must be at least 6 characters long</ng-container>
+         </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="sm:flex items-center edit_profile w-full gap-4">
+            <label class="">Status</label><span>:</span>
+            <mat-slide-toggle formControlName="IsActive"><span>{{this.studentForm.get('IsActive')?.value ? 'Active' : 'Inactive'}}</span></mat-slide-toggle>
+        </div>
+        <div class="text-center sm:flex items-baseline edit_profile w-full gap-4 justify-center">
+          
+            <button mat-button class="save_btn font-normal" (click)="onSave()" aria-label="SAVE">Save</button>
+            <button mat-button class="cancel_btn font-normal bg-primary" (click)="CloseMatdilog()">Cancel</button>
+        </div>
+    </form>
+</div>

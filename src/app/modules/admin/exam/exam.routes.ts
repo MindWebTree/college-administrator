@@ -10,6 +10,10 @@ export default [
         component: CreateExamComponent,
     },
     {
+        path     : 'edit/:id',
+        component: CreateExamComponent,
+    },
+    {
         path     : 'list/waiting-for-approval',
         component: WaitingForApprovalComponent,
     },

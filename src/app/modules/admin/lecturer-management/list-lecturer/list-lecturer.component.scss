@@ -1,0 +1,263 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div {
+    font-family: 'Lexend Deca', sans-serif;
+    font-weight: 500;
+}
+
+:host ::ng-deep form .filters .mat-form-field.mat-form-field {
+    min-width: auto;
+    max-width: initial;
+    padding-top: 0px;
+}
+
+:host ::ng-deep form .filters .mat-form-field.mat-form-field .mat-form-field-wrapper {
+    margin-bottom: 0px;
+}
+
+::ng-deep .filters .mat-form-field .mat-form-field-wrapper {
+    margin-bottom: 0;
+}
+
+:host ::ng-deep .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
+    border-color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    width: 160px;
+    min-height: 40px !important;
+    box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), 0.3) !important;
+}
+
+:host ::ng-deep mat-paginator.mat-paginator .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
+    width: auto;
+}
+
+::ng-deep .list-lecture-management .mat-dialog-container.mat-dialog-container {
+    height: 80vh !important;
+}
+
+.lecture_div {
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    background: white;
+    box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), 0.3);
+    border-radius: 4px;
+    position: relative;
+}
+
+
+.active_btn {
+    display: flex;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 50px;
+    padding: 0 10px 0 3px;
+    color: #28C397;
+}
+
+.active_btn mat-icon.mat-icon {
+    font-size: 15px;
+    color: #28C397;
+}
+
+.active_btn.active {
+    color: #28C397;
+    /* Green */
+    border-color: #28C397;
+}
+
+.active_btn.inactive {
+    color: gray;
+    /* Gray */
+    border-color: gray;
+}
+
+.active_btn.inactive mat-icon.mat-icon {
+    color: gray;
+    /* Gray */
+
+}
+
+.float-left {
+    float: left;
+}
+
+.first_div {
+    padding: 20px;
+    border-bottom: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+}
+
+.second_div {
+    padding: 10px 20px 20px 20px;
+    position: relative;
+}
+
+// .second_div:after {
+//     position: absolute;
+//     content: 'II';
+//     bottom: 0px;
+//     left: 20px;
+//     display: block;
+//     font-size: 60px;
+//     line-height: 45px;
+//     color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+//     --tw-text-opacity: .2 !important;
+// }
+
+.second_div {
+    padding: 10px 20px 20px 20px;
+    position: relative;
+}
+
+.lecture_div:after {
+    position: absolute;
+    bottom: 0px;
+    left: 20px;
+    display: block;
+    font-size: 60px;
+    line-height: 45px;
+    color: rgba(var(--fuse-primary-rgb), 0.2);
+    content: '';
+    /* Default empty */
+}
+
+.lecture_div.year-one:after {
+    content: 'I';
+}
+
+.lecture_div.year-two:after {
+    content: 'II';
+}
+
+.lecture_div.year-three:after {
+    content: 'III';
+}
+
+.lecture_div.year-four:after {
+    content: 'IV';
+}
+
+.col-span-5 {
+    grid-column: span 5 / span 5 !important;
+}
+
+.stats div {
+    font-size: 14px;
+    color: #A9A9A9;
+    font-weight: 300;
+}
+
+.stats div span {
+    color: #505050;
+    font-size: 24px;
+}
+
+.stats-2 div {
+    font-size: 14px;
+    color: #A9A9A9;
+    font-weight: 300;
+}
+
+.stats-2 span {
+    color: #505050;
+    font-size: 14px;
+}
+
+.view_report_card {
+    background: #28C397;
+    border-radius: 4px;
+    padding: 8px 18px;
+    color: white;
+    font-weight: 300;
+}
+
+.lecture_details {
+    width: 100%;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+//search
+.search-input {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    border-radius: 4px;
+    padding: 0 10px 0 10px;
+    height: 47px;
+}
+
+::ng-deep .search-input .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+    display: none;
+}
+
+::ng-deep .search-input .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-form-field-infix {
+    min-height: 40px;
+}
+
+::ng-deep .search-input .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled.mdc-text-field--no-label {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+::ng-deep .search-input .mat-mdc-form-field.mat-form-field-appearance-fill {
+    width: 224px;
+}
+
+::ng-deep .search-input .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-input-element {
+    padding: 11px 0 !important;
+}
+
+//ends serach
+.add-data {
+    background: #28C397 !important;
+    box-shadow: none !important;
+    color: white !important;
+    border-radius: 4px !important;
+    padding: 11px;
+    display: flex;
+    align-items: center;
+    gap: 2px
+}
+
+::ng-deep .list-lecture-management .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+
+
+@media screen and (max-width: 1199px) {
+    .first_div {
+        display: flex !important;
+        flex-wrap: wrap;
+    }
+
+    .second_div {
+        display: flex !important;
+        flex-wrap: wrap;
+        word-wrap: break-word;
+        z-index: 1;
+    }
+
+    .lecture_details {
+        z-index: 1;
+    }
+}
+
+@media screen and (max-width:1024px) and (min-width:768px) {
+    .view_report_card {
+
+        float: right !important;
+    }
+}
+
+@media screen and (max-width:767px) and (min-width:320px) {
+    .view_report_card {
+
+        float: right !important;
+    }
+}

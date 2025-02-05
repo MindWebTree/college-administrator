@@ -20,7 +20,7 @@
                         <div class="flex">
                             <div class="w-4/5 text-lg">{{exam.name}}</div>
                             <div class="w-1/5 text-right">
-                                <mat-icon>edit</mat-icon>
+                                <mat-icon (click)="editExam(exam.id)">edit</mat-icon>
                                 <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
                             </div>
                         </div>
