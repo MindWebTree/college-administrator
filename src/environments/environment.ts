@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+
     production: false,
     liveQuizNegativeMark: .25,
     tenantname:'careNext',
@@ -36,3 +37,4 @@ export const environment = {
    */
   // import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
   
+

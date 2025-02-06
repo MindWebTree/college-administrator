@@ -1,0 +1,121 @@
+
+<div class="flex flex-col flex-auto min-w-0 dashboard">
+
+    <!-- Header -->
+    <div class="">
+        <h1 class="pt-8 pl-8 pb-0 text-3xl font-normal">Welcome to Dashboard <span class="text-primary">{{_userAccount?.fullName}}</span></h1>
+        <!----------- Section-1 Start-------->
+           <div class="flex flex-col w-full  mx-auto p-8">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-card rounded box-shadow" *ngFor="let q of qBankTypes">
+                    <div class="rounded bg-card border-none p-6 pb-0 border bg-[#D2F6E5] plus_bg">
+                        <h2 class="text-2xl text-[#388863]">{{q.title}}</h2>
+                        <h3 class="text-6xl	text-[#388863] font-semi-bold">{{q.noOfQuestions}}<span class="text-sm">/ Questions</span></h3>
+                    </div>
+                    <div>
+                        <h4 class="flex items-center py-4 px-6 font-medium">{{q.noOfOwnedQuestions}}/ Owned Questions</h4>
+                    </div>
+                </div>
+             
+            </div>
+        </div>
+
+      <!----------- Section-1 End-------->
+
+        <!----------- Section-2 Start-------->
+       <div class="carousel_div">
+            <owl-carousel-o [options]="customOptions" >
+                <ng-container>
+                    <ng-template carouselSlide *ngFor="let c of courseYear">
+                        <a class="card border-0">
+                            <div class="card-body" [ngClass]="{'year-one': c.name  === 'First Year','year-two': c.name  === 'Second Year','year-three': c.name  === 'Third Year','year-four': c.name  === 'Fourth Year'}">
+                               <h2>{{ c.name }} {{ today | date:'yyyy' }}-{{ (today.getFullYear() + 1) }}</h2>
+                                <h3>{{c.noOfStudents}}<span class="text-primary">/students</span></h3>
+                            </div>
+                        </a>
+                    </ng-template>
+                  
+                </ng-container>
+
+            </owl-carousel-o>
+        </div>
+        <!----------- Section-2 End-------->
+
+        <!----------- Section-3 Start-------->
+        <div class="carousel_div">
+            <h2 class="pl-3 text-lg pb-2">List of Subjects</h2>
+            <owl-carousel-o [options]="ListSubject">
+                <ng-container >
+                    <ng-template carouselSlide *ngFor="let s of subject">
+                        <a class="card border-0">
+                            <div class="card2-body text-center">
+                                <div class="card_img">
+                                    <img [src]="s.image">
+                                </div>
+                                <div class="py-2">
+                                    <h4 class="font-normal">{{s.title}}</h4>
+                                    <h5 class="font-light text-sm">{{s.noOfQuestion}} Questions</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </ng-template>
+                   
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+        <!----------- Section-3 End-------->
+
+        <!----------- Section-4 Start-------->
+           <div class="grid sm:grid-cols-2 md:grid-cols-2 gap-4 p-8">
+            <div class="p-6 bg-card shadow rounded overflow-hidden border border-primary box-shadow">
+                <div class="float-left w-1/2 text-lg tracking-tight leading-6 truncate font-medium">Top Subjects</div>
+
+                <!--------- App charts Linear Chart --------->
+                <div class="float-right ">
+                    <form> 
+                    <mat-form-field class="form-element block border-primary">
+                            <mat-select [(value)]="selectedTopSubjects" #selectedYear (selectionChange)="onYearSelected(selectedYear)">
+                               <mat-option selected value="" disabled>Select a course year</mat-option>
+                                
+                                <mat-option *ngFor="let course of courseList" [value]="course.guid">{{ course.name }}</mat-option>
+                            </mat-select>
+                     </mat-form-field>
+                    </form>
+                </div>
+                <div class=" flex gap-12 pt-1 ml-7 text-sm text-lg tracking-tight leading-6 truncate font-medium w-full">
+                    <p>Subjects</p>
+                    <p>Average Marks</p>
+                </div>
+                <div id="linearchart">
+                    <apx-chart [series]="linearChartOptions.series" [chart]="linearChartOptions.chart" [dataLabels]="linearChartOptions.dataLabels" [plotOptions]="linearChartOptions.plotOptions" [xaxis]="linearChartOptions.xaxis"></apx-chart>
+                </div>
+                <!------------ App chart Linear chart end -->
+            </div>
+            <div class="p-6 bg-card shadow rounded overflow-hidden border border-primary box-shadow">
+                <div class="float-left w-1/2 text-lg tracking-tight leading-6 truncate font-medium">Exams Overview
+                </div>
+                <div class="float-right">
+                    <form>
+                        <mat-form-field class="form-element block border-primary">
+                        <mat-select [(value)]="selectedExamOverviewGuidName" #selectedMonth (selectionChange)="onMonthSelected(selectedMonth)">
+                        <mat-option value="" disabled>Select any</mat-option>
+                        <mat-option *ngFor="let year of courseList" [value]="year.guid">{{ year.name }}</mat-option>
+                         </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+                <!--------- App charts Line Chart --------->
+                <div id="chart">
+                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis" [xaxis]="chartOptions.xaxis" [fill]="chartOptions.fill" [responsive]="chartOptions.responsive"></apx-chart>
+                </div>
+                <!--------- App charts Line Chart end --------->
+            </div>
+        </div>
+        <!----------- Section-4 End-------->
+
+        <!----------- List -------->
+     
+        <!----------- List end-------->
+
+    </div>
+</div>

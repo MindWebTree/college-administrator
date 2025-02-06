@@ -40,7 +40,9 @@
         "zone.js": "0.14.6",
         "@types/ckeditor": "^4.9.10",     
         "ckeditor": "^4.12.1",     
-        "ckeditor4-angular": "^5.2.0"
+        "ckeditor4-angular": "^5.2.0",
+        "ngx-owl-carousel-o": "^19.0.0"
+        
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "18.0.2",
