@@ -1,0 +1,58 @@
+<div class="block p-8 create-List-account w-full">
+    <div class="container block filters">
+        <form>
+            <div class="flex justify-between py-2 md:items-center flex-col md:flex-row md:gap-0 gap-2 items-start">
+                <div>
+                    <h2 class="text-2xl font-medium text-[#505050]">Total Questions ({{dataSource.QuestionList?.length}})</h2>
+                </div>
+                    <div class="search-input">
+                       <mat-icon class="">search</mat-icon>
+                          <mat-form-field mat-no-float class="m-0" floatLabel="never">
+                          <input matInput id="search" placeholder="Search" [formControl]="searchInput" class="">
+                        </mat-form-field>
+                    </div>
+            </div>
+        </form>
+
+        <div class="accordian-outer" [dataSource]="dataSource.QuestionList" *ngFor="let question of dataSource.QuestionList,let i = index;">
+            <mat-accordion>
+                <mat-expansion-panel hideToggle class="mt-4" (click)="getquestiondetails(question.questionDetailId)">
+                    <mat-expansion-panel-header class="h-24 bg-white">
+                        <mat-panel-title class="font-medium text-[#505050] w-full flex items-center" [innerHtml]="question.questionTitle">
+
+                        </mat-panel-title>
+                        <mat-panel-description (click)="$event.stopPropagation()">
+                            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="more_vert_btn">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <!-- [routerLink]="['../create/',3]" -->
+                                <button mat-menu-item (click)="onNavigate(question.questionDetailId)">
+                                    <span ><a >Edit</a></span>
+                                </button>
+                                <button mat-menu-item (click)="deletequestion(question.questionDetailId)">
+                                    <span>Delete</span>
+                                </button>
+                            </mat-menu>
+                        </mat-panel-description>
+
+                    </mat-expansion-panel-header>
+                    <div class="expension_div rounded" *ngIf="questionDetails && selectedQuestionId==question.questionDetailId">
+                        <h6 class="mt-3.5 font-medium">Select option any one</h6>
+                        <div *ngFor=" let choices of questionDetails?.choices; let i = index;">
+                            <h6 *ngIf="choices.isCorrect" class="mt-3.5 font-medium correct_heading">Correct Answer</h6>
+                            <div class="bg-white mt-3.5 flex p-2.5 border" [ngClass]="{'correct_div':choices.isCorrect===true}">
+                                <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded"><B>{{i + 1}}</B></span>
+                                <h2 class="font-medium">{{choices.choiceText}}</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel>
+                <div class="demo-section">{{i + 1}}</div>
+            </mat-accordion>
+        </div>
+        <p *ngIf="dataSource.QuestionList?.length <= 0" class="mt-2">No records found</p>
+    </div>
+    <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="10" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+</div>

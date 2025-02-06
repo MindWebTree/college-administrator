@@ -11,11 +11,14 @@ export class ExamService {
   onUpcomingExamListChanged: BehaviorSubject<any>;
   onCompletedExamListChanged: BehaviorSubject<any>;
   onCancelledExamListChanged: BehaviorSubject<any>;
+  onExamReportListChanged: BehaviorSubject<any>;
+
   constructor(private _httpClient: HttpClient) {
     this.onExamListChanged = new BehaviorSubject([]);
     this.onUpcomingExamListChanged = new BehaviorSubject([]);
     this.onCompletedExamListChanged = new BehaviorSubject([]);
     this.onCancelledExamListChanged = new BehaviorSubject([]);
+    this.onExamReportListChanged = new BehaviorSubject([]);
   }
 
   getExamList(payload) {
@@ -48,6 +51,9 @@ export class ExamService {
   }
   getCourseYear(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/course/courseyear`)
+  }
+  getExamReport(id): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/exam/exam-report/${id}`)
   }
 
 }

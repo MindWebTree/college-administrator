@@ -56,6 +56,7 @@ export class ExamListComponent implements OnInit{
   rescheduleExamId: number = 0;
   mintime: number = 0;
   CourseYearName:string='';
+  dialogRef: any;
 
   constructor(
     private _route: ActivatedRoute,
@@ -311,7 +312,6 @@ export class ExamListComponent implements OnInit{
     const nowTime = this.minDate; // Current time
   
     const timeDiff = examDateTime.getTime() - nowTime.getTime(); // Difference in milliseconds
-    console.log(timeDiff,"timeDiff")
     if (timeDiff <= 0) {
       return "Exam has already started"; // If the exam time has passed
     }
@@ -394,10 +394,11 @@ export class ExamListComponent implements OnInit{
     const day = ('0' + currentDate.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
-  openReportCard(){
-    // this.dialog = this.dialog.open(ExamReportComponent, {
-    //   data: '',
-    // });
+  openReportCard(exam:any){
+    this.dialogRef = this.dialog.open(ExamReportComponent, {
+      data: exam,
+      panelClass: 'report-card-popup'
+    });
   }
   ngOnDestroy(): void {
     if (this.ExamReSchedule) {

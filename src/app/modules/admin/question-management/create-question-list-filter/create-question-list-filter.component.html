@@ -1,0 +1,22 @@
+<form [formGroup]="QuestionListingFilter">
+  <div class="mt-6 created-questions pb-4">
+    <mat-form-field appearance="fill" class="w-60 pl-6">
+      <mat-select matInput matNativeControl placeholder="Select QBankType" formControlName="QbankType">
+        <!-- <mat-option disabledv value=''>Select any</mat-option> -->
+        <mat-option *ngFor="let banktype of qbanktype" [value]="banktype.id" (click)="getQbanksubject(banktype.id)"
+        >{{banktype.title}} ({{banktype.noOfQuestions}})</mat-option>
+      </mat-select>
+
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="w-60 pl-6">
+      <mat-select matInput matNativeControl placeholder="Select Subject" formControlName="Subject">
+        <!-- <mat-option disabledv value=''>Select any</mat-option> -->
+        <mat-option *ngFor="let subject of subjects" [value]="subject.id">{{subject.title}} ({{subject.noOfQuestions}})</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="flex justify-between px-6">
+      <button mat-button class="text-sm w-8 text-primary" (click)="clearall()">Clear All</button>
+      <button mat-raised-button class="bg-primary text-sm font-light py-6 text-white rounded" (click)="sendQuestionFilterValues()">Show Questions</button>
+    </div>
+  </div>
+</form>

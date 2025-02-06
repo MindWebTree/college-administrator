@@ -1,3 +1,11 @@
+export class GridFilter {
+    keyword: string;
+    pageNumber: number;
+    pageSize: number;
+    orderBy: string;
+    sortOrder: string;
+
+}
 export class CreateQuestion{
     userID:any;
     questionDetailID:number;
@@ -36,23 +44,15 @@ export class Choices {
     }
 }
 
-export class QuestionListFilter{
-    Search: string;
-    pageNumber: number;
-    pageSize: number;
-    orderBy: string;
-    sortOrder: string;
-    userId: string;
-    status: number;
-    tagIds: Array<number>;
-    qBankTypeId: Array<number>;
-    levelOfQuestionID: number;
-    levelId: number;
-    qBankCategoryId: string;
-    subjectIds:Array<number>;
-    topicIds:Array<number>;
-    cmbeCodeIds:Array<number>;
-
+export class QuestionListFilter extends GridFilter {
+    qBankTypeId: number;
+    qBankCategory: string;
+    subjectId: number;
+    topicId: Array<number>;
+    cbmeCodeId: Array<number>;
+    competencyLevelId: number;
+    levelofQuestionId: number;
+    tags: number;
 }
 export class QuestionListModel {
     BooksName:string;

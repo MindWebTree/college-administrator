@@ -124,5 +124,17 @@ export const appRoutes: Route[] = [
         children: [
             {path: 'lecturer', loadChildren: () => import('app/modules/admin/lecturer-management/lecturer-management.routes')},
         ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'qbank', loadChildren: () => import('app/modules/admin/question-management/question-management.routes')},
+        ]
     }
 ];

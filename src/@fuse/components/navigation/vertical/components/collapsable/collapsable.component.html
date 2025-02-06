@@ -74,6 +74,11 @@
                         [item]="item"
                         [name]="name"
                     ></fuse-vertical-navigation-basic-item>
+                    @if (item.title === 'Created Questions') {
+                    <ng-container >
+                        <app-create-question-list-filter></app-create-question-list-filter>
+                    </ng-container>
+                }
                 }
 
                 <!-- Collapsable -->

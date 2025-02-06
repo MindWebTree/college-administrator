@@ -69,7 +69,7 @@
                         <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
                         <h2 class="pt-1">Exam Date : {{exam.examDate | date: 'dd/MM/yyyy, h:mm a'}}</h2>
                         <div class="pt-6 flex justify-around">
-                            <button mat-button class="exam_report min-h-12" (click)="openReportCard()">View Exam Report</button>
+                            <a mat-button class="exam_report min-h-12 flex items-center justify-center cursor-pointer" (click)="openReportCard(exam)">View Exam Report</a>
                         </div>
                     </div>
                 </div>                

@@ -91,6 +91,9 @@ export class Qbank{
 
       }
 }
+export class ReportStudentList{
+  
+}
 export enum ExamStatus {
     All = -1,
     WaitingForApproval = 0,

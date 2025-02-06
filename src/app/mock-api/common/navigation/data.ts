@@ -71,6 +71,28 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         roles : ["Lecturer", "CollegeAdministrator"]
     },
     {
+        id: 'mcq',
+        title: "Owned MCQ's",
+        type: 'collapsable',
+        children: [
+            {
+                id: 'createqbank',
+                title: 'Create New Question',
+                type: 'basic',
+                link: '/qbank/create',
+                roles : ["Lecturer"]
+            },
+            {
+                id: 'qbanklist',
+                title: 'Created Questions',
+                type: 'basic',
+                link: '/qbank/question-list',
+                roles : ["Lecturer"]
+            },
+        ],
+        roles : ["Lecturer"]
+    },
+    {
         id: 'Exam',
         title: 'Exam',
         type: 'collapsable',
