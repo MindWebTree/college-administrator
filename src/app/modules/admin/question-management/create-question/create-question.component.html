@@ -1,0 +1,236 @@
+<div class="md:p-8 font-bold w-full px-4 question_management_create">
+
+    <form [formGroup]="CreateQuestionform">
+        <mat-stepper #stepper [linear]="isLinear">
+            <ng-template matStepperIcon="edit">
+                <mat-icon>done</mat-icon>
+            </ng-template>
+            <ng-template matStepperIcon="number">
+                <mat-icon>done</mat-icon>
+            </ng-template>
+            <!-- qbankForm Start here  -->
+            <mat-step [stepControl]="qbanksetting" formGroupName="QbankSetting">
+                <ng-template matStepLabel >Q'BankSetting</ng-template>
+                <div class="linestep">
+                    <div class="flex items-baseline bankSettinglable bg-transparent">
+
+                        <label class="w-30 bg-transparent font-medium text-lg">Q'Bank Type</label><span>:</span>
+                        <mat-form-field appearance="fill" class="w-90 pl-6">
+                            <mat-select matInput matNativeControl formControlName="QbankType" required placeholder="select any">
+                                <mat-option disabled value="">Select any</mat-option>
+                                <mat-option *ngFor="let banktype of qbanktype" [value]="banktype.id" (click)="getQbanksubject(banktype.id)">{{banktype.title}}</mat-option>
+
+                            </mat-select>
+                           <mat-error class="error-message ml-1" *ngIf="addQbankError && CreateQuestionform.get('QbankSetting')?.get('QbankType')?.invalid && CreateQuestionform.get('QbankSetting')?.get('QbankType')?.touched">
+                             Please Select Q'bank
+                          </mat-error>
+                        </mat-form-field>
+               
+                    </div>
+                  
+                    <div class="flex items-baseline bankSettinglable">
+                        <label class="w-30 font-medium text-lg">Subject</label><span>:</span>
+                        <mat-form-field appearance="fill" class="w-90 pl-6">
+                            <mat-select matNativeControl formControlName="Subject" required placeholder="select any">
+                                <mat-option disabledv value="">Select any</mat-option>
+                                <mat-option *ngFor="let subject of subjects" [value]="subject.id" (click)="selectSubject(subject.id)">{{subject.title}}</mat-option>
+                                
+                            </mat-select>
+                         <mat-error class="error-message ml-1" *ngIf="addQbankError && CreateQuestionform.get('QbankSetting')?.get('Subject')?.invalid && CreateQuestionform.get('QbankSetting')?.get('Subject')?.touched">
+                          Please Select Subject
+                        </mat-error>
+                        </mat-form-field>
+                    </div>
+                 
+                    <div class="flex items-baseline bankSettinglable">
+                        <label class="w-30 font-medium text-lg">Topics</label><span>:</span>
+                        <mat-form-field appearance="fill" class="w-90 pl-6">
+                            <mat-select matNativeControl formControlName="Topic" required placeholder="select any">
+                                <mat-option disabledv value="">Select any</mat-option>
+                                <mat-option *ngFor="let topic of topics" [value]="topic.id" (click)="selectTopic(topic.id)">{{topic.title}}</mat-option>
+                            </mat-select>
+                        <mat-error class="error-message ml-1" *ngIf="addQbankError && CreateQuestionform.get('QbankSetting')?.get('Topic')?.invalid && CreateQuestionform.get('QbankSetting')?.get('Topic')?.touched">
+                          Please Select Topic
+                        </mat-error>
+                        </mat-form-field>
+                    </div>
+                  
+                </div>
+                <div class="text-center mt-5 create-question-btn">
+                    <button type="submit" class="btn text-center btn-submit p-4 w-50 text-white rounded-md font-normal" mat-button matStepperNext (click)="qbanksettingForm()" *ngIf="!isUpdate">Create Question</button>
+                    <button type="submit" class="btn text-center btn-submit p-4 w-50 text-white rounded-md font-normal" mat-button matStepperNext (click)="qbanksettingForm()" *ngIf="isUpdate">Update Question</button>
+                    <button class="btn text-center p-4 w-50 ml-5 rounded-md border clear_all font-normal" (click)="clearqbanksetting()">ClearAll</button>
+                </div>
+            </mat-step>
+            <!-- qbankForm End  here  -->
+
+            <!-- Create Question start -->
+            <!-- [editable]="matStap" -->
+            <mat-step label="" [stepControl]="CreateQuestion" formGroupName="CreateQuestion" [completed]="stepper.selectedIndex > 1">
+                   <ng-template matStepLabel >{{questionLabelStatus}}</ng-template>
+                <div class="flex items-baseline  bg-transparent mt-2.5">
+                    <label class="w-30 bg-transparent text-[#505050] text-[16px] font-medium">Question Type</label><span>:</span>
+                    <mat-form-field appearance="fill" class="w-90 pl-6">
+                        <mat-select matNativeControl formControlName="QuestionType" #QuestionType (selectionChange)="OnSelectQuestionType($event.value)">
+                            <mat-option [value]="1">Single Choice Question</mat-option>
+                            <!-- <mat-option [value]="3">Match The Following</mat-option> -->
+                            <mat-option [value]="2">Multi Choice Question</mat-option>
+                        </mat-select>
+                   
+                    </mat-form-field>
+                </div>
+                <h2 class="text-xl mt-6 pb-3 text-[#505050] font-semibold">Question No:{{questionDetail?.questionDetailId}}</h2>
+                <div class="ck-border">
+                <ckeditor [config]="ckeConfig" placeholder="Title"  formControlName="QuestionTitle">
+                </ckeditor>
+                   <mat-error class="error-message mt-1 ml-1" *ngIf="addQbankError && CreateQuestionform.get('CreateQuestion')?.get('QuestionTitle')?.invalid && CreateQuestionform.get('CreateQuestion')?.get('QuestionTitle')?.touched">Please Type QuestionTitle </mat-error>
+                   
+                </div>
+             
+                <!-- Dynamic radio button start -->
+                <h2 class="text-xl font-medium text-[#505050] pt-3">Add Answer<mat-icon class="add-answer-icon" (click)="openDialogWithTemplateRef(myDialog)">add</mat-icon>
+                </h2>
+                <h2 class="text-[16px] mt-4 pt-3 pb-2 text-[#505050] font-medium">*Set any one to the answer</h2>
+                <!-- <ng-template #myDialog class="w-94">
+          
+                    <mat-form-field appearance="fill" class="w-full" *ngIf="defalutchoices">
+                        <input class="w-64" matInput placeholder="Add Answer"  #choice [(ngModel)]="FirstAnswerContent" [ngModelOptions]="{standalone: true}">
+                      <mat-error class="error-message mt-1 ml-1" *ngIf="choice.value.length==0 || choice.invalid">Please Enter any Answer</mat-error>
+                    </mat-form-field>
+                       <mat-form-field appearance="fill" class="w-full" *ngIf="defalutchoices">
+                        <input class="w-64" matInput placeholder="Add Answer" #choice [(ngModel)]="SecondAnswerContent" [ngModelOptions]="{standalone: true}">
+                    <mat-error class="error-message mt-1 ml-1" *ngIf="choice.value.length==0 || choice.invalid">Please Enter any Answer</mat-error>
+                    </mat-form-field>
+                       <mat-form-field appearance="fill" class="w-full" *ngIf="defalutchoices">
+                        <input class="w-64" matInput placeholder="Add Answer" #choice [(ngModel)]="ThirdanswerContent" [ngModelOptions]="{standalone: true}">
+                       <mat-error class="error-message mt-1 ml-1" *ngIf="choice.value.length==0 || choice.invalid">Please Enter any Answer</mat-error>
+                    </mat-form-field>
+                       <mat-form-field appearance="fill" class="w-full">
+                        <input class="w-64" matInput placeholder="Add Answer" #choice [(ngModel)]="FourthanswerContent" [ngModelOptions]="{standalone: true}">
+                       <mat-error class="error-message mt-1 ml-1" *ngIf="choice.value.length==0 || choice.invalid">Please Enter any Answer</mat-error>
+                    </mat-form-field>
+                  
+                  
+                    <button type="submit" matDialogClose class=" btn text-center btn-submit p-4   text-white rounded-md addAnswer" (click)="addRadioButton()" *ngIf="!isMultiChoiceQuestion" [disabled]="!FirstAnswerContent || !SecondAnswerContent || !ThirdanswerContent || !FourthanswerContent">
+                        Add Answer</button>
+                    <button type="submit" class=" btn text-center btn-submit p-4  text-white rounded-md addAnswer" (click)="addCheckBox()" matDialogClose *ngIf="isMultiChoiceQuestion" [disabled]="!FirstAnswerContent || !SecondAnswerContent || !ThirdanswerContent || !FourthanswerContent">Add Multiple Answer</button>
+                    <mat-dialog-actions align="end">
+                        <button mat-button (click)="currentDialogRef.close()" color="primary">Dismiss</button>
+                    </mat-dialog-actions>
+                    <mat-error class="error-message mt-2 ml-1" *ngIf="Choices  && Choices.length>=0 && !isSelectedChoice">
+                        Please select Choice
+                    </mat-error>
+                </ng-template> -->
+        <ng-template #myDialog class="w-94">
+                <!-- input starts -->
+                <ng-container *ngIf="defalutchoices">
+
+                <mat-form-field appearance="fill" class="w-full">
+                   <input class="w-64" matInput placeholder="Add First Answer" #firstChoice [(ngModel)]="FirstAnswerContent" [ngModelOptions]="{standalone: true}" >
+                <mat-error class="error-message mt-1 ml-1" *ngIf="firstChoice.invalid && (firstChoice.dirty || firstChoice.touched)">Please Enter First Answer</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="w-full">
+                    <input class="w-64" matInput placeholder="Add Second Answer" #secondChoice [(ngModel)]="SecondAnswerContent" [ngModelOptions]="{standalone: true}" >
+                 <mat-error class="error-message mt-1 ml-1"  *ngIf="secondChoice.invalid && (secondChoice.dirty || secondChoice.touched)">Please Enter Second Answer</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="fill" class="w-full">
+                    <input class="w-64" matInput placeholder="Add Third Answer" #thirdChoice [(ngModel)]="ThirdanswerContent" [ngModelOptions]="{standalone: true}" >
+                <mat-error class="error-message mt-1 ml-1" *ngIf="thirdChoice.invalid && (thirdChoice.dirty || thirdChoice.touched)"> Please Enter Third Answer</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="w-full">
+                    <input class="w-64" matInput placeholder="Add Fourth Answer" #fourthChoice [(ngModel)]="FourthanswerContent" [ngModelOptions]="{standalone: true}" >
+                <mat-error class="error-message mt-1 ml-1" *ngIf="fourthChoice.invalid && (fourthChoice.dirty || fourthChoice.touched)">Please Enter Fourth Answer</mat-error>
+                </mat-form-field>
+
+               </ng-container>
+
+              <ng-container *ngIf="!defalutchoices">
+                <mat-form-field appearance="fill" class="w-full">
+                   <input class="w-64" matInput placeholder="Add Answer" #singleChoice [(ngModel)]="FirstAnswerContent"  [ngModelOptions]="{standalone: true}">
+                  <mat-error class="error-message mt-1 ml-1" *ngIf="singleChoice.invalid && (singleChoice.dirty || singleChoice.touched)"> Please Enter an Answer </mat-error>
+                </mat-form-field>
+              </ng-container>
+
+            <!-- input ends -->
+             <div class="flex items-center justify-between">
+                <button type="submit" matDialogClose class="btn text-center btn-submit p-4 text-white rounded-md addAnswer" (click)="addRadioButton()" *ngIf="!isMultiChoiceQuestion">
+                  Add Answer
+                </button>
+
+                <button type="submit" class="btn text-center btn-submit p-4 text-white rounded-md addAnswer" (click)="addCheckBox()" matDialogClose *ngIf="isMultiChoiceQuestion">
+                 <!-- [disabled]="defalutchoices ? (!FirstAnswerContent || !SecondAnswerContent || !ThirdanswerContent || !FourthanswerContent) : !FirstAnswerContent"> -->
+                 Add Multiple Answer
+                </button>
+
+                <mat-dialog-actions align="end"><button mat-button (click)="currentDialogRef.close()" color="primary">Dismiss</button></mat-dialog-actions>
+            </div>
+                <mat-error class="error-message mt-2 ml-1" *ngIf="Choices && Choices.length>=0 && !isSelectedChoice"> Please select Choice </mat-error>
+                </ng-template>
+                <div class="relative">
+                    <div *ngIf="!isMultiChoiceQuestion && Choices" class="float-left single-choices">
+                        <mat-radio-group class="choice_radio" aria-label="Select an option" required>
+                            <mat-radio-button *ngFor="let choice of Choices ;let i = index;"   [checked]="choice.isCorrect" [value]="choice.choiceId" [ngClass]="{'radio_checked': choice.isCorrect}" class="block ml-8 options_radio" (click)="selectRadio(i,choice.isCorrect)">{{choice.choiceText}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div *ngIf="isMultiChoiceQuestion && Choices" class="w-full">
+                        <mat-selection-list #answers class="choice_check" (selectionChange)="onSelection($event)" required>
+                            <mat-list-option *ngFor="let choice of Choices ;let i = index;" checkboxPosition="before" [value]="i" [selected]="choice.isCorrect">
+                                {{choice.choiceText}}
+                                <div class="multieditordelete_choice">
+                                </div>
+                            </mat-list-option>
+                            <mat-error class="error-message mt-2 ml-1" *ngIf="FormCreateQuestionError &&  CreateQuestion.get('AnswerType').invalid ">Please Select any Answer </mat-error>
+                        </mat-selection-list>
+                    </div>
+                    <div class="delete_btns">
+                        <div class="editordelete_choice" *ngFor="let choice of  Choices;let i = index;">
+                            <span mat-raised-button (click)="editQuestionAdditionalChoice(choice.choiceText,i,updatePopup)">
+                            <mat-icon mat-list-icon>edit</mat-icon>
+                            </span>
+                            <span mat-raised-button (click)="deleteQuestionAdditionalChoice(i)">
+                             <mat-icon mat-list-icon>delete</mat-icon>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #updatePopup class="w-94">
+
+                <mat-form-field appearance="fill">
+                    <input matInput placeholder="Add Answer" [(ngModel)]="updatedanswer" [ngModelOptions]="{standalone: true}" required>
+                    <mat-error class="error-message mt-2 ml-1">Please Enter any Answer</mat-error>
+                </mat-form-field>
+
+                <button type="submit" matDialogClose class=" btn text-center btn-submit bg-primary p-4   text-white rounded-md addAnswer"
+                 (click)="updateChoiceanswer(updatedanswer)">Update Answer</button>
+
+                <mat-dialog-actions align="end"><button mat-button (click)="currentDialogRef.close()" color="primary">Dismiss</button></mat-dialog-actions>
+                </ng-template>
+
+                <mat-error class="error-message mt-2 ml-1" *ngIf="Choices  && Choices.length>=0 && !isSelectedChoice">
+                    Please select Choice
+                </mat-error>
+                <!-- Add Refrence End -->
+                <div class="text-center mt-5 create-question-btn">
+                    <button type="submit" class="btn text-center btn-submit p-4 w-50 font-normal text-white rounded-md font-normal"  (click)="onSubmit()" *ngIf="!isUpdate">Save Question</button>
+                    <button type="submit" class="btn text-center btn-submit p-4 w-50 font-normal text-white rounded-md font-normal" (click)="onUpdate()" *ngIf="isUpdate">Update Question</button>
+                    <button class="btn text-center p-4 w-50 ml-5 rounded-md border clear_all font-normal" (click)="ClearFormData()">Clear All</button>
+                </div>
+            </mat-step>
+            <mat-step [completed]="false" [editable]="false" class="pointer-events-none">
+                <ng-template matStepLabel class="pointer-events-none">Status</ng-template>
+                <div class="after_submit_screen w-full justify-center items-center mt-8 p-4">
+
+                    <h2 class="justify-center flex w-full text-2xl py-6 font-semibold">Question No:{{QuestionDetailId}}</h2>
+                    <img src="my-images/Icon feather-check-circle@2x.png" class="justify-center w-15 h-15 flex text-center mx-auto mb-4 ">
+                    <h3 class="justify-center flex w-full text-3xl mt-4 pb-6 font-normal text-center text-primary">Your question was Successfully saved !</h3>
+
+                    <button type="submit" mat-button (click)="goToCreateQuestion()" class="btn justify-center mt-5 btn-submit mb-4 flex mx-auto p-4 w-50 text-white rounded-md font-normal">Create Question</button>
+                </div>
+            </mat-step>
+
+        </mat-stepper>
+    </form>
+</div>

@@ -30,14 +30,16 @@ export class WaitingForApprovalComponent implements OnInit {
   dataSource: ExamlistDataSource;
   status: number;
   _sitePreference: any = SitePreference;
-  private _unsubscribeAll: any;
+  private _unsubscribeAll: Subject<void> = new Subject<void>();
 
   constructor(
     private _examService: ExamService,
     private _router: Router,
     public dialog: MatDialog
   ){
-    this._unsubscribeAll = new Subject();
+    this._unsubscribeAll?.next();
+    this._unsubscribeAll?.complete();
+    this._unsubscribeAll = new Subject<void>();
   }
   loadPage() {
     this._examService.onExamListChanged.next(true);
@@ -115,6 +117,21 @@ export class WaitingForApprovalComponent implements OnInit {
         this.confirmDialogRef = null;
     });
   }
+  ngOnDestroy(): void {
+    // This triggers all takeUntil operators to complete their subscriptions
+    this._unsubscribeAll?.complete();
+    this._unsubscribeAll?.unsubscribe();
+    // this._unsubscribeAll.complete();
+    // Cleanup dialogs
+    if (this.confirmDialogRef) {
+      this.confirmDialogRef.close();
+    }
+    
+    // Cleanup data sources
+    if (this.dataSource) {
+      this.dataSource.disconnect();
+    }
+  }
 }
 export class ExamlistDataSource extends DataSource<any>
 {
@@ -146,11 +163,11 @@ export class ExamlistDataSource extends DataSource<any>
     )
 
       .subscribe((res: any) => {
-        this.ExamList = res.data;
-        this.ExamCount = res.Count;
+        this.ExamList = res?.data;
+        this.ExamCount = res?.Count;
         self.paginationData = {
-          count: res.totalCount,
-          pageNumber: res.currentPage
+          count: res?.totalCount,
+          pageNumber: res?.currentPage
         };
       });
 

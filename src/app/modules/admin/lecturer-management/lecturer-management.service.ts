@@ -156,6 +156,9 @@ export class LectureService {
   getCourseYear(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/course/courseyear`)
   }
+  getCourseYearName(guid) {
+    return this._httpClient.get(`${environment.apiURL}/course/courseyear-by-guid?courseYearId=${guid}`, {});
+  }
 
   cousreList(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/course/list`);

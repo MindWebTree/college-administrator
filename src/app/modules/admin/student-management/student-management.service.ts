@@ -140,6 +140,9 @@ export class StudentService {
     return this._httpClient.get<any>(`${environment.apiURL}/course/list`);
 
   }
+  getCourseYearName(guid) {
+    return this._httpClient.get(`${environment.apiURL}/course/courseyear-by-guid?courseYearId=${guid}`, {});
+  }
   getCourseYaerByCousreGuid(): Promise<any> {
     return new Promise((resolve, reject) => {
       // const params = new HttpParams().set('courseId', guid);

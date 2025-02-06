@@ -1,0 +1,48 @@
+// ::ng-deep .dark .created-questions .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex{
+//     border-color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+// }
+// ::ng-deep .mat-select-value{
+//     color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+// }
+::ng-deep .dark .created-questions .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
+    border-color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    background-color: white !important;
+}
+
+::ng-deep .mat-select-value {
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+}
+::ng-deep .created-questions{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+::ng-deep .created-questions .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper:is(.dark *) {
+    background: white !important;
+    border: 1px solid rgba(var(--fuse-primary-rgb), 0.3) !important;
+}
+::ng-deep .created-questions .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper:is(.dark *) .mat-mdc-form-field-infix {
+    min-height: 40px;
+}
+::ng-deep .created-questions mat-select {
+    color: #505050 !important;
+}
+::ng-deep .created-questions .mat-mdc-select .mat-mdc-select-placeholder {
+    color: #A9A9A9 !important;
+    font-weight: 400;
+}
+::ng-deep .created-questions span.mat-mdc-select-min-line {
+    color: #505050 !important;
+    font-weight: 500;
+}
+::ng-deep .created-questions .search-filter {
+    min-width: 110px;
+    min-height: 40px;
+}
+::ng-deep .created-questions .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+// .created-questions{
+//     background: #E7F8FF !important;
+// }

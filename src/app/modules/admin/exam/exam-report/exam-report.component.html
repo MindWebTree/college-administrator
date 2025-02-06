@@ -1,74 +1,65 @@
 <div class="p-2">
-    <button (click)="onNoClick()"  class="float-right"><mat-icon>close</mat-icon></button>
-    <h2 class="w-9/12">Exam Title dolor sit amet, consectetur adipiscing elit. Nulla molestie a nibh lacinia</h2>
-    <div class="download_report_btn">
-      <mat-icon>file_download</mat-icon>Download Report
-    </div>
-    <div class="flex pb-4 stats">
-      <div class="w-4/12 text-xl">401/432<br><span class="text-sm text-slate-600">Students</span></div>
-      <div class="w-4/12 text-xl">87/100<br><span class="text-sm text-slate-500">Average Question</span></div>
-      <div class="w-4/12 text-xl">01:12<br><span class="text-sm text-slate-500">Average Hours</span></div>
-    </div>
-    <div class="ranks flex">
-      <div class="w-4/12 text-center">
-        <img src="../../../../../assets/images/images/img_1.png">
-        <h3 class="pt-2">Rank: 01</h3>
-        <h4 class="percentage">98%</h4>
-        <h5>Karthikeyan</h5>
-        <h6>First Year</h6>
-      </div>
-      <div class="w-4/12 text-center">
-        <img src="../../../../../assets/images/images/img_1.png">
-        <h3 class="pt-2">Rank: 02</h3>
-        <h4 class="percentage">98%</h4>
-        <h5>Karthikeyan</h5>
-        <h6>First Year</h6>
-      </div>
-      <div class="w-4/12 text-center">
-        <img src="../../../../../assets/images/images/img_1.png">
-        <h3 class="pt-2">Rank: 03</h3>
-        <h4 class="percentage">98%</h4>
-        <h5>Karthikeyan</h5>
-        <h6>First Year</h6>
-      </div>
-    </div>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
-  
-      <!-- Student Name Column -->
-      <ng-container matColumnDef="studentname">
-        <th mat-header-cell *matHeaderCellDef> Student Name </th>
-        <td mat-cell *matCellDef="let element">
-          <div class="flex items-center gap-1"><img src="../../../../../assets/images/avatars/female-06.jpg">{{element.studentname}}</div>
-           </td>
-      </ng-container>
-  
-      <!-- Rank Column -->
-      <ng-container matColumnDef="rank">
-        <th mat-header-cell *matHeaderCellDef> Rank </th>
-        <td mat-cell *matCellDef="let element" class="text-sm font-semibold"> {{element.rank}} </td>
-      </ng-container>
-  
-      <!-- Year Column -->
-      <ng-container matColumnDef="year">
-        <th mat-header-cell *matHeaderCellDef> Year </th>
-        <td mat-cell *matCellDef="let element" class="text-sm font-semibold"> {{element.year}} </td>
-      </ng-container>
-  
-      <!-- Score Column -->
-      <ng-container matColumnDef="score">
-        <th mat-header-cell *matHeaderCellDef> Score </th>
-        <td mat-cell *matCellDef="let element" class="color-red text-sm font-normal"> {{element.score}} </td>
-      </ng-container>
-  
-      <!-- Result Column -->
-      <ng-container matColumnDef="result">
-        <th mat-header-cell *matHeaderCellDef> Result </th>
-        <td mat-cell *matCellDef="let element"> 
-         <div class="status-pass text-sm"> {{element.result}} </div>
-         </td>
-      </ng-container>
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+  <button (click)="onNoClick()" class="float-right">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h2 class="w-9/12" [innerHtml]="exam.description"></h2>
+
+  <div class="flex pb-4 stats pt-4">
+    <div class="w-4/12 text-xl">{{examReport?.noOfAttende}}/{{examReport?.noOfStudents}}<br><span class="text-sm text-slate-600">Students</span></div>
+    <div class="w-4/12 text-xl">{{examReport?.averageQuestions}}/{{examReport?.totalNoOfQuestions}}<br><span class="text-sm text-slate-500">Average Question</span></div>
+    <div class="w-4/12 text-xl">{{examReport?.averageDuration | duration}}<br><span class="text-sm text-slate-500">Average Hours</span></div>
   </div>
+
+  <div class="ranks flex">
+    <div class="w-4/12 text-center" *ngFor="let student of examReport?.students | slice:0:3">
+      <img [src]="student?.imageUrl || 'my-images/default-img.png'" alt="Student image">
+      <h3 class="pt-2">Rank: {{student?.rank}}</h3>
+      <h4 class="percentage">{{student?.percentage}}%</h4>
+      <h5>{{student?.name}}</h5>
+      <h6>{{student?.courseYear}}</h6>
+    </div>
+  </div>
+
+  <mat-table [dataSource]="dataSource" class="w-full report-students">
+    <!-- Student Name Column -->
+    <ng-container matColumnDef="studentname">
+      <th mat-header-cell *matHeaderCellDef> Student Name </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="flex items-center gap-1">
+          <img class="table-img" src="my-images/default-img.png" alt="Student image">
+          {{element.name}}
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Rank Column -->
+    <ng-container matColumnDef="rank">
+      <th mat-header-cell *matHeaderCellDef> Rank </th>
+      <td mat-cell *matCellDef="let element" class="text-sm font-semibold"> {{element.rank}} </td>
+    </ng-container>
+
+    <!-- Year Column -->
+    <ng-container matColumnDef="year">
+      <th mat-header-cell *matHeaderCellDef> Year </th>
+      <td mat-cell *matCellDef="let element" class="text-sm font-semibold"> {{element.courseYear}} </td>
+    </ng-container>
+
+    <!-- Score Column -->
+    <ng-container matColumnDef="score">
+      <th mat-header-cell *matHeaderCellDef> Score </th>
+      <td mat-cell *matCellDef="let element" class="color-red text-sm font-normal"> {{element.percentage}}% </td>
+    </ng-container>
+
+    <!-- Result Column -->
+    <ng-container matColumnDef="result">
+      <th mat-header-cell *matHeaderCellDef> Result </th>
+      <td mat-cell *matCellDef="let element">
+        <div class="status-pass text-sm" *ngIf="element?.resultStatus == 1"> Pass </div>
+        <div class="status-pass text-sm" *ngIf="element?.resultStatus == 0"> Fail </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </mat-table>
+</div>

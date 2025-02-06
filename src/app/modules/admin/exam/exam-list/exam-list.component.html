@@ -24,7 +24,7 @@
                                 <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
                             </div>
                         </div>
-                        <p>{{exam.description}}</p>
+                        <p class="exam-description" [innerHtml]="exam.description"></p>
                         <div class="flex numbers_div">
                             <div class="w-4/12">{{exam.noOfStudents}}<br><span>Students</span></div>
                             <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
@@ -56,7 +56,7 @@
                         <div class="flex">
                             <div class="text-lg">{{exam.name}}</div>
                         </div>
-                        <p>{{exam.description}}</p>
+                        <p class="exam-description" [innerHtml]="exam.description"></p>
                         <div class="flex numbers_div">
                             <div class="w-4/12">{{exam.numberOfAttendees}}/{{exam.noOfStudents}}<br><span>Students</span></div>
                             <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
@@ -69,7 +69,7 @@
                         <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
                         <h2 class="pt-1">Exam Date : {{exam.examDate | date: 'dd/MM/yyyy, h:mm a'}}</h2>
                         <div class="pt-6 flex justify-around">
-                            <button mat-button class="exam_report min-h-12" (click)="openReportCard()">View Exam Report</button>
+                            <a mat-button class="exam_report min-h-12 flex items-center justify-center cursor-pointer" (click)="openReportCard(exam)">View Exam Report</a>
                         </div>
                     </div>
                 </div>                
@@ -88,7 +88,7 @@
                                 <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
                             </div>
                         </div>
-                        <p>{{exam.description}}</p>
+                        <p class="exam-description" [innerHtml]="exam.description"></p>
                         <div class="flex numbers_div">
                             <div class="w-4/12">{{exam.noOfStudents}}<br><span>Students</span></div>
                             <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>

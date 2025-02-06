@@ -43,6 +43,7 @@ export class ListLecturerComponent {
 
   currentSearchText: string = ''; // added by harsh to track current search
   courseyearId: string = ''; 
+  CourseYear: string = ''; 
 
   private _unsubscribeAll: Subject<void> = new Subject<void>();
 
@@ -61,14 +62,18 @@ export class ListLecturerComponent {
         this.loadStudentData();
       });
       this._route.params.subscribe(res=>{
-        this.courseyearId = res.guid
+        this.courseyearId = res.guid;
+        this.loadStudentData()
       })
     this.searchInput = new FormControl('');
-    this._unsubscribeAll = new Subject();
+    
   }
 
   loadStudentData(){
     this._lectureService.onlectureManagementChanged.next(true)
+    this._lectureService.getCourseYearName(this.courseyearId).subscribe((res:any)=>{
+      this.CourseYear = res.name
+    })
   }
 
 

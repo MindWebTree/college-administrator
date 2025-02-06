@@ -3,7 +3,7 @@
         <form>
             <div class="flex flex-wrap sm:flex-nowrap justify-between py-2 items-center">
                 <div>
-                    <h2 class="text-xl font-medium text-[#505050]">Second Year ({{dataSource.paginationData? dataSource.paginationData.count:0}})</h2>
+                    <h2 class="text-xl font-medium text-[#505050]">{{CourseYear}} ({{dataSource.paginationData? dataSource.paginationData.count:0}})</h2>
                 </div>
             
           
@@ -27,9 +27,9 @@
     </div>
     <div class="flex grid  grid-cols-1 sm:grid-cols-2 gap-6 pt-6">
         
-        <div class="lecture_div" [dataSource]="dataSource.data" *ngFor="let user of dataSource.data,let i = index;"  [ngClass]="{'year-one': user.courses[0]?.courseYear === 'First Year','year-two': user.courses[0]?.courseYear === 'Second Year',
-                'year-three': user.courses[0]?.courseYear === 'Third Year',
-               'year-four': user.courses[0]?.courseYear === 'Fourth Year'}">
+        <div class="lecture_div" [dataSource]="dataSource.data" *ngFor="let user of dataSource.data,let i = index;"  [ngClass]="{'year-one': CourseYear === 'First Year','year-two': CourseYear === 'Second Year',
+                'year-three': CourseYear === 'Third Year',
+               'year-four': CourseYear === 'Fourth Year'}">
             <div class="flex grid grid-cols-6 first_div gap-5 relative lg:static">
                 <img class="w-min rounded-full min-h-[70px] min-w-[70px] max-w-[70px]  max-h-[70px] object-cover" [src]="user.imageUrl || 'my-images/default-img.png'">
                 <div class="lecture_details col-span-4 content-center">

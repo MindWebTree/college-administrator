@@ -1,7 +1,7 @@
-::ng-deep mat-dialog-container {
+::ng-deep .report-card-popup mat-dialog-container {
     background: #F4F6F8 !important;
     overflow-y: scroll !important;
-    height: 100vh !important;
+    height: 80vh !important;
     border-radius: 4px !important;
 }
 
@@ -49,20 +49,38 @@ h2 {
 .ranks img {
     width: auto;
     margin: 0 auto;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
 }
 
 .ranks {
-    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    border: 1px solid rgba(var(--fuse-primary-rgb), .5) !important;
     padding: 20px 0;
     border-radius: 4px;
     background: white;
     margin-bottom: 10px;
 }
-
+::ng-deep .table-img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 5px;
+    border: 1px solid rgba(var(--fuse-primary-rgb), .5) !important;
+    margin: 10px 0;
+    background: rgba(var(--fuse-primary-rgb), 0.08) !important;
+}
 .percentage {
     color: #28C397;
     font-size: 24px;
     padding: 6px 0;
+}
+::ng-deep .report-students{
+    border: 1px solid rgba(var(--fuse-primary-rgb), .5) !important;
+}
+::ng-deep .report-students .mat-mdc-header-cell.mdc-data-table__header-cell.cdk-header-cell {
+    line-height: 50px;
+    background: rgba(var(--fuse-primary-rgb), .1) !important;
 }
 
 .stats div {

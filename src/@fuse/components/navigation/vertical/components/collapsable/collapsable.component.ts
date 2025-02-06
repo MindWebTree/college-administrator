@@ -22,6 +22,7 @@ import { FuseVerticalNavigationDividerItemComponent } from '@fuse/components/nav
 import { FuseVerticalNavigationGroupItemComponent } from '@fuse/components/navigation/vertical/components/group/group.component';
 import { FuseVerticalNavigationSpacerItemComponent } from '@fuse/components/navigation/vertical/components/spacer/spacer.component';
 import { FuseVerticalNavigationComponent } from '@fuse/components/navigation/vertical/vertical.component';
+import { CreateQuestionListFilterComponent } from 'app/modules/admin/question-management/create-question-list-filter/create-question-list-filter.component';
 import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({
@@ -38,6 +39,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
         forwardRef(() => FuseVerticalNavigationCollapsableItemComponent),
         FuseVerticalNavigationDividerItemComponent,
         FuseVerticalNavigationGroupItemComponent,
+        CreateQuestionListFilterComponent,
         FuseVerticalNavigationSpacerItemComponent
     ],
 })

@@ -62,6 +62,12 @@ export class CommanService {
       })
     );
   }
+  getlecturerNavigationList(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer-navigation/`).pipe(
+      tap((response: any) => {
+      })
+    );
+  }
   getLevel(): Observable<any> {    
     return this._httpClient.get<any>(`${environment.apiURL}/common/levels/`, {  });
   }

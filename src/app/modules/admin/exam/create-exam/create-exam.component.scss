@@ -80,6 +80,9 @@ mat-form-field {
     width: 35px;
     height: 35px;
 }
+::ng-deep .create_account mat-step-header {
+    pointer-events: none;
+}
 
 ::ng-deep .demo-section mat-checkbox.checkbox-question {
     position: relative;
@@ -527,6 +530,9 @@ body .light .mat-step-header .mat-step-icon {
         flex-wrap: wrap;
         justify-content: center;
         gap: 0px 10px;
+}
+.copy-link{
+    width: 330px;
 }
 
 @media only screen and (max-width: 1199px) {

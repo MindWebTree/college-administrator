@@ -11,11 +11,14 @@ export class ExamService {
   onUpcomingExamListChanged: BehaviorSubject<any>;
   onCompletedExamListChanged: BehaviorSubject<any>;
   onCancelledExamListChanged: BehaviorSubject<any>;
+  onExamReportListChanged: BehaviorSubject<any>;
+
   constructor(private _httpClient: HttpClient) {
     this.onExamListChanged = new BehaviorSubject([]);
     this.onUpcomingExamListChanged = new BehaviorSubject([]);
     this.onCompletedExamListChanged = new BehaviorSubject([]);
     this.onCancelledExamListChanged = new BehaviorSubject([]);
+    this.onExamReportListChanged = new BehaviorSubject([]);
   }
 
   getExamList(payload) {
@@ -40,11 +43,17 @@ export class ExamService {
   CreateExam(data): Observable<any> {
     return this._httpClient.post<any[]>(`${environment.apiURL}/exam/create/`, data);
   }
+  UpdateExam(data): Observable<any> {
+    return this._httpClient.post<any[]>(`${environment.apiURL}/exam/update/`, data);
+  }
   getExamByid(id) {
     return this._httpClient.get(`${environment.apiURL}/exam/get-by-id/${id}`, {});
   }
   getCourseYear(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/course/courseyear`)
+  }
+  getExamReport(id): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/exam/exam-report/${id}`)
   }
 
 }

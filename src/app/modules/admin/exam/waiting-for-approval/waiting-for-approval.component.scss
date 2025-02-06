@@ -131,3 +131,16 @@ h1 {
 ::ng-deep .delete-choice .mat-dialog-container.mat-dialog-container {
     height: inherit !important;
 }
+::ng-deep .exam-description{
+    overflow: hidden;
+}
+::ng-deep .exam-description p{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    width: 100%;
+    white-space: normal;
+}

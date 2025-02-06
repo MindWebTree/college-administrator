@@ -110,7 +110,7 @@ export class NavigationMockApi {
             case 'Students':
                 return await this._CommanService.getstudentNavigationList().toPromise();
             case 'Lecturers':
-                return await this._CommanService.getstudentNavigationList().toPromise();
+                return await this._CommanService.getlecturerNavigationList().toPromise();
             default:
                 return [];
         }

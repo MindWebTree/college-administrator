@@ -3,7 +3,7 @@
         <form>
             <div class="flex flex-wrap sm:flex-nowrap justify-between py-2 items-center">
                 <div>
-                    <h2 class="text-xl font-medium text-[#505050]">Second Year ({{dataSource.paginationData? dataSource.paginationData.count:0}})</h2>
+                    <h2 class="text-xl font-medium text-[#505050]">{{CourseYear}} ({{dataSource.paginationData? dataSource.paginationData.count:0}})</h2>
                 </div>
             
           
@@ -60,9 +60,9 @@
                     <mat-icon class="cursor-pointer text-[#505050]" (click)="deleteStudent(user)">delete</mat-icon>
                 </div>
             </div>
-            <div class="flex grid grid-cols-6 second_div"  [ngClass]="{'year-one': user.course[0]?.courseYear === 'First Year','year-two': user.course[0]?.courseYear === 'Second Year',
-                'year-three': user.course[0]?.courseYear === 'Third Year',
-               'year-four': user.course[0]?.courseYear === 'Fourth Year'}">
+            <div class="flex grid grid-cols-6 second_div"  [ngClass]="{'year-one': CourseYear === 'First Year','year-two': CourseYear === 'Second Year',
+                'year-three': CourseYear === 'Third Year',
+               'year-four': CourseYear === 'Fourth Year'}">
                 <div></div>
                 <div class="students_details col-span-5">
                     <div class="flex grid grid-cols-2 stats">

@@ -15,7 +15,7 @@ import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { CommanService } from 'app/modules/common/comman.service';
 import { ApiErrorHandlerService } from '../../common/api-error-handler.service';
 import { QuestionSearchList } from '../../qbank/QuestionModel';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -118,9 +118,9 @@ export class CreateExamComponent implements OnInit {
   questionDetails: any;
   selectedQuestionId: number;
   QuestionData: any = [];
-  QuestionSelected: any = [];
-  NoofSelectedQuestion: string;
-  TotalSelectQuestion: any = 0;
+  QuestionSelected: Array<number>=[];
+  NoofSelectedQuestion: number;
+
   durationMinuts: any;
   QbankCategory: any;
   ckeConfig: any;
@@ -143,6 +143,7 @@ export class CreateExamComponent implements OnInit {
     private _commonService: CommanService,
     private _helpservice: helperService,
     private dialog: MatDialog,
+    private _location: Location,
     private _examService: ExamService,
     private _errorHendling: ApiErrorHandlerService
   ) {
@@ -207,50 +208,64 @@ export class CreateExamComponent implements OnInit {
        
         this.getQbank(this.qBankCategorySelected,true);
         this.getQbanksubject(this.editExamDetails.qBankTypeId);
-        this.selectSubject(this.editExamDetails.subjectId);
-        this.editExamDetails?.topics.forEach((topicId) => {
-          this.OnclickTopic(topicId, "");
-        });
-        this.editExamDetails?.cbmeCodeId.forEach((cbmeCodeId) => {
-          this.OnclickCmbeCode(cbmeCodeId);
-        });
-        let courseSelected :any=[];
-        this.editExamDetails?.courses.forEach((course) => {
-          courseSelected.push(course.courseYearId);
-          const selectedCourseCount =  this.Courses.find(c=>c.id == course.courseYearId)?.count
-          this.studentCourseList.push({ courseYearId: course.courseYearId, CourseYear: course.courseYear, noOfStudent: selectedCourseCount, courseId : course.courseId });
-         
-        });
+        const date = this.editExamDetails.examDate.split('T')[0];
+        const startTime = this.editExamDetails.examDate.split('T')[1];
+        const endTime = this.editExamDetails.examEndDate?.split('T')[1];
+        this.CreateExamSchedule.get('ExamDate').patchValue(date);
+        this.CreateExamSchedule.get('StartTime').patchValue(startTime);
+        this.CreateExamSchedule.get('EndTime').patchValue(endTime);
+        console.log(this.CreateExamSchedule.get('ExamDate').value)
+        this._commonService.getTopics(this.editExamDetails.subjectId, this.qBankCategorySelected).subscribe(res => {
+          if (res) {
+            this.topics = res;
+            this.selectSubject(this.editExamDetails.subjectId,true);
+            this.editExamDetails?.topics.forEach((topicId) => {
+              this.OnclickTopic(topicId, "");
+            });
+            this.editExamDetails?.cbmeCodeId.forEach((cbmeCodeId) => {
+              this.OnclickCmbeCode(cbmeCodeId);
+            });
+            let courseSelected: any = [];
+            this.editExamDetails?.courses.forEach((course) => {
+              courseSelected.push(course.courseYearId);
+              const selectedCourseCount = this.Courses.find(c => c.id == course.courseYearId)?.count
+              this.studentCourseList.push({ courseYearId: course.courseYearId, CourseYear: course.courseYear, noOfStudent: selectedCourseCount, courseId: course.courseId });
 
-        this.TotalSelectQuestion = this.editExamDetails.noOfQuestions;
-        this.QuestionSelected = this.editExamDetails.questions;
+            });
 
-        this.CreateExamQbank.patchValue({
-          ExamName: this.editExamDetails.name,
-          ExamDescription: this.editExamDetails.description,
-          QbankCategory: this.editExamDetails.qbankCategoryId,
-          Studies: this.editExamDetails.qBankTypeId,
-          Subject: this.editExamDetails.subjectId,
-          Topic: this.editExamDetails.topics,
-          CBMECode: this.editExamDetails.cbmeCodeId,
-          CompetencyLevel: this.editExamDetails.competencyLevelId,
-          LevelofQuestions: this.editExamDetails.levelOfQuestionId,
-          NumberofQuestions: this.editExamDetails.noOfQuestions
-        });
-        this.CreateListFilter.patchValue({
-          // tags: this.editExamDetails.tags
-        }),
-        this.CreateExamSchedule.patchValue({
-          students: courseSelected,
-          examType: this.editExamDetails.examMode,
-          ExamDate: this.editExamDetails.examDate,
-          StartTime: this.editExamDetails.examEndDate,
-          EndTime: this.editExamDetails.examEndDate,
-          ShuffleAnswer: this.editExamDetails.shuffleAnswer,
-          ShuffleQuestion: this.editExamDetails.shuffleQuestion,
-          viewResult: this.editExamDetails.canViewResult,
-          Percentage: this.editExamDetails.percentagePassMarks
+           
+            this.QuestionSelected = this.editExamDetails.questions;
+
+            console.log(this.CreateExamQbank.get('Topic').value, "value topic11")
+            this.CreateExamQbank.patchValue({
+              ExamName: this.editExamDetails.name,
+              ExamDescription: this.editExamDetails.description,
+              QbankCategory: this.editExamDetails.qbankCategoryId,
+              Studies: this.editExamDetails.qBankTypeId,
+              Subject: this.editExamDetails.subjectId,
+              Topic: this.editExamDetails.topics.map(t=> t),
+              CBMECode: this.editExamDetails.cbmeCodeId,
+              CompetencyLevel: this.editExamDetails.competencyLevelId,
+              LevelofQuestions: this.editExamDetails.levelOfQuestionId,
+              NumberofQuestions: this.editExamDetails.noOfQuestions
+            });
+            
+            this.CreateListFilter.patchValue({
+              // tags: this.editExamDetails.tags
+            });
+              this.CreateExamSchedule.patchValue({
+                students: courseSelected,
+                examType: this.editExamDetails.examMode,
+                ShuffleAnswer: this.editExamDetails.shuffleAnswer,
+                ShuffleQuestion: this.editExamDetails.shuffleQuestion,
+                viewResult: this.editExamDetails.canViewResult,
+                Percentage: this.editExamDetails.percentagePassMarks
+              })
+
+          }
+
         })
+        
       })
     }
     })
@@ -318,6 +333,7 @@ export class CreateExamComponent implements OnInit {
   }
 
   getExamListing() {
+  
     this.examDetails = this.CreateExamQbank.value;
     if(this.CreateExamQbank.invalid){
       this.isQbankformHaserror = true;
@@ -347,7 +363,7 @@ export class CreateExamComponent implements OnInit {
             cbmeCodeId: this.CreateExamQbank.get('CBMECode').value.length > 0 ? this.CreateExamQbank.get('CBMECode').value : [],
             tags: this.CreateListFilter.get('tags').value > 0 ? this.CreateListFilter.get('tags').value :0
           };
-          this.dataSource.getQuestionList(gridFilter)
+            this.dataSource.getQuestionList(gridFilter, this.QuestionSelected)
           this.NoofSelectedQuestion = this.CreateExamQbank.get('NumberofQuestions').value
         })
     }
@@ -374,6 +390,7 @@ export class CreateExamComponent implements OnInit {
   }
   // Get Qbank
   getQbank(CategoryName,isInit=false){
+    
     this._commonService.getQBankTypes(CategoryName).subscribe((response: any) => {
       this.qBankCategorySelected =  CategoryName
       this.qbanktype = response;
@@ -388,6 +405,7 @@ export class CreateExamComponent implements OnInit {
         this.CBMEcodeList = [];
       }
     })
+    
   } 
   // Get Qbank Subject 
   getQbanksubject(QbankTypeID: number) {
@@ -405,9 +423,10 @@ export class CreateExamComponent implements OnInit {
     })
   }
   // get Topics here 
-  selectSubject(subjectID: number, onload: boolean = false) {
+  selectSubject(subjectID: number, ngonit=false) {
     this._commonService.getTopics(subjectID,this.qBankCategorySelected).subscribe(res => {
       this.topics = res;
+      if(!ngonit){
       if (!this.topics.find(t => t.id == this.CreateExamQbank.get('Topic').value)) {
         this.CreateExamQbank.get('Topic').setValue('');
         this.CreateExamQbank.get('CBMECode').setValue('');
@@ -415,11 +434,11 @@ export class CreateExamComponent implements OnInit {
         this.TopicsList = [];
         this.CBMEcodeList = [];
       }
+    }
     })
   }
   //Get CBme here and push data in topic chip.
   OnclickTopic(topic, Cbme: any) {
-
     const topicTitle = this.topics.find(t => t.id === topic)?.title;
     var index = this.TopicsList.findIndex(i => i.ID == topic);
     if (index > -1) {
@@ -439,7 +458,6 @@ export class CreateExamComponent implements OnInit {
         }
       })
     }
-    console.log(this.TopicsList,"TopicsList")
   }
   getTopicName(ID){
     return this.topics.find(t => t.id === ID)?.title;
@@ -632,10 +650,9 @@ export class CreateExamComponent implements OnInit {
   //CheckBox Popup and Push QuestioId in Selected Question
   onChange(event: any, questionDetailID: any) {
     const index = this.QuestionSelected.findIndex(i => i === questionDetailID);
-
     if (index > -1) {
       this.QuestionSelected.splice(index, 1);
-    } else if (this.QuestionSelected.length < this.NoofSelectedQuestion) {
+    } else if (this.QuestionSelected.length < this.NoofSelectedQuestion   ) {
       this.QuestionSelected.push(questionDetailID);
     } else {
       // User tried to select more checkboxes than allowed, show a popup and uncheck the checkbox
@@ -646,20 +663,26 @@ export class CreateExamComponent implements OnInit {
       return false;
     }
     // Update TotalSelectQuestion to enable diable button
-    this.TotalSelectQuestion = this.QuestionSelected.length;
+
   }
   goToFirStep() {
     this.stepper.selectedIndex = 0;
   }
   // Create Exam 
   Onsubmit() {
+    if(this.CreateExamSchedule.get('examType')?.value == 0){
+      this.CreateExamSchedule.get('EndTime')?.clearValidators();
+      this.CreateExamSchedule.get('EndTime')?.updateValueAndValidity();
+      // this.CreateExamSchedule.get('EndTime').patchValue('00:00');
+      console.log(this.CreateExamSchedule.get('EndTime'),"asdfsdf")
+    }
     // this.isFormSubmitted = true;
-    
+    console.log(this.examId,"this.examId")
     if (this.CreateExamSchedule.invalid) {
       this.IsSheduleFormHasError = true;
     }
 
-    else {
+    else if(this.examId == undefined){
       
 
     const selectedDate: Date = this.CreateExamSchedule.get('ExamDate')?.value;
@@ -667,9 +690,14 @@ export class CreateExamComponent implements OnInit {
     const endTime: string = this.CreateExamSchedule.get('EndTime')?.value;
 
     // Convert date and time to UTC format (yyyy-MM-ddTHH:mm:ss.SSZ)
-    const formattedExamStartDate  = this.combineDateTime(selectedDate, startTime);
-    const formattedExamEndDate  = this.combineDateTime(selectedDate, endTime);
+    if(this.CreateExamSchedule.get('examType')?.value == 0){
+    var formattedExamStartDate  = this.combineDateTime(selectedDate, startTime);
+    }else{
+      var formattedExamStartDate  = this.combineDateTime(selectedDate, startTime);
+      var formattedExamEndDate  = this.combineDateTime(selectedDate, endTime);
 
+    }
+    
       var FormData: CreateExam = {
         name: this.CreateExamQbank.get('ExamName').value,
         description: this.CreateExamQbank.get('ExamDescription').value,
@@ -695,8 +723,8 @@ export class CreateExamComponent implements OnInit {
         tags: [this.CreateListFilter.get('tags').value],
         configuration: '',
         questions: this.QuestionSelected,
-        examDate: formattedExamStartDate,
-        examEndDate: formattedExamEndDate,
+        examDate: formattedExamStartDate || null,
+        examEndDate: formattedExamEndDate || null,
         qbankCategoryId: this.CreateExamQbank.get('QbankCategory').value,
         shuffleAnswer: this.CreateExamSchedule.get('ShuffleAnswer').value,
         shuffleQuestion: this.CreateExamSchedule.get('ShuffleQuestion').value,
@@ -720,9 +748,74 @@ export class CreateExamComponent implements OnInit {
       }
       )
     }
+    else{
+      const selectedDate: Date = this.CreateExamSchedule.get('ExamDate')?.value;
+      const startTime: string = this.CreateExamSchedule.get('StartTime')?.value;
+      const endTime: string = this.CreateExamSchedule.get('EndTime')?.value;
+  
+      // Convert date and time to UTC format (yyyy-MM-ddTHH:mm:ss.SSZ)
+      if(this.CreateExamSchedule.get('examType')?.value == 0){
+        var formattedExamStartDate  = this.combineDateTime(selectedDate, startTime);
+        }else{
+          var formattedExamStartDate  = this.combineDateTime(selectedDate, startTime);
+          var formattedExamEndDate  = this.combineDateTime(selectedDate, endTime);
+    
+        }
+  
+        var FormData: CreateExam = {
+          name: this.CreateExamQbank.get('ExamName').value,
+          description: this.CreateExamQbank.get('ExamDescription').value,
+          // qbankCategory: this.CreateExamQbank.get('Qbank').value,
+          // qbankTypeId: this.CreateExamQbank.get('Studies').value,
+          subjectId: this.CreateExamQbank.get('Subject').value,
+          topics: this.CreateExamQbank.get('Topic').value,
+          // cmbeCodes: this.CreateExamQbank.get('CBMECode').value,
+          // levelId: this.CreateExamQbank.get('CompetencyLevel').value,
+          // levelIdOfQuestion: this.CreateExamQbank.get('LevelofQuestions').value,
+          noOfQuestions: this.CreateExamQbank.get('NumberofQuestions').value,
+          courses: this.studentCourseList?.length > 0 ? this.studentCourseList : [],
+          // examType: this.CreateExamSchedule.get('examType').value,
+          examStatus: 0,
+          id: this.examId,
+          mcqCode: '',
+          cbmeCodeId: this.CreateExamQbank.get('CBMECode').value,
+          qBankTypeId: this.CreateExamQbank.get('Studies').value,
+          competencyLevelId: this.CreateExamQbank.get('CompetencyLevel').value,
+          levelOfQuestionId: this.CreateExamQbank.get('LevelofQuestions').value,
+          examDuration: 0,
+          examMode: this.CreateExamSchedule.get('examType').value,
+          tags: [this.CreateListFilter.get('tags').value],
+          configuration: '',
+          questions: this.QuestionSelected,
+          examDate: formattedExamStartDate,
+          examEndDate: formattedExamEndDate,
+          qbankCategoryId: this.CreateExamQbank.get('QbankCategory').value,
+          shuffleAnswer: this.CreateExamSchedule.get('ShuffleAnswer').value,
+          shuffleQuestion: this.CreateExamSchedule.get('ShuffleQuestion').value,
+          canViewResult: this.CreateExamSchedule.get('viewResult').value,
+          percentagePassMarks: this.CreateExamSchedule.get('Percentage').value,
+          evaluationCompleteOn: null,
+          noOfStudents: this.CreateExamQbank.get('NumberofQuestions').value,
+          numberOfAttendees: 0,
+          averageDuration: 0
+        }
+  
+        this._examService.UpdateExam(FormData).subscribe(response => {
+          if (response) {
+            // this.isFormSubmitted = true;
+            this._examService.getExamByid(response.id).subscribe(res=>{
+              this.createdExamDetails = res;
+              this._location.back();
+            })
+          }
+        }, (error) => {
+          this._errorHendling.handleError(error)
+        }
+        )
+    }
   }
-  combineDateTime(date: Date, time: string): string {
-    const [hours, minutes] = time.split(':').map(Number);
+  combineDateTime(date: Date, time?: string): string {
+    const [hours, minutes] = time?.split(':')?.map(Number);
     const formattedDate = new Date(date);
 
     formattedDate.setHours(hours, minutes, 0, 0); // Set hours & minutes
@@ -762,7 +855,7 @@ export class CreateExamComponent implements OnInit {
     })
   }
   clearAllSecondStep(){
-    this.TotalSelectQuestion = 0;
+  
     this.QuestionSelected = [];
   }
 
@@ -792,7 +885,7 @@ export class QuestionlistDataSource extends DataSource<QuestionListModel>
     return this._questionService.question_list;
   }
   //Get Question here for Listing 
-  getQuestionList(gridFilter: QuestionSearchList) {
+  getQuestionList(gridFilter: QuestionSearchList,QuestionSelected: Array<number>) {
     this._questionService.getQuestion(gridFilter).pipe(
       catchError(() => of([])),
       finalize(() => {
@@ -801,13 +894,26 @@ export class QuestionlistDataSource extends DataSource<QuestionListModel>
     )
       .subscribe((res: any) => {
         this.QuestionList = res?.data;
+      //   this.TotalSelectQuestion = 0;
+      // this.QuestionSelected = [];
+      const excludedQuestionId = [];
+      QuestionSelected.forEach(id=>{
+        if (!this.QuestionList.some(q => q.questionDetailId == id)) {
+          excludedQuestionId.push(id);
+        }
+      });
+    
+      QuestionSelected.splice(0, QuestionSelected.length, ...QuestionSelected.filter(id => !excludedQuestionId.includes(id)));
+
+  
+    
         this.paginationData = {
           count: res?.Count,
           pageNumber: res?.CurrentFilter?.PageNumber
         };
       }
       );
-
+     
   }
 
 }
