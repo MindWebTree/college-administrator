@@ -2,73 +2,73 @@
 import { FuseNavigationItem } from '@fuse/components/navigation';
 export const AdminNavigation: FuseNavigationItem[] = [
     {
-        id   : 'Dashboard',
+        id: 'Dashboard',
         title: 'Dashboard',
-        type : 'basic',
+        type: 'basic',
         // icon : 'heroicons_outline:chart-pie',
-        link : '/example',
-        roles : ["Lecturer", "CollegeAdministrator"]
+        link: '/dashboard',
+        roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
-        id   : "ADrPLEXUS Q'Bank",
+        id: "ADrPLEXUS Q'Bank",
         title: "ADrPLEXUS Q'Bank",
         type: 'basic',
-        SubType: 'collapsable', 
+        SubType: 'collapsable',
         // icon : 'heroicons_outline:chart-pie',
-        link : '/qbank/adrplexus-qbank',
-        roles : ["Lecturer", "CollegeAdministrator"]
+        link: '/qbank/adrplexus-qbank',
+        roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
         id: 'Exams',
         title: 'Exams',
         type: 'collapsable',
         children: [],
-        roles : ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator"]
     },
     {
         id: 'Students',
         title: 'Students',
         type: 'collapsable',
         children: [
-        //     {
-        //         id: 'createaccount',
-        //         title: 'Create Account',
-        //         type: 'basic',
-        //         link: ''
-        // },
+            //     {
+            //         id: 'createaccount',
+            //         title: 'Create Account',
+            //         type: 'basic',
+            //         link: ''
+            // },
         ],
-        roles : ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator"]
     },
     {
         id: 'Lecturers',
         title: 'Lecturers',
         type: 'collapsable',
         children: [
-        //     {
-        //         id: 'createaccount',
-        //         title: 'Create Account',
-        //         type: 'basic',
-        //         link: ''
-        // },
+            //     {
+            //         id: 'createaccount',
+            //         title: 'Create Account',
+            //         type: 'basic',
+            //         link: ''
+            // },
         ],
-        roles : ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator"]
     }
 ];
 export const LecturerNavigation: FuseNavigationItem[] = [
     {
-        id   : 'Dashboard',
+        id: 'Dashboard',
         title: 'Dashboard',
-        type : 'basic',
+        type: 'basic',
         // icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        link: '/example'
     },
     {
-        id   : "ADrPLEXUS Q'Bank",
+        id: "ADrPLEXUS Q'Bank",
         title: "ADrPLEXUS Q'Bank",
         type: 'basic',
         SubType: 'collapsable',
-        link : '/qbank/adrplexus-qbank',
-        roles : ["Lecturer", "CollegeAdministrator"]
+        link: '/qbank/adrplexus-qbank',
+        roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
         id: 'Exam',
@@ -80,92 +80,92 @@ export const LecturerNavigation: FuseNavigationItem[] = [
                 title: 'Create Exam',
                 type: 'basic',
                 link: '/exam/create',
-                roles : ["Lecturer"]
+                roles: ["Lecturer"]
             },
             {
                 id: 'examlist',
                 title: 'Exam List',
                 type: 'basic',
                 link: '/exam/listing',
-                roles : ["Lecturer"]
+                roles: ["Lecturer"]
             },
         ],
-        roles : ["Lecturer"]
+        roles: ["Lecturer"]
     },
 ];
 export const StudentNavigation: FuseNavigationItem[] = [];
 export const defaultNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
+        id: 'example',
         title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example',
-        
-        roles : ["Lecturer", "CollegeAdministrator"]
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/example',
+
+        roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
-        id   : 'example',
+        id: 'example',
         title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/examples',
-        roles : ["Lecturer", "CollegeAdministrator"]
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/examples',
+        roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
-        id   : "ADrPLEXUS Q'Bank",
+        id: "ADrPLEXUS Q'Bank",
         title: "ADrPLEXUS Q'Bank",
         type: 'basic',
-        SubType: 'collapsable', 
-        link : '/qbank/adrplexus-qbank',
-        roles : ["Lecturer", "CollegeAdministrator"]
+        SubType: 'collapsable',
+        link: '/qbank/adrplexus-qbank',
+        roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
         id: 'Exams',
         title: 'Exams',
         type: 'collapsable',
         children: [],
-        roles : ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator"]
     },
     {
         id: 'Students',
         title: 'Students',
         type: 'collapsable',
         children: [],
-        roles : ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator"]
     },
     {
         id: 'Lecturers',
         title: 'Lecturers',
         type: 'collapsable',
         children: [],
-        roles : ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator"]
     }
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
+        id: 'example',
         title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/example'
     }
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
+        id: 'example',
         title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/example'
     }
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
-        id   : 'example',
+        id: 'example',
         title: 'Example',
-        type : 'basic',
-        icon : 'heroicons_outline:chart-pie',
-        link : '/example'
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/example'
     }
 ];

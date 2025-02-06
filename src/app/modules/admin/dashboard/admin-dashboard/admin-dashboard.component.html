@@ -1,0 +1,212 @@
+<div class="flex flex-col flex-auto min-w-0 dashboard">
+
+    <!-- Header -->
+    <div class="">
+        <h1 class="pt-8 pl-8 pb-0 text-3xl font-normal">Welcome to Dashboard <span class="text-primary">{{_userAccount?.fullName}}</span></h1>
+        <!----------- Section-1 Start-------->
+        <div>
+        <div class="carousel_div">
+            <owl-carousel-o [options]="customOptions" >
+                <ng-container>
+                    <ng-template carouselSlide *ngFor="let c of courseYear">
+                        <a class="card border-0">
+                            <div class="card-body" [ngClass]="{'year-one': c.name  === 'First Year','year-two': c.name  === 'Second Year','year-three': c.name  === 'Third Year','year-four': c.name  === 'Fourth Year'}">
+                               <h2>{{ c.name }} {{ today | date:'yyyy' }}-{{ (today.getFullYear() + 1) }}</h2>
+                                <h3>{{c.noOfStudents}}<span class="text-primary">/students</span></h3>
+                            </div>
+                        </a>
+                    </ng-template>
+                  
+                </ng-container>
+
+            </owl-carousel-o>
+        </div>
+        </div>
+        <!----------- Section-1 End-------->
+
+        <!----------- Section-2 Start-------->
+        <div class="flex flex-col w-full  mx-auto p-8">
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
+                <div class="bg-card rounded box-shadow" *ngFor="let q of qbankTypes">
+                    <div class="rounded bg-card border-none p-6 pb-0 border bg-[#D2F6E5] plus_bg">
+                        <h2 class="text-2xl text-[#388863]">{{q.title}}</h2>
+                        <h3 class="text-6xl	text-[#388863] font-semi-bold">{{q.noOfQuestions}}<span class="text-sm">/ Questions</span></h3>
+                    </div>
+                    <div>
+                        <h4 class="flex items-center py-4 px-6 font-medium">{{q.noOfOwnedQuestions}}/ Owned Questions</h4>
+                    </div>
+                </div>
+             
+            </div>
+        </div>
+        <!----------- Section-2 End-------->
+
+        <!----------- Section-3 Start-------->
+        <div class="carousel_div">
+            <h2 class="pl-3 text-lg pb-2">List of Subjects</h2>
+            <owl-carousel-o [options]="ListSubject">
+                <ng-container >
+                    <ng-template carouselSlide *ngFor="let s of subject">
+                        <a class="card border-0">
+                            <div class="card2-body text-center">
+                                <div class="card_img">
+                                    <img [src]="s.image">
+                                </div>
+                                <div class="py-2">
+                                    <h4 class="font-normal">{{s.title}}</h4>
+                                    <h5 class="font-light text-sm">{{s.noOfQuestion}} Questions</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </ng-template>
+                   
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+        <!----------- Section-3 End-------->
+
+        <!----------- Section-4 Start-------->
+        <div class="grid sm:grid-cols-2 md:grid-cols-2 gap-4 p-8">
+            <div class="p-6 bg-card shadow rounded overflow-hidden border border-primary box-shadow">
+
+                <div class="float-left w-1/2 text-lg tracking-tight leading-6 truncate font-medium">Top Subjects</div>
+                <div class="float-right ">
+                    <form>
+                    <mat-form-field class="form-element block border-primary">
+                      <mat-select [(value)]="selectedTopSubjects" #selectedYear (selectionChange)="onYearSelected(selectedYear)">
+                     <mat-option selected value="" disabled>Select a course year</mat-option>
+                         <!-- Dynamically populate the course list -->
+                       <mat-option *ngFor="let course of courseList" [value]="course.guid">{{ course.name }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                 </form>
+
+                </div>
+                <div class=" flex gap-12 pt-1 ml-7 text-sm text-base tracking-tight leading-6 truncate font-medium w-full">
+                    <p>Subjects</p>
+                    <p>Average Marks</p>
+                </div>
+                <!--------- App charts Linear Chart --------->
+                <div id="linearchart">
+
+                    <apx-chart [series]="linearChartOptions.series" [chart]="linearChartOptions.chart" [dataLabels]="linearChartOptions.dataLabels" [plotOptions]="linearChartOptions.plotOptions" [xaxis]="linearChartOptions.xaxis"></apx-chart>
+                </div>
+                <!------------ App chart Linear chart end -->
+            </div>
+            <div class="p-6 bg-card shadow rounded overflow-hidden border border-primary box-shadow">
+                <div class="float-left w-1/2 text-lg tracking-tight leading-6 truncate font-medium">Exams Overview
+                </div>
+                <div class="float-right">
+                    <form>
+                        <mat-form-field class="form-element block border-primary">
+                        <mat-select [(value)]="selectedExamOverviewGuid" #selectedMonth (selectionChange)="onMonthSelected(selectedMonth)">
+                        <mat-option value="" disabled>Select any</mat-option>
+                        <mat-option *ngFor="let year of courseList" [value]="year.guid">{{ year.name }}</mat-option>
+                         </mat-select>
+                        </mat-form-field>
+                    </form>
+                </div>
+                <!--------- App charts Line Chart --------->
+                <div id="chart">
+                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis" [xaxis]="chartOptions.xaxis" [fill]="chartOptions.fill" [responsive]="chartOptions.responsive"></apx-chart>
+                </div>
+                <!--------- App charts Line Chart end --------->
+            </div>
+        </div>
+        <!----------- Section-4 End-------->
+
+        <!----------- List -------->
+        <div class="flex flex-col w-full  mx-auto p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-4">
+                <div class="flex flex-col md:col-span-1 lg:col-span-2  col-auto w-full mx-auto box-shadow">
+                    <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded overflow-hidden border border-primary">
+                            <div class="text-lg tracking-tight leading-6 truncate font-medium">KMCH Questions Creator
+                            </div>
+                            <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                                <table class="w-full overflow-y-visible" mat-table [dataSource]="dataSource">
+
+                                    <!-- Type -->
+                                    <ng-container matColumnDef="Name" sticky>
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50 w-28">
+                                            Name
+                                        </th>
+                                        <td mat-cell *matCellDef="let user">
+                                            <span class="flex items-center w-30 underline text-primary">
+                                                {{user.fullName}}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Total -->
+                                    <ng-container matColumnDef="Qbank">
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
+                                            Qbank
+                                        </th>
+                                        <td mat-cell *matCellDef="let user">
+                                            <span class="font-medium text-right">
+                                                {{user.qBankType}}
+                                            </span>
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Expenses amount -->
+                                    <ng-container matColumnDef="ApprovedQst">
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
+                                            Questions
+                                        </th>
+                                        <td mat-cell *matCellDef="let user">
+                                            {{user.questions}}
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Expenses percentage -->
+                                    <ng-container matColumnDef="Used.Quest">
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
+                                            Used.Quest
+                                        </th>
+                                        <td mat-cell *matCellDef="let user">
+                                            {{user.usedQuestions}}
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Remaining amount -->
+                                    <ng-container matColumnDef="Status">
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
+                                            Status
+                                        </th>
+                                        <td mat-cell *matCellDef="let user">
+                                            <mat-icon class="active-status text-sm" *ngIf="user.isActive" color="primary">circle</mat-icon>
+                                            <mat-icon class="inactive-status text-sm" *ngIf="user.isDeleted" color="warn">circle</mat-icon>
+                                            {{ user.isActive ? 'Active' : 'Deleted' }}
+                                        </td>
+                                    </ng-container>
+
+                                    <!-- Remaining percentage -->
+
+
+                                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 bg-card shadow rounded items-center overflow-hidden border border-primary box-shadow">
+
+                    <!--- Pie Chart-->
+                    <div id="chart" class="h-full flex flex-wrap w-full text text-center justify-center">
+                        <div class="text-lg tracking-tight leading-6 truncate font-medium">Q'Bank Overview</div>
+                       
+                        <apx-chart class="piechart-div" [series]="pieChartOptions.series" [chart]="pieChartOptions.chart" [colors]="pieChartOptions.colors" [labels]="pieChartOptions.labels" [responsive]="pieChartOptions.responsive"   [legend]="pieChartOptions.legend"></apx-chart>
+                   
+                    </div>
+                    <!--- Pie Chart end-->
+
+                </div>
+            </div>
+        </div>
+        <!----------- List end-------->
+
+    </div>
+</div>

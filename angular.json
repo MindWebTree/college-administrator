@@ -50,7 +50,9 @@
                             "src/styles/vendors.scss",
                             "src/@fuse/styles/main.scss",
                             "src/styles/styles.scss",
-                            "src/styles/tailwind.scss"
+                            "src/styles/tailwind.scss",
+                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
+                            "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.theme.default.min.css"
                         ],
                         "scripts": []
                     },
