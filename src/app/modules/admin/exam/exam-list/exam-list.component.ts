@@ -66,6 +66,9 @@ export class ExamListComponent implements OnInit{
     public dialog: MatDialog,
     private _examService: ExamService
   ){
+    this._unsubscribeAll?.next();
+    this._unsubscribeAll?.complete();
+    this._unsubscribeAll = new Subject<void>();
     this.ExamReSchedule = this._formbuilder.group({
         ExamDate: ['', Validators.required],
         StartTime: ['', Validators.required],
