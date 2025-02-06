@@ -10,7 +10,7 @@
                         <mat-icon (click)="deleteExam(exam.id)">delete</mat-icon>
                     </div>
                 </div>
-                <p>{{exam.description}}</p>
+                <p class="exam-description" [innerHtml]="exam.description"></p>
                 <div class="flex numbers_div">
                     <div class="w-4/12 text-primary">{{exam.noOfStudents}}<br><span>Students</span></div>
                     <div class="w-4/12 text-primary">{{exam.noOfQuestions}}<br><span>Questions</span></div>

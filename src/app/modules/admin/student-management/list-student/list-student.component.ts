@@ -46,6 +46,7 @@ export class ListStudentComponent {
   currentSearchText: string = ''; // added by harsh to track current search
   averageType: string = "";
   courseyearId: string = ""
+  CourseYear: string = ""
   private _unsubscribeAll: Subject<void> = new Subject<void>();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -64,15 +65,19 @@ export class ListStudentComponent {
         this.loadStudentData();
       });
       this._route.params.subscribe(res=>{
-        this.courseyearId = res.guid
+        this.courseyearId = res.guid;
+        this.loadStudentData();
       })
 
     this.searchInput = new FormControl('');
-    this._unsubscribeAll = new Subject();
+    
   }
   private loadStudentData(): void {
     // Trigger data reload
     this._studentService.onStudentManagementChanged.next(true);
+    this._studentService.getCourseYearName(this.courseyearId).subscribe((res:any)=>{
+      this.CourseYear = res.name
+    })
   }
 
   deleteStudent(user) {

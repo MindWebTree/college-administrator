@@ -348,9 +348,9 @@
                             </div>
                         </mat-accordion>
                     </div>
-                    <div class="flex gap-2 bg-[#FFE4E4] text-[#E23D3D] border-[#E23D3D] w-fit p-2 mb-4 rounded-full border">
+                    <div *ngIf="QuestionSelected?.length < NoofSelectedQuestion" class="flex gap-2 bg-[#FFE4E4] text-[#E23D3D] border-[#E23D3D] w-fit p-2 mb-4 rounded-full border">
                         <mat-icon class="text-[#E23D3D]">error</mat-icon>
-                        <p class="text-[#E23D3D]">Number of Question Selected {{TotalSelectQuestion>0?TotalSelectQuestion:0}}/{{NoofSelectedQuestion}}. Please choose exact number of questions
+                        <p class="text-[#E23D3D]">Number of Question Selected {{QuestionSelected?.length>0?QuestionSelected?.length:0}}/{{NoofSelectedQuestion}}. Please choose exact number of questions
                         </p>
                     </div>
                     <p *ngIf="dataSource?.QuestionList.length <= 0">No records found</p>
@@ -358,7 +358,7 @@
                 <!--[disabled]="TotalSelectQuestion!= NoofSelectedQuestion"-->
                 <div class="form-element flex w-full justify-center gap-3 flex-wrap">
                     <button mat-raised-button class="clearall_btn rounded" matStepperPrevious>Back to Q'Bank</button>
-                    <button mat-raised-button type="submit" class="create_btn rounded bg-primary text-white" matStepperNext [disabled]="TotalSelectQuestion !== NoofSelectedQuestion">Create Exam</button>
+                    <button mat-raised-button type="submit" class="create_btn rounded bg-primary text-white" matStepperNext [disabled]="QuestionSelected?.length !== NoofSelectedQuestion">Create Exam</button>
                     <button mat-raised-button class="clearall_btn rounded text-primary" type="button" (click)="clearAllSecondStep()">Clear All</button>
                 </div>
             </form>
@@ -407,9 +407,9 @@
                             <input matInput type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()">
                         </mat-form-field>
 
-                        <h3>to</h3>
+                        <h3 *ngIf="CreateExamSchedule.get('examType')?.value == 1">to</h3>
 
-                        <mat-form-field appearance="fill">
+                        <mat-form-field *ngIf="CreateExamSchedule.get('examType')?.value == 1" appearance="fill">
                             <mat-label>Ends with</mat-label>
                             <input matInput type="time" formControlName="EndTime" [(ngModel)]="endTime" (change)="calculateDuration()" [disabled]="invalidTime">
                         </mat-form-field>
@@ -520,7 +520,7 @@
     <p class="justify-center flex w-full pb-8 mx-auto max-w-3xl text-center font-medium" [innerHTML]="createdExamDetails.description"></p>
     <div class="last_screen">
         <div class="exam_code">
-            <div class="text-center flex flex-col">
+            <div class="text-center flex flex-col copy-link">
                 <label>Exam code</label>
                 <input class="text-center" matInput placeholder="Copy below text in Firefox" [value]="createdExamDetails.mcqCode" id="customerName" readonly>
             </div>
@@ -529,7 +529,7 @@
                 <mat-icon class="text-primary">file_copy</mat-icon>
             </div>
         </div>
-        <button (click)="SendMessage()">
+        <!-- <button (click)="SendMessage()">
             <div class="sms_div">
                 <div class="code_div">
                     <div class="text-lg flex justify-center"><mat-icon>phone_android</mat-icon>Send a SMS</div>
@@ -540,7 +540,7 @@
                     </div>
                 </div>
             </div>
-        </button>
+        </button> -->
     </div>
     <div class="flex mx-auto py-2">
         <div class="exam_code">

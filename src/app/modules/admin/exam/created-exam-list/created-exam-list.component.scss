@@ -1,0 +1,213 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div {
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+::ng-deep .mat-stepper-horizontal-line {
+    display: none;
+}
+
+::ng-deep .list_account mat-step-header:first-child {
+    pointer-events: none;
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    border-bottom: 4px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    margin-bottom: -3px;
+}
+
+::ng-deep mat-step-header[tabindex="0"] {
+    border-bottom: 3px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    margin-bottom: -3px;
+}
+
+::ng-deep mat-step-header[tabindex="0"] .mat-step-text-label {
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+}
+
+::ng-deep .list_account mat-step-header .mat-step-icon {
+    display: none;
+}
+
+::ng-deep .list_account mat-step-header:first-child .mat-step-label {
+    color: white !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+    height: 47px !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+    border-bottom: 3px solid #DCDCDC;
+}
+
+
+::ng-deep mat-stepper {
+    background: transparent !important;
+}
+
+::ng-deep .list_account .mat-horizontal-content-container {
+    padding: 0 !important;
+}
+
+::ng-deep .list_account mat-dialog-container.mat-dialog-container {
+    height: 90vh !important;
+}
+
+.grid_1 {
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    padding: 20px 20px;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), .3);
+    border-radius: 4px;
+}
+
+.grid_1 p {
+    padding: 20px 0;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.numbers_div {
+    padding-bottom: 20px;
+}
+
+.grid_1 h2 {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    color: #505050;
+}
+
+.numbers_div div {
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    border-left: 1px solid #DCDCDC;
+    padding: 0 10px;
+}
+
+.numbers_div div:first-child {
+    border: 0 !important;
+}
+
+.numbers_div div span {
+    color: #A6A6A6;
+    font-size: 12px;
+}
+
+.exam_report {
+    background-color: #28C397 !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 16px;
+    font-weight: 400;
+    width: 100%;
+}
+
+.start_exam {
+    background-color: #28C397 !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 14px;
+    font-weight: 400;
+    width: 50%;
+    min-height: 50px !important;
+}
+
+.cancel_btn {
+    background-color: #0C529A !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 16px;
+    font-weight: 400;
+    width: 50%;
+    min-height: 50px !important;
+}
+
+.premium_ques {
+    background: #FFF9E4;
+    color: #E2AD00;
+    border-radius: 50px;
+    padding: 2px 15px;
+    display: inline-flex;
+}
+
+.premium_ques mat-icon.mat-icon {
+    color: #E2AD00;
+    font-size: 17px;
+}
+
+.cancelled_btn {
+    background-color: #DCDCDC !important;
+    border-radius: 4px !important;
+    color: #505050 !important;
+    font-size: 16px;
+    font-weight: 400;
+    width: 50%;
+    min-height: 50px !important;
+}
+
+::ng-deep .delete-choice .mat-dialog-container.mat-dialog-container {
+    height: inherit !important;
+}
+.quiz_scheduling {
+    min-width: 300px;
+}
+::ng-deep .quiz_scheduling mat-form-field {
+    width: 100% !important;
+}
+::ng-deep .reschedule-popup  .submit-btn{
+        background-color: #28C397 !important;
+        border-radius: 4px !important;
+        color: white !important;
+        font-size: 16px;
+        font-weight: 400;
+        width: 40%;
+        min-height: 50px !important;   
+        display: flex    ;
+        align-items: center;
+        justify-content: center;    
+}
+::ng-deep .reschedule-popup  .cancel-btn{
+    background-color: #a3a3a3 !important;
+    border-radius: 4px !important;
+    color: white !important;
+    font-size: 16px;
+    font-weight: 400;
+    width: 40%;
+    min-height: 50px !important;
+    display: flex    ;
+    align-items: center;
+    justify-content: center;    
+}
+::ng-deep .exam-description{
+    overflow: hidden;
+}
+::ng-deep .exam-description p{
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    width: 100%;
+    white-space: normal;
+}
+@media only screen and (max-width: 767px) {
+::ng-deep .mat-horizontal-stepper-header-container {
+    display: block !important;
+}
+::ng-deep .list_account .mat-horizontal-stepper-header-container{
+    border: 0px !important;
+}
+::ng-deep .list_account mat-step-header {
+    border-width: 0px 1px 1px 1px;
+}
+}

@@ -86,7 +86,7 @@ export const LecturerNavigation: FuseNavigationItem[] = [
                 id: 'examlist',
                 title: 'Exam List',
                 type: 'basic',
-                link: '/exam/listing',
+                link: '/exam/created-examlist',
                 roles : ["Lecturer"]
             },
         ],

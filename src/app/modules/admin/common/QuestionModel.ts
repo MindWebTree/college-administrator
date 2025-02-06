@@ -79,6 +79,7 @@ export class QuestionListModel {
     userId: string;
     Tags: Array<Tags>
     Topic: string;
+    questionDetailId:number;
     Video: Array<Videos>
     
     constructor(questionListModel) {

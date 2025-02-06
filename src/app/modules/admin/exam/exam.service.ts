@@ -40,6 +40,9 @@ export class ExamService {
   CreateExam(data): Observable<any> {
     return this._httpClient.post<any[]>(`${environment.apiURL}/exam/create/`, data);
   }
+  UpdateExam(data): Observable<any> {
+    return this._httpClient.post<any[]>(`${environment.apiURL}/exam/update/`, data);
+  }
   getExamByid(id) {
     return this._httpClient.get(`${environment.apiURL}/exam/get-by-id/${id}`, {});
   }

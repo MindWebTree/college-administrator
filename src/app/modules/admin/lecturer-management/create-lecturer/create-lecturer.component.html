@@ -44,26 +44,52 @@
         </div>
        
      
-        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+        <!-- <div class="sm:flex items-baseline edit_profile w-full gap-4">
             <label class="">Year</label><span>:</span>
             <mat-form-field appearance="fill" class="w-full">
                 <mat-select matNativeControl  required formControlName="CourseYear" placeholder="Year">
                     <mat-option [value]="Course" *ngFor="let Course of courses;let i=index">{{Course.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
-        </div>
-          <div class="sm:flex items-baseline edit_profile w-full gap-4">
-            <label class="">Qbanks</label><span>:</span>
-            <mat-form-field appearance="fill"  class="w-full">
-                <mat-select multiple matNativeControl  required formControlName="Subjects" placeholder="Subjects">
-                    <mat-option [value]="subject.id" *ngFor="let subject of subjectDetails;let i=index" (click)="onSelectSubject(subject)"   [selected]="lecturerForm.get('Subjects').value?.includes(subject.id)">{{subject.title}}</mat-option>
+        </div> -->
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Year</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select multiple matNativeControl required formControlName="CourseYear" placeholder="CourseYear">
+                    <mat-option [value]="Course.id" *ngFor="let Course of courses;let i=index"
+                        (click)="onSelectCourseYear(Course)"
+                        >{{Course.name}}</mat-option>
                 </mat-select>
-                 <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('Subjects').invalid &&  lecturerForm.get('Subjects').touched ">Please Select Subjects</mat-error>
+                <mat-error class="error-message  ml-1"
+                    *ngIf="addLecturerError && lecturerForm.get('CourseYear').invalid &&  lecturerForm.get('CourseYear').touched ">Please
+                    Select Subjects</mat-error>
             </mat-form-field>
         </div>
         <mat-chip-listbox #chipList class="subject_chips error-lecturer">
-            <mat-chip-option *ngFor="let c of subjectList,let i = index;" [selectable]="true" selected="true" [removable]="false" class="text-primary">
-                {{c.subjectTitle}} <button (click)="removeSubjects(i,c.ID)"><mat-icon color="primary" class="text-primary mt-[5px]">cancel</mat-icon></button>
+            <mat-chip-option *ngFor="let c of courseList,let i = index;" [selectable]="true" selected="true"
+                [removable]="false" class="text-primary">
+                {{c.courseTitle}} <button (click)="removeCourseYear(i,c.ID)"><mat-icon color="primary"
+                        class="text-primary mt-[5px]">cancel</mat-icon></button>
+            </mat-chip-option>
+        </mat-chip-listbox>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Qbanks</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select multiple matNativeControl required formControlName="Subjects" placeholder="Subjects">
+                    <mat-option [value]="subject.id" *ngFor="let subject of subjectDetails;let i=index"
+                        (click)="onSelectSubject(subject)"
+                        [selected]="lecturerForm.get('Subjects').value?.includes(subject.id)">{{subject.title}}</mat-option>
+                </mat-select>
+                <mat-error class="error-message  ml-1"
+                    *ngIf="addLecturerError && lecturerForm.get('Subjects').invalid &&  lecturerForm.get('Subjects').touched ">Please
+                    Select Subjects</mat-error>
+            </mat-form-field>
+        </div>
+        <mat-chip-listbox #chipList class="subject_chips error-lecturer">
+            <mat-chip-option *ngFor="let c of subjectList,let i = index;" [selectable]="true" selected="true"
+                [removable]="false" class="text-primary">
+                {{c.subjectTitle}} <button (click)="removeSubjects(i,c.ID)"><mat-icon color="primary"
+                        class="text-primary mt-[5px]">cancel</mat-icon></button>
             </mat-chip-option>
         </mat-chip-listbox>
       

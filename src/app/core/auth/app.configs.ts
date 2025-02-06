@@ -89,8 +89,8 @@ export const appConfig: AppConfig = {
 export const SitePreference = {
 
     PAGE: {
-      GridRowViewCount: 5,
-      GridRowViewPageSizeOptions: [5, 10, 50, 100,1000,5000]
+      GridRowViewCount: 6,
+      GridRowViewPageSizeOptions: [6, 12, 18]
     }
   
   };

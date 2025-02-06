@@ -219,7 +219,7 @@ export class ExamListComponent implements OnInit{
     })
   }
   editExam(id){
-    this._router.navigate([`/exam/edit/${{id}}`]);
+    this._router.navigate([`/exam/edit/${id}`]);
   }
   deleteExam(id){
     this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {

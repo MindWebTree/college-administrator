@@ -35,6 +35,7 @@ export class CreateLecturerComponent {
   cousreDetails: any = [];
   courses: any = [];
   subjectList: any = [];
+  courseList: any = [];
   lecturerImage: any
   isEditing: boolean = true;
   subjectDetails: any = [];
@@ -114,9 +115,15 @@ export class CreateLecturerComponent {
         this.lecturerForm.get("Password").updateValueAndValidity();
 
         this.employeeNum = this._data.lecturer.rollNo;
-        const course = this._data.lecturer.courses?.[0];
-        const selectedCourse = this.courses.find(c => c.id === course?.courseYearId) || null;
+        const course:any = this._data.lecturer.courses;
 
+        // const selectedCourse = this.courses.find(c => c.id === course?.courseYearId) || null;
+        const selectedCourse = this._data.lecturer.courses.map(q => q.courseYearId);
+        console.log(this._data.lecturer.courses)
+        this.courseList = this._data.lecturer.courses.map(q => ({
+          ID: q.courseYearId,
+          courseTitle: q.courseYear
+        }));
         // Set the image URL separately
         this.lecturerImage = this._data.lecturer.imageUrl;
 
@@ -262,7 +269,36 @@ export class CreateLecturerComponent {
 
   }
 
+  onSelectCourseYear(courseYear: any){
+    const currentValues = this.lecturerForm.get('CourseYear').value || [];
 
+    // Check if subject exists in subjectList
+    const index = this.courseList.findIndex(i => i.ID === courseYear.id);
+
+    if (index > -1) {
+      // Remove from subjectList
+      this.courseList.splice(index, 1);
+      // Remove from form control
+      const newValues = currentValues.filter(id => id !== courseYear.id);
+      this.lecturerForm.get('CourseYear').setValue(newValues, { emitEvent: false });
+    } else {
+      // Add to subjectList
+      this.courseList.push({ ID: courseYear.id, courseTitle: courseYear.name });
+      // Add to form control if not already present
+      if (!currentValues.includes(courseYear.id)) {
+        this.lecturerForm.get('CourseYear').setValue([...currentValues, courseYear.id], { emitEvent: false });
+      }
+    }
+  }
+  removeCourseYear(index: number, id: any) {
+    // Remove from subjectList
+    this.courseList.splice(index, 1);
+
+    // Remove from form control
+    const currentValues = this.lecturerForm.get('CourseYear').value || [];
+    const newValues = currentValues.filter(value => value !== id);
+    this.lecturerForm.get('CourseYear').setValue(newValues);
+  }
   onSelectSubject(subject: any) {
     // Get current form control values
     const currentValues = this.lecturerForm.get('Subjects').value || [];
@@ -330,12 +366,19 @@ export class CreateLecturerComponent {
         description: this.lecturerForm.get('Description').value,
         // dateOfBirth: '',
         employeeNo: this.lecturerForm.get('EmployeeNo').value,
-        courses: [{
+        courses: this.courseList.map(course => ({
           courseId: this.cousreDetails[0].id,
-          courseYearId: this.lecturerForm.get('CourseYear').value?.id || null,
-          courseYear: this.lecturerForm.get('CourseYear').value?.name || '',
-          courseName: this.lecturerForm.get('CourseYear').value?.name || ''
-        }],
+          courseYearId: course.ID || null,
+          courseYear: course.courseTitle || '',
+          courseName: course.name || ''
+        })),
+        
+        // [{
+        //   courseId: this.cousreDetails[0].id,
+        //   courseYearId: this.lecturerForm.get('CourseYear').value?.id || null,
+        //   courseYear: this.lecturerForm.get('CourseYear').value?.name || '',
+        //   courseName: this.lecturerForm.get('CourseYear').value?.name || ''
+        // }],
         qBankTypeIds: this.subjectList.map(subject => subject.ID),
         qBankTypes: [],
         rollNo: ''
