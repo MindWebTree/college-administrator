@@ -4,6 +4,10 @@
     overflow: hidden;
     width: 100%;
 }
+::ng-deep .subject-admin-owl .owl-item{
+    width: 18rem !important;
+    display: block;
+}
 
 :host ::ng-deep .plus_bg {
     position: relative;
@@ -338,5 +342,14 @@ h1 span {
 @media only screen and (max-width:767px) {
     :host ::ng-deep table {
         width: 180% !important;
+    }
+    .subject-admin-owl .owl-item {
+        width: 7rem !important;
+        display: block;
+        min-width: 140px !important;
+    }
+    .subject-admin-owl .card_img img{
+        min-width: 140px;
+        padding: 0;
     }
 }

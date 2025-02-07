@@ -23,10 +23,10 @@
       <!----------- Section-1 End-------->
 
         <!----------- Section-2 Start-------->
-       <div class="carousel_div">
+       <div class="carousel_div course-lecturer-dashboard">
             <owl-carousel-o [options]="customOptions" >
-                <ng-container>
-                    <ng-template carouselSlide *ngFor="let c of courseYear">
+                <ng-container *ngFor="let c of courseYear">
+                    <ng-template carouselSlide >
                         <a class="card border-0">
                             <div class="card-body" [ngClass]="{'year-one': c.name  === 'First Year','year-two': c.name  === 'Second Year','year-three': c.name  === 'Third Year','year-four': c.name  === 'Fourth Year'}">
                                <h2>{{ c.name }} {{ today | date:'yyyy' }}-{{ (today.getFullYear() + 1) }}</h2>
@@ -42,7 +42,7 @@
         <!----------- Section-2 End-------->
 
         <!----------- Section-3 Start-------->
-        <div class="carousel_div">
+        <div class="carousel_div subject-lecturer-dashboard">
             <h2 class="pl-3 text-lg pb-2">List of Subjects</h2>
             <owl-carousel-o [options]="ListSubject">
                 <ng-container >

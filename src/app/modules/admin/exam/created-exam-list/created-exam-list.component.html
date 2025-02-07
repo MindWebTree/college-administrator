@@ -14,6 +14,42 @@
             </mat-step>
 
             <mat-step>
+                <ng-template matStepLabel>Waiting for Approval ({{waitingforApprovaldataSource?.paginationData?.count ? waitingforApprovaldataSource?.paginationData?.count:0}})</ng-template>
+                <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
+                    <div class="grid_1" [dataSource]="waitingforApprovaldataSource.ExamList" *ngFor="let exam of waitingforApprovaldataSource.ExamList,let i = index;">
+                        <div class="flex">
+                            <div class="w-4/5 text-lg">{{exam.name}}</div>
+                            <div class="w-1/5 text-right">
+                                <mat-icon (click)="editExam(exam.id)">edit</mat-icon>
+                                <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
+                            </div>
+                        </div>
+                        <p class="exam-description" [innerHtml]="exam.description"></p>
+                        <div class="flex numbers_div">
+                            <div class="w-4/12">{{exam.noOfStudents}}<br><span>Students</span></div>
+                            <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
+                            <div class="w-4/12">{{exam.examDuration | duration }}<br><span>Hours</span></div>
+                        </div>
+                        <h2 class="pt-1 truncate">Year : {{exam.courseYears}}</h2>
+                        <h2 class="pt-1 truncate">Subject : {{exam.topics}}</h2>
+                        <h2 class="pt-1">Exam Create by : {{exam.createdBy}}</h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
+                        <h2 class="pt-1" *ngIf="exam.qbankCategory == 2">Questions : <span class="premium_ques">Premium Question<mat-icon>star</mat-icon></span></h2>
+                        
+                        <h2 class="pt-1">Exam Date : {{exam.examDate | date: 'dd/MM/yyyy, h:mm a'}}</h2>
+                        <div class="pt-6 flex justify-around gap-4">
+                            <!-- <a mat-button class="start_exam flex items-center justify-center text-center">{{gettimeleft(exam.examDate)}}</a> -->
+                            <a class="cancel_btn flex items-center justify-center cursor-pointer" (click)="cancelExam(exam.id)">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <p *ngIf="waitingforApprovaldataSource.ExamList?.length <= 0">No records found</p>
+                <mat-paginator #paginator class="mt-8 flex justify-end" [length]="waitingforApprovaldataSource.paginationData? waitingforApprovaldataSource.paginationData.count:0" [pageSize]="_sitePreference.PAGE.GridRowViewCount" (page)="getNext11($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
+            </mat-step>
+
+            <mat-step>
                 <ng-template matStepLabel>Upcoming Exams ({{dataSource?.paginationData?.count?dataSource?.paginationData?.count:0}})</ng-template>
                 <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
                     <div class="grid_1" [dataSource]="dataSource.ExamList" *ngFor="let exam of dataSource.ExamList,let i = index;">

@@ -11,6 +11,7 @@ export class ExamService {
   onUpcomingExamListChanged: BehaviorSubject<any>;
   onCompletedExamListChanged: BehaviorSubject<any>;
   onCancelledExamListChanged: BehaviorSubject<any>;
+  onWaitingforApprovalExamListChanged: BehaviorSubject<any>;
   onExamReportListChanged: BehaviorSubject<any>;
 
   constructor(private _httpClient: HttpClient) {
@@ -18,6 +19,7 @@ export class ExamService {
     this.onUpcomingExamListChanged = new BehaviorSubject([]);
     this.onCompletedExamListChanged = new BehaviorSubject([]);
     this.onCancelledExamListChanged = new BehaviorSubject([]);
+    this.onWaitingforApprovalExamListChanged = new BehaviorSubject([]);
     this.onExamReportListChanged = new BehaviorSubject([]);
   }
 

@@ -221,11 +221,22 @@ h1 span {
 ::ng-deep .mat-mdc-form-field-subscript-wrapper {
     display: none !important;
 }
+::ng-deep .subject-lecturer-dashboard .owl-item{
+    width: 18rem !important;
+    display: block;
+}
 
 
 
 @media only screen and (max-width:767px) {
     :host ::ng-deep table {
         width: 180% !important;
+    }
+    ::ng-deep .subject-lecturer-dashboard .card_img img {
+        padding: 0 !important;
+        min-width: 110px;
+    }
+    ::ng-deep .course-lecturer-dashboard .owl-carousel .owl-item {
+        min-width: 14rem;
     }
 }

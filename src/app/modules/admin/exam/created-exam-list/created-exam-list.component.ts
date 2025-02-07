@@ -37,6 +37,7 @@ export class CreatedExamListComponent implements OnInit{
   @ViewChild(MatPaginator, { static: true }) cancelledpaginator: MatPaginator;
   dataSource: UpcomingExamslistDataSource;
   completeddataSource: CompletedExamslistDataSource;
+  waitingforApprovaldataSource: WaitingforApprovalExamslistDataSource;
   cancelleddataSource: CancelledExamslistDataSource;
   status: number;
   _sitePreference: any = SitePreference;
@@ -93,6 +94,7 @@ export class CreatedExamListComponent implements OnInit{
   }
   private loadExamData(): void {
     // Trigger data reload
+    this._examService.onWaitingforApprovalExamListChanged.next(true);
     this._examService.onUpcomingExamListChanged.next(true);
     this._examService.onCompletedExamListChanged.next(true);
     this._examService.onCancelledExamListChanged.next(true);
@@ -103,6 +105,19 @@ export class CreatedExamListComponent implements OnInit{
   //   this._examService.onCancelledExamListChanged.next(true);
   //   this._examService.onCompletedExamListChanged.next(true);
   // }
+  getNext11(event: PageEvent) {
+    let gridFilter: ExamList = {
+      keyword: '',
+      pageNumber: event.pageIndex + 1,
+      pageSize: event.pageSize,  // Use the event's pageSize
+      orderBy: '',
+      sortOrder: '',
+      examStatus: ExamStatus.WaitingForApproval,
+      courseYearId: this.courseYearId
+  };
+  this.waitingforApprovaldataSource.getExamList(gridFilter, this.status);
+
+  }
   getNext(event: PageEvent) {
     let gridFilter: ExamList = {
       keyword: '',
@@ -176,8 +191,21 @@ export class CreatedExamListComponent implements OnInit{
       ExamDate: date[0]
     });
     this.dataSource = new UpcomingExamslistDataSource(this._examService)
+    this.waitingforApprovaldataSource = new WaitingforApprovalExamslistDataSource(this._examService)
     this.completeddataSource = new CompletedExamslistDataSource(this._examService)
     this.cancelleddataSource = new CancelledExamslistDataSource(this._examService)
+    this._examService.onWaitingforApprovalExamListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res=>{
+      let gridFilter: ExamList = {
+        keyword: '',
+        pageNumber: this.paginator?.pageIndex + 1,
+        pageSize: this.paginator?.pageSize == undefined ? SitePreference.PAGE.GridRowViewCount : this.paginator.pageSize,
+        orderBy: '',
+        sortOrder: '',
+        examStatus: ExamStatus.WaitingForApproval,
+        courseYearId: null
+      };
+      this.waitingforApprovaldataSource.getExamList(gridFilter, this.status);
+    })
     this._examService.onUpcomingExamListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res=>{
       let gridFilter: ExamList = {
         keyword: '',
@@ -228,6 +256,7 @@ export class CreatedExamListComponent implements OnInit{
        this.confirmDialogRef.afterClosed().subscribe(result => {
         if (result) {
             this._examService.deleteExam(id).subscribe(res=>{
+              this._examService.onWaitingforApprovalExamListChanged.next(true);
               this._examService.onUpcomingExamListChanged.next(true);
               this._examService.onCancelledExamListChanged.next(true);
               this._examService.onCompletedExamListChanged.next(true);
@@ -246,7 +275,8 @@ export class CreatedExamListComponent implements OnInit{
     this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to Cancel Exam?';
        this.confirmDialogRef.afterClosed().subscribe(result => {
         if (result) {
-            this._examService.cancelExam(id).subscribe(res=>{              
+            this._examService.cancelExam(id).subscribe(res=>{     
+              this._examService.onWaitingforApprovalExamListChanged.next(true);         
               this._examService.onUpcomingExamListChanged.next(true)
               this._examService.onCompletedExamListChanged.next(true)
               this._examService.onCancelledExamListChanged.next(true)
@@ -424,7 +454,47 @@ export class CreatedExamListComponent implements OnInit{
     }
   }
 }
+export class WaitingforApprovalExamslistDataSource extends DataSource<any>
+{
 
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  public paginationData: any;
+  public loading$ = this.loadingSubject.asObservable();
+  ExamList: Array<any> = []
+  ExamCount: number;
+
+  constructor(private _examService: ExamService) {
+    super();
+  }
+
+  disconnect(): void {
+  }
+
+  connect(): Observable<any[]> {
+    return this._examService.onExamListChanged;
+  }
+
+  getExamList(gridFilter: ExamList, status) {
+    var self = this;
+    this._examService.getExamList(gridFilter).pipe(
+      catchError(() => of([])),
+      finalize(() => {
+        this.loadingSubject.next(false)
+      })
+    )
+
+      .subscribe((res: any) => {
+        this.ExamList = res?.data;
+        this.ExamCount = res?.Count;
+        self.paginationData = {
+          count: res?.totalCount,
+          pageNumber: res?.currentPage
+        };
+      });
+
+  }
+
+}
 export class UpcomingExamslistDataSource extends DataSource<any>
 {
 

@@ -56,7 +56,9 @@
                             <mat-select formControlName="QbankCategory" placeholder="select Qbnak">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select Qbank Category</mat-option>
-                                <mat-option *ngFor="let qbankcategory of QbankCategory" (click)="getQbank(qbankcategory.name)" [value]="qbankcategory.id">{{qbankcategory.name}}</mat-option>
+                                <!-- <mat-option *ngFor="let qbankcategory of QbankCategory" (click)="getQbank(qbankcategory.name)" [value]="qbankcategory.id">{{qbankcategory.name}}</mat-option> -->
+                                <mat-option (click)="getQbank('Free')" [value]="1">CARE NExT Qbank</mat-option>
+                                <mat-option (click)="getQbank('Owned')" [value]="3">Owned</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -404,7 +406,7 @@
 
                         <mat-form-field appearance="fill">
                             <mat-label>Starts on</mat-label>
-                            <input matInput type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()">
+                            <input matInput type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()" >
                         </mat-form-field>
 
                         <h3 *ngIf="CreateExamSchedule.get('examType')?.value == 1">to</h3>

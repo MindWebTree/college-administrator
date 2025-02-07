@@ -67,6 +67,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatChipsModule,
     MatNativeDateModule,
     MatDatepickerModule,
+    MatDatepickerModule ,
     CKEditorModule,
   ],
   templateUrl: './create-exam.component.html',
@@ -160,8 +161,8 @@ export class CreateExamComponent implements OnInit {
       Subject: ['', Validators.required],
       Topic: ['', Validators.required],
       CBMECode: ['', Validators.required],
-      CompetencyLevel: ['', Validators.required],
-      LevelofQuestions: ['', Validators.required],
+      CompetencyLevel: [''],
+      LevelofQuestions: [''],
       NumberofQuestions: ['', Validators.required]
     }),
       this.CreateListFilter = this._formbuilder.group({

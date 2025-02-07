@@ -9,10 +9,10 @@ export const environment = {
     tenantname:'careNext',
     questionMarks: 4,
     // apiURL: "https://api.adrplexus.com/saas-dev/api/v1",  
-    apiURL: "http://192.168.1.10/api/v1",  
+    apiURL: "https://api.adrplexus.com/college-admin/api/v1",  
     // dynmoDB:"https://z0p411vwsa.execute-api.ap-south-1.amazonaws.com/dev",
     // externalApiURL: "https://api.adrplexus.com/saas-dev",
-    externalApiURL: "http://192.168.1.10",
+    externalApiURL: "https://api.adrplexus.com/college-admin",
     tenantvalidateURl: "https://api.adrplexus.com/dev",
     OAuthConfiguration: {
       ApiClientID: "a2db852e6f28416f925dddeece5bfa96",

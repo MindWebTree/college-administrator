@@ -182,7 +182,7 @@ export class QuestionlistDataSource extends DataSource<CreateQuestion> {
   }
 
   getQuestionList(gridFilter: QuestionListFilter, status) {
-    this._questionManagementService.qbankSearch(gridFilter).pipe(
+    this._questionManagementService.getQwnedQuestion(gridFilter).pipe(
       catchError(() => of([])),
       finalize(() => {
         this.loadingSubject.next(false)

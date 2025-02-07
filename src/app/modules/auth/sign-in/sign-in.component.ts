@@ -114,7 +114,7 @@ export class AuthSignInComponent implements OnInit {
                     if (response) {
                         this.dataService.setLocalData('accessToken', response.token);
                         this.dataService.setLocalData('refreshToken', response.refreshToken);
-                        this._router.navigate(['/example']);
+                        this._router.navigate(['/dashboard']);
                     }
                     // }
                     else {

@@ -296,7 +296,7 @@ export class LecturerDashboardComponent implements OnInit {
   // --owl carosurl--ends
 
   customOptions: OwlOptions = {
-    loop: true,
+    loop: false,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
@@ -305,7 +305,7 @@ export class LecturerDashboardComponent implements OnInit {
     navText: ['<', '>'],
     responsive: {
       0: {
-        items: 1
+        items: 1,
       },
       400: {
         items: 2
@@ -321,7 +321,7 @@ export class LecturerDashboardComponent implements OnInit {
   }
 
   ListSubject: OwlOptions = {
-    loop: true,
+    loop: false,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,

@@ -81,6 +81,13 @@ export class QuestionManagementService {
     });
     return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/search`, { ..._gridFilter }, { headers });
   }
+  getQwnedQuestion(_gridFilter: QuestionListFilter): Observable<CreateQuestion[]> {
+    const headers = new HttpHeaders({
+      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
+
+    });
+    return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/owned-questions`, { ..._gridFilter }, { headers });
+  }
 
 
   getQuestionbyID(questionDetailID: number): Observable<CreateQuestion[]> {

@@ -60,7 +60,7 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         title: 'Dashboard',
         type: 'basic',
         // icon : 'heroicons_outline:chart-pie',
-        link: '/example'
+        link: '/dashboard'
     },
     {
         id: "ADrPLEXUS Q'Bank",
@@ -125,16 +125,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:chart-pie',
         link: '/example',
-
-        roles: ["Lecturer", "CollegeAdministrator"]
-    },
-    {
-        id: 'example',
-        title: 'Example',
-        type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
-        link: '/examples',
-        roles: ["Lecturer", "CollegeAdministrator"]
+        roles: ["Lecturer", "CollegeAdministrator", "Student"]
     },
     {
         id: "ADrPLEXUS Q'Bank",

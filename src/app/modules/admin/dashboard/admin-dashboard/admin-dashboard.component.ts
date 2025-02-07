@@ -67,7 +67,7 @@ export class AdminDashboardComponent {
   courseYear: any = [];
   subject: any = [];
   today = new Date();
-
+  ListSubject: OwlOptions 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   /**
@@ -97,6 +97,30 @@ export class AdminDashboardComponent {
       this.qbankTypes = responce.qBankTypes;
       this.courseYear = responce.courseYear;
       this.subject = responce.subject
+        this.ListSubject = {
+    loop: false,
+    mouseDrag: false,
+    touchDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 700,
+    navText: ['<', '>'],
+    responsive: {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 2
+      },
+      740: {
+        items: 3
+      },
+      1200: {
+        items: 5
+      }
+    },
+    nav: true
+  }
       this.updatePieChartOptions();
     });
     this._dashboard.getQuestionCreator().subscribe((res: any) => {
@@ -376,57 +400,58 @@ export class AdminDashboardComponent {
   /**
    * On destroy
    */
+
+  customOptions: OwlOptions = {
+    loop: false,
+    mouseDrag: false,
+    touchDrag: false,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 700,
+    navText: ['<', '>'],
+    responsive: {
+      0: {
+        items: 1
+      },
+      400: {
+        items: 2
+      },
+      740: {
+        items: 3
+      },
+      1200: {
+        items: 5
+      }
+    },
+    nav: true
+  };
+  // ListSubject: OwlOptions = {
+  //   loop: true ,
+  //   mouseDrag: false,
+  //   touchDrag: false,
+  //   pullDrag: false,
+  //   dots: false,
+  //   navSpeed: 700,
+  //   navText: ['<', '>'],
+  //   responsive: {
+  //     0: {
+  //       items: 1
+  //     },
+  //     400: {
+  //       items: 2
+  //     },
+  //     740: {
+  //       items: 3
+  //     },
+  //     1200: {
+  //       items: 5
+  //     }
+  //   },
+  //   nav: true
+  // }
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
-  }
-  customOptions: OwlOptions = {
-    loop: true,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 700,
-    navText: ['<', '>'],
-    responsive: {
-      0: {
-        items: 1
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 3
-      },
-      1200: {
-        items: 5
-      }
-    },
-    nav: true
-  }
-  ListSubject: OwlOptions = {
-    loop: true,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 700,
-    navText: ['<', '>'],
-    responsive: {
-      0: {
-        items: 1
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 3
-      },
-      1200: {
-        items: 5
-      }
-    },
-    nav: true
   }
 }

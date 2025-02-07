@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-auto min-w-0 dashboard">
+<div class="flex flex-col flex-auto min-w-0 admin-dash dashboard">
 
     <!-- Header -->
     <div class="">
@@ -44,7 +44,7 @@
         <!----------- Section-3 Start-------->
         <div class="carousel_div">
             <h2 class="pl-3 text-lg pb-2">List of Subjects</h2>
-            <owl-carousel-o [options]="ListSubject">
+            <owl-carousel-o [options]="ListSubject" class="subject-admin-owl">
                 <ng-container >
                     <ng-template carouselSlide *ngFor="let s of subject">
                         <a class="card border-0">
