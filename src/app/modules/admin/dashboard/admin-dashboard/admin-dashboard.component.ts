@@ -67,7 +67,7 @@ export class AdminDashboardComponent {
   courseYear: any = [];
   subject: any = [];
   today = new Date();
-  ListSubject: OwlOptions 
+  ListSubject: OwlOptions
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   /**
@@ -91,36 +91,29 @@ export class AdminDashboardComponent {
    */
   ngOnInit(): void {
     this._userAccount = this._helperService.getUserDetail();
-    console.log(this._userAccount, " this._userAccount")
+
     this._dashboard.getSubjectQbankTypesCourses().subscribe((responce: any) => {
 
       this.qbankTypes = responce.qBankTypes;
       this.courseYear = responce.courseYear;
       this.subject = responce.subject
-        this.ListSubject = {
-    loop: false,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 700,
-    navText: ['<', '>'],
-    responsive: {
-      0: {
-        items: 1
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 3
-      },
-      1200: {
-        items: 5
-      }
-    },
-    nav: true
-  }
+      // Move the ListSubject assignment here
+      this.ListSubject = {
+        loop: this.subject.length > 1,  // Enable loop if more than 2 subjects
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
+        dots: false,
+        navSpeed: 700,
+        navText: ['&rarr;', '&larr;'],
+        responsive: {
+          0: { items: 1 },
+          400: { items: 2 },
+          740: { items: 3 },
+          1200: { items: 6 }
+        },
+        nav: true
+      };
       this.updatePieChartOptions();
     });
     this._dashboard.getQuestionCreator().subscribe((res: any) => {
@@ -237,7 +230,8 @@ export class AdminDashboardComponent {
           dataLabels: {
             position: "top",
           },
-          barHeight: "35%",
+          barHeight: "10%",
+
         },
       },
       dataLabels: {
@@ -303,12 +297,17 @@ export class AdminDashboardComponent {
     });
 
     // Format x-axis labels to include year if spans multiple years
-    const hasMultipleYears = new Set(chartData.map(item => item.yearCreated)).size > 1;
-    const categories = sortedData.map(item => hasMultipleYears ?
-      `${item.monthName} ${item.yearCreated}` : item.monthName);
+    // const hasMultipleYears = new Set(chartData.map(item => item.yearCreated)).size > 1;
+    // const categories = sortedData.map(item => hasMultipleYears ?
+    //   `${item.monthName} ${item.yearCreated}` : item.monthName);
+    // Always include year in x-axis labels
+
+    const categories = sortedData.map(item => `${item.monthName} ${item.yearCreated}`);
+
 
     const dataPoints = sortedData.map(item => ({
-      x: hasMultipleYears ? `${item.monthName} ${item.yearCreated}` : item.monthName,
+      // x: hasMultipleYears ? `${item.monthName} ${item.yearCreated}` : item.monthName,
+      x: `${item.monthName} ${item.yearCreated}`,
       y: item.count,
       fillColor: this.getColorByCount(item.count)
     }));
@@ -332,7 +331,7 @@ export class AdminDashboardComponent {
       plotOptions: {
         bar: {
           borderRadius: 4,
-          columnWidth: '60%',
+          columnWidth: '10%',
           distributed: false
         }
       },
@@ -400,15 +399,19 @@ export class AdminDashboardComponent {
   /**
    * On destroy
    */
-
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
   customOptions: OwlOptions = {
-    loop: false,
+    loop: true,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: ['<', '>'],
+    navText: ['&rarr;', '&larr;'],
     responsive: {
       0: {
         items: 1
@@ -424,9 +427,9 @@ export class AdminDashboardComponent {
       }
     },
     nav: true
-  };
+  }
   // ListSubject: OwlOptions = {
-  //   loop: true ,
+  //   loop: true,
   //   mouseDrag: false,
   //   touchDrag: false,
   //   pullDrag: false,
@@ -449,9 +452,4 @@ export class AdminDashboardComponent {
   //   },
   //   nav: true
   // }
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-  }
 }

@@ -50,6 +50,7 @@ export class LecturerDashboardComponent implements OnInit {
   public linearChartOptions: ApexOptions = {};
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: ApexOptions = {};
+  ListSubject: OwlOptions
   constructor(private _dashboard: DashboardService, private _commanService: CommanService, private _helperService: helperService) {
 
   }
@@ -60,8 +61,33 @@ export class LecturerDashboardComponent implements OnInit {
       this.qBankTypes = responce.qBankTypes;
       this.courseYear = responce.courseYear;
       this.subject = responce.subject;
+      this.ListSubject= {
+        loop: false,
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
+        dots: false,
+        navSpeed: 700,
+        navText: ['<', '>'],
+        responsive: {
+          0: {
+            items: 1
+          },
+          400: {
+            items: 2
+          },
+          740: {
+            items: 3
+          },
+          1200: {
+            items: 5
+          }
+        },
+        nav: true
+      }
     })
     this.studentNaivgation();
+   
   }
   studentNaivgation(): void {
     this._commanService.getstudentNavigationList().subscribe({
@@ -320,30 +346,7 @@ export class LecturerDashboardComponent implements OnInit {
     nav: true
   }
 
-  ListSubject: OwlOptions = {
-    loop: false,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 700,
-    navText: ['<', '>'],
-    responsive: {
-      0: {
-        items: 1
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 3
-      },
-      1200: {
-        items: 5
-      }
-    },
-    nav: true
-  }
+  
   // --owl carosoul ends--
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions

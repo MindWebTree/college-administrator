@@ -24,3 +24,7 @@ export class lecturerAnalyticGrid extends GridFilter {
 
     userId: string;
 }
+export class studentExamSummaryGrid extends GridFilter {
+    attendenceStatus: number;
+    userId: string;
+}

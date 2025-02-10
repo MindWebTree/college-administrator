@@ -117,7 +117,22 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         roles: ["Lecturer"]
     },
 ];
-export const StudentNavigation: FuseNavigationItem[] = [];
+export const StudentNavigation: FuseNavigationItem[] = [
+    {
+        id: 'Dashboard',
+        title: 'Dashboard',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/dashboard'
+    },
+    {
+        id: 'qbank',
+        title: 'QBanks',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/qbank/exam-list'
+    },
+];
 export const defaultNavigation: FuseNavigationItem[] = [
     {
         id: 'example',

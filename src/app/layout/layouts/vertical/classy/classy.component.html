@@ -44,7 +44,7 @@
                 </div>
                 <div>
                     
-            <img [src]="_userAccount?.image_url" class="login_img">
+            <img [src]="_userAccount?.image_url ? _userAccount?.image_url : 'my-images/default-img.png' " class="login_img">
                 </div>
             </div>
             <user class="popup-signout"></user>
@@ -86,6 +86,7 @@ fuse-vertical-navigation fuse-vertical-navigation-collapsable-item .fuse-vertica
     }
     .login_img{
         max-width: 50px;
+        max-height: 50px;
     border-radius: 50%;
     border: 2px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
     padding: 4px;

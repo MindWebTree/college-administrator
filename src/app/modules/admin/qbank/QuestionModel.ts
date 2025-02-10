@@ -35,7 +35,20 @@ export class Choices {
         this.questionDetailID = questionDetailID;
     }
 }
-
+export class QbankSubject{
+    subjectId:number;
+    subjectImage:string;
+    subjectName:string;
+    totalNoOfCompletedModules:0
+    totalNoOfModules:1
+    constructor(values){
+        this.subjectId=values.subjectId || 0;
+        this.subjectImage=values.subjectImage || '';
+        this.subjectName=values.subjectName || '';
+        this.totalNoOfCompletedModules=values.totalNoOfCompletedModules || 0;
+        this.totalNoOfModules=values.totalNoOfModules || 0;
+    }
+}
 export class QuestionListFilter{
     Search: string;
     pageNumber: number;

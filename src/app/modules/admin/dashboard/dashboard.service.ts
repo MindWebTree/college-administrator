@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { studentExamSummaryGrid } from '../common/gridFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,26 @@ export class DashboardService {
 
     });
     return this._httpClient.get<any>(`${environment.apiURL}/lecturer/overview/exam/${courseYearId}`, { headers });
+  }
+  // student 
+  getStudentExamSummaryGrid(_gridFilter: studentExamSummaryGrid): Observable<any> {
+    const headers = new HttpHeaders({
+      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
+    });
+    return this._httpClient.post<any>(`${environment.apiURL}/student/exam-summary-grid`, { ..._gridFilter }, { headers });
+  }
+
+  getStudentiUpcomingExam(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
+    });
+    return this._httpClient.get<any>(`${environment.apiURL}/exam/student/upcoming-exam`, { headers });
+  }
+  getStudentSubjectWiseAvgMarks(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
+    });
+    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks`, { headers });
   }
 }
 

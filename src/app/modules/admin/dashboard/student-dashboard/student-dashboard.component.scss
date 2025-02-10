@@ -1,25 +1,214 @@
-:host ::ng-deep .plus_bg {
-    position: relative;
+// :host ::ng-deep .plus_bg {
+//     position: relative;
+// }
+
+// ::ng-deep .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
+//     border-color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+// }
+
+// :host ::ng-deep .plus_bg:after {
+//     content: "+";
+//     position: absolute;
+//     right: 60px;
+//     display: block;
+//     background-position: center center;
+//     background-size: contain;
+//     width: 80px;
+//     height: 80px;
+//     font-size: 182px;
+//     bottom: 84px;
+//     color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+//     opacity: .1;
+// }
+
+// :host ::ng-deep table {
+//     font-weight: 500;
+// }
+
+// :host ::ng-deep .mat-select-arrow-wrapper .mat-select-arrow {
+//     color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+// }
+
+// .float-left {
+//     float: left;
+// }
+
+// .float-right {
+//     float: right;
+// }
+
+// :host ::ng-deep .apexcharts-menu-icon {
+//     display: none;
+// }
+
+// div#chart {
+//     float: left;
+//     width: 100%;
+// }
+
+// :host ::ng-deep .mat-option {
+//     height: 34px !important;
+// }
+
+// :host ::ng-deep span.mat-option-text {
+//     font-size: 12px;
+// }
+
+// .box-shadow {
+//     box-shadow: 0px 0px 10px #E7E0FA;
+// }
+
+// .truncate {
+//     color: #505050 !important;
+// }
+
+// .carousel_div {
+//     margin: 0px 20px;
+//     margin-top: 30px;
+// }
+
+// ::ng-deep .owl-theme .owl-nav {
+//     position: absolute;
+//     right: 0;
+//     top: -60px;
+//     display: flex;
+//     flex-direction: row-reverse;
+// }
+
+// ::ng-deep .owl-theme .owl-nav [class*=owl-] {
+//     background-color: white;
+//     color: black;
+//     font-size: 22px;
+//     font-weight: 700;
+//     padding: 0px 8px;
+//     border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+// }
+
+// ::ng-deep .owl-theme .owl-nav [class*=owl-]:hover {
+//     background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+// }
+
+// ::ng-deep .owl-item {
+//     left: 10px;
+//     border: 1px solid #B5E7FB;
+//     box-shadow: 0px 0px 10px #D4F3FF;
+//     border-radius: 4px;
+//     background: white;
+// }
+
+// ::ng-deep .owl-carousel .owl-item {
+//     border-color: rgba(var(--fuse-primary-rgb), .5) !important;
+//     box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), .3) !important;
+// }
+
+// ::ng-deep .owl-stage {
+//     gap: 20px;
+//     display: flex;
+// }
+
+// ::ng-deep .owl-item {
+//     border-color: rgba(var(--fuse-primary-rgb), .5) !important
+// }
+
+// ::ng-deep .dashboard .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
+//     min-height: 32px !important;
+//     border-radius: 4px !important;
+// }
+
+// ::ng-deep .cdk-column-Name.mat-column-Name span {
+//     width: 200px !important;
+// }
+
+// ::ng-deep tr.mat-header-row {
+//     height: 40px !important;
+// }
+
+// .card-body {
+//     background-color: white;
+//     padding: 29px 27px !important;
+//     border-radius: 4px;
+// }
+
+// .card-body h2 {
+//     font-size: 14px;
+//     font-weight: 500;
+// }
+
+// .card-body h3 {
+//     font-size: 36px;
+//     font-weight: 500;
+//     color: #0C529A;
+// }
+
+// .card-body h3 span {
+//     font-size: 16px;
+//     font-weight: 500;
+//     color: #00AEEF;
+//     padding-left: 4px;
+// }
+
+// .card-body:after {
+//     position: absolute;
+//     content: 'I';
+//     bottom: -20px;
+//     right: 0;
+//     font-size: 54px;
+//     color: #E7F8FF;
+// }
+
+// h1 span {
+//     color: #00AEEF;
+// }
+
+// .card2-body {
+//     background-color: white;
+//     border-radius: 4px;
+// }
+
+// .card_img {
+//     // background: #E7F8FF;
+//     background: rgba(var(--fuse-primary-rgb), 0.08) !important;
+// }
+
+// .card_img img {
+//     width: 200px;
+//     margin: 0 auto;
+//     padding: 25px 52px;
+// }
+
+// .border-primary {
+//     border-color: rgba(var(--fuse-primary-rgb), .5) !important;
+//     box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), .3) !important;
+// }
+
+// ::ng-deep th.mat-header-cell.cdk-header-cell {
+//     background: rgba(var(--fuse-primary-rgb), 0.08) !important;
+// }
+
+// .active-status {
+//     color: #28C397;
+// }
+
+// .piechart-div {
+//     margin: 0 auto;
+// }
+
+// @media only screen and (max-width:767px) {
+//     :host ::ng-deep table {
+//         width: 180% !important;
+//     }
+// }
+:host {
+    display: block;
+    width: 100%;
 }
+
 
 ::ng-deep .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
     border-color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
 }
 
-:host ::ng-deep .plus_bg:after {
-    content: "+";
-    position: absolute;
-    right: 60px;
-    display: block;
-    background-position: center center;
-    background-size: contain;
-    width: 80px;
-    height: 80px;
-    font-size: 182px;
-    bottom: 84px;
-    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
-    opacity: .1;
-}
+
 
 :host ::ng-deep table {
     font-weight: 500;
@@ -29,16 +218,15 @@
     color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
 }
 
-.float-left {
-    float: left;
-}
 
-.float-right {
-    float: right;
-}
 
 :host ::ng-deep .apexcharts-menu-icon {
     display: none;
+}
+
+::ng-deep .apexcharts-text tspan {
+    font-size: 12px;
+    font-weight: bold;
 }
 
 div#chart {
@@ -62,53 +250,7 @@ div#chart {
     color: #505050 !important;
 }
 
-.carousel_div {
-    margin: 0px 20px;
-    margin-top: 30px;
-}
 
-::ng-deep .owl-theme .owl-nav {
-    position: absolute;
-    right: 0;
-    top: -60px;
-    display: flex;
-    flex-direction: row-reverse;
-}
-
-::ng-deep .owl-theme .owl-nav [class*=owl-] {
-    background-color: white;
-    color: black;
-    font-size: 22px;
-    font-weight: 700;
-    padding: 0px 8px;
-    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
-}
-
-::ng-deep .owl-theme .owl-nav [class*=owl-]:hover {
-    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
-}
-
-::ng-deep .owl-item {
-    left: 10px;
-    border: 1px solid #B5E7FB;
-    box-shadow: 0px 0px 10px #D4F3FF;
-    border-radius: 4px;
-    background: white;
-}
-
-::ng-deep .owl-carousel .owl-item {
-    border-color: rgba(var(--fuse-primary-rgb), .5) !important;
-    box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), .3) !important;
-}
-
-::ng-deep .owl-stage {
-    gap: 20px;
-    display: flex;
-}
-
-::ng-deep .owl-item {
-    border-color: rgba(var(--fuse-primary-rgb), .5) !important
-}
 
 ::ng-deep .dashboard .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
     min-height: 32px !important;
@@ -123,58 +265,6 @@ div#chart {
     height: 40px !important;
 }
 
-.card-body {
-    background-color: white;
-    padding: 29px 27px !important;
-    border-radius: 4px;
-}
-
-.card-body h2 {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.card-body h3 {
-    font-size: 36px;
-    font-weight: 500;
-    color: #0C529A;
-}
-
-.card-body h3 span {
-    font-size: 16px;
-    font-weight: 500;
-    color: #00AEEF;
-    padding-left: 4px;
-}
-
-.card-body:after {
-    position: absolute;
-    content: 'I';
-    bottom: -20px;
-    right: 0;
-    font-size: 54px;
-    color: #E7F8FF;
-}
-
-h1 span {
-    color: #00AEEF;
-}
-
-.card2-body {
-    background-color: white;
-    border-radius: 4px;
-}
-
-.card_img {
-    // background: #E7F8FF;
-    background: rgba(var(--fuse-primary-rgb), 0.08) !important;
-}
-
-.card_img img {
-    width: 200px;
-    margin: 0 auto;
-    padding: 25px 52px;
-}
 
 .border-primary {
     border-color: rgba(var(--fuse-primary-rgb), .5) !important;
@@ -191,6 +281,32 @@ h1 span {
 
 .piechart-div {
     margin: 0 auto;
+}
+
+.pass {
+    color: #28C397;
+    border: 1px solid #28C397;
+    background: #F8FFFA;
+    border-radius: 50px;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 2px 12px;
+    font-size: 12px;
+    margin-right: 0px !important;
+    margin-left: auto;
+}
+
+.fail {
+    color: #EA4435;
+    border: 1px solid #EA4435;
+    background: #FFF8F8;
+    border-radius: 50px;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 2px 12px;
+    font-size: 12px;
+    margin-right: 0px !important;
+    margin-left: auto;
 }
 
 @media only screen and (max-width:767px) {

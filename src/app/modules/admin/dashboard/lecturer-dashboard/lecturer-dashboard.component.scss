@@ -237,6 +237,10 @@ h1 span {
         min-width: 110px;
     }
     ::ng-deep .course-lecturer-dashboard .owl-carousel .owl-item {
-        min-width: 14rem;
+        min-width: 10rem;
+    }
+    ::ng-deep .course-lecturer-dashboard .card-body {
+        padding: 15px 10px !important;
+        // min-width: 200px;
     }
 }
