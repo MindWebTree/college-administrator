@@ -80,6 +80,7 @@ export class NavigationMockApi {
                 // Fetch dynamic navigation
                 this.fetchDynamicNavigation(navigation)
                     .then((dynamicNavigation) => {
+                        console.log(navigation,"navigation")
                         observer.next([
                             200,
                             {

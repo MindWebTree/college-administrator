@@ -58,7 +58,7 @@
                                 <mat-option disabled value=''>Select Qbank Category</mat-option>
                                 <!-- <mat-option *ngFor="let qbankcategory of QbankCategory" (click)="getQbank(qbankcategory.name)" [value]="qbankcategory.id">{{qbankcategory.name}}</mat-option> -->
                                 <mat-option (click)="getQbank('Free')" [value]="1">CARE NExT Qbank</mat-option>
-                                <mat-option (click)="getQbank('Owned')" [value]="3">Owned</mat-option>
+                                <mat-option (click)="getQbank('Owned')" [value]="3">Faculty-Framed MCQs (FFQs)</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -154,15 +154,13 @@
                     <!-- <div *ngFor="let code of CBMEcodeList,let i = index;">
                     <p>{{code.Description}}</p>
                 </div> -->
-                    <div class="flex items-center sm-block stepper_div">
+                    <!-- <div class="flex items-center sm-block stepper_div">
                         <div class="md:px-8 sm:px-0 min-w-212">
                             <label>Competency Level</label>
                         </div>
                         <span class="semicolm_span">:</span>
                         <mat-form-field class="form-element block">
-                            <!-- <input matInput placeholder="CompetencyLevel" formControlName="CompetencyLevel"> -->
                             <mat-select formControlName="CompetencyLevel" placeholder="Select CompetencyLevel">
-                                <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select CompetencyLevel</mat-option>
                                 <mat-option *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
                             </mat-select>
@@ -177,16 +175,14 @@
                         </div>
                         <span class="semicolm_span">:</span>
                         <mat-form-field class="form-element block">
-                            <!-- <input matInput placeholder="LevelofQuestions" formControlName="LevelofQuestions"> -->
                             <mat-select formControlName="LevelofQuestions" placeholder="Select LevelofQuestions">
-                                <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select LevelofQuestions</mat-option>
                                 <mat-option *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
                     </div>
-                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.LevelofQuestions" fieldName="LevelofQuestions" [showSubmitError]="isQbankformHaserror"></control-messages>
+                    <control-messages class="exam-error" [control]="CreateExamQbank.controls.LevelofQuestions" fieldName="LevelofQuestions" [showSubmitError]="isQbankformHaserror"></control-messages> -->
 
                     <div class="flex items-center sm-block stepper_div last-stepper">
                         <div class="md:px-8 sm:px-0 sm-pt-2 min-w-212">
@@ -406,7 +402,7 @@
 
                         <mat-form-field appearance="fill">
                             <mat-label>Starts on</mat-label>
-                            <input matInput type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()" >
+                            <input matInput name="starton" min="00:00" max="23:59" type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()" >
                         </mat-form-field>
 
                         <h3 *ngIf="CreateExamSchedule.get('examType')?.value == 1">to</h3>

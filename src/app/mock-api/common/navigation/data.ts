@@ -72,7 +72,7 @@ export const LecturerNavigation: FuseNavigationItem[] = [
     },
     {
         id: 'mcq',
-        title: "Owned MCQ's",
+        title: "Faculty-Framed MCQs",
         type: 'collapsable',
         children: [
             {
@@ -140,6 +140,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:chart-pie',
         link: '/example',
+        roles: ["Lecturer", "CollegeAdministrator", "Student"]
+    },
+    {
+        id: 'dashboard',
+        title: 'dashboard',
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/dashboard',
         roles: ["Lecturer", "CollegeAdministrator", "Student"]
     },
     {

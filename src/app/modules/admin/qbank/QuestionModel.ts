@@ -174,6 +174,16 @@ export class Videos {
         this.VideoLink = video.VideoLink;
     }
 }
+export class QuestionActivaty {
+    activityId: string;
+    examDuration: any;
+    duration: number;
+    constructor(questionActivaty) {
+        this.activityId = questionActivaty.activityId;
+        this.examDuration = questionActivaty.examDuration;
+        this.duration = questionActivaty.duration;
+    }
+}
 export class CompetenecyLevel  {
     levelID: number;
     title: string;
@@ -186,6 +196,74 @@ export class CompetenecyLevel  {
 
 
         }
+    }
+}
+export class QuestionReponse {
+    choices: Array<choices>;
+    cmbeCode: any;
+    cmbeDescription: any;
+    cmbeid: number;
+    cqbankQuestionStatus: number;
+    createdOn: string;
+    explanation: any;
+    explanations: any[];
+    horizontalIntegration: any[];
+    isDeleted: boolean;
+    level: any;
+    levelID: number;
+    levelIDOfQuestion: number;
+    notes: string;
+    qbankType: any;
+    qbankTypeID: number;
+    questionDetailID: number;
+    questionLevel: any;
+    questionTitle: string;
+    questionType: number;
+    selectedHorizontalIntegration: any;
+    selectedTags: any;
+    selectedVerticalIntegration: any;
+    subject: any;
+    subjectID: number;
+    tags: any[];
+    topic: any;
+    topicID: number;
+    updatedON: string;
+    isMarkedReview:boolean;
+    isCalculateRisk:boolean;
+    userID: number;
+    verticalIntegration: any[];
+    videos: any[];
+    isChecked: boolean;
+    isCorrect: boolean;
+    isBoomarked:boolean;
+    unAttempt:boolean;
+    duration:number;
+}
+export class choices {
+    questionSetID: number | null;
+    questionDetailID: number;
+    choiceId: number;
+    choiceText: string;
+    isCorrect: boolean;
+    validAdditionalValue: any | null;
+    matchedValue: any | null;
+    additionalChoice: any | null;
+    isChecked: boolean | null;
+    pollPercentage: number;
+    pollCount: number;
+    noOfUsersSelectedThisOption:number;
+}
+export class customExam {
+    examId: string;
+    startTime: number; // Updated to lowercase "number"
+    endTime: number;   // Updated to lowercase "number"
+    isExamManully: boolean;
+
+    constructor(customExam) {
+        this.examId = customExam.examId;
+        this.startTime = customExam.startTime;
+        this.endTime = customExam.endTime;
+        this.isExamManully = customExam.isExamManully;
     }
 }
 export class LevelQuestion  {

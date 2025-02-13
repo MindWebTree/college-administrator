@@ -615,3 +615,15 @@ body .light .mat-step-header .mat-step-icon {
         padding-left: 0px !important;
     }
 }
+
+
+.create_account input[type="time"]::-webkit-calendar-picker-indicator {
+    display: block !important;
+    opacity: 1 !important;
+    cursor: pointer;
+  }
+.create_account  input[type="time"] {
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+  }

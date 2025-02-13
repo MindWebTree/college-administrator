@@ -39,7 +39,7 @@
             </div>
             <div class="flex gap-3">
                 <div>
-                    <h2 class="text-center text-primary md:text-xl text-sm font-medium">{{_userAccount?.Name}}</h2>
+                    <h2 class="text-end text-primary md:text-xl text-sm font-medium">{{_userAccount?.Name}}</h2>
                     <h3 class="text-end text-sm font-normal">{{_userAccount?.Roles}}</h3>
                 </div>
                 <div>
@@ -85,11 +85,15 @@ fuse-vertical-navigation fuse-vertical-navigation-collapsable-item .fuse-vertica
     right: 24px;
     }
     .login_img{
-        max-width: 50px;
-        max-height: 50px;
+        max-width: 40px;
+        max-height: 40px;
     border-radius: 50%;
     border: 2px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
     padding: 4px;
+    min-width: 40px;
+    min-height: 40px;
+    width: 40px;
+    height: 40px;
     }
     .fuse-vertical-navigation-item-title {
     color: #505050 !important;
@@ -153,5 +157,14 @@ fuse-vertical-navigation-collapsable-item fuse-vertical-navigation-basic-item {
 .fuse-vertical-navigation-content {
     padding-top: 80px !important;
     background: white;
+}
+@media only screen and (max-width: 767px) {
+    .main-logo{
+        max-width: 118px;
+    }
+    .popup-signout {
+        right: 11px;
+    top: 13px;
+    }
 }
  </style>

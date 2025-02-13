@@ -3,6 +3,9 @@ import { AdrplexusQbankComponent } from './adrplexus-qbank/adrplexus-qbank.compo
 import { SubjectListComponent } from './subject-list/subject-list.component';
 import { ExamListComponent } from './exam-list/exam-list.component';
 import { ExamDetailComponent } from './exam-detail/exam-detail.component';
+import { GameViewComponent } from './game-view/game-view.component';
+import { GameReviewComponent } from './game-review/game-review.component';
+import { GameAnalyticsComponent } from './game-analytics/game-analytics.component';
 
 export default [
     {
@@ -18,7 +21,25 @@ export default [
         component: ExamListComponent,
     },
     {
-        path     : 'exam-details/:id',
+        path     : 'exam-details/:guid',
         component: ExamDetailComponent,
     },
+    {
+        path     : 'game-view/:guid',
+        component: GameViewComponent,
+        data: {
+            layout: 'empty'
+        },
+    },
+    {
+        path     : 'game-review/:guid',
+        component: GameReviewComponent,
+        data: {
+            layout: 'empty'
+        },
+    },
+    {
+        path     : 'game-analytics/:guid',
+        component: GameAnalyticsComponent,
+    }
 ] as Routes;
