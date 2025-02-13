@@ -8,25 +8,30 @@
 ::ng-deep .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
     display: none;
 }
-::ng-deep .adrplexus-questions mat-panel-title.mat-expansion-panel-header-title{
+
+::ng-deep .adrplexus-questions mat-panel-title.mat-expansion-panel-header-title {
     display: block !important;
 }
-::ng-deep .adrplexus-questions mat-panel-title.mat-expansion-panel-header-title img{
+
+::ng-deep .adrplexus-questions mat-panel-title.mat-expansion-panel-header-title img {
     max-width: 200px !important;
     max-height: 200px;
 }
+
 ::ng-deep .ADrPlexus_list .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper {
     border-color: rgba(var(--fuse-primary-rgb), .3) !important;
 }
+
 ::ng-deep .ADrPlexus_list .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-form-field-infix {
     min-height: 40px;
 }
 
-::ng-deep .adrplexus-questions mat-expansion-panel-header{
+::ng-deep .adrplexus-questions mat-expansion-panel-header {
     align-items: start !important;
     height: 100px !important;
     padding: 20px 30px !important;
 }
+
 // ::ng-deep .mat-expanded .mat-expansion-panel-content {
 //     margin-top: 270px;
 // }
@@ -35,17 +40,22 @@
 :host ::ng-deep .mat-stepper-horizontal-line {
     display: none;
 }
+
 ::ng-deep .ADrPlexus_list_filters mat-chip-list {
     display: flex;
     gap: 10px;
 }
+
 ::ng-deep .ADrPlexus_list_filters span.mdc-evolution-chip__text-label.mat-mdc-chip-action-label {
     color: 2px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    font-weight: 500;
 }
+
 ::ng-deep .ADrPlexus_list_filters mat-chip-list mat-chip {
     background: rgba(var(--fuse-primary-rgb), .2) !important;
     border: 1px solid rgba(var(--fuse-primary-rgb), 1) !important;
 }
+
 ::ng-deep body.light .mat-step-header:hover:not([aria-disabled]) {
     background: none;
 }

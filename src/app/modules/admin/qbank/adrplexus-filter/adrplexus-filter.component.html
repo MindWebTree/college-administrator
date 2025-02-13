@@ -2,7 +2,7 @@
     <div class="adrplexus-filters pb-4">
   
       <mat-form-field appearance="fill" class="w-60 pl-6">
-        <mat-select matInput matNativeControl required placeholder="Select QBankType" formControlName="QbankType">
+        <mat-select matInput matNativeControl  placeholder="Select QBankType" formControlName="QbankType">
           <!-- <mat-option disabledv value=''>Select any</mat-option> -->
           <mat-option *ngFor="let banktype of qbanktype" [value]="banktype.id" (click)="getQbanksubject(banktype.id)"
           >{{banktype.title}} ({{banktype.noOfQuestions}})</mat-option>

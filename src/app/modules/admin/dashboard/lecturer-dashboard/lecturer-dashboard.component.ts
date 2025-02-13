@@ -61,14 +61,14 @@ export class LecturerDashboardComponent implements OnInit {
       this.qBankTypes = responce.qBankTypes;
       this.courseYear = responce.courseYear;
       this.subject = responce.subject;
-      this.ListSubject= {
+      this.ListSubject = {
         loop: false,
         mouseDrag: false,
         touchDrag: false,
         pullDrag: false,
         dots: false,
         navSpeed: 700,
-        navText: ['<', '>'],
+        navText: ['&rarr;', '&larr;'],
         responsive: {
           0: {
             items: 1
@@ -87,7 +87,7 @@ export class LecturerDashboardComponent implements OnInit {
       }
     })
     this.studentNaivgation();
-   
+
   }
   studentNaivgation(): void {
     this._commanService.getstudentNavigationList().subscribe({
@@ -159,7 +159,7 @@ export class LecturerDashboardComponent implements OnInit {
           dataLabels: {
             position: "top",
           },
-          barHeight: "35%",
+          barHeight: "10%",
         },
       },
       dataLabels: {
@@ -204,7 +204,7 @@ export class LecturerDashboardComponent implements OnInit {
   fetchChartData(guid: string): void {
     this._dashboard.getLecturerOverView(guid).subscribe({
       next: (chartData) => {
-        console.log('API Response:', chartData);
+
         if (Array.isArray(chartData)) {
           this.updateChartOptions(chartData);
         }
@@ -255,7 +255,7 @@ export class LecturerDashboardComponent implements OnInit {
       plotOptions: {
         bar: {
           borderRadius: 4,
-          columnWidth: '60%',
+          columnWidth: '10%',
           distributed: false
         }
       },
@@ -302,7 +302,7 @@ export class LecturerDashboardComponent implements OnInit {
       }
     };
 
-    console.log('Updated Chart Options:', this.chartOptions);
+
 
     // Update chart
     if (this.chart && this.chart.updateOptions) {
@@ -328,7 +328,7 @@ export class LecturerDashboardComponent implements OnInit {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: ['<', '>'],
+    navText: ['&rarr;', '&larr;'],
     responsive: {
       0: {
         items: 1,
@@ -343,10 +343,15 @@ export class LecturerDashboardComponent implements OnInit {
         items: 5
       }
     },
-    nav: true
+    nav: true,
+    lazyLoad: true,
+  }
+  onInitialized() {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 0);
   }
 
-  
   // --owl carosoul ends--
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions

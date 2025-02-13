@@ -24,7 +24,52 @@
     height: 80px;
     font-size: 182px;
     bottom: 84px;
-    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    color: #89DFB7 !important;
+    opacity: .1;
+}
+
+:host ::ng-deep .plus_bg_first:after {
+    content: "+";
+    position: absolute;
+    right: 60px;
+    display: block;
+    background-position: center center;
+    background-size: contain;
+    width: 80px;
+    height: 80px;
+    font-size: 182px;
+    bottom: 84px;
+    color: #89DFB7 !important;
+    opacity: .1;
+}
+
+:host ::ng-deep .plus_bg_second:after {
+    content: "+";
+    position: absolute;
+    right: 60px;
+    display: block;
+    background-position: center center;
+    background-size: contain;
+    width: 80px;
+    height: 80px;
+    font-size: 182px;
+    bottom: 84px;
+    color: #EBB7AE !important;
+    opacity: .1;
+}
+
+:host ::ng-deep .plus_bg_third:after {
+    content: "+";
+    position: absolute;
+    right: 60px;
+    display: block;
+    background-position: center center;
+    background-size: contain;
+    width: 80px;
+    height: 80px;
+    font-size: 182px;
+    bottom: 84px;
+    color: #96DADF !important;
     opacity: .1;
 }
 
@@ -221,7 +266,8 @@ h1 span {
 ::ng-deep .mat-mdc-form-field-subscript-wrapper {
     display: none !important;
 }
-::ng-deep .subject-lecturer-dashboard .owl-item{
+
+::ng-deep .subject-lecturer-dashboard .owl-item {
     width: 18rem !important;
     display: block;
 }
@@ -232,13 +278,16 @@ h1 span {
     :host ::ng-deep table {
         width: 180% !important;
     }
+
     ::ng-deep .subject-lecturer-dashboard .card_img img {
         padding: 0 !important;
         min-width: 110px;
     }
+
     ::ng-deep .course-lecturer-dashboard .owl-carousel .owl-item {
         min-width: 10rem;
     }
+
     ::ng-deep .course-lecturer-dashboard .card-body {
         padding: 15px 10px !important;
         // min-width: 200px;

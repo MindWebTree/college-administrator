@@ -45,7 +45,7 @@ export class BioLecturerComponent implements OnInit {
   lecturer: lectureModel;
   displayQBanks: QBankType[] = [];
   allQBanks: QBankType[] = [];  // Will store all available question banks
-
+  courseYearName: string;
   // lecturer: LecturerList = {
   //   LecturerImage: '',
   //   LecturerName: 'Vansh Garg',
@@ -66,6 +66,7 @@ export class BioLecturerComponent implements OnInit {
     this.route.params.subscribe((parram) => {
 
       this.userId = parram.userId;
+      this.courseYearName = parram.courseYear;
 
     });
 

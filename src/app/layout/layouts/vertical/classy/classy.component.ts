@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -61,8 +61,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _userService: UserService,
         private _helperService: helperService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseNavigationService: FuseNavigationService
-    ) {}
+        private _fuseNavigationService: FuseNavigationService,
+        private _changeDetectorRef: ChangeDetectorRef,
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -84,16 +85,19 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         this._userAccount = this._helperService.getUserDetail();
-        if(this._userAccount == null){
+        if (this._userAccount == null) {
             this._router.navigate(['/sign-out']);
         }
         // Subscribe to navigation data
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((navigation: Navigation) => {
-                this.navigation = navigation;
-            });
+                this.navigation = { ...navigation }; // Ensures a new reference
 
+                this._changeDetectorRef.markForCheck(); // Ensure UI updates
+            });
+        // Fetch latest navigation data on init
+        this._navigationService.refreshNavigation();
         // Subscribe to the user service
         this._userService.user$
             .pipe(takeUntil(this._unsubscribeAll))

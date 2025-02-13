@@ -25,15 +25,15 @@ export class NavigationMockApi {
         futuristicNavigation;
     private readonly _horizontalNavigation: FuseNavigationItem[] =
         horizontalNavigation;
-    private readonly _AdminNavigation: FuseNavigationItem[] =
-    AdminNavigation;
+    public readonly _AdminNavigation: FuseNavigationItem[] =
+        AdminNavigation;
     private readonly _LecturerNavigation: FuseNavigationItem[] =
-    LecturerNavigation;
-    private readonly _StudentNavigation: FuseNavigationItem[] =
-    StudentNavigation;
-    userDetail :any;
+        LecturerNavigation;
+    public readonly _StudentNavigation: FuseNavigationItem[] =
+        StudentNavigation;
+    userDetail: any;
     isnavigationalreadyexiest: boolean = false;
-    latestNavigation:any=[];
+    latestNavigation: any = [];
     /**
      * Constructor
      */
@@ -119,10 +119,10 @@ export class NavigationMockApi {
     private getNavigationLink(type: string, category: any): string {
         switch (type) {
             case 'Exams':
-                if(category.name == 'Waiting For Approval'){
+                if (category.name == 'Waiting For Approval') {
                     return `/exam/list/waiting-for-approval`;
-                }else{
-                return `/exam/list/${category.guid}`;
+                } else {
+                    return `/exam/list/${category.guid}`;
                 }
             case 'Students':
                 return `/student/list/${category.guid}`;
@@ -144,32 +144,33 @@ export class NavigationMockApi {
                 const processedNavs = new Set();
 
                 for (const nav of navigation) {
-                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers') && 
+                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers') &&
                         !processedNavs.has(nav.title)) {
-                        
+
                         processedNavs.add(nav.title);
 
-                        if (!this.isnavigationalreadyexiest) {
-                            try {
-                                const items = await this.fetchNavigationItems(nav.title);
-                                
-                                items?.forEach(category => {
-                                    const existingNavItem = nav.children.find(child => 
-                                        child.title === category.name);
-                                    
-                                    if (!existingNavItem) {
-                                        nav.children.push({
-                                            id: category.name,
-                                            title: category.name + ' ' + `(${category.count})`,
-                                            type: 'basic',
-                                            link: this.getNavigationLink(nav.title, category),
-                                        });
-                                    }
-                                });
-                            } catch (error) {
-                                console.error(`Error fetching ${nav.title} navigation:`, error);
-                            }
+                        // if (!this.isnavigationalreadyexiest) {
+                        try {
+                            const items = await this.fetchNavigationItems(nav.title);
+                            nav.children = [];
+                            items?.forEach(category => {
+                                const existingNavItem = nav.children.find(child =>
+                                    child.title === category.name);
+
+                                if (!existingNavItem) {
+
+                                    nav.children.push({
+                                        id: category.name,
+                                        title: category.name + ' ' + `(${category.count})`,
+                                        type: 'basic',
+                                        link: this.getNavigationLink(nav.title, category),
+                                    });
+                                }
+                            });
+                        } catch (error) {
+                            console.error(`Error fetching ${nav.title} navigation:`, error);
                         }
+                        // }
                     }
                 }
 

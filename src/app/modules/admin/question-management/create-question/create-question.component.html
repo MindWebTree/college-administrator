@@ -14,7 +14,7 @@
                 <div class="linestep">
                     <div class="flex items-baseline bankSettinglable bg-transparent">
 
-                        <label class="w-30 bg-transparent font-medium text-lg">Q'Bank Type</label><span>:</span>
+                        <label class="w-30 bg-transparent font-medium text-lg text-[#505050]">Q'Bank Type</label><span>:</span>
                         <mat-form-field appearance="fill" class="w-90 pl-6">
                             <mat-select matInput matNativeControl formControlName="QbankType" required placeholder="select any">
                                 <mat-option disabled value="">Select any</mat-option>
@@ -29,7 +29,7 @@
                     </div>
                   
                     <div class="flex items-baseline bankSettinglable">
-                        <label class="w-30 font-medium text-lg">Subject</label><span>:</span>
+                        <label class="w-30 font-medium text-lg  text-[#505050]">Subject</label><span>:</span>
                         <mat-form-field appearance="fill" class="w-90 pl-6">
                             <mat-select matNativeControl formControlName="Subject" required placeholder="select any">
                                 <mat-option disabledv value="">Select any</mat-option>
@@ -43,7 +43,7 @@
                     </div>
                  
                     <div class="flex items-baseline bankSettinglable">
-                        <label class="w-30 font-medium text-lg">Topics</label><span>:</span>
+                        <label class="w-30 font-medium text-lg  text-[#505050]">Topics</label><span>:</span>
                         <mat-form-field appearance="fill" class="w-90 pl-6">
                             <mat-select matNativeControl formControlName="Topic" required placeholder="select any">
                                 <mat-option disabledv value="">Select any</mat-option>
@@ -171,14 +171,15 @@
                 <div class="relative">
                     <div *ngIf="!isMultiChoiceQuestion && Choices" class="float-left single-choices">
                         <mat-radio-group class="choice_radio" aria-label="Select an option" required>
-                            <mat-radio-button *ngFor="let choice of Choices ;let i = index;"   [checked]="choice.isCorrect" [value]="choice.choiceId" [ngClass]="{'radio_checked': choice.isCorrect}" class="block ml-8 options_radio" (click)="selectRadio(i,choice.isCorrect)">{{choice.choiceText}}
+                            <mat-radio-button *ngFor="let choice of Choices ;let i = index;"   [checked]="choice.isCorrect" [value]="choice.choiceId" [ngClass]="{'radio_checked': choice.isCorrect}" class="block  options_radio" (click)="selectRadio(i,choice.isCorrect)">
+                                <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded" [ngClass]="{'bg-green-500 text-white border-green-500': choice.isCorrect}"><B class="pl-px">{{i + 1}}</B></span>{{choice.choiceText}}
                             </mat-radio-button>
                         </mat-radio-group>
                     </div>
                     <div *ngIf="isMultiChoiceQuestion && Choices" class="w-full">
                         <mat-selection-list #answers class="choice_check" (selectionChange)="onSelection($event)" required>
                             <mat-list-option *ngFor="let choice of Choices ;let i = index;" checkboxPosition="before" [value]="i" [selected]="choice.isCorrect">
-                                {{choice.choiceText}}
+                                 <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded" [ngClass]="{'bg-green-500 text-white border-green-500': choice.isCorrect}"><B class="pl-px">{{i + 1}}</B></span>{{choice.choiceText}}
                                 <div class="multieditordelete_choice">
                                 </div>
                             </mat-list-option>
@@ -223,7 +224,7 @@
                 <ng-template matStepLabel class="pointer-events-none">Status</ng-template>
                 <div class="after_submit_screen w-full justify-center items-center mt-8 p-4">
 
-                    <h2 class="justify-center flex w-full text-2xl py-6 font-semibold">Question No:{{QuestionDetailId}}</h2>
+                    <h2 class="justify-center flex w-full text-2xl py-6 font-semibold text-[#3C3C3C]">Question No:{{QuestionDetailId}}</h2>
                     <img src="my-images/Icon feather-check-circle@2x.png" class="justify-center w-15 h-15 flex text-center mx-auto mb-4 ">
                     <h3 class="justify-center flex w-full text-3xl mt-4 pb-6 font-normal text-center text-primary">Your question was Successfully saved !</h3>
 

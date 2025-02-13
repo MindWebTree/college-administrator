@@ -99,7 +99,8 @@ export class AdminDashboardComponent {
       this.subject = responce.subject
       // Move the ListSubject assignment here
       this.ListSubject = {
-        loop: this.subject.length > 1,  // Enable loop if more than 2 subjects
+        // loop: this.subject.length > 1,  // Enable loop if more than 2 subjects
+        loop: false,  // Enable loop if more than 2 subjects
         mouseDrag: false,
         touchDrag: false,
         pullDrag: false,
@@ -395,7 +396,11 @@ export class AdminDashboardComponent {
   }
   // exam over flow apex chart and api ends
 
-
+  onInitialized() {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 0);
+  }
   /**
    * On destroy
    */
@@ -405,7 +410,7 @@ export class AdminDashboardComponent {
     this._unsubscribeAll.complete();
   }
   customOptions: OwlOptions = {
-    loop: true,
+    loop: false,
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
@@ -426,7 +431,8 @@ export class AdminDashboardComponent {
         items: 5
       }
     },
-    nav: true
+    nav: true,
+    lazyLoad: true,
   }
   // ListSubject: OwlOptions = {
   //   loop: true,

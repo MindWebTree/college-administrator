@@ -42,8 +42,8 @@ export class ListLecturerComponent {
   dialogRef: any;
 
   currentSearchText: string = ''; // added by harsh to track current search
-  courseyearId: string = ''; 
-  CourseYear: string = ''; 
+  courseyearId: string = '';
+  CourseYear: string = '';
 
   private _unsubscribeAll: Subject<void> = new Subject<void>();
 
@@ -54,24 +54,24 @@ export class ListLecturerComponent {
     public _matDialog: MatDialog,
     public _route: ActivatedRoute,
     private _lectureService: LectureService, private _router: Router) {
-      this._router.events.pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntil(this._unsubscribeAll)
-      ).subscribe(() => {
-        this.courseyearId = this._route.snapshot.params['guid'];
-        this.loadStudentData();
-      });
-      this._route.params.subscribe(res=>{
-        this.courseyearId = res.guid;
-        this.loadStudentData()
-      })
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this._unsubscribeAll)
+    ).subscribe(() => {
+      this.courseyearId = this._route.snapshot.params['guid'];
+      this.loadStudentData();
+    });
+    this._route.params.subscribe(res => {
+      this.courseyearId = res.guid;
+      this.loadStudentData()
+    })
     this.searchInput = new FormControl('');
-    
+
   }
 
-  loadStudentData(){
+  loadStudentData() {
     this._lectureService.onlectureManagementChanged.next(true)
-    this._lectureService.getCourseYearName(this.courseyearId).subscribe((res:any)=>{
+    this._lectureService.getCourseYearName(this.courseyearId).subscribe((res: any) => {
       this.CourseYear = res.name
     })
   }
@@ -172,7 +172,7 @@ export class ListLecturerComponent {
   }
   onNavigate(user: any) {
 
-    this._router.navigate(['/lecturer/lecturer-bio/' + user.id]);
+    this._router.navigate(['/lecturer/lecturer-bio/' + user.id + '/' + this.CourseYear]);
   }
 
 
