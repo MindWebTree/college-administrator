@@ -8,8 +8,8 @@
                 <div class="flex">
                     <div class="w-2/4 text-lg">{{exam.name}}</div>
                     <div class="w-2/4 text-right cursor-pointer">
-                        <mat-icon (click)="editExam(exam.id)">edit</mat-icon>
-                        <mat-icon (click)="deleteExam(exam.id)">delete</mat-icon>
+                        <mat-icon (click)="editExam(exam.id)" class="text-[#505050]">edit</mat-icon>
+                        <mat-icon (click)="deleteExam(exam.id)" class="text-[#505050]">delete</mat-icon>
                     </div>
                 </div>
                 <p class="exam-description" [innerHtml]="exam.description"></p>

@@ -7,7 +7,7 @@ export default [
         component: ListStudentComponent,
     },
     {
-        path: 'student-report-card/:userId',
+        path: 'student-report-card/:userId/:courseYear',
         component: ReportCardComponent,
     },
 ] as Routes;

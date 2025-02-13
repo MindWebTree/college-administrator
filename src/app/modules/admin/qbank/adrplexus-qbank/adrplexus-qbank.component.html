@@ -3,10 +3,10 @@
         <form [formGroup]="secondfilter">
             <div class="flex flex-col md:flex-row justify-between py-2 items-start lg:items-center">
                 <div>
-                    <h2 class="text-xl font-medium text-[#505050]">Total Questions ({{dataSource?.paginationData?.count}})</h2>
+                    <h2 class="text-lg font-normal text-[#505050]">Total Questions ({{dataSource?.paginationData?.count}})</h2>
                 </div>
                 <div class="flex gap-3 flex-col lg:flex-row items-start lg:items-center lg:w-max w-full">
-                    <div class="filter_heading font-medium">
+                    <div class="filter_heading  text-[#505050] text-[14px] font-normal">
                         Competency :
                     </div>
                     <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-max w-full">
@@ -19,7 +19,7 @@
                             <mat-option *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div class="filter_heading font-medium">
+                    <div class="filter_heading text-[#505050] text-[14px] font-normal ">
                         Level of questions :
                     </div>
                     <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-max w-full">
@@ -32,7 +32,7 @@
                             <mat-option *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <div class="filter_heading font-medium">
+                    <div class="filter_heading text-[#505050] text-[14px] font-normal">
                         Tags :
                     </div>
                     <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-min w-full">
@@ -59,12 +59,12 @@
                     <div class="expension_div rounded " >
                         <!-- <p class="text-black font-semibold mt-9">A 73-Year-old hypertensive patient was rushed to the casualty following a transient ischemic attack. Angiography revealed
                         <br> stenosis of the internal carotid artery. Which part of this artery does not give any branch</p> -->
-                        <h6 class="mt-44 font-medium">Select option any one</h6>
+                        <h6 class="font-medium">Select option any one</h6>
 
                         <div *ngFor=" let choices of question?.choices; let i = index;">
                             <h6 *ngIf="choices.isCorrect" class="mt-3.5 font-medium correct_heading">Correct Answer</h6>
                             <div class="bg-white mt-3.5 flex p-2.5 border" [ngClass]="{'correct_div':choices.isCorrect===true}">
-                                <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded"><B>{{i + 1}}</B></span>
+                                <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded"><B class="pl-px">{{i + 1}}</B></span>
                                 <h2 class="font-medium">{{choices.choiceText}}</h2>
                             </div>
                         </div>

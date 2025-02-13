@@ -8,7 +8,7 @@ export default [
         component: ListLecturerComponent,
     },
     {
-        path: 'lecturer-bio/:userId',
+        path: 'lecturer-bio/:userId/:courseYear',
         component: BioLecturerComponent,
     },
 ] as Routes;

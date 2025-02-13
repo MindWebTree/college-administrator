@@ -11,8 +11,11 @@
             </div>
 
             <div class="flex flex-col justify-center gap-2 ml-4">
+                <label class="custom-file-upload">Change Photo
+                    <input type="file"  class="image-upload" (change)="onselectFile($event)" formControlName="StudentImage">
+                </label>
                 <!-- <button mat-button class="change_btn">Change Photo</button> -->
-                <input type="file" class="image-upload" (change)="onselectFile($event)" formControlName="StudentImage">
+                <!-- <input type="file" class="image-upload" (change)="onselectFile($event)" formControlName="StudentImage"> -->
                 <button mat-button class="delete_btn text-primary bg-primary/10" (click)="removeSelectedFile()">Delete Photo</button>
             </div>
         </div>

@@ -48,14 +48,14 @@
     <div class="grid grid-cols-1 md:grid-cols-1  lg:grid-cols-1 gap-4">
         <div class="flex flex-col md:col-span-1 lg:col-span-2  col-auto w-full mx-auto box-shadow">
             <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded overflow-hidden border border-primary">
+                <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded overflow-auto border border-primary">
                     <div class="text-lg tracking-tight leading-6 truncate font-medium">Exam Overiew
                     </div>
-                    <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
+                    <div class="flex flex-col flex-auto mt-2 ">
                         <table class="w-full overflow-y-visible" mat-table [dataSource]="dataSource">
 
                             <!-- ExamName -->
-                            <ng-container matColumnDef="ExamName" sticky>
+                            <ng-container matColumnDef="ExamName" >
                                 <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50 w-28">
                                     Exam Name
                                 </th>

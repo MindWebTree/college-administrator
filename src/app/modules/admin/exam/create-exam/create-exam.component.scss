@@ -4,9 +4,15 @@
     font-family: 'Inter var';
     font-weight: 600 !important;
 }
+
+::ng-deep .mat-step-icon .mat-icon {
+    color: #fff !important;
+}
+
 ::ng-deep .create-exam-first-step mat-form-field {
     min-width: 400px;
 }
+
 mat-form-field {
     padding-top: 20px;
 }
@@ -80,41 +86,54 @@ mat-form-field {
     width: 35px;
     height: 35px;
 }
+
 ::ng-deep .create_account mat-step-header {
     pointer-events: none;
 }
 
 ::ng-deep .demo-section mat-checkbox.checkbox-question {
     position: relative;
-    top:  -16px;
+    top: -16px;
     left: -16px;
 }
+
 ::ng-deep .create-exam-second-step mat-panel-title.mat-expansion-panel-header-title {
     display: block !important;
 }
+
 ::ng-deep .create-exam-second-step mat-expansion-panel-header {
     align-items: start !important;
     height: 100px !important;
     padding: 20px 30px !important;
 }
+
 ::ng-deep .create-exam-second-step mat-panel-title.mat-expansion-panel-header-title img {
     max-width: 200px !important;
     max-height: 200px;
 }
+
 ::ng-deep .create-exam-second-step mat-form-field {
     min-width: 160px;
 }
+
 ::ng-deep .create-exam-second-step .mat-mdc-form-field .mat-mdc-form-field-infix {
     min-height: 40px !important;
 }
+
 ::ng-deep .create-exam-third-step mat-form-field {
     min-width: 200px;
 }
+
 ::ng-deep .create-exam-third-step mat-chip-list.student_chips {
     width: 100%;
     display: flex;
     gap: 10px;
     margin-left: 190px;
+}
+
+::ng-deep .mdc-evolution-chip__text-label {
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    font-weight: 500;
 }
 
 ::ng-deep mat-checkbox.checkbox-question .mdc-checkbox__background {
@@ -353,6 +372,7 @@ input[type=number] {
     flex-wrap: wrap;
     // padding-bottom: 10px;
 }
+
 ::ng-deep .create-exam-second-step mat-chip-list {
     flex-basis: 100%;
     max-width: 84% !important;
@@ -363,15 +383,17 @@ input[type=number] {
     // padding-bottom: 10px;
 }
 
- ::ng-deep .create_account mat-chip {
+::ng-deep .create_account mat-chip {
     background-color: rgba(var(--fuse-primary-rgb), .1) !important;
     color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
     border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
 }
+
 ::ng-deep .create_account mat-chip span.mdc-evolution-chip__text-label.mat-mdc-chip-action-label {
     display: flex;
     align-items: center;
 }
+
 ::ng-deep .create_account mat-chip span.mdc-evolution-chip__text-label.mat-mdc-chip-action-label .mat-icon {
     color: rgba(var(--fuse-primary-rgb), 1) !important;
 }
@@ -413,7 +435,7 @@ input[type=number] {
     position: absolute;
     left: 0px;
     top: 32px;
-    border: 6px solid #d2d2d2;
+    border: 6px solid #B5E7FB;
     // border-color: #d2d2d2 !important;
     padding: 4px;
 }
@@ -525,13 +547,15 @@ body .light .mat-step-header .mat-step-icon {
 .student_chips button {
     display: flex;
 }
-.courses{
+
+.courses {
     display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0px 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0px 10px;
 }
-.copy-link{
+
+.copy-link {
     width: 330px;
 }
 
@@ -539,13 +563,15 @@ body .light .mat-step-header .mat-step-icon {
     .min-w-212 {
         padding-left: 30px !important;
     }
+
     ::ng-deep .create-exam-second-step mat-form-field {
         min-width: auto;
     }
-   
+
     .mat-horizontal-content-container {
         padding: 0px 0px 0px 15px !important;
     }
+
     .create-exam-first-step mat-chip-list {
         left: 190px;
     }
@@ -555,62 +581,80 @@ body .light .mat-step-header .mat-step-icon {
     ::ng-deep .create_account mat-step-header {
         min-width: 170px;
     }
+
     .create-exam-first-step mat-chip-list {
         left: 0px;
     }
+
     ::ng-deep .create-exam-first-step mat-form-field {
         min-width: auto;
     }
-    .cbme-code-description{
+
+    .cbme-code-description {
         margin-left: 0px;
     }
-    .linestep:before{
+
+    .linestep:before {
         display: none;
     }
-    ::ng-deep .create_account .mat-horizontal-stepper-header-container{
+
+    ::ng-deep .create_account .mat-horizontal-stepper-header-container {
         overflow-x: scroll;
     }
-     :host ::ng-deep form .mat-form-field.mat-form-field {
+
+    :host ::ng-deep form .mat-form-field.mat-form-field {
         min-width: 83vw;
         max-width: 83vw;
         padding-left: 0 !important;
     }
+
     .sm-block {
         display: block !important;
     }
+
     .sm-pt-2 {
         padding-top: 20px;
     }
+
     .stepper_div::after,
     .stepper_div::before {
         display: none;
     }
+
     .gap {
         gap: 0px;
         padding-top: 10px;
     }
+
     .gap mat-label:first-child {
         padding-right: 20px;
     }
+
     .gap mat-label:nth-child(3) {
         padding-right: 28px;
     }
+
     .gap .mat-form-field.mat-form-field {
         padding: 0 !important;
     }
+
     .semicolm_span {
         display: none;
     }
+
     .clearall_btn {
         width: 140px;
         padding: 15px 35px !important;
     }
-     :host ::ng-deep .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper {
+
+    :host ::ng-deep .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper {
         top: -25px !important;
     }
+
     mat-form-field {
         padding-top: 10px;
     }
+
     .min-w-212 {
         padding-left: 0px !important;
     }

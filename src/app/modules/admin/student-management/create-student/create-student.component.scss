@@ -16,7 +16,7 @@ div {
     width: 640px;
     overflow-y: scroll;
     // height: 80vh;
-    border-radius: 5px;
+    border-radius: 5px !important;
 }
 
 ::ng-deep .edit_profile mat-form-field.mat-form-field {
@@ -59,7 +59,32 @@ div {
     width: 137px;
     height: 40px;
     border-radius: 4px;
+
 }
+
+.image-upload:after {
+    content: "Change Photo" !important;
+}
+
+.custom-file-upload {
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    background: rgba(var(--fuse-primary-rgb), .1);
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    width: 137px;
+    height: 40px;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500px;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
 
 .image-upload {
     width: 138px;
@@ -143,6 +168,7 @@ div {
     background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
 
 }
+
 ::ng-deep .student-form-dialog mat-dialog-container {
     max-height: 80vh !important;
 }

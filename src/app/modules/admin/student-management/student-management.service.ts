@@ -5,6 +5,8 @@ import { studentAnalytics, studentModel } from './student-management.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'environments/environment';
 import { studentAnalyticGrid, studentGrid } from '../common/gridFilter';
+import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
+import { NavigationService } from 'app/core/navigation/navigation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class StudentService {
     });
   }
   constructor(private _httpClient: HttpClient,
-    private _matSnockbar: MatSnackBar
+    private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onStudentManagementChanged = new BehaviorSubject([]);
   }
@@ -72,6 +74,13 @@ export class StudentService {
           (response: any) => {
             if (response) {
               this.onStudentManagementChanged.next(this.student);
+              // Fetch new navigation dynamically   To refresh  count in navigation
+              this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
+
+                // Explicitly trigger a navigation refresh
+                this._navigationTypeService.refreshNavigation();
+
+              });
               this.openSnackBar("Successfully added.", "Close");
               resolve(response);
             } else {
@@ -86,6 +95,7 @@ export class StudentService {
           }
         );
     });
+
   }
   /**
      * update student
@@ -171,6 +181,13 @@ export class StudentService {
         .subscribe(response => {
           if (response) {
             this.onStudentManagementChanged.next(this.student);
+            // to refresh  count in navigation
+            this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
+
+              // Explicitly trigger a navigation refresh
+              this._navigationTypeService.refreshNavigation();
+
+            });
             this.openSnackBar("Successfully removed.", "Close");
           }
           else {

@@ -20,6 +20,7 @@ import { finalize } from 'rxjs';
 @Component({
     selector: 'auth-forgot-password',
     templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.css'],
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
     standalone: true,
@@ -43,14 +44,14 @@ export class AuthForgotPasswordComponent implements OnInit {
     };
     forgotPasswordForm: UntypedFormGroup;
     showAlert: boolean = false;
-
+    currentYear: number = new Date().getFullYear();
     /**
      * Constructor
      */
     constructor(
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder
-    ) {}
+    ) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks

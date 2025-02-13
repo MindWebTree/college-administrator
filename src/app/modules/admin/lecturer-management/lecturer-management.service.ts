@@ -5,6 +5,8 @@ import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
 import { lectureModel, QBankCategory } from './lecturer-management.model';
 import { environment } from 'environments/environment';
 import { GridFilter, lecturerAnalyticGrid } from '../common/gridFilter';
+import { NavigationService } from 'app/core/navigation/navigation.service';
+import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,7 @@ export class LectureService {
     });
   }
   constructor(private _httpClient: HttpClient,
-    private _matSnockbar: MatSnackBar
+    private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onlectureManagementChanged = new BehaviorSubject([]);
   }
@@ -71,6 +73,13 @@ export class LectureService {
           (response: any) => {
             if (response) {
               this.onlectureManagementChanged.next(this.lecture);
+              // to refresh  count in navigation
+              this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
+
+                // Explicitly trigger a navigation refresh
+                this._navigationTypeService.refreshNavigation();
+
+              });
               this.openSnackBar("Successfully added.", "Close");
               resolve(response);
             } else {
@@ -99,6 +108,13 @@ export class LectureService {
           (response: any) => {
             if (response) {
               this.onlectureManagementChanged.next(this.lecture);
+              // to refresh  count in navigation
+              this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
+
+                // Explicitly trigger a navigation refresh
+                this._navigationTypeService.refreshNavigation();
+
+              });
               this.openSnackBar("Successfully added.", "Close");
               resolve(response);
             } else {
@@ -182,6 +198,13 @@ export class LectureService {
         .subscribe(response => {
           if (response) {
             this.onlectureManagementChanged.next(this.lecture);
+            // to refresh  count in navigation
+            this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
+
+              // Explicitly trigger a navigation refresh
+              this._navigationTypeService.refreshNavigation();
+
+            });
             this.openSnackBar("Successfully removed.", "Close");
           }
           else {

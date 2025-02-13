@@ -57,25 +57,25 @@ export class ListStudentComponent {
     public _route: ActivatedRoute,
     private _studentService: StudentService, private _router: Router
   ) {
-      this._router.events.pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntil(this._unsubscribeAll)
-      ).subscribe(() => {
-        this.courseyearId = this._route.snapshot.params['guid'];
-        this.loadStudentData();
-      });
-      this._route.params.subscribe(res=>{
-        this.courseyearId = res.guid;
-        this.loadStudentData();
-      })
+    this._router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      takeUntil(this._unsubscribeAll)
+    ).subscribe(() => {
+      this.courseyearId = this._route.snapshot.params['guid'];
+      this.loadStudentData();
+    });
+    this._route.params.subscribe(res => {
+      this.courseyearId = res.guid;
+      this.loadStudentData();
+    })
 
     this.searchInput = new FormControl('');
-    
+
   }
   private loadStudentData(): void {
     // Trigger data reload
     this._studentService.onStudentManagementChanged.next(true);
-    this._studentService.getCourseYearName(this.courseyearId).subscribe((res:any)=>{
+    this._studentService.getCourseYearName(this.courseyearId).subscribe((res: any) => {
       this.CourseYear = res.name
     })
   }
@@ -191,7 +191,7 @@ export class ListStudentComponent {
   }
   onNavigate(user: any) {
 
-    this._router.navigate(['/student/student-report-card/' + user.id]);
+    this._router.navigate(['/student/student-report-card/' + user.id + '/' + this.CourseYear]);
   }
 
 

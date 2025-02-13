@@ -19,13 +19,13 @@ import { Route, Router } from '@angular/router';
   selector: 'app-waiting-for-approval',
   standalone: true,
   providers: [ExamService],
-  imports: [MatIconModule,MatPaginatorModule,CommonModule,ConfirmDialogComponent, MatButtonModule, MatFormFieldModule, DurationPipe],
+  imports: [MatIconModule, MatPaginatorModule, CommonModule, ConfirmDialogComponent, MatButtonModule, MatFormFieldModule, DurationPipe],
   templateUrl: './waiting-for-approval.component.html',
   styleUrl: './waiting-for-approval.component.scss'
 })
 export class WaitingForApprovalComponent implements OnInit {
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
-  
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   dataSource: ExamlistDataSource;
   status: number;
@@ -36,7 +36,7 @@ export class WaitingForApprovalComponent implements OnInit {
     private _examService: ExamService,
     private _router: Router,
     public dialog: MatDialog
-  ){
+  ) {
     this._unsubscribeAll?.next();
     this._unsubscribeAll?.complete();
     this._unsubscribeAll = new Subject<void>();
@@ -48,10 +48,10 @@ export class WaitingForApprovalComponent implements OnInit {
     this._examService.onExamListChanged.next(true);
 
   }
-  
+
   ngOnInit(): void {
     this.dataSource = new ExamlistDataSource(this._examService)
-    this._examService.onExamListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res=>{
+    this._examService.onExamListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res => {
       let gridFilter: ExamList = {
         keyword: '',
         pageNumber: this.paginator?.pageIndex + 1,
@@ -64,57 +64,57 @@ export class WaitingForApprovalComponent implements OnInit {
       this.dataSource.getExamList(gridFilter, this.status)
     })
   }
-  editExam(id){
+  editExam(id) {
     this._router.navigate([`/exam/edit/${id}`]);
   }
-  deleteExam(id){
+  deleteExam(id) {
     this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
       disableClose: false,
       panelClass: 'delete-choice',
 
     });
     this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
-       this.confirmDialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          console.log("sdsd",id)
-            this._examService.deleteExam(id).subscribe(res=>{
-              console.log("sdsd",res);              
-              this._examService.onExamListChanged.next(true)
-            });
-        }
-        this.confirmDialogRef = null;
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log("sdsd", id)
+        this._examService.deleteExam(id).subscribe(res => {
+          console.log("sdsd", res);
+          this._examService.onExamListChanged.next(true)
+        });
+      }
+      this.confirmDialogRef = null;
     });
   }
-  approveExam(id){
+  approveExam(id) {
     this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
       disableClose: false,
       panelClass: 'aprrove-choice',
 
     });
     this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to Approve Exam?';
-       this.confirmDialogRef.afterClosed().subscribe(result => {
-        if (result) {
-            this._examService.approveExam(id).subscribe(res=>{   
-              this._examService.onExamListChanged.next(true)
-            });
-        }
-        this.confirmDialogRef = null;
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._examService.approveExam(id).subscribe(res => {
+          this._examService.onExamListChanged.next(true)
+        });
+      }
+      this.confirmDialogRef = null;
     });
   }
-  cancelExam(id){
+  cancelExam(id) {
     this.confirmDialogRef = this.dialog.open(ConfirmDialogComponent, {
       disableClose: false,
       panelClass: 'cancel-choice',
 
     });
     this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to Cancel Exam?';
-       this.confirmDialogRef.afterClosed().subscribe(result => {
-        if (result) {
-            this._examService.cancelExam(id).subscribe(res=>{              
-              this._examService.onExamListChanged.next(true)
-            });
-        }
-        this.confirmDialogRef = null;
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._examService.cancelExam(id).subscribe(res => {
+          this._examService.onExamListChanged.next(true)
+        });
+      }
+      this.confirmDialogRef = null;
     });
   }
   ngOnDestroy(): void {
@@ -126,15 +126,14 @@ export class WaitingForApprovalComponent implements OnInit {
     if (this.confirmDialogRef) {
       this.confirmDialogRef.close();
     }
-    
+
     // Cleanup data sources
     if (this.dataSource) {
       this.dataSource.disconnect();
     }
   }
 }
-export class ExamlistDataSource extends DataSource<any>
-{
+export class ExamlistDataSource extends DataSource<any> {
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public paginationData: any;

@@ -40,6 +40,23 @@
     opacity: .1;
 }
 
+:host ::ng-deep .plus_bg_list:after {
+    content: "+";
+    position: absolute;
+    right: 39px;
+    left: 0px;
+    margin: auto;
+    display: block;
+    background-position: center center;
+    background-size: contain;
+    width: 80px;
+    height: 80px;
+    font-size: 204px;
+    top: -76px;
+    color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    opacity: .1;
+}
+
 :host ::ng-deep .plus_bg_first:after {
     content: "+";
     position: absolute;
@@ -397,9 +414,11 @@ h1 span {
     :host ::ng-deep table {
         width: 180% !important;
     }
+
     ::ng-deep .course-lecturer-dashboard .owl-carousel .owl-item {
         min-width: 10rem;
     }
+
     ::ng-deep .course-lecturer-dashboard .card-body {
         padding: 15px 10px !important;
         // min-width: 200px;

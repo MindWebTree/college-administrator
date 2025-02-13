@@ -20,11 +20,11 @@
                         <div class="flex">
                             <div class="w-4/5 text-lg">{{exam.name}}</div>
                             <div class="w-1/5 text-right">
-                                <mat-icon (click)="editExam(exam.id)">edit</mat-icon>
-                                <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
+                                <mat-icon (click)="editExam(exam.id)" class="cursor-pointer text-[#505050]">edit</mat-icon>
+                                <mat-icon class="cursor-pointer text-[#505050]" (click)="deleteExam(exam.id)">delete</mat-icon>
                             </div>
                         </div>
-                        <p class="exam-description" [innerHtml]="exam.description"></p>
+                        <p>{{exam.description}}</p>
                         <div class="flex numbers_div">
                             <div class="w-4/12">{{exam.noOfStudents}}<br><span>Students</span></div>
                             <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
@@ -56,7 +56,7 @@
                         <div class="flex">
                             <div class="text-lg">{{exam.name}}</div>
                         </div>
-                        <p class="exam-description" [innerHtml]="exam.description"></p>
+                        <p>{{exam.description}}</p>
                         <div class="flex numbers_div">
                             <div class="w-4/12">{{exam.numberOfAttendees}}/{{exam.noOfStudents}}<br><span>Students</span></div>
                             <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
@@ -69,7 +69,7 @@
                         <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>
                         <h2 class="pt-1">Exam Date : {{exam.examDate | date: 'dd/MM/yyyy, h:mm a'}}</h2>
                         <div class="pt-6 flex justify-around">
-                            <a mat-button class="exam_report min-h-12 flex items-center justify-center cursor-pointer" (click)="openReportCard(exam)">View Exam Report</a>
+                            <button mat-button class="exam_report min-h-12" (click)="openReportCard()">View Exam Report</button>
                         </div>
                     </div>
                 </div>                
@@ -85,10 +85,10 @@
                         <div class="flex">
                             <div class="w-4/5 text-lg">{{exam.name}}</div>
                             <div class="w-1/5 text-right">
-                                <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)">delete</mat-icon>
+                                <mat-icon class="cursor-pointer" (click)="deleteExam(exam.id)" class="text-[#505050] cursor-pointer">delete</mat-icon>
                             </div>
                         </div>
-                        <p class="exam-description" [innerHtml]="exam.description"></p>
+                        <p>{{exam.description}}</p>
                         <div class="flex numbers_div">
                             <div class="w-4/12">{{exam.noOfStudents}}<br><span>Students</span></div>
                             <div class="w-4/12">{{exam.noOfQuestions}}<br><span>Questions</span></div>
@@ -148,7 +148,7 @@
                         </mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" *ngIf="endDateLabel">
                         <mat-label>Ends with</mat-label>
                         <input matInput type="time" 
                                formControlName="EndTime" 

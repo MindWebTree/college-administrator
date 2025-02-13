@@ -19,7 +19,9 @@ export class NavigationService {
     get navigation$(): Observable<Navigation> {
         return this._navigation.asObservable();
     }
-
+    refreshNavigation(): void {
+        this.get().subscribe(); // Triggers a new API request and emits the latest navigation
+    }
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------

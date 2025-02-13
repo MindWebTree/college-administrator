@@ -2,17 +2,17 @@
 
     <!-- Header -->
     <div class="">
-        <h1 class="pt-8 pl-8 pb-0 text-3xl font-normal text-[#505050]">Welcome to Dashboard <span class="text-primary font-medium">{{_userAccount?.fullName}}</span></h1>
+        <h1 class="pt-8 pl-8 pb-0 text-3xl font-normal text-[#505050]">Welcome to Dashboard <span class="text-primary font-medium capitalize">{{_userAccount?.fullName}}</span></h1>
         <!----------- Section-1 Start-------->
         <div>
         <div class="carousel_div course-lecturer-dashboard">
-            <owl-carousel-o [options]="customOptions" >
+            <owl-carousel-o [options]="customOptions" (initialized)="onInitialized()">
                 <ng-container>
                     <ng-template carouselSlide *ngFor="let c of courseYear">
                         <a class="card border-0">
                             <div class="card-body" [ngClass]="{'year-one': c.name  === 'First Year','year-two': c.name  === 'Second Year','year-three': c.name  === 'Third Year','year-four': c.name  === 'Fourth Year'}">
                                <h2 class="text-[#505050] text-[14px] font-normal">{{ c.name }} {{ today | date:'yyyy' }}-{{ (today.getFullYear() + 1) }}</h2>
-                                <h3 class="text-[#0C529A] text-[36px] font-medium">{{c.noOfStudents}}<span class="text-primary text-[14px]"> / students</span></h3>
+                                <h3 class="text-[#0C529A] text-[36px] font-medium">{{c.noOfStudents}}<span class="text-primary text-[14px]"> / Students</span></h3>
                             </div>
                         </a>
                     </ng-template>
@@ -29,8 +29,8 @@
             <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
                 <div class="bg-card rounded box-shadow" *ngFor="let q of qbankTypes ; let i = index">
                     <div class="rounded bg-card border-none p-6 pb-0 border bg-[#D2F6E5] plus_bg" [ngClass]="{ 'bg-[#D2F6E5] plus_bg_first': i % 3 === 0, 'bg-[#FFDCD6] plus_bg_second': i % 3 === 1,'bg-[#CCEBED] plus_bg_third': i % 3 === 2}">
-                        <h2 class="text-2xl text-[#388863] font-medium">{{q.title}}</h2>
-                        <h3 class="text-6xl text-[#388863] font-semi-bold">{{q.noOfQuestions}}<span class="text-sm font-medium"> / Questions</span></h3>
+                        <h2 class="text-2xl text-[#388863] font-medium" [ngClass]="{'text-[#388863]': i % 3 === 0, 'text-[#DD185A]': i % 3 === 1, 'text-[#218A91]': i % 3 === 2}">{{q.title}}</h2>
+                        <h3 class="text-6xl text-[#388863] font-semi-bold" [ngClass]="{'text-[#388863]': i % 3 === 0, 'text-[#DD185A]': i % 3 === 1, 'text-[#218A91]': i % 3 === 2}">{{q.noOfQuestions}}<span class="text-sm font-medium"> / Questions</span></h3>
                     </div>
                     <div>
                         <h4 class="flex items-center py-4 px-6 font-medium text-[#505050] text-sm">{{q.noOfOwnedQuestions}}/ Owned Questions</h4>
@@ -48,7 +48,7 @@
                 <ng-container >
                     <ng-template carouselSlide *ngFor="let s of subject">
                         <a class="card border-0">
-                            <div class="card2-body text-center">
+                            <div class="card2-body text-center plus_bg_list">
                                 <div class="card_img">
                                     <img [src]="s.image">
                                 </div>
@@ -120,19 +120,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-4">
                 <div class="flex flex-col md:col-span-1 lg:col-span-2  col-auto w-full mx-auto box-shadow">
                     <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded overflow-hidden border border-primary">
+                        <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded  border border-primary overflow-auto">
                             <div class="text-lg tracking-tight leading-6 truncate font-medium text-[#505050]">KMCH Questions Creator
                             </div>
-                            <div class="flex flex-col flex-auto mt-2 overflow-x-auto">
-                                <table class="w-full overflow-y-visible" mat-table [dataSource]="dataSource">
+                            <div class="flex flex-col flex-auto mt-2">
+                                <table class="w-full" mat-table [dataSource]="dataSource">
 
                                     <!-- Type -->
-                                    <ng-container matColumnDef="Name" sticky>
-                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50 w-28">
+                                    <ng-container matColumnDef="Name" >
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-primary-50 w-28 font-medium">
                                             Name
                                         </th>
                                         <td mat-cell *matCellDef="let user">
-                                            <span class="flex items-center w-30 underline text-primary">
+                                            <span class="flex items-center w-30 underline text-primary font-normal text-[#505050]">
                                                 {{user.fullName}}
                                             </span>
                                         </td>
@@ -140,11 +140,11 @@
 
                                     <!-- Total -->
                                     <ng-container matColumnDef="Qbank">
-                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
-                                            Qbank
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-primary-50 font-medium">
+                                            Q'Bank
                                         </th>
                                         <td mat-cell *matCellDef="let user">
-                                            <span class="font-medium text-right">
+                                            <span class="font-medium text-right font-normal text-[#505050]">
                                                 {{user.qBankType}}
                                             </span>
                                         </td>
@@ -152,30 +152,30 @@
 
                                     <!-- Expenses amount -->
                                     <ng-container matColumnDef="ApprovedQst">
-                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-primary-50 font-medium">
                                             Questions
                                         </th>
-                                        <td mat-cell *matCellDef="let user">
+                                        <td mat-cell *matCellDef="let user" class="font-normal text-[#505050]">
                                             {{user.questions}}
                                         </td>
                                     </ng-container>
 
                                     <!-- Expenses percentage -->
                                     <ng-container matColumnDef="Used.Quest">
-                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-primary-50 font-medium">
                                             Used.Quest
                                         </th>
-                                        <td mat-cell *matCellDef="let user">
+                                        <td mat-cell *matCellDef="let user" class="font-normal text-[#505050]">
                                             {{user.usedQuestions}}
                                         </td>
                                     </ng-container>
 
                                     <!-- Remaining amount -->
                                     <ng-container matColumnDef="Status">
-                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-purple-50">
+                                        <th mat-header-cell *matHeaderCellDef class="text-primary text-base bg-primary-50 font-medium">
                                             Status
                                         </th>
-                                        <td mat-cell *matCellDef="let user">
+                                        <td mat-cell *matCellDef="let user" class="text-[#505050]">
                                             <mat-icon class="active-status text-sm" *ngIf="user.isActive" color="primary">circle</mat-icon>
                                             <mat-icon class="inactive-status text-sm" *ngIf="user.isDeleted" color="warn">circle</mat-icon>
                                             {{ user.isActive ? 'Active' : 'Deleted' }}

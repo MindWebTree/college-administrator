@@ -33,7 +33,10 @@
                         <mat-label class="font-semibold">Description of Exam</mat-label>
                         <!-- <ckeditor placeholder="Title" formControlName="ExamDescription">
                         </ckeditor> -->
-                        <ckeditor [config]="ckeConfig" placeholder="Description"  formControlName="ExamDescription"></ckeditor>
+                        <div class="mt-2">
+                            <ckeditor [config]="ckeConfig" placeholder="Description"  formControlName="ExamDescription"></ckeditor>
+                        </div>
+                        
                         <!-- <mat-form-field class="form-element block mw-100">
                             <mat-label>Description of Exam</mat-label>
                             <input matInput placeholder="Description" #first formControlName="ExamDescription" required>
@@ -47,7 +50,7 @@
                 </div>
                 <div class="linestep">
                     <div class="flex items-center sm-block stepper_div">
-                        <div class="md:px-8 sm:px-0 sm-pt-2 min-w-212">
+                        <div class="md:px-8 sm:px-0 sm-pt-2 min-w-212 text-[#3C3C3C]">
                             <label>Q'Bank</label>
                         </div>
                         <span class="semicolm_span">:</span>
@@ -218,12 +221,12 @@
                 <div class="container block pt-4 filters">
                     <div class="block md:flex justify-between py-2 items-center">
                         <div>
-                            <h2 class="text-2xl font-semibold">Total Questions ({{dataSource?.QuestionList?.length}})
+                            <h2 class="text-2xl font-semibold text-[#505050]">Total Questions ({{dataSource?.QuestionList?.length}})
                             </h2>
                         </div>
                         <form [formGroup]="CreateExamQbank">
                         <div class="md:flex grid grid-cols-2 gap-2 items-center">
-                            <div class="filter_heading">
+                            <div class="filter_heading text-[#505050] text-[14px] font-normal">
                                 Competency :
                             </div>
                             <mat-form-field appearance="fill" class="flex filter_input xyz">
@@ -233,7 +236,7 @@
                                     <mat-option *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <div class="filter_heading">
+                            <div class="filter_heading text-[#505050] text-[14px] font-normal">
                                 Level of questions :
                             </div>
                             <mat-form-field appearance="fill" class="flex filter_input xyz">
@@ -242,7 +245,7 @@
                                     <mat-option *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <div class="filter_heading">
+                            <div class="filter_heading text-[#505050] text-[14px] font-normal">
                                 Tags :
                             </div>
                             <form [formGroup]="CreateListFilter" >
@@ -366,12 +369,12 @@
             <form [formGroup]="CreateExamSchedule" class="create-exam-third-step">
                 <ng-template matStepLabel>Schedule</ng-template>
 
-                <div class="container block pt-4">
-                    <label>Exam Schedule</label>
+                <div class="container block pt-4 text-[#505050]">
+                    <label class="text-[#505050]">Exam Schedule</label>
 
                     <div class="flex items-center sm-block">
-                        <div class="sm-pt-2 min-w-165">
-                            <label>Select Courses</label>
+                        <div class="sm-pt-2 min-w-165 text-[#505050]">
+                            <label class="text-[#505050]">Select Courses</label>
                         </div>
                         <span class="semicolm_span">:</span>
                         <mat-form-field class="form-element block">

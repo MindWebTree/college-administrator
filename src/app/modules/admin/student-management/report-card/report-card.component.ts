@@ -70,7 +70,7 @@ export class ReportCardComponent {
   examAnalyticsListing: any
   displayedColumns: string[] = ['date', 'examname', 'subject', 'rank', 'avgscore', 'result'];
   dataSource: any = [];
-
+  courseYearName: any
   attendedExamsDataSource: any[] = [];
   nonAttendedExamsDataSource: any[] = [];
   @ViewChild("linearchart") linearChart: ChartComponent;
@@ -87,6 +87,7 @@ export class ReportCardComponent {
     this.route.params.subscribe((parram) => {
 
       this.userId = parram.userId;
+      this.courseYearName = parram.courseYear;
 
     });
 
