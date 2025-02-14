@@ -80,17 +80,17 @@ export const LecturerNavigation: FuseNavigationItem[] = [
                 title: 'Create New Question',
                 type: 'basic',
                 link: '/qbank/create',
-                roles : ["Lecturer"]
+                roles: ["Lecturer"]
             },
             {
                 id: 'qbanklist',
                 title: 'Created Questions',
                 type: 'basic',
                 link: '/qbank/question-list',
-                roles : ["Lecturer"]
+                roles: ["Lecturer"]
             },
         ],
-        roles : ["Lecturer"]
+        roles: ["Lecturer"]
     },
     {
         id: 'Exam',
@@ -110,7 +110,7 @@ export const LecturerNavigation: FuseNavigationItem[] = [
                 type: 'basic',
 
                 link: '/exam/created-examlist',
-                roles : ["Lecturer"]
+                roles: ["Lecturer"]
 
             },
         ],

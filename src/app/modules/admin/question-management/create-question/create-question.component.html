@@ -17,7 +17,7 @@
                         <label class="w-30 bg-transparent font-medium text-lg text-[#505050]">Q'Bank Type</label><span>:</span>
                         <mat-form-field appearance="fill" class="w-90 pl-6">
                             <mat-select matInput matNativeControl formControlName="QbankType" required placeholder="select any">
-                                <mat-option disabled value="">Select any</mat-option>
+                                <!-- <mat-option disabled value="">Select any</mat-option> -->
                                 <mat-option *ngFor="let banktype of qbanktype" [value]="banktype.id" (click)="getQbanksubject(banktype.id)">{{banktype.title}}</mat-option>
 
                             </mat-select>
@@ -32,7 +32,7 @@
                         <label class="w-30 font-medium text-lg  text-[#505050]">Subject</label><span>:</span>
                         <mat-form-field appearance="fill" class="w-90 pl-6">
                             <mat-select matNativeControl formControlName="Subject" required placeholder="select any">
-                                <mat-option disabledv value="">Select any</mat-option>
+                                <!-- <mat-option disabledv value="">Select any</mat-option> -->
                                 <mat-option *ngFor="let subject of subjects" [value]="subject.id" (click)="selectSubject(subject.id)">{{subject.title}}</mat-option>
                                 
                             </mat-select>
@@ -46,7 +46,7 @@
                         <label class="w-30 font-medium text-lg  text-[#505050]">Topics</label><span>:</span>
                         <mat-form-field appearance="fill" class="w-90 pl-6">
                             <mat-select matNativeControl formControlName="Topic" required placeholder="select any">
-                                <mat-option disabledv value="">Select any</mat-option>
+                                <!-- <mat-option disabledv value="">Select any</mat-option> -->
                                 <mat-option *ngFor="let topic of topics" [value]="topic.id" (click)="selectTopic(topic.id)">{{topic.title}}</mat-option>
                             </mat-select>
                         <mat-error class="error-message ml-1" *ngIf="addQbankError && CreateQuestionform.get('QbankSetting')?.get('Topic')?.invalid && CreateQuestionform.get('QbankSetting')?.get('Topic')?.touched">

@@ -5,3 +5,25 @@
     height: 100%;
     font-family: "Lexend Deca", serif;
 }
+
+::ng-deep fuse-vertical-navigation.fuse-vertical-navigation-animations-enabled .fuse-vertical-navigation-wrapper {
+    box-shadow: -1px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .fuse-vertical-navigation-item-wrapper .fuse-vertical-navigation-item-active {
+    background: #e5f7fd !important;
+    border-left: 5px solid #00aeef !important;
+}
+
+::ng-deep .answer-points {
+    width: 21px !important;
+    text-align: center;
+    line-height: 0px;
+    border-radius: 4px !important;
+}
+
+@media only screen and (max-width: 767px) {
+    ::ng-deep fuse-vertical-navigation.fuse-vertical-navigation-position-left.fuse-vertical-navigation-mode-over.fuse-vertical-navigation-opened {
+        margin-top: 0 !important;
+    }
+}

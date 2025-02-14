@@ -21,8 +21,8 @@
             [matTooltip]="item.tooltip || ''"
         >
             <ng-container *ngTemplateOutlet="itemTemplate"></ng-container>
-            <mat-icon class="fuse-vertical-navigation-item-arrow icon-size-4 text-primary text-xl ml-[79px]" *ngIf="!filter && item.SubType=='collapsable'" (click)="Showhidefilter()" style="font-size:20px !important;">add_circle</mat-icon>
-            <mat-icon class="fuse-vertical-navigation-item-arrow icon-size-4 text-primary text-xl ml-[79px]" *ngIf=" filter && item.SubType=='collapsable' && (filterRoute && item.link)" style="transform:none !important;font-size:20px !important;" (click)="Showhidefilter()">remove_circle</mat-icon>
+            <mat-icon class="fuse-vertical-navigation-item-arrow icon-size-4 text-primary/30 text-xl ml-[79px]" *ngIf="!filter && item.SubType=='collapsable'" (click)="Showhidefilter()" style="font-size:20px !important;">add_circle</mat-icon>
+            <mat-icon class="fuse-vertical-navigation-item-arrow icon-size-4 text-primary/30 text-xl ml-[79px]" *ngIf=" filter && item.SubType=='collapsable' && (filterRoute && item.link)" style="transform:none !important;font-size:20px !important;" (click)="Showhidefilter()">remove_circle</mat-icon>
         
         </a>
     }
