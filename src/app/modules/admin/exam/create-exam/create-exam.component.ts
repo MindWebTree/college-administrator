@@ -179,7 +179,7 @@ export class CreateExamComponent implements OnInit {
         ShuffleAnswer: [false],
         ShuffleQuestion: [false],
         viewResult: [false],
-        Percentage: [{ value: 0, disabled: true }, [Validators.required, Validators.min(0), Validators.max(100)]],
+        Percentage: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
         // Evaluation: [false],
         // Evaluationtime: [{ value: '', disabled: true }, Validators.required],
         // AwardCertificate: [false],
@@ -302,17 +302,17 @@ export class CreateExamComponent implements OnInit {
 
 
     //to enable diable % Subscribe to changes in the 'viewResult' control
-    this.CreateExamSchedule.get('viewResult')?.valueChanges.subscribe(value => {
-      const percentageControl = this.CreateExamSchedule.get('Percentage');
+    // this.CreateExamSchedule.get('viewResult')?.valueChanges.subscribe(value => {
+    //   const percentageControl = this.CreateExamSchedule.get('Percentage');
 
-      if (percentageControl) {
-        if (value) {
-          percentageControl.enable();
-        } else {
-          percentageControl.disable();
-        }
-      }
-    });
+    //   if (percentageControl) {
+    //     if (value) {
+    //       percentageControl.enable();
+    //     } else {
+    //       percentageControl.disable();
+    //     }
+    //   }
+    // });
     //to enable diable Evaluation Subscribe to changes in the 'viewResult' control
     this.CreateExamSchedule.get('Evaluation')?.valueChanges.subscribe(value => {
       const Evaluation = this.CreateExamSchedule.get('Evaluationtime');
@@ -335,6 +335,11 @@ export class CreateExamComponent implements OnInit {
   }
 
   getExamListing() {
+    if (this.CreateExamQbank.invalid || !this.CreateExamQbank.value.ExamDescription?.trim()) {
+      this.CreateExamQbank.controls['ExamDescription'].setErrors({ required: true });
+      this.CreateExamQbank.markAllAsTouched();
+      return;
+    }
 
     this.examDetails = this.CreateExamQbank.value;
     if (this.CreateExamQbank.invalid) {

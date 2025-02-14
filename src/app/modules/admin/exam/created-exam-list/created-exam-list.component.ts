@@ -421,10 +421,11 @@ export class CreatedExamListComponent implements OnInit{
     const day = ('0' + currentDate.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
   }
-  openReportCard(){
-    // this.dialog = this.dialog.open(ExamReportComponent, {
-    //   data: '',
-    // });
+  openReportCard(exam) {
+    let dialogRef: MatDialogRef<any>;
+    dialogRef = this.dialog.open(ExamReportComponent, {
+      data: exam,
+    });
   }
   ngOnDestroy(): void {
     if (this.ExamReSchedule) {

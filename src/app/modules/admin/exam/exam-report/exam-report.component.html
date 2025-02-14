@@ -10,7 +10,7 @@
     <div class="w-4/12 text-xl">{{examReport?.averageDuration | duration}}<br><span class="text-sm text-slate-500">Average Hours</span></div>
   </div>
 
-  <div class="ranks flex">
+  <div class="ranks flex" *ngIf="examReport?.students.length > 0">
     <div class="w-4/12 text-center" *ngFor="let student of examReport?.students | slice:0:3">
       <img [src]="student?.imageUrl || 'my-images/default-img.png'" alt="Student image">
       <h3 class="pt-2">Rank: {{student?.rank}}</h3>
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <mat-table [dataSource]="dataSource" class="w-full report-students">
+  <mat-table [dataSource]="dataSource" class="w-full report-students" *ngIf="examReport?.students.length > 0">
     <!-- Student Name Column -->
     <ng-container matColumnDef="studentname">
       <th mat-header-cell *matHeaderCellDef> Student Name </th>

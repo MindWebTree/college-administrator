@@ -35,8 +35,8 @@
               <mat-icon class=" text-[#db1627] text-3xl rounded-full font-medium" *ngIf="exam.examStatus==2">pause_circle_filled</mat-icon>
             </div>
             <div class="items-center pt-4">
-              <h6 class="font-light text-sm"><b>Exam Start Date</b> :  MCQ's</h6>
-              <h6 class="font-light text-sm"><b>Exam End Date</b> :  MCQ's</h6>
+              <h6 class="font-light text-sm"><b>Exam Start Date</b> :  {{exam.examDate | date: 'dd MMM, yyyy, hh:mma'}}</h6>
+              <h6 class="font-light text-sm"><b>Exam End Date</b> :  {{exam.examEndDate | date: 'dd MMM, yyyy, hh:mma'}}</h6>
             </div>
             <div class="flex items-center pt-4">
               <h6 class="font-light text-sm">{{exam.noOfQuestionsAttempted}}/{{exam.noOfQuestions}} MCQ's</h6>

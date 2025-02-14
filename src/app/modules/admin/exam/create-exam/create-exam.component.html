@@ -42,8 +42,10 @@
                             <input matInput placeholder="Description" #first formControlName="ExamDescription" required>
                         </mat-form-field> -->
                     </div>
-
-                    <control-messages [control]="CreateExamQbank.controls.ExamDescription" fieldName="Description" [showSubmitError]="isQbankformHaserror"></control-messages>
+                    <mat-error *ngIf="CreateExamQbank.controls['ExamDescription'].hasError('required') && CreateExamQbank.controls['ExamDescription'].touched">
+                        Description is required!
+                    </mat-error>
+                    <!-- <control-messages [control]="CreateExamQbank.controls.ExamDescription" fieldName="Description" [showSubmitError]="isQbankformHaserror"></control-messages> -->
                 </div>
 
                 <div class="mt-4">
@@ -78,7 +80,7 @@
                             <mat-select formControlName="Studies" placeholder="select Studies">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select Studies</mat-option>
-                                <mat-option *ngFor="let qbanktype of qbanktype" [value]="qbanktype.id" (click)="getQbanksubject(qbanktype.id)">{{qbanktype.title}}</mat-option>
+                                <mat-option *ngFor="let qbanktype of qbanktype" [value]="qbanktype.id" (click)="getQbanksubject(qbanktype.id)">{{qbanktype.title}} ({{qbanktype.noOfQuestions}})</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -95,7 +97,7 @@
                             <mat-select formControlName="Subject" placeholder="select Subject">
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select Subject</mat-option>
-                                <mat-option *ngFor="let subject of subjects" [value]="subject.id" (click)="selectSubject(subject.id)">{{subject.title}}</mat-option>
+                                <mat-option *ngFor="let subject of subjects" [value]="subject.id" (click)="selectSubject(subject.id)">{{subject.title}} ({{subject.noOfQuestions}})</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -110,7 +112,7 @@
                         <mat-form-field class="form-element block">
                             <!-- <input matInput placeholder="Topic" > -->
                             <mat-select multiple formControlName="Topic" placeholder="Select Topics">
-                                <mat-option [value]="topic.id" *ngFor="let topic of topics;let i=index" (click)="OnclickTopic(topic.id)">{{topic.title}}</mat-option>
+                                <mat-option [value]="topic.id" *ngFor="let topic of topics;let i=index" (click)="OnclickTopic(topic.id)">{{topic.title}} ({{topic.noOfQuestions}})</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -130,7 +132,7 @@
                         <mat-form-field class="form-element block">
                             <!-- <input matInput placeholder="Topic" > -->
                             <mat-select #select multiple formControlName="CBMECode" placeholder="Select CBMECode">
-                                <mat-option *ngFor="let Cbme of CBME" [value]="Cbme.id" (click)="OnclickCmbeCode(Cbme.id)">{{getCBMETitle(Cbme.id)}}</mat-option>
+                                <mat-option *ngFor="let Cbme of CBME" [value]="Cbme.id" (click)="OnclickCmbeCode(Cbme.id)">{{getCBMETitle(Cbme.id)}} ({{Cbme.noOfQuestions}})</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -391,7 +393,7 @@
                         </mat-chip>
                     </mat-chip-list>
                     <control-messages class="exam-error" [control]="CreateExamSchedule.controls.students" fieldName="Courses" [showSubmitError]="IsSheduleFormHasError"></control-messages>
-                    <mat-radio-group aria-label="Select an option" formControlName="examType">
+                    <mat-radio-group class="exam-type" aria-label="Select an option" formControlName="examType">
                         <mat-radio-button [value]="0">Live Exam</mat-radio-button>
                         <mat-radio-button [value]="1" class="pl-8">Schedule</mat-radio-button>
                     </mat-radio-group>
@@ -416,7 +418,7 @@
                         </mat-form-field>
                         <control-messages [control]="CreateExamSchedule.controls.ExamDate && CreateExamSchedule.controls.StartTime && CreateExamSchedule.controls.EndTime" fieldName="Calcluate Duration" [showSubmitError]="IsSheduleFormHasError"></control-messages>
 
-                        <p>{{duration}}</p>
+                        <!-- <p>{{duration}}</p> -->
                     </div>
                     <section class="pt-4">
                         <p>
@@ -431,7 +433,7 @@
                     <mat-checkbox [value]="true" formControlName="viewResult" color="primary">Can a user view the results ?
                     </mat-checkbox>
 
-                    <div class="flex items-center sm-block small_input">
+                    <div class="flex items-center small_input pb-2">
                         <div class="sm-pt-2">
                             <label>Percentage Pass</label>
                         </div>

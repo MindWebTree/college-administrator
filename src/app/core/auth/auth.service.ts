@@ -25,7 +25,8 @@ export class AuthService {
     }
 
     get accessToken(): string {
-        return localStorage.getItem('accessToken') ?? '';
+        // return localStorage.getItem('accessToken') ?? '';
+        return this._dataGuard.getLocalData('accessToken') ?? '';
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -177,7 +178,8 @@ export class AuthService {
      * Check the authentication status
      */
     check(): Observable<boolean> {
-        this.accessToken = this._dataGuard.getLocalData('accessToken')
+        console.log(this.accessToken,"this.accessToken")
+        // this.accessToken = this._dataGuard.getLocalData('accessToken')
         // Check if the user is logged in
         if (this._authenticated) {
             return of(true);

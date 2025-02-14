@@ -27,6 +27,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 export class GameViewComponent implements OnInit {
   @ViewChild('questionOverview') questionOverview!: ElementRef;
   @ViewChild('examExit') examExit!: ElementRef;
+  @ViewChild('QuestionTracker') QuestionTracker!: ElementRef;
   @ViewChild('QuestionNotAnswred ') QuestionNotAnswred!: ElementRef;
   @ViewChild('QuestionAnswred ') QuestionAnswred!: ElementRef;
   @ViewChild('viewResult ') viewResult!: ElementRef;
@@ -64,6 +65,10 @@ export class GameViewComponent implements OnInit {
   IsDefaultExplanation: boolean = false;
   isQuestionSkipped:boolean=false;
   isQuestionTimeExist:boolean=false;
+  noOfAnswerd:number=0;
+  noOfnotAnswerd:number=0;
+
+
   openSnackBar(message: string, action: string) {
     this._snakbar.open(message, action, {
       duration: 1000,
@@ -183,15 +188,8 @@ export class GameViewComponent implements OnInit {
 
   }
   getQuestionClasses(choices: any): string {
-    if (choices.some(choice => choice.isCorrect && choice.isChecked)) {
-      return 'question-correct';
-    }
-
-    if (choices.every(choice => !choice.isChecked)) {
-      return 'question-notVisited';
-    }
-    if (choices.some(choice => choice.isCorrect && !choice.isChecked)) {
-      return 'question-wrong';
+    if (choices?.some(choice => choice.isChecked)) {
+      return 'question-checked';
     }
 
     // Default case if none of the conditions above are met
@@ -242,7 +240,19 @@ export class GameViewComponent implements OnInit {
       } else {
         this.closedialog();
         if (data == 'AllQuestion') {
-          this.openDialogWithTemplateRef(this.questionOverview, "popup-1");
+          this.noOfAnswerd = 0;
+          this.noOfnotAnswerd = 0;
+          
+          this.questionDetails.forEach((question: any) => {
+            // Check if any choice is selected for this question
+            const isQuestionAnswered = question.choices?.some(choice => choice.isChecked);
+            if (isQuestionAnswered) {
+              this.noOfAnswerd++;
+            } else {
+              this.noOfnotAnswerd++;
+            }
+          });
+          this.openDialogWithTemplateRef(this.QuestionTracker, "questiontracker");
         } else {
           this.openDialogWithTemplateRef(this.examExit, "popup-2");
         }
@@ -266,6 +276,11 @@ export class GameViewComponent implements OnInit {
     this.dialog.closeAll();
     this.currentPopup = null;
     this.currentOpenPopup = null;
+  }
+  gotoQuestion(Index) {
+    this.indexToFilter = Index;
+    this.filterQuestion(this.indexToFilter);
+    this.dialog.closeAll();
   }
  
   selectRadio(index: number) {
@@ -414,8 +429,6 @@ export class GameViewComponent implements OnInit {
         this.IsChoiceSelected = false;
       }
     });
-   
-
   }
   SaveandContiniue(): Promise<void> {
     return new Promise((resolve, reject) => {

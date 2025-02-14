@@ -98,6 +98,7 @@ export class DataGuardService {
     }
 
     setLocalData(key: string, data: any) {
+        console.log("data set",data, key )
         return localStorage.setItem(key, this.encryption(data));
     }
 

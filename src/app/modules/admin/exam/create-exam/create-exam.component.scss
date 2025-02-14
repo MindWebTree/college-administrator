@@ -76,7 +76,7 @@ mat-form-field {
 ::ng-deep .create_account .demo-section {
     position: absolute;
     top: 34px;
-    background: #0C529A;
+    // background: #0C529A;
     border-radius: 50px;
     color: white;
     padding: 14px;
@@ -86,6 +86,16 @@ mat-form-field {
     width: 35px;
     height: 35px;
 }
+::ng-deep .create_account .demo-section mat-checkbox {
+    background: #0C529A !important;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+::ng-deep .create_account .demo-section mat-checkbox.mat-mdc-checkbox-checked {
+    background: #28C397 !important;
+}
+
 
 ::ng-deep .create_account mat-step-header {
     pointer-events: none;
@@ -198,6 +208,7 @@ input[type=number] {
     align-items: center;
     gap: 30px;
     padding-top: 40px;
+    flex-wrap: wrap;
 }
 
 :host ::ng-deep form .quiz_scheduling .mat-form-field.mat-form-field .mat-input-element::after {
@@ -221,6 +232,7 @@ input[type=number] {
     display: inline-flex;
     border-radius: 4px;
     height: 60px;
+    background: white;
 }
 
 .code_div {
@@ -657,6 +669,15 @@ body .light .mat-step-header .mat-step-icon {
 
     .min-w-212 {
         padding-left: 0px !important;
+    }
+    .create-exam-third-step mat-chip-list.student_chips{
+        margin-left: 0px;
+    flex-wrap: wrap;
+    }
+    .exam-type{
+        width: 100%;
+        display: flex    ;
+        padding-top: 30px;
     }
 }
 

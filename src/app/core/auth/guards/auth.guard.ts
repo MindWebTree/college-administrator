@@ -142,17 +142,17 @@ export const data={
 //                     this.router.navigate(['sign-in'], { queryParams: { redirectURL } });
 //                     return of(false);
 //                 }
-                
+//                 console.log("hi");
 //                 this.roleId = this.helperService.getUserDetail();
-//                 // if(this.roleId == null){
-//                 //     this.router.navigate(['/sign-out']);
-//                 // }
-//                 console.log(this.roleId,"")
+//                 if(this.roleId == null){
+//                     this.router.navigate(['/sign-out']);
+//                 }
 //                 this.isUserAuthenticated = false;
-
+                
 //                 // Check route permissions
 //                 this.navigation.forEach(route => {
-//                     if (route.link === baseUrl && route.roles.includes(this.roleId.Roles)) {
+                    
+//                     if (route.link === baseUrl || route.roles.includes(this.roleId.Roles)) {
 //                         this.isUserAuthenticated = true;
 //                         return true;
 //                     } else if (route.children) {

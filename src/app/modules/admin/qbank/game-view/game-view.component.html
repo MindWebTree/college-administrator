@@ -1,6 +1,6 @@
 <div class="w-full h-full bg-white border-l exam-game-view game_view flex">
     <app-game-header [examid]="examDetails.title" [subjectName]="examDetails.subjectName" [topicName]="examDetails.topicName" (dataEvent)="receiveDataFromHeader($event,true)"
-        [hidetraker]="true"></app-game-header>
+        [hidetraker]="false"></app-game-header>
         
     <div class="py-4 mt-88 game-view-header" [ngClass]=" isviewtrackboard ? 'pl-24 width-75' : 'px-32 w-full'" >
         <div class="flex items-center justify-center mt-30" *ngIf="!dataLoaded">
@@ -388,4 +388,35 @@
         </form>
     </div>
 </ng-template>
+<ng-template #QuestionTracker class="w-94">
+    <section class="serial_listing p-6">
+        <div>
+            <div class="flex justify-between items-center">
+                <h2 class="text-lg font-bold text-[#505050]">All Questions</h2>
+                <mat-icon class="text-[#BBBBBB] cursor-pointer" (click)="closedialog()">close</mat-icon>
+            </div>
 
+            <!-- <hr class="my-2"> -->
+            <!-- <h3 class="text-lg font-medium text-[#505050] w-80 wd-auto" [innerHTML]="examDetails.description"></h3> -->
+            <!-- <h4 class="mt-4 font-light text-sm">{{noOfCorrectAnswerd+noOfInCorrectAnswerd}} /
+                {{questionDetails?.length}} MCQ'S</h4> -->
+        </div>
+        <div class="mt-2 p-2 rounded border border-[#DCDCDC]">
+            <div class="grid grid-cols-2 mt-4 mb-2 gap-10">
+                <div class="flex flex-col gap-1 items-center text-3xl text-[#28C397] font-bold leading-4 mx-auto mr-0">
+                    <h4>{{noOfAnswerd}}</h4>
+                    <h5 class="text-sm font-medium">Answer</h5>    
+                </div>
+                <div class="flex flex-col gap-1 items-center text-3xl text-[#505050] font-bold leading-4 mx-auto ml-0">
+                    <h4>{{noOfnotAnswerd}}</h4>
+                    <h5 class="text-sm font-medium">Not Answer</h5>
+                </div>
+            </div>
+        </div>
+        <div class="flex grid grid-cols-5 mt-4 gap-3 question-list">
+            <div class="border py-3 rounded text-center cursor-pointer" *ngFor="let question of questionDetails;let i=index"
+                (click)="gotoQuestion(i)" [ngClass]="getQuestionClasses(question.choices)">{{i+1}}</div>
+        </div>
+
+    </section>
+</ng-template>

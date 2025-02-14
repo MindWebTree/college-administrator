@@ -111,6 +111,7 @@ export class AuthSignInComponent implements OnInit {
                     // if(response.Data.RoleID===3){
                     // const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
                     // this._router.navigateByUrl(redirectURL);
+                    console.log(this.dataService.getLocalData('accessToken')),"1";
                     if (response) {
                         this.dataService.setLocalData('accessToken', response.token);
                         this.dataService.setLocalData('refreshToken', response.refreshToken);
