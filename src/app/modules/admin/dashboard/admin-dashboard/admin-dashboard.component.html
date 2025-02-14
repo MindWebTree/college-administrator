@@ -2,12 +2,12 @@
 
     <!-- Header -->
     <div class="">
-        <h1 class="pt-8 pl-8 pb-0 text-3xl font-normal text-[#505050]">Welcome to Dashboard <span class="text-primary font-medium capitalize">{{_userAccount?.fullName}}</span></h1>
+        <h1 class="pt-8 pl-8 pr-8 pb-0  max-sm:text-xl text-3xl font-normal text-[#505050]">Welcome to Dashboard <span class="text-primary font-medium capitalize">{{_userAccount?.fullName}} !</span></h1>
         <!----------- Section-1 Start-------->
         <div>
         <div class="carousel_div course-lecturer-dashboard">
             <owl-carousel-o [options]="customOptions" (initialized)="onInitialized()">
-                <ng-container>
+                <ng-container style="margin-top: 60px;">
                     <ng-template carouselSlide *ngFor="let c of courseYear">
                         <a class="card border-0">
                             <div class="card-body" [ngClass]="{'year-one': c.name  === 'First Year','year-two': c.name  === 'Second Year','year-three': c.name  === 'Third Year','year-four': c.name  === 'Fourth Year'}">
@@ -25,7 +25,7 @@
         <!----------- Section-1 End-------->
 
         <!----------- Section-2 Start-------->
-        <div class="flex flex-col w-full  mx-auto p-8">
+        <div class="flex flex-col w-full  mx-auto  p-8">
             <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
                 <div class="bg-card rounded box-shadow" *ngFor="let q of qbankTypes ; let i = index">
                     <div class="rounded bg-card border-none p-6 pb-0 border bg-[#D2F6E5] plus_bg" [ngClass]="{ 'bg-[#D2F6E5] plus_bg_first': i % 3 === 0, 'bg-[#FFDCD6] plus_bg_second': i % 3 === 1,'bg-[#CCEBED] plus_bg_third': i % 3 === 2}">
@@ -118,7 +118,7 @@
         <!----------- List -------->
         <div class="flex flex-col w-full  mx-auto pr-8 pl-8 pb-8">
             <div class="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-4">
-                <div class="flex flex-col md:col-span-1 lg:col-span-2  col-auto w-full mx-auto box-shadow">
+                <div class="flex flex-col md:col-span-1 lg:col-span-2  col-auto w-full mx-auto">
                     <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="sm:col-span-6 flex flex-col flex-auto p-6 bg-card shadow rounded  border border-primary overflow-auto">
                             <div class="text-lg tracking-tight leading-6 truncate font-medium text-[#505050]">KMCH Questions Creator

@@ -18,8 +18,8 @@
             <mat-accordion>
                 <mat-expansion-panel hideToggle class="mt-4" (click)="getquestiondetails(question.questionDetailId)">
                     <mat-expansion-panel-header class="h-24 bg-white">
-                        <mat-panel-title class="font-medium text-[#505050] w-full flex items-center" [innerHtml]="question.questionTitle">
-
+                        <mat-panel-title class="font-medium text-[#505050] w-full flex items-center image">
+                              <div [innerHtml]="question.questionTitle"></div>
                         </mat-panel-title>
                         <mat-panel-description (click)="$event.stopPropagation()">
                             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="more_vert_btn">
@@ -42,7 +42,7 @@
                         <div *ngFor=" let choices of questionDetails?.choices; let i = index;">
                             <h6 *ngIf="choices.isCorrect" class="mt-3.5 font-medium correct_heading">Correct Answer</h6>
                             <div class="bg-white mt-3.5 flex p-2.5 border" [ngClass]="{'correct_div':choices.isCorrect===true}">
-                                <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded"><B>{{i + 1}}</B></span>
+                                <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded"><B class="pl-px">{{i + 1}}</B></span>
                                 <h2 class="font-medium">{{choices.choiceText}}</h2>
                             </div>
                         </div>
@@ -54,5 +54,5 @@
         </div>
         <p *ngIf="dataSource.QuestionList?.length <= 0" class="mt-2">No records found</p>
     </div>
-    <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="10" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+    <mat-paginator class="mt-8 flex justify-end custom-pagination" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="10" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
 </div>

@@ -23,16 +23,16 @@
 <!-- Wrapper -->
 <div class="flex w-full min-w-0 flex-auto flex-col">
     <div class="navigation_bar relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card print:hidden" >
-        <div class="w-50 flex items-center gap-1 cursor-pointer" routerLink="/">
+        <div class="m-logo w-50 flex items-center gap-1 cursor-pointer" routerLink="/">
             <img class="main-logo dark:flex w-min h-full cursor-pointer" src="my-images/download.png" alt="Logo image"  routerLink="/">
             <!-- <h2 class="text-white font-normal pl-2 text-xl">ADrPLEXUS</h2> -->
         </div>
-        <button mat-icon-button (click)="toggleNavigation('mainNavigation')">
+        <button class="m-hamburger" mat-icon-button (click)="toggleNavigation('mainNavigation')">
             <mat-icon [svgIcon]="'heroicons_outline:bars-3'"></mat-icon>
         </button>
         <!-- {{title}} -->
         <!-- Components -->
-        <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+        <div class="m-admin flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
             <div class="mr-5">
                 <!-- <mat-icon class="cursor-pointer mr-2 text-white" (click)="Bookmark.toggle();getBookmarkList()" *ngIf="userRole=='Student' && !ishidenavigation">bookmark_border</mat-icon> -->
                 <!-- <mat-icon class="cursor-pointer" (click)="notification.toggle()" *ngIf="userRole=='Student'">notifications_none</mat-icon> -->
@@ -117,8 +117,9 @@ fuse-vertical-navigation fuse-vertical-navigation-collapsable-item .fuse-vertica
     margin: 0 !important;
 }
 .fuse-vertical-navigation-item-active {
-    background: rgba(var(--fuse-primary-rgb),.1) !important;
-    border-left: 5px solid rgba(var(--fuse-primary-rgb), 1) !important;
+    /* background: rgba(var(--fuse-primary-rgb),.1) !important; */
+        background:#fff !important;
+    /* border-left: 5px solid rgba(var(--fuse-primary-rgb), 1) !important; */
 }
 
 
@@ -158,14 +159,64 @@ fuse-vertical-navigation-collapsable-item fuse-vertical-navigation-basic-item {
     padding-top: 80px !important;
     background: white;
    box-shadow: 0px 0px 15px #D8D8D8;
+   box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.3);
 }
+    
 @media only screen and (max-width: 767px) {
     .main-logo{
-        max-width: 118px;
+        max-width: 150px;
     }
     .popup-signout {
         right: 11px;
     top: 13px;
     }
+    .m-hamburger {
+    order: 1;
+}
+.m-logo {
+    order: 2;
+}
+.m-admin {
+    order: 3;
+    position: relative;
+}
+.m-admin .popup-signout {
+    position: absolute;
+    display: flex;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+.m-admin .flex.gap-3 {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    gap: 0 !important;
+}
+.m-admin .popup-signout button {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto !important;
+    min-width: 100%;
+}
+.m-admin .flex.gap-3 *{
+    text-align: center !important;
+}
+.m-admin .flex.gap-3 h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80px;
+    margin: 0 auto !important;
+}
+.m-admin .flex.gap-3 h3 {
+    margin: -4px 0 0 0;
+}
+ button.m-hamburger {
+    margin: 0 0 0 -10px;
+}
 }
  </style>
