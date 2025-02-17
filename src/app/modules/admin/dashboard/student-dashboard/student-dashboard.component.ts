@@ -42,8 +42,8 @@ export class StudentDashboardComponent  implements OnInit {
       pageSize: 10,
       orderBy: '',
       sortOrder: 'desc',
-      userId: '5a2976b3-60bf-4db9-a24c-8d60c9b7bde6', //added static  
-      attendenceStatus: 0
+      userId: '',   
+      attendenceStatus: 2
     };
     this._dashBoard.getStudentExamSummaryGrid(studentExamSummary).subscribe((response: any) => {
       this.dataSource = response.data;

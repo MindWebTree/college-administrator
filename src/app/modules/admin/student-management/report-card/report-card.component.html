@@ -96,8 +96,12 @@
                     <ng-container matColumnDef="result">
                         <th mat-header-cell *matHeaderCellDef class="text-end"> Result </th>
                         <td mat-cell *matCellDef="let element"> 
-                          <div class="result-pass text-[#3C3C3C] font-medium" >{{element.subject}}</div>
-                         </td>
+                          <div *ngIf="element.resultStatus==0" class="result-fail">Fail</div>
+                          <div  *ngIf="element.resultStatus==1" class="result-pass">Pass</div>
+                          <div  *ngIf="element.resultStatus==3" class="notattend">Not Attend</div>
+                          <div  *ngIf="element.resultStatus==2" class="inprogress">InProgress</div>
+                          
+                        </td>
                       </ng-container>  
                   
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

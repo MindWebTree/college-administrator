@@ -3,7 +3,7 @@
     <!-- mat expension starts-->
     <div class="accordian-outer game-review">
     
-        <app-game-header [examid]="examDetails.title" [subjectName]="examDetails.subjectName" [topicName]="examDetails.topicName" [isfromMarksheet]="true" (dataEvent)="receiveDataFromHeader($event,true)"></app-game-header>
+        <app-game-header [examid]="examDetails.title" [subjectName]="examDetails.subjectName" [hidetraker]="true" [topicName]="examDetails.topicName" [isfromMarksheet]="true" (dataEvent)="receiveDataFromHeader($event,true)"></app-game-header>
         <div class="flex items-center justify-center mt-30" *ngIf="!dataLoaded">
             <img src="my-images/imgLoder.gif" class="w-15">
         </div>

@@ -126,7 +126,30 @@ table th {
     margin-right: 0px !important;
     margin-left: auto !important;
 }
-
+.notattend {
+    color: #505050;
+    border: 1px solid #A9A9A9;
+    background: #FAF8F8;
+    border-radius: 50px;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 2px 12px;
+    font-size: 12px;
+    margin-right: 0px !important;
+    margin-left: auto;
+}
+.inprogress {
+    color: #505050;
+    border: 1px solid #A9A9A9;
+    background: #FAF8F8;
+    border-radius: 50px;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 2px 12px;
+    font-size: 12px;
+    margin-right: 0px !important;
+    margin-left: auto;
+}
 ::ng-deep .apexcharts-text tspan {
     font-size: 12px;
     font-weight: bold;

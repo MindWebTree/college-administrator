@@ -547,7 +547,7 @@
     <div class="flex mx-auto py-2">
         <div class="exam_code">
             <div class="code_div gap-1 py-0 flex items-center md:w-200 w-200">Link:
-                <input matInput placeholder="Copy below text in Firefox" class="w-full text-primary underline" [value]="'https://adrplexus.zoom.us/j/&'+createdExamDetails?.mcqCode" id="ExamLink">
+                <input matInput placeholder="Copy below text in Firefox" class="w-full text-primary underline" [value]="'http://qa.adrplexus.com/qbank/exam-details/'+createdExamDetails?.guid" id="ExamLink">
                 <!-- <span>https://adrplexus.zoom.us/j/3996455621119018?pwd=TGdpWDZiigiZk03K0F6aDNyNE1rOVhoQT09#success</span> -->
             </div>
             <div class="icon_codecopy bg-primary/10 border-0 py-2" (click)="copyText('ExamLink')">

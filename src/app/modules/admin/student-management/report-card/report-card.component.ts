@@ -91,160 +91,160 @@ export class ReportCardComponent {
 
     });
 
-    this.linearChartOptions = {
+    // this.linearChartOptions = {
 
 
-      series: [
-        {
-          name: "Progress",
-          data: [
-            {
-              x: "Anatomy",
-              y: 98,
-              fillColor: "#7EE8CA"
+    //   series: [
+    //     {
+    //       name: "Progress",
+    //       data: [
+    //         {
+    //           x: "Anatomy",
+    //           y: 98,
+    //           fillColor: "#7EE8CA"
 
-            },
-            {
-              x: "Chemistry",
-              y: 84,
-              fillColor: "#7EE8CA"
-            }
+    //         },
+    //         {
+    //           x: "Chemistry",
+    //           y: 84,
+    //           fillColor: "#7EE8CA"
+    //         }
 
-            , {
-              x: "Pediatrics",
-              y: 78,
-              fillColor: "#9BD7FF"
-            }, {
-              x: "Dermatolog",
-              y: 74,
-              fillColor: "#9BD7FF"
-            }
-            , {
-              x: "Pediatrics",
-              y: 60,
-              fillColor: "#FFDA9B"
-            }, {
-              x: "Dermatolog",
-              y: 52,
-              fillColor: "#FFDA9B"
-            }
-            , {
-              x: "Pediatrics",
-              y: 41,
-              fillColor: "#FFDA9B"
-            }, {
-              x: "Dermatolog",
-              y: 32,
-              fillColor: "#FFB9AD"
-            }
-            , {
-              x: "Pediatrics",
-              y: 21,
-              fillColor: "#FFB9AD"
-            }, {
-              x: "Dermatolog",
-              y: 20,
-              fillColor: "#FFB9AD"
-            }
-          ]
-        }
-      ],
-      grid: {
+    //         , {
+    //           x: "Pediatrics",
+    //           y: 78,
+    //           fillColor: "#9BD7FF"
+    //         }, {
+    //           x: "Dermatolog",
+    //           y: 74,
+    //           fillColor: "#9BD7FF"
+    //         }
+    //         , {
+    //           x: "Pediatrics",
+    //           y: 60,
+    //           fillColor: "#FFDA9B"
+    //         }, {
+    //           x: "Dermatolog",
+    //           y: 52,
+    //           fillColor: "#FFDA9B"
+    //         }
+    //         , {
+    //           x: "Pediatrics",
+    //           y: 41,
+    //           fillColor: "#FFDA9B"
+    //         }, {
+    //           x: "Dermatolog",
+    //           y: 32,
+    //           fillColor: "#FFB9AD"
+    //         }
+    //         , {
+    //           x: "Pediatrics",
+    //           y: 21,
+    //           fillColor: "#FFB9AD"
+    //         }, {
+    //           x: "Dermatolog",
+    //           y: 20,
+    //           fillColor: "#FFB9AD"
+    //         }
+    //       ]
+    //     }
+    //   ],
+    //   grid: {
 
-        show: false,  // This removes the grid
+    //     show: false,  // This removes the grid
 
-        // row: {
-        //   colors: ["transparent", "transparent"], // takes an array which will be repeated on columns
-        //   opacity: 0.5
-        // },
-        xaxis: {
-          lines: {
-            show: false
-          }
-        },
-        yaxis: {
-          lines: {
-            show: false
-          }
-        }
-      },
-      chart: {
-        type: "bar",
-        height: 350,
-        // width: 1000,
-        offsetY: -10,
-        toolbar: {
-          show: false
-        },
+    //     // row: {
+    //     //   colors: ["transparent", "transparent"], // takes an array which will be repeated on columns
+    //     //   opacity: 0.5
+    //     // },
+    //     xaxis: {
+    //       lines: {
+    //         show: false
+    //       }
+    //     },
+    //     yaxis: {
+    //       lines: {
+    //         show: false
+    //       }
+    //     }
+    //   },
+    //   chart: {
+    //     type: "bar",
+    //     height: 350,
+    //     // width: 1000,
+    //     offsetY: -10,
+    //     toolbar: {
+    //       show: false
+    //     },
 
-      },
+    //   },
 
-      plotOptions: {
-        bar: {
-          horizontal: true,
+    //   plotOptions: {
+    //     bar: {
+    //       horizontal: true,
 
-          dataLabels: {
-            position: "top"
-          },
-          barHeight: "45%",
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        offsetX: 25,
-        formatter: function (val) {
-          return val + "%";
-        },
-        style: {
-          fontSize: "10px",
-          colors: ["#505050"]
-        }
-      },
-      stroke: {
-        show: true,
-        width: 0,
-        colors: ['transparent']  // Change to transparent
-      },
-      xaxis: {
-        axisBorder: {
-          show: false // Hides the x-axis border
-        },
-        axisTicks: {
-          show: false // Hides the x-axis ticks
-        },
-        categories: [
-          "Anatomy",
-          "Chemistry",
-          "Pediatrics",
-          "Dermatolog",
-          "Pharmacology",
-          "ENT",
-          "Orthopedics",
-          "Medicine",
-          "Physicology",
-          "FM"
-        ],
-        labels: {
-          show: false // Hides the x-axis tick labels (numbers)
-        }
-      },
-      yaxis: {
-        labels: {
-          show: true,  // Keep the labels visible
-          style: {
-            colors: '#000000'  // You can adjust the color
-          }
-        },
-        axisBorder: {
-          show: false
-        },
-        axisTicks: {
-          show: false
-        }
-      },
+    //       dataLabels: {
+    //         position: "top"
+    //       },
+    //       barHeight: "45%",
+    //     }
+    //   },
+    //   dataLabels: {
+    //     enabled: true,
+    //     offsetX: 25,
+    //     formatter: function (val) {
+    //       return val + "%";
+    //     },
+    //     style: {
+    //       fontSize: "10px",
+    //       colors: ["#505050"]
+    //     }
+    //   },
+    //   stroke: {
+    //     show: true,
+    //     width: 0,
+    //     colors: ['transparent']  // Change to transparent
+    //   },
+    //   xaxis: {
+    //     axisBorder: {
+    //       show: false // Hides the x-axis border
+    //     },
+    //     axisTicks: {
+    //       show: false // Hides the x-axis ticks
+    //     },
+    //     categories: [
+    //       "Anatomy",
+    //       "Chemistry",
+    //       "Pediatrics",
+    //       "Dermatolog",
+    //       "Pharmacology",
+    //       "ENT",
+    //       "Orthopedics",
+    //       "Medicine",
+    //       "Physicology",
+    //       "FM"
+    //     ],
+    //     labels: {
+    //       show: false // Hides the x-axis tick labels (numbers)
+    //     }
+    //   },
+    //   yaxis: {
+    //     labels: {
+    //       show: true,  // Keep the labels visible
+    //       style: {
+    //         colors: '#000000'  // You can adjust the color
+    //       }
+    //     },
+    //     axisBorder: {
+    //       show: false
+    //     },
+    //     axisTicks: {
+    //       show: false
+    //     }
+    //   },
 
-    };
-
+    // };
+    
   }
 
   ngOnInit(): void {
@@ -280,6 +280,72 @@ export class ReportCardComponent {
     // Fetch non-attended exams
     this._studentService.studentExamAnalyticsListing(nonAttendedExamFilter).subscribe((response: any) => {
       this.nonAttendedExamsDataSource = response.data;
+    });
+    this.fetchChartData();
+  }
+  
+  fetchChartData() {
+    this._studentService.studentSubjectSummary(this.userId).subscribe((response: any) => {
+      const categories = response.map((item: any) => item.name);
+      const colors = ["#7EE8CA", "#9BD7FF", "#FFB6C1", "#FFA07A", "#FFD700", "#8A2BE2", "#32CD32"]; // Different colors
+
+      const dataSeries = response.map((item: any, index: number) => ({
+        x: item.name,
+        y: item.count,
+        fillColor: colors[index % colors.length] // Assign different colors cyclically
+      }));
+
+      this.linearChartOptions = {
+        series: [{ name: "Progress", data: dataSeries }],
+        grid: {
+          row: {
+            colors: ["transparent", "transparent"],
+            opacity: 0.5
+          },
+          padding: {
+            left: 0,
+            right: 0
+          }
+        },
+        chart: {
+          type: "bar",
+          height: 270,
+          // width: 1000,
+          offsetY: -10
+        },
+        plotOptions: {
+          bar: {
+            horizontal: true,
+            dataLabels: { position: "top" },
+            barHeight: "10%"
+          }
+        },
+        dataLabels: {
+          enabled: true,
+          offsetX: 25,
+          style: {
+            fontSize: "12px",
+            colors: ["#505050"]
+          }
+        },
+        stroke: {
+          show: true,
+          width: 1,
+          colors: ["#fff"]
+        },
+        xaxis: {
+          categories,
+          labels: { show: false } // Hide x-axis labels (count)
+        },
+        yaxis: {
+          labels: {
+            style: {
+              fontSize: "12px",
+              colors: "#000"
+            }
+          }
+        }
+      };
     });
   }
   getStudeDetails() {

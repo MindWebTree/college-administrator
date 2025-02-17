@@ -204,6 +204,9 @@ export class StudentService {
     return this._httpClient.post<any>(`${environment.apiURL}/student/exam-summary-grid`, { ..._gridFilter }, { headers });
 
   }
+  studentSubjectSummary(userId): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks`, { });
+  }
 }
 
 

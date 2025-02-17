@@ -353,6 +353,9 @@ mat-list-option.mat-list-item.mat-list-option.correct[aria-selected="true"] {
     border-color: #28C397;
     color: #28C397;
 }
+.fontt-bold{
+    font-weight: 800 !important;
+}
 @keyframes slideIn {
     from {
       transform: translateY(100%);
