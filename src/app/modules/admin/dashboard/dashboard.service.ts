@@ -88,10 +88,8 @@ export class DashboardService {
     return this._httpClient.get<any>(`${environment.apiURL}/exam/student/upcoming-exam`, { headers });
   }
   getStudentSubjectWiseAvgMarks(): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-    });
-    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks`, { headers });
+    const userid = '';
+    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks/${userid}`, {  });
   }
 }
 

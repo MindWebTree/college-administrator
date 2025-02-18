@@ -205,7 +205,7 @@ export class StudentService {
 
   }
   studentSubjectSummary(userId): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks`, { });
+    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks/${userId}`, { });
   }
 }
 

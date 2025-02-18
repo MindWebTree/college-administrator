@@ -62,6 +62,7 @@
                                 <!-- <mat-label>Select Qbank</mat-label> -->
                                 <mat-option disabled value=''>Select Qbank Category</mat-option>
                                 <!-- <mat-option *ngFor="let qbankcategory of QbankCategory" (click)="getQbank(qbankcategory.name)" [value]="qbankcategory.id">{{qbankcategory.name}}</mat-option> -->
+                                <mat-option (click)="getQbank('All')" [value]="4">All</mat-option>
                                 <mat-option (click)="getQbank('Free')" [value]="1">CARE NExT Qbank</mat-option>
                                 <mat-option (click)="getQbank('Owned')" [value]="3">Faculty-Framed MCQs (FFQs)</mat-option>
                             </mat-select>
