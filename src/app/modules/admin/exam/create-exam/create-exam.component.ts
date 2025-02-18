@@ -39,7 +39,7 @@ import { environment } from 'environments/environment';
 import { CKEDITOR_CONFIG } from '../../common/comman-ckeditor-config';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { MatNativeDateModule } from '@angular/material/core';
-
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 @Component({
   selector: 'app-create-exam',
   standalone: true,
@@ -69,6 +69,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatDatepickerModule,
     CKEditorModule,
+    NgxMaterialTimepickerModule
   ],
   templateUrl: './create-exam.component.html',
   styleUrl: './create-exam.component.scss'
@@ -174,6 +175,7 @@ export class CreateExamComponent implements OnInit {
         students: ['', Validators.required],
         examType: [1],
         ExamDate: ['', Validators.required],
+        ExamEndDate: ['', Validators.required],
         StartTime: ['', Validators.required],
         EndTime: ['', Validators.required],
         ShuffleAnswer: [false],
@@ -206,14 +208,18 @@ export class CreateExamComponent implements OnInit {
       if (this.examId) {
         this._examService.getExamByid(this.examId).subscribe(res => {
           this.editExamDetails = res;
+          console.log(this.editExamDetails, "this.editExamDetails")
           this.qBankCategorySelected = this.editExamDetails.qbankCategory;
 
           this.getQbank(this.qBankCategorySelected, true);
           this.getQbanksubject(this.editExamDetails.qBankTypeId);
           const date = this.editExamDetails.examDate.split('T')[0];
-          const startTime = this.editExamDetails.examDate.split('T')[1];
-          const endTime = this.editExamDetails.examEndDate?.split('T')[1];
+          const examEndDate = this.editExamDetails.examEndDate?.split('T')[0];
+          const startTime = this.editExamDetails.examDate.split('T')[1].substring(0, 5);
+          console.log(startTime, "startTime")
+          const endTime = this.editExamDetails.examEndDate?.split('T')[1].substring(0, 5);
           this.CreateExamSchedule.get('ExamDate').patchValue(date);
+          this.CreateExamSchedule.get('ExamEndDate').patchValue(examEndDate);
           this.CreateExamSchedule.get('StartTime').patchValue(startTime);
           this.CreateExamSchedule.get('EndTime').patchValue(endTime);
           console.log(this.CreateExamSchedule.get('ExamDate').value)
@@ -550,28 +556,53 @@ export class CreateExamComponent implements OnInit {
   }
   // Calclute Exam Duration 
   calculateDuration() {
-    if (this.CreateExamSchedule.valid) {
-      const formData = this.CreateExamSchedule.value;
-      // Get the date from ExamDate
-      const examDate = new Date(formData.ExamDate);
 
-      // Create the start date-time by combining date and start time
-      const [startHours, startMinutes] = formData.StartTime.split(':');
-      const examStartDate = new Date(examDate);
-      examStartDate.setHours(parseInt(startHours), parseInt(startMinutes), 0);
+    // if (this.CreateExamSchedule.valid) {
+    //   const formData = this.CreateExamSchedule.value;
+    //   // Get the date from ExamDate
+    //   const examDate = new Date(formData.ExamDate);
 
-      // Create the end date-time by combining date and end time
-      const [endHours, endMinutes] = formData.EndTime.split(':');
-      const examEndDate = new Date(examDate);
-      examEndDate.setHours(parseInt(endHours), parseInt(endMinutes), 0);
+    //   // Create the start date-time by combining date and start time
+    //   const [startHours, startMinutes] = formData.StartTime.split(':');
+    //   const examStartDate = new Date(examDate);
+    //   examStartDate.setHours(parseInt(startHours), parseInt(startMinutes), 0);
+
+    //   // Create the end date-time by combining date and end time
+    //   const [endHours, endMinutes] = formData.EndTime.split(':');
+    //   const examEndDate = new Date(examDate);
+    //   examEndDate.setHours(parseInt(endHours), parseInt(endMinutes), 0);
 
 
-    } else {
-      Object.keys(this.CreateExamSchedule.controls).forEach(key => {
-        const control = this.CreateExamSchedule.get(key);
-        control?.markAsTouched();
-      });
+    // } else {
+    //   Object.keys(this.CreateExamSchedule.controls).forEach(key => {
+    //     const control = this.CreateExamSchedule.get(key);
+    //     control?.markAsTouched();
+    //   });
+    // }
+
+    const startTime = this.CreateExamSchedule.get('StartTime').value;
+    const endTime = this.CreateExamSchedule.get('EndTime').value;
+
+    if (startTime && endTime) {
+      // Convert times to comparable format (minutes since midnight)
+      const start = this.timeToMinutes(startTime);
+      const end = this.timeToMinutes(endTime);
+
+      if (end <= start) {
+        this._snackBar.open('End time must be after start time', 'Close', {
+          duration: 3000
+        });
+        this.CreateExamSchedule.get('EndTime').setValue('');
+        return;
+      }
+
+      // Calculate duration in minutes
+      const durationMinutes = end - start;
+      const hours = Math.floor(durationMinutes / 60);
+      const minutes = durationMinutes % 60;
+      this.duration = `${hours}:${minutes.toString().padStart(2, '0')} hours`;
     }
+
     // if (this.date && this.startTime && this.endTime) {
     //   const dateTimeStr = `${this.date}T${this.startTime}:00Z`;
     //   const start = new Date(dateTimeStr);
@@ -642,6 +673,19 @@ export class CreateExamComponent implements OnInit {
         });
     }
   }
+  // Helper to convert time string to minutes
+  private timeToMinutes(time: string): number {
+    const [timeValue, period] = time.split(' ');
+    let [hours, minutes] = timeValue.split(':').map(Number);
+
+    if (period === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+      hours = 0;
+    }
+
+    return hours * 60 + minutes;
+  }
   //dialogbox for listing 
   closedialog() {
     this.dialog.closeAll();
@@ -678,6 +722,8 @@ export class CreateExamComponent implements OnInit {
   // Create Exam 
   Onsubmit() {
     if (this.CreateExamSchedule.get('examType')?.value == 0) {
+      this.CreateExamSchedule.get('ExamEndDate')?.clearValidators();
+      this.CreateExamSchedule.get('ExamEndDate')?.updateValueAndValidity();
       this.CreateExamSchedule.get('EndTime')?.clearValidators();
       this.CreateExamSchedule.get('EndTime')?.updateValueAndValidity();
       // this.CreateExamSchedule.get('EndTime').patchValue('00:00');
@@ -693,6 +739,7 @@ export class CreateExamComponent implements OnInit {
 
 
       const selectedDate: Date = this.CreateExamSchedule.get('ExamDate')?.value;
+      const selectedEndDate: Date = this.CreateExamSchedule.get('ExamEndDate')?.value;
       const startTime: string = this.CreateExamSchedule.get('StartTime')?.value;
       const endTime: string = this.CreateExamSchedule.get('EndTime')?.value;
 
@@ -701,7 +748,7 @@ export class CreateExamComponent implements OnInit {
         var formattedExamStartDate = this.combineDateTime(selectedDate, startTime);
       } else {
         var formattedExamStartDate = this.combineDateTime(selectedDate, startTime);
-        var formattedExamEndDate = this.combineDateTime(selectedDate, endTime);
+        var formattedExamEndDate = this.combineDateTime(selectedEndDate, endTime);
 
       }
 
@@ -758,6 +805,7 @@ export class CreateExamComponent implements OnInit {
     }
     else {
       const selectedDate: Date = this.CreateExamSchedule.get('ExamDate')?.value;
+      const selectedEndDate: Date = this.CreateExamSchedule.get('ExamEndDate')?.value;
       const startTime: string = this.CreateExamSchedule.get('StartTime')?.value;
       const endTime: string = this.CreateExamSchedule.get('EndTime')?.value;
 
@@ -766,7 +814,7 @@ export class CreateExamComponent implements OnInit {
         var formattedExamStartDate = this.combineDateTime(selectedDate, startTime);
       } else {
         var formattedExamStartDate = this.combineDateTime(selectedDate, startTime);
-        var formattedExamEndDate = this.combineDateTime(selectedDate, endTime);
+        var formattedExamEndDate = this.combineDateTime(selectedEndDate, endTime);
 
       }
 
@@ -823,21 +871,58 @@ export class CreateExamComponent implements OnInit {
       )
     }
   }
-  combineDateTime(date: Date, time?: string): string {
-    const [hours, minutes] = time?.split(':')?.map(Number);
+  combineDateTime(date: Date | string, time?: string): string {
+    if (!date || !time) {
+      return null;
+    }
+
+    // Extract hours, minutes, and AM/PM from the time string
+    const timeParts = time.match(/(\d+):(\d+)\s?(AM|PM)?/i);
+    if (!timeParts) return null; // Invalid time format
+
+    let hours = parseInt(timeParts[1], 10);
+    const minutes = parseInt(timeParts[2], 10);
+    const period = timeParts[3]?.toUpperCase(); // AM or PM
+
+    // Convert 12-hour format to 24-hour format
+    if (period === "PM" && hours !== 12) {
+      hours += 12; // Convert PM to 24-hour format
+    } else if (period === "AM" && hours === 12) {
+      hours = 0; // Midnight case
+    }
+
     const formattedDate = new Date(date);
+    if (isNaN(formattedDate.getTime())) {
+      return null; // Invalid date
+    }
 
-    formattedDate.setHours(hours, minutes, 0, 0); // Set hours & minutes
+    formattedDate.setHours(hours, minutes, 0, 0);
 
-    // Format manually to prevent automatic UTC conversion
     const year = formattedDate.getFullYear();
-    const month = ('0' + (formattedDate.getMonth() + 1)).slice(-2); // Ensure 2-digit month
+    const month = ('0' + (formattedDate.getMonth() + 1)).slice(-2);
     const day = ('0' + formattedDate.getDate()).slice(-2);
     const hour = ('0' + formattedDate.getHours()).slice(-2);
     const minute = ('0' + formattedDate.getMinutes()).slice(-2);
 
-    return `${year}-${month}-${day}T${hour}:${minute}:00.000Z`; // Preserve original time
+    return `${year}-${month}-${day}T${hour}:${minute}:00.000Z`;
   }
+
+
+  // combineDateTime(date: Date, time?: string): string {
+  //   const [hours, minutes] = time?.split(':')?.map(Number);
+  //   const formattedDate = new Date(date);
+
+  //   formattedDate.setHours(hours, minutes, 0, 0); // Set hours & minutes
+
+  //   // Format manually to prevent automatic UTC conversion
+  //   const year = formattedDate.getFullYear();
+  //   const month = ('0' + (formattedDate.getMonth() + 1)).slice(-2); // Ensure 2-digit month
+  //   const day = ('0' + formattedDate.getDate()).slice(-2);
+  //   const hour = ('0' + formattedDate.getHours()).slice(-2);
+  //   const minute = ('0' + formattedDate.getMinutes()).slice(-2);
+
+  //   return `${year}-${month}-${day}T${hour}:${minute}:00.000Z`; // Preserve original time
+  // }
 
   copyText(fieldName) {
     const copyText = (document.getElementById(fieldName)) as HTMLInputElement;

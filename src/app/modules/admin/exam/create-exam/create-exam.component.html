@@ -400,22 +400,32 @@
                     <div class="quiz_scheduling" >
                         <mat-form-field appearance="fill">
                             <mat-label>Date</mat-label>
-                            <input matInput [matDatepicker]="picker" formControlName="ExamDate" (dateChange)="calculateDuration()" [min]="minTime">
+                            <input matInput [matDatepicker]="picker" formControlName="ExamDate"  [min]="minDate">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill">
                             <mat-label>Starts on</mat-label>
-                            <input matInput name="starton" min="00:00" max="23:59" type="time" formControlName="StartTime" [(ngModel)]="startTime" (change)="calculateDuration()" >
+                            <input matInput name="starton"  [ngxTimepicker]="startTimepicker" formControlName="StartTime" [(ngModel)]="StartTime"   (ngModelChange)="calculateDuration()">
+                            <ngx-material-timepicker-toggle [for]="startTimepicker"></ngx-material-timepicker-toggle>
+                            <ngx-material-timepicker #startTimepicker color="primary"></ngx-material-timepicker>
                         </mat-form-field>
 
                         <h3 class="pt-5" *ngIf="CreateExamSchedule.get('examType')?.value == 1">to</h3>
-
+                        <mat-form-field appearance="fill" *ngIf="CreateExamSchedule.get('examType')?.value == 1">
+                            <mat-label>End Date</mat-label>
+                            <input matInput [matDatepicker]="endDatePicker" formControlName="ExamEndDate"  [min]="minDate">
+                            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endDatePicker></mat-datepicker>
+                        </mat-form-field>
                         <mat-form-field *ngIf="CreateExamSchedule.get('examType')?.value == 1" appearance="fill">
                             <mat-label>Ends with</mat-label>
-                            <input matInput type="time" formControlName="EndTime" [(ngModel)]="endTime" (change)="calculateDuration()" [disabled]="invalidTime">
+                            <input matInput [ngxTimepicker]="toggleTimepicker" formControlName="EndTime" [(ngModel)]="endTime" (ngModelChange)="calculateDuration()" [disabled]="invalidTime">
+                            <ngx-material-timepicker-toggle [for]="toggleTimepicker"></ngx-material-timepicker-toggle>
+                            <ngx-material-timepicker #toggleTimepicker color="primary"></ngx-material-timepicker>
                         </mat-form-field>
+                      
                         <control-messages [control]="CreateExamSchedule.controls.ExamDate && CreateExamSchedule.controls.StartTime && CreateExamSchedule.controls.EndTime" fieldName="Calcluate Duration" [showSubmitError]="IsSheduleFormHasError"></control-messages>
 
                         <!-- <p>{{duration}}</p> -->
