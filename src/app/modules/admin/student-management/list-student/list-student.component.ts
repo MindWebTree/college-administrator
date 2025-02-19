@@ -193,6 +193,7 @@ export class ListStudentComponent {
 
     this._router.navigate(['/student/student-report-card/' + user.id + '/' + this.CourseYear]);
   }
+  bulkUploadStudent(){}
 
 
 }

@@ -18,6 +18,23 @@ div {
     height: 80vh;
     border-radius: 5px;
 }
+label.custom-file-upload  {
+    border: 1px solid rgba(var(--fuse-primary-rgb), 1);
+    background: rgba(var(--fuse-primary-rgb), 0.1);
+    color: rgba(var(--fuse-primary-rgb), 1);
+    width: 137px;
+    height: 40px;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500px;
+}
+.custom-file-upload .image-upload {
+    display: none;
+}
 
 ::ng-deep .edit_profile mat-form-field.mat-form-field {
     width: 100%;

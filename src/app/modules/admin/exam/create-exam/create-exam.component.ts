@@ -149,7 +149,7 @@ export class CreateExamComponent implements OnInit {
     private _examService: ExamService,
     private _errorHendling: ApiErrorHandlerService
   ) {
-
+    this.isFormSubmitted = false;
     this.ckeConfig = CKEDITOR_CONFIG;
 
     this._unsubscribeAll = new Subject();
@@ -672,6 +672,14 @@ export class CreateExamComponent implements OnInit {
           duration: 2000,
         });
     }
+  }
+  CreateNewExam(){
+    this.isFormSubmitted =false;
+    this.CreateExamQbank.reset();
+    this.CreateExamSchedule.reset();
+    this.CreateListFilter.reset();
+    this.TopicsList =[];
+    this.CBMEcodeList =[];
   }
   // Helper to convert time string to minutes
   private timeToMinutes(time: string): number {

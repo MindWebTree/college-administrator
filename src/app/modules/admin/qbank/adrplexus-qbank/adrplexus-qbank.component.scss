@@ -29,8 +29,15 @@
 
 ::ng-deep .adrplexus-questions mat-expansion-panel-header {
     align-items: start !important;
-    height: 100px !important;
+    // height: 100px !important;
     padding: 20px 30px !important;
+}
+
+::ng-deep .adrplexus-questions mat-expansion-panel-header img {
+    margin-top: 10px;
+}
+::ng-deep .explanation-question img {
+    max-width: 200px;
 }
 
 // ::ng-deep .mat-expanded .mat-expansion-panel-content {

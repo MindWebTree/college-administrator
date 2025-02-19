@@ -14,6 +14,7 @@ import { NavigationService } from 'app/core/navigation/navigation.service';
 export class StudentService {
   student: studentModel;
   onStudentManagementChanged: BehaviorSubject<any>;
+  onStudentListChanged: BehaviorSubject<any>;
   openSnackBar(message: string, action: string) {
     this._matSnockbar.open(message, action, {
       duration: 2000,
@@ -23,6 +24,7 @@ export class StudentService {
     private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onStudentManagementChanged = new BehaviorSubject([]);
+    this.onStudentListChanged = new BehaviorSubject([]);
   }
 
   /**
@@ -206,6 +208,9 @@ export class StudentService {
   }
   studentSubjectSummary(userId): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks/${userId}`, { });
+  }
+  studentAttendance(payload): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/attendence/get-grid-attendance-by-user/`, { ...payload});
   }
 }
 

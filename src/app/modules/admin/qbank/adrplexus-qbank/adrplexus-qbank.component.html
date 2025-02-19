@@ -9,7 +9,7 @@
                     <div class="filter_heading  text-[#505050] text-[14px] font-normal">
                         Competency :
                     </div>
-                    <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-max w-full">
+                    <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-max w-full min-w-50">
                         <!-- <mat-select disableRipple placeholder="Competency">
                             <mat-option [value]="0" selected>All</mat-option>
                             <mat-option>1</mat-option>
@@ -35,7 +35,7 @@
                     <div class="filter_heading text-[#505050] text-[14px] font-normal">
                         Tags :
                     </div>
-                    <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-min w-full">
+                    <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-min w-full min-w-50">
                         <mat-select matNativeControl [(ngModel)]="TagID" (selectionChange)="search()" formControlName="tags">
                             <mat-option [value]="0">All</mat-option>
                             <mat-option *ngFor="let tag of Tags,let i = index;" [value]="tag.id">{{tag.name}}</mat-option>
@@ -50,7 +50,7 @@
         <div class="accordian-outer adrplexus-questions" [dataSource]="dataSource.QuestionList" *ngFor="let question of dataSource.QuestionList,let i = index;">
             <mat-accordion>
                 <mat-expansion-panel hideToggle class="mt-4" >
-                    <mat-expansion-panel-header class="h-24 bg-white">
+                    <mat-expansion-panel-header class="h-auto bg-white">
                         <mat-panel-title class="font-semibold">
                              <div [innerHtml]="question.questionTitle"></div>
                         </mat-panel-title>
@@ -64,7 +64,7 @@
                         <div *ngFor=" let choices of question?.choices; let i = index;">
                             <h6 *ngIf="choices.isCorrect" class="mt-3.5 font-medium correct_heading">Correct Answer</h6>
                             <div class="bg-white mt-3.5 flex p-2.5 border" [ngClass]="{'correct_div':choices.isCorrect===true}">
-                                <span class="content-center mr-2.5 bg-[#DCDCDC] text-sm px-1 h-5 w-5 rounded answer-points"><B class="pl-px">{{i + 1}}</B></span>
+                                <span class="content-center mr-2.5 bg-[#DCDCDC] text-sm px-1 h-5 w-5 rounded answer-points"><B class="pl-px">{{getOptionLabel(i)}}</B></span>
                                 <h2 class="font-medium">{{choices.choiceText}}</h2>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                         </mat-chip-list>
                         <hr class="h-px my-8 bg-gray-200 border-[#C6C7C7] dark:bg-gray-700">
                         <h3 class="mt-3.5 text-primary font-bold text-lg" *ngIf="question.explanation?.length>0">Solutions</h3>
-                        <div *ngFor="let explanantion of question.explanation,let i=index">
+                        <div class="explanation-question" *ngFor="let explanantion of question.explanation,let i=index">
                             <h4 class="font-bold text-base mt-3.5" *ngIf="explanantion.content.length>0">Explanation {{i+1}}</h4>
                             <p class="mt-3.5 font-medium" [innerHtml]="explanantion.content"></p>
                         </div>
@@ -122,7 +122,7 @@
                     </div>
 
                 </mat-expansion-panel>
-                <div class="demo-section">{{i + 1}}</div>
+                <div class="demo-section">{{getQuestionNumber(i)}}</div>
                 <!-- <mat-icon class="demo-section">done</mat-icon> -->
             </mat-accordion>
         </div>

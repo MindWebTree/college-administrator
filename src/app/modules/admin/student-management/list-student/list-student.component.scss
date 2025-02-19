@@ -16,6 +16,9 @@ div {
     max-width: initial;
     padding-top: 0px;
 }
+.average_heading {
+    min-width: fit-content !important;
+}
 
 :host ::ng-deep form .filters .mat-form-field.mat-form-field .mat-form-field-wrapper {
     margin-bottom: 0px;
@@ -228,6 +231,17 @@ input#search {
     display: flex;
     align-items: center;
     gap: 2px
+}
+.bulk-upload {
+    background: #28C397 !important;
+    box-shadow: none !important;
+    color: white !important;
+    border-radius: 4px !important;
+    padding: 11px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 140px;
 }
 
 ::ng-deep .list-student-management .mat-mdc-form-field-subscript-wrapper {

@@ -150,6 +150,18 @@ export const appRoutes: Route[] = [
         children: [
             {path: 'qbank', loadChildren: () => import('app/modules/admin/question-management/question-management.routes')},
         ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'attendance', loadChildren: () => import('app/modules/admin/attendence/attendence.routes')},
+        ]
     }
     //dashboard End
 ];

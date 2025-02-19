@@ -75,7 +75,7 @@ export const data={
                         return of(false);
                     }
                     else {
-                        this.RoleId = this._helperservice.getUserDetail()
+                        this.RoleId = this._helperservice.getUserDetail();
                         this.isUserAuthenticated = false;
                         this.navigation.forEach(route => {
 

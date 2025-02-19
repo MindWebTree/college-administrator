@@ -145,6 +145,36 @@ export class ExamList {
         this.ResultStatus = examList.ResultStatus;
     }
 }
+export class AttendanceList {
+    id: number;
+    guid: string;
+    userId: string;
+    isActive: true;
+    rollNo: string;
+    name: string;
+    departmentID: number;
+    departmentName: string;
+    checkIn: string;
+    checkOut: string;
+    availablity: string;
+    status: string;
+    late: string;
+    constructor(examList) {
+        this.id= this.id;
+        this.guid= this.guid;
+        this.userId= this.userId;
+        this.isActive= this.isActive;
+        this.rollNo= this.rollNo;
+        this.name= this.name;
+        this.departmentID= this.departmentID;
+        this.departmentName= this.departmentName;
+        this.checkIn= this.checkIn;
+        this.checkOut= this.checkOut;
+        this.availablity= this.availablity;
+        this.status= this.status;
+        this.late= this.late;
+    }
+}
 
 export enum studentAnalytics {
     attendedExam = 1,

@@ -248,7 +248,19 @@ table th {
     max-height: 150px !important;
     margin-top: 25px;
 }
-
+.get-data{
+    display: flex;
+    align-items: center;
+    background: rgba(var(--fuse-primary-rgb), 1);
+    max-height: 90px;
+    margin: auto;
+    margin-left: 10px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    color: white;
+    min-height: 50px;
+    cursor: pointer;
+}
 @media screen and (max-width: 1199px) {
     .first_div {
         display: flex !important;

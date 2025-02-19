@@ -9,27 +9,27 @@
           
                 <div class="flex flex-wrap sm:flex-nowrap gap-2 items-center">
                        <!-- filter -->
-                    <div class="filter_heading">
-                         Average 
+                    <div class="filter_heading average_heading">
+                         Average : 
                     </div>
                 <div class="w-full">
                   <mat-form-field appearance="fill" class="w-full average">
                      <mat-select [(ngModel)]="average" placeholder="Select Average" (selectionChange)="onAverageChange($event)">
                      <mat-option value="0">All</mat-option>
-                       <mat-option value=">33">>33%</mat-option>
-                        <mat-option value=">66">>66%</mat-option>
-                         <mat-option value=">99">>99%</mat-option>
-                          <mat-option value="<33"> < 33% </mat-option>
-                           <mat-option value="<66"> < 66% </mat-option>
-                            <mat-option value="<99"> < 99% </mat-option>
+                       <mat-option value=">33">>33% Score</mat-option>
+                        <mat-option value=">66">>66% Score</mat-option>
+                         <mat-option value=">99">>99% Score</mat-option>
+                          <mat-option value="<33"> < 33% Score</mat-option>
+                           <mat-option value="<66"> < 66% Score</mat-option>
+                            <mat-option value="<99"> < 99% Score</mat-option>
     </mat-select>
 </mat-form-field>
 
 
                 </div>
                 <!-- search -->
-                 <div class="filter_heading">
-                        Search 
+                 <div class="filter_heading w-full">
+                        Search :
                     </div>
                  <div class="search-input">
                 <mat-icon class="">search</mat-icon>
@@ -38,6 +38,7 @@
                 </mat-form-field>
             </div>
                 <button class="add-data"(click)="addStudent()"><mat-icon class="text-white cursor-pointer">add</mat-icon> ADD</button>
+                <!-- <button class="bulk-upload"(click)="bulkUploadStudent()"><mat-icon class="text-white cursor-pointer">add</mat-icon> Bulk Upload</button> -->
                 </div>
             </div>
         </form>

@@ -163,6 +163,19 @@ export class AdrplexusQbankComponent implements OnInit {
     self.selectedQuestionId=questionDetailID;
   }
 }
+getOptionLabel(index: number): string {
+  let label = "";
+  while (index >= 0) {
+    label = String.fromCharCode(65 + (index % 26)) + label;
+    index = Math.floor(index / 26) - 1;
+  }
+  return label;
+}
+getQuestionNumber(index: number): number {
+  const currentPage = this.paginator?.pageIndex || 0;
+  const pageSize = this.paginator?.pageSize || this._sitePreference.PAGE.GridRowViewCount;
+  return (currentPage * pageSize) + index + 1;
+}
 }
 
 

@@ -205,11 +205,22 @@ input[type=number] {
 :host ::ng-deep form .filters .mat-form-field.mat-form-field .mat-form-field-wrapper {
     margin-bottom: 0px;
 }
+a.create-exam {
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    padding: 15px 20px;
+    color: white;
+    border-radius: 5px;
+    margin-top: 20px;
+}
 
 :host ::ng-deep form .quiz_scheduling .mat-form-field.mat-form-field {
     min-width: 140px;
     max-width: initial;
     padding-top: 0;
+}
+::ng-deep .explanation-question img {
+    max-width: 200px;
 }
 
 .quiz_scheduling {

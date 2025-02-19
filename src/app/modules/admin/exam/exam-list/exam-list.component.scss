@@ -24,6 +24,12 @@ div {
     border-bottom: 4px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
     margin-bottom: -3px;
 }
+::ng-deep .exam-description{
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    min-height: 82px !important;
+}
 
 ::ng-deep mat-step-header[tabindex="0"] {
     border-bottom: 3px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));

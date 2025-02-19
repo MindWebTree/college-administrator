@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexOptions, ApexPlotOptions, ApexXAxis, ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 import { Location } from '@angular/common';
@@ -17,6 +17,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { studentAnalyticGrid } from '../../common/gridFilter';
 import { CreateStudentComponent } from '../create-student/create-student.component';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DataSource } from '@angular/cdk/collections';
+import { BehaviorSubject, catchError, finalize, Observable, of, Subject, takeUntil } from 'rxjs';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { SitePreference } from 'app/core/auth/app.configs';
 export type linearChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -37,7 +42,7 @@ export interface PeriodicElement {
 @Component({
   selector: 'app-report-card',
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatFormFieldModule, MatIconModule, MatSelectModule, MatInputModule, MatChipsModule, NgApexchartsModule, ReactiveFormsModule, FormsModule],
+  imports: [MatPaginator,MatDatepickerModule,MatTableModule, CommonModule, MatFormFieldModule, MatIconModule, MatSelectModule, MatInputModule, MatChipsModule, NgApexchartsModule, ReactiveFormsModule, FormsModule],
   templateUrl: './report-card.component.html',
   styleUrl: './report-card.component.scss'
 })
@@ -45,44 +50,36 @@ export class ReportCardComponent {
   students: studentModel;
   userId: string;
   studentReportCardDetails: StudentReportCard;
-  //  = {
-  //   firstName: '',
-  //   lastName: '',
-  //   courseId:0,
-  //   imageUrl: '',
-  //   rollNo: '',
-  //   averageMarks: 0,
-  //   noOfExamsAssigned: '',
-  //   noOfExamsAdmitted: '',
-  //   noOfAwards: '',
-  //   phoneNumber: '',
-  //   email: '',
-  //   id: 0,
-  //   userID: '',
-  //   isActive: true,
-  //   isDeleted: false,
-  //   updatedBy: '',
-  //   createdBy: '',
-  //   createdOn: '',
-  //   updatedOn: '',
-  //   courses: []
-  // };
+  AttendanceForm: FormGroup;
   examAnalyticsListing: any
   displayedColumns: string[] = ['date', 'examname', 'subject', 'rank', 'avgscore', 'result'];
+  displayedColumns1: string[] = ['CheckIn', 'CheckOut', 'departmentName', 'availablity'];
   dataSource: any = [];
   courseYearName: any
   attendedExamsDataSource: any[] = [];
   nonAttendedExamsDataSource: any[] = [];
+  attendanceDataSource: any[] = [];
   @ViewChild("linearchart") linearChart: ChartComponent;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   public linearChartOptions: ApexOptions = {};
-
+  private _unsubscribeAll: Subject<void> = new Subject<void>();
+  _sitePreference: any = SitePreference;
 
 
   @ViewChild('dialogContent', { static: true })
   dialogContent: TemplateRef<any>;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
   dialogRef: any;
-  constructor(private _location: Location, public _matDialog: MatDialog, private _studentService: StudentService, private route: ActivatedRoute, private router: Router) {
+  attendencedataSource: AttendanceDataSource;
+  StartDate: string ='2025-01-18T13:54:07.309Z';
+  EndDate: string ='2025-02-18T13:54:07.309Z';
+  constructor(
+    private _formbuilder: FormBuilder,
+    private _location: Location, 
+    public _matDialog: MatDialog, 
+    private _studentService: StudentService, 
+    private route: ActivatedRoute, 
+    private router: Router) {
 
     this.route.params.subscribe((parram) => {
 
@@ -90,6 +87,11 @@ export class ReportCardComponent {
       this.courseYearName = parram.courseYear;
 
     });
+    this.AttendanceForm = this._formbuilder.group({
+      StartDate: ['', Validators.required],
+      EndDate: ['', Validators.required]
+    })
+  
 
     // this.linearChartOptions = {
 
@@ -248,7 +250,10 @@ export class ReportCardComponent {
   }
 
   ngOnInit(): void {
-
+    this.StartDate = this.AttendanceForm.get('StartDate').value
+    this.EndDate = this.AttendanceForm.get('StartDate').value
+    console.log(this.StartDate,this.EndDate,"this.StartDate")
+    this.fetchChartData();
     this.getStudeDetails();
 
     // Define filter objects
@@ -281,17 +286,98 @@ export class ReportCardComponent {
     this._studentService.studentExamAnalyticsListing(nonAttendedExamFilter).subscribe((response: any) => {
       this.nonAttendedExamsDataSource = response.data;
     });
-    this.fetchChartData();
+    this.attendencedataSource = new AttendanceDataSource(this._studentService);
+    this._studentService.onStudentListChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(res=>{
+      let gridFilter = {
+        keyword: '',
+        pageNumber: this.paginator?.pageIndex + 1,
+        pageSize: this.paginator?.pageSize == undefined ? SitePreference.PAGE.GridRowViewCount : this.paginator.pageSize,
+        orderBy: '',
+        sortOrder: '',
+        startDate: "2025-01-18T13:54:07.309Z",
+        endDate: "2025-02-18T13:54:07.309Z",
+        userId: this.userId
+      };
+      this.attendencedataSource.getExamList(gridFilter);
+    })
+  }
+
+  getNext(event: PageEvent) {
+    this._studentService.onStudentListChanged.next(true);
   }
   
+  // fetchChartData() {
+  //   this._studentService.studentSubjectSummary(this.userId).subscribe((response: any) => {
+  //     const categories = response.map((item: any) => item.name);
+  //     const colors = ["#7EE8CA", "#9BD7FF", "#FFB6C1", "#FFA07A", "#FFD700", "#8A2BE2", "#32CD32"]; // Different colors
+
+  //     const dataSeries = response.map((item: any, index: number) => ({
+  //       x: item.name,
+  //       y: item.count,
+  //       fillColor: colors[index % colors.length] // Assign different colors cyclically
+  //     }));
+
+  //     this.linearChartOptions = {
+  //       series: [{ name: "Progress", data: dataSeries }],
+  //       grid: {
+  //         row: {
+  //           colors: ["transparent", "transparent"],
+  //           opacity: 0.5
+  //         },
+  //         padding: {
+  //           left: 0,
+  //           right: 0
+  //         }
+  //       },
+  //       chart: {
+  //         type: "bar",
+  //         height: 270,
+  //         // width: 1000,
+  //         offsetY: -10
+  //       },
+  //       plotOptions: {
+  //         bar: {
+  //           horizontal: true,
+  //           dataLabels: { position: "top" },
+  //           barHeight: "10%"
+  //         }
+  //       },
+  //       dataLabels: {
+  //         enabled: true,
+  //         offsetX: 25,
+  //         style: {
+  //           fontSize: "12px",
+  //           colors: ["#505050"]
+  //         }
+  //       },
+  //       stroke: {
+  //         show: true,
+  //         width: 1,
+  //         colors: ["#fff"]
+  //       },
+  //       xaxis: {
+  //         categories,
+  //         labels: { show: false } // Hide x-axis labels (count)
+  //       },
+  //       yaxis: {
+  //         labels: {
+  //           style: {
+  //             fontSize: "12px",
+  //             colors: "#000"
+  //           }
+  //         }
+  //       }
+  //     };
+  //   });
+  // }
   fetchChartData() {
     this._studentService.studentSubjectSummary(this.userId).subscribe((response: any) => {
-      const categories = response.map((item: any) => item.name);
+      const categories = response.map((item: any) => item.subjectName);
       const colors = ["#7EE8CA", "#9BD7FF", "#FFB6C1", "#FFA07A", "#FFD700", "#8A2BE2", "#32CD32"]; // Different colors
 
       const dataSeries = response.map((item: any, index: number) => ({
-        x: item.name,
-        y: item.count,
+        x: item.subjectName,
+        y: item.averageMarks,
         fillColor: colors[index % colors.length] // Assign different colors cyclically
       }));
 
@@ -380,8 +466,16 @@ export class ReportCardComponent {
 
   }
 
-
-
+  getDataDateWise(){
+    this._studentService.onStudentListChanged.next(true);
+  }
+  ngOnDestroy(): void {
+    
+    this._unsubscribeAll.unsubscribe();
+    if (this.attendencedataSource) {
+      this.attendencedataSource.disconnect();
+    }
+  }
   deleteStudent() {
 
     this.confirmDialogRef = this._matDialog.open(ConfirmDialogComponent, {
@@ -397,4 +491,45 @@ export class ReportCardComponent {
       this.confirmDialogRef = null;
     });
   }
+}
+export class AttendanceDataSource extends DataSource<any>
+{
+
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+  public paginationData: any;
+  public loading$ = this.loadingSubject.asObservable();
+  ExamList: Array<any> = []
+  ExamCount: number;
+
+  constructor(private _studentService: StudentService) {
+    super();
+  }
+
+  disconnect(): void {
+  }
+
+  connect(): Observable<any[]> {
+    return this._studentService.onStudentListChanged;
+  }
+
+  getExamList(gridFilter) {
+    var self = this;
+    this._studentService.studentAttendance(gridFilter).pipe(
+      catchError(() => of([])),
+      finalize(() => {
+        this.loadingSubject.next(false)
+      })
+    )
+
+      .subscribe((res: any) => {
+        this.ExamList = res?.data;
+        this.ExamCount = res?.Count;
+        self.paginationData = {
+          count: res?.totalCount,
+          pageNumber: res?.currentPage
+        };
+      });
+
+  }
+
 }

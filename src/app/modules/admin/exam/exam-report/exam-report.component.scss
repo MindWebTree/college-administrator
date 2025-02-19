@@ -82,6 +82,9 @@ h2 {
     line-height: 50px;
     background: rgba(var(--fuse-primary-rgb), .1) !important;
 }
+::ng-deep .report-students tr {
+    vertical-align: middle;
+}
 
 .stats div {
     border-right: 1px solid #DCDCDC;
