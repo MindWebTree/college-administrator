@@ -218,7 +218,7 @@
             </form>
         </mat-step>
 
-        <mat-step [stepControl]="CreateListFilter">
+        <mat-step [stepControl]="CreateListFilter" [completed]="stepper.selectedIndex > 1">
             <form class="create-exam-second-step">
                 <ng-template matStepLabel>Select Questions</ng-template>
                 <div class="container block pt-4 filters">
@@ -400,7 +400,7 @@
                     <div class="quiz_scheduling" >
                         <mat-form-field appearance="fill">
                             <mat-label>Date</mat-label>
-                            <input matInput [matDatepicker]="picker" formControlName="ExamDate"  [min]="minDate">
+                            <input matInput [matDatepicker]="picker" formControlName="ExamDate"  [min]="minDate"  (dateChange)="clearTimeOnDateChange('ExamDate')">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -415,7 +415,7 @@
                         <h3 class="pt-5" *ngIf="CreateExamSchedule.get('examType')?.value == 1">to</h3>
                         <mat-form-field appearance="fill" *ngIf="CreateExamSchedule.get('examType')?.value == 1">
                             <mat-label>End Date</mat-label>
-                            <input matInput [matDatepicker]="endDatePicker" formControlName="ExamEndDate"  [min]="minDate">
+                            <input matInput [matDatepicker]="endDatePicker" formControlName="ExamEndDate"  [min]="minDate" (dateChange)="clearTimeOnDateChange('ExamEndDate')">
                             <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                             <mat-datepicker #endDatePicker></mat-datepicker>
                         </mat-form-field>
@@ -435,8 +435,7 @@
                             <mat-checkbox [value]="true" formControlName="ShuffleAnswer" color="primary">Shuffle Answers</mat-checkbox>
                         </p>
                         <p>
-                            <mat-checkbox [value]="true" formControlName="ShuffleQuestion" color="primary">Shuffle Question
-                            </mat-checkbox>
+                            <mat-checkbox [value]="true" formControlName="ShuffleQuestion" color="primary">Shuffle Question</mat-checkbox>
                         </p>
                     </section>
                     <h2 class="py-4 heading">Result</h2>
