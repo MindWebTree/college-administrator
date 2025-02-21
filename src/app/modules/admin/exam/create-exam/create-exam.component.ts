@@ -149,7 +149,7 @@ export class CreateExamComponent implements OnInit {
     private _examService: ExamService,
     private _errorHendling: ApiErrorHandlerService
   ) {
-    this.isFormSubmitted = false;
+
     this.ckeConfig = CKEDITOR_CONFIG;
 
     this._unsubscribeAll = new Subject();
@@ -582,22 +582,45 @@ export class CreateExamComponent implements OnInit {
 
     const startTime = this.CreateExamSchedule.get('StartTime').value;
     const endTime = this.CreateExamSchedule.get('EndTime').value;
+    const startDate = new Date(this.CreateExamSchedule.get('ExamDate').value);
+    const endDate = new Date(this.CreateExamSchedule.get('ExamEndDate').value);
 
-    if (startTime && endTime) {
-      // Convert times to comparable format (minutes since midnight)
-      const start = this.timeToMinutes(startTime);
-      const end = this.timeToMinutes(endTime);
-
-      if (end <= start) {
-        this._snackBar.open('End time must be after start time', 'Close', {
+    if (startTime && endTime && startDate && endDate) {
+      // Compare dates first
+      if (endDate.getTime() < startDate.getTime()) {
+        this._snackBar.open('End date must be after or equal to start date', 'Close', {
           duration: 3000
         });
+        this.CreateExamSchedule.get('ExamEndDate').setValue('');
         this.CreateExamSchedule.get('EndTime').setValue('');
         return;
       }
 
-      // Calculate duration in minutes
-      const durationMinutes = end - start;
+      // If dates are equal, compare times
+      if (endDate.getTime() === startDate.getTime()) {
+        const start = this.timeToMinutes(startTime);
+        const end = this.timeToMinutes(endTime);
+
+        if (end <= start) {
+          this._snackBar.open('End time must be after start time on the same day', 'Close', {
+            duration: 3000
+          });
+          this.CreateExamSchedule.get('EndTime').setValue('');
+          return;
+        }
+      }
+
+      // Calculate total duration in minutes
+      const startDateTime = new Date(startDate);
+      const endDateTime = new Date(endDate);
+
+      const [startHours, startMinutes] = startTime.split(':');
+      const [endHours, endMinutes] = endTime.split(':');
+
+      startDateTime.setHours(parseInt(startHours), parseInt(startMinutes), 0);
+      endDateTime.setHours(parseInt(endHours), parseInt(endMinutes), 0);
+
+      const durationMinutes = Math.floor((endDateTime.getTime() - startDateTime.getTime()) / (1000 * 60));
       const hours = Math.floor(durationMinutes / 60);
       const minutes = durationMinutes % 60;
       this.duration = `${hours}:${minutes.toString().padStart(2, '0')} hours`;
@@ -632,6 +655,14 @@ export class CreateExamComponent implements OnInit {
     // }
   }
 
+  clearTimeOnDateChange(dateField: string) {
+    if (dateField === 'ExamDate') {
+      this.CreateExamSchedule.get('StartTime').setValue('');
+      this.CreateExamSchedule.get('EndTime').setValue('');
+    } else if (dateField === 'ExamEndDate') {
+      this.CreateExamSchedule.get('EndTime').setValue('');
+    }
+  }
 
 
   // calculateDuration() {
@@ -672,14 +703,6 @@ export class CreateExamComponent implements OnInit {
           duration: 2000,
         });
     }
-  }
-  CreateNewExam(){
-    this.isFormSubmitted =false;
-    this.CreateExamQbank.reset();
-    this.CreateExamSchedule.reset();
-    this.CreateListFilter.reset();
-    this.TopicsList =[];
-    this.CBMEcodeList =[];
   }
   // Helper to convert time string to minutes
   private timeToMinutes(time: string): number {
