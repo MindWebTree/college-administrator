@@ -1,0 +1,323 @@
+<div id="game-view" class="flex flex-col flex-auto min-w-0 mat-drawer-content" cdkScrollable>
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-2 pb-4 sm:pt-4 sm:pb-4 sm:px-4 bg-default dark:bg-transparent"
+        *ngIf="ExamTitle && !hasStarted">
+        <div class="flex-1 min-w-0">
+            <!-- Breadcrumbs -->
+            <div>
+                <div class="hidden sm:flex flex-wrap items-center font-medium">
+                    <div>
+                        <a class="whitespace-nowrap text-primary-500" [routerLink]="'/live-quiz/presentations'">Live Quiz</a>
+                    </div>
+                    <div class="flex items-center ml-1 whitespace-nowrap">
+                        <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-right'">
+                        </mat-icon>
+                        <span class="ml-1 text-secondary">{{ExamTitle}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    {{ExamTitle}}
+                </h2>
+            </div>
+
+        </div>
+        <div class="flex">
+            <a class="inline-flex items-center -ml-1.5 text-secondary font-medium" [routerLink]="'/live-quiz/presentations'">
+                <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-left'">
+                </mat-icon>
+                <span class="ml-1">Back</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="flex-auto">
+
+
+        <div class="h-auto min-h-300">
+            <div *ngIf="!hasStarted && !isShowLeaderboard"
+                class="text-center border-2 border-dashed border-gray-300 rounded-2xl">
+                <div class="logo logo-audience">
+                    <div class="logo-wrapper">
+                        <img src="../../../../../../assets/images/logo/adr-plexus-logo.png" alt="">
+                    </div>
+                    <!---->
+                </div>
+                <div class="ml-2 lg:ml-0 text-3xl font-bold tracking-tight leading-none">
+                    Get ready to play!
+                </div>
+                <br />
+                <i>The Quiz is not open. Please wait for the presenter to start it.</i>
+            </div>
+
+            <div *ngIf="!isShowLeaderboard">
+                <header *ngIf="hasStarted"  class="live-quiz-header p-4">
+                    <div class="flex justify-between md:block">
+                        <div class="mt-2">
+                            <h2 class="text-lg md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10">
+                                {{ExamTitle}}
+                            </h2>
+                        </div>
+                        <div class="flex">
+                            <a class="inline-flex items-center -ml-1.5 text-secondary font-medium"
+                                [routerLink]="'/live-quiz/presentations'">
+                                <mat-icon class="icon-size-5 text-secondary" [svgIcon]="'heroicons_solid:chevron-left'">
+                                </mat-icon>
+                                <span class="ml-1">Back</span>
+                            </a>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="question && hasStarted">
+                        <div id="small-countdown-loading-bar" class="small-countdown-loading-bar"
+                            [ngClass]="showTimer && SlideTimeOut>0 ? 'show':'hide'">
+                            <div class="circle-timer">
+                                <div class="base-timer">
+                                    <!-- <svg class="base-timer__svg" viewBox="0 0 100 100"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <g class="base-timer__circle">
+                                            <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+                                            <path id="s-base-timer-path-remaining" stroke-dasharray="283"
+                                                class="base-timer__path-remaining {{remainingPathColor}}" d="
+                                        M 50, 50
+                                        m -45, 0
+                                        a 45,45 0 1,0 90,0
+                                        a 45,45 0 1,0 -90,0
+                                      "></path>
+                                        </g>
+                                    </svg> -->
+
+                                </div>
+                                <span id="base-timer-label" class="base-timer__label">{{formatTime(S_timeLeft)}}
+                                    Sec</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <center *ngIf="question && hasStarted">
+                        <h3><b>{{question.QueueID}}</b> out of <b>{{examConfig.NoOfQuestion}}</b></h3>
+                    </center>
+                </header>
+                <div class="flex-auto py-[20px] md:p-0">
+
+                    
+                    <!-- CONTENT -->
+                    <!-- CONTENT TOOLBAR -->
+                    <ng-container *ngIf="question && hasStarted">
+                        
+                        <div class="md:p-10 p-2" style="width: 100%; font-size: 16px;">
+
+                            <ng-container class="" fxLayout="row">
+
+                                <div class="ml-2 d-grid image pb-4" [innerHTML]="question.QuestionTitle">
+
+                                </div>
+                            </ng-container>
+
+                            <ng-container class="" fxLayout="row" *ngIf="!hasAudienceReport">
+                                <mat-list *ngIf="question.QuestionType == 1||question.QuestionType == 2">
+                                    <mat-list-item *ngFor="let choice of question.Choices" class="single-choice pt-2 pb-2">
+                                        <mat-checkbox [value]="choice.ChoiceID" class="pt-2 pb-2" [disabled]="isSubmitted"
+                                            (change)="SetChoiceSelection(choice,$event)" [(checked)]="choice.IsChecked"
+                                            labelPosition="after">
+                                            <span [innerHTML]="choice.ChoiceText"></span>
+                                        </mat-checkbox>
+                                    </mat-list-item>
+                                </mat-list>
+                            </ng-container>
+                            <ng-container class="" fxLayout="row" *ngIf="hasAudienceReport">
+                                <div cdkScrollable>
+                                    <div class="card questoptions"
+                                        *ngFor="let choice of tempQuestion.Choices;  let i = index">
+                                        <div class="card-preview"
+                                            *ngIf="tempQuestion.QuestionType == 1||tempQuestion.QuestionType == 2">
+                                            <div class="p-2 mt-12 mb-12" [ngClass]="{'a-default': !choice.IsCorrect && !choice.IsChecked,
+                                                    'a-success': choice.IsCorrect,
+                                                    'a-incorrect': !choice.IsCorrect && choice.IsChecked}">
+                                                <span class="plabel psize-2 mr-12" [ngClass]="{'p-default': !choice.IsCorrect && !choice.IsChecked,
+                                                    'p-success': choice.IsCorrect,
+                                                    'p-mychoice': choice.IsChecked,
+                                                    'p-incorrect': !choice.IsCorrect && choice.IsChecked}">
+                                                    {{i+1}}</span>
+                                                <div class="mat-caption" [innerHTML]="choice.ChoiceText">
+                                                </div>
+                                                <!-- <div class="mat-caption-percentage">
+                                                    <span>
+                                                        {{choice.PollPercentage.toFixed(0)}}%
+                                                    </span>
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="card-preview" *ngIf="tempQuestion.QuestionType == 3">
+                                            <div class="p-8 mt-12 mb-12 a-default">
+                                                <span class="plabel psize-2 mr-12 p-default">
+                                                    {{i+1}}</span>
+                                                <div class="mat-caption">
+                                                    <span [innerHTML]="choice.ChoiceText"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="tempQuestion.QuestionType == 3">
+                                            <div class="card-preview ml-20 mr-20"
+                                                [ngClass]="{'mat-hide': !(choice.ValidAdditionalValue == c.ChoiceText) && !(c.ChoiceText == choice.MatchedValue && choice.ValidAdditionalValue != c.ChoiceText) }"
+                                                *ngFor="let c of tempQuestion.pushitionalChoices;  let i = index">
+                                                <div class="p-8 mt-12 mb-12"
+                                                    [ngClass]="{'a-default': c.ChoiceText != choice.MatchedValue != choice.ValidAdditionalValue,
+                                                        'a-success': choice.ValidAdditionalValue == c.ChoiceText,
+                                                        'a-incorrect': c.ChoiceText == choice.MatchedValue && choice.ValidAdditionalValue != c.ChoiceText}">
+                                                    <div class="mat-caption">
+                                                        <span class="plabel psize-3 mr-12"
+                                                            [ngClass]="{'p-default': c.ChoiceText != choice.MatchedValue != choice.ValidAdditionalValue,
+                                                            'p-success': choice.ValidAdditionalValue == c.ChoiceText,
+                                                            'p-mychoice': c.ChoiceText == choice.MatchedValue,
+                                                            'p-incorrect': c.ChoiceText == choice.MatchedValue && choice.ValidAdditionalValue != c.ChoiceText}">
+                                                            {{this.NUMBER_ORDINAL[i]}}</span>
+                                                        <span [innerHTML]="c.ChoiceText"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                            <ng-container class="" fxLayout="row">
+                                <div id="chart1" echarts [options]="options" theme="macarons" class="demo-chart"
+                                    [ngClass]="hasAudienceReport ? 'show':'hide'">
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="isSubmitted">
+                                <div>
+                                    <div class="text-center leaderboard-wrapper pt-20">
+
+                                        <p>You have answered this question.</p>
+                                        <p>Let's wait and see how you did...</p>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                    <!-- / CONTENT TOOLBAR -->
+                    <!-- / CONTENT -->
+                </div>
+            </div>
+        </div>
+        <!-- Leaderboard -->
+        <ng-container *ngIf="AppTestReportAnalysis && isShowLeaderboard">
+            <h2 class="text-center text-3xl md:text-4xl m-2 font-extrabold tracking-tight truncate">
+                Leaderboard
+                <br/>
+                <p>{{SumOfPlayers}} Players</p>
+            </h2>
+            <div class="flex flex-col sm:flex-row items-center md:items-start sm:justify-center md:justify-start flex-auto p-5"
+                style="width: 100%;">
+                <div class="w-full" *ngIf="AppTestReportAnalysis">
+                    <div class="flex-auto border-t -mt-px mat-drawer-content" style="overflow: auto;
+                    max-height: 800px;">
+
+                        <div class="quiz-static __container">
+                            <div class="quiz-static __image"><img
+                                    src="../../../../../../assets/images/1e29e4452ef0d493c2811c26009bfd6b.svg"></div>
+                            <div class="quiz-static __heading"><span class="font-extrabold">Congratulations!</span>
+                            </div>
+                            <div class="quiz-static __text">
+                                <p>You got
+                                    <strong>{{YourLeaderBoard.RankPosition}}</strong>
+                                    place out of <strong>{{AppTestReportAnalysis.length}}</strong> players!
+                                </p>
+                                <p>Your final score is <strong>{{YourLeaderBoard.Score}}
+                                        points</strong>.</p>
+                            </div>
+                        </div>
+
+                        <div data-v-2caabcde="" data-v-3eda244d="" class="quiz-static __container">
+                            <div class="quiz-static __image">
+                                <!---->
+                                <div data-v-2caabcde="" class="correct-rate-slide">
+                                    <!---->
+                                </div>
+                            </div>
+                            <div data-v-2caabcde="" class="correct-rate-slide__heading"><span data-v-2caabcde=""
+                                    class="bold">Tough quiz, right?</span><span data-v-2caabcde=""
+                                    class="pl-2">😢</span>
+                            </div>
+                            <div data-v-2caabcde="" class="correct-rate-slide__text">
+                                <p class="mt-0">Out of {{examConfig.NoOfQuestion}} questions, you got
+                                    <strong>{{YourLeaderBoard.Correct}}</strong> correct.
+                                </p>
+                            </div>
+                            <div class="quiz-static __heading"><span class="bold"></span>
+                                <!---->
+                            </div>
+                            <div class="quiz-static __text"></div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="border-t -mt-px pt-2">
+                        <div class="ranking-container">
+                            <!-- Tabs -->
+                            <!-- <div id="chart2" echarts [options]="owSubjectOptions" theme="macarons" class="demo-chart">
+                            </div> -->
+                            <!-- <div echarts [options]="owSubjectOptions" style="height:400px;">
+                            </div> -->
+                            <ul *ngIf="AppTestReportAnalysis">
+                                <li *ngFor="let student of AppTestReportAnalysis">
+                                    <span class="student-id">{{student.RankPosition}}</span>
+                                    <div class="student-description">
+                                        <!-- <img *ngIf="student.RankPosition==1 || student.RankPosition==6"
+                                            src="https://cdn4.iconfinder.com/data/icons/emoji-18/61/13-256.png"
+                                            width="15">
+                                        <img *ngIf="student.RankPosition==2 || student.RankPosition==7"
+                                            src="https://cdn4.iconfinder.com/data/icons/emoji-18/61/5-64.png"
+                                            width="15">
+                                        <img *ngIf="student.RankPosition==3 || student.RankPosition==8"
+                                            src="https://cdn4.iconfinder.com/data/icons/smileys-for-fun/128/smiley__19-128.png"
+                                            width="15">
+                                        <img *ngIf="student.RankPosition==4 || student.RankPosition==9"
+                                            src="https://cdn4.iconfinder.com/data/icons/emoji-18/61/15-256.png"
+                                            width="15">
+                                        <img *ngIf="student.RankPosition==5 || student.RankPosition==10"
+                                            src="https://cdn4.iconfinder.com/data/icons/smileys-for-fun/128/smiley__8-128.png"
+                                            width="15"> -->
+                                        <span class="student-info">
+                                            {{student.Name}}
+                                        </span>
+                                    </div>
+
+
+                                    <customprogress-bar [progress]="student.PercentageOfScore"
+                                    [color]="student.ColorCode">
+                                   </customprogress-bar>
+                                    <div class="score">
+                                        {{student.Score}}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </ng-container>
+
+    </div>
+
+    <div class="min-w-fit z-10 min-w-relative sticky lg:flex  bottom-4 p-4 margin-left: auto mx-auto" 
+     *ngIf="!hasAudienceReport && !isSubmitted && question && hasStarted">
+        <div class="flex items-center justify-center mx-auto p-2 shadow-lg border-2 border-dashed border-gray-300">
+            <button class="fuse-mat-button-rounded" [disabled]="!isChecked" mat-flat-button [color]="'primary'" *ngIf="!isSubmitted"
+                (click)="Submit()">
+                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_outline:thumb-up'"></mat-icon>
+                <span class="ml-2">Submit</span>
+            </button>
+
+        </div>
+    </div>
+
+
+</div>

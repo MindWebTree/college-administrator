@@ -102,5 +102,6 @@ export class ExamService {
   getExamReport(id): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/exam/exam-report/${id}`)
   }
+  
 
 }

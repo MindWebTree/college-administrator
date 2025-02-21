@@ -134,14 +134,14 @@ export const StudentNavigation: FuseNavigationItem[] = [
     },
 ];
 export const defaultNavigation: FuseNavigationItem[] = [
-    {
-        id: 'example',
-        title: 'Example',
-        type: 'basic',
-        icon: 'heroicons_outline:chart-pie',
-        link: '/example',
-        roles: ["Lecturer", "CollegeAdministrator", "Student"]
-    },
+    // {
+    //     id: 'example',
+    //     title: 'Example',
+    //     type: 'basic',
+    //     icon: 'heroicons_outline:chart-pie',
+    //     link: '/example',
+    //     roles: ["Lecturer", "CollegeAdministrator", "Student"]
+    // },
     {
         id: 'dashboard',
         title: 'dashboard',
@@ -149,6 +149,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:chart-pie',
         link: '/dashboard',
         roles: ["Lecturer", "CollegeAdministrator", "Student"]
+    },  
+    {
+        id: "ADrPLEXUS Q'Bank",
+        title: "ADrPLEXUS Q'Bank",
+        type: 'basic',
+        SubType: 'collapsable',
+        link: '/qbank/adrplexus-qbank',
+        roles: ["Lecturer","CollegeAdministrator"]
     },
     {
         id: "ADrPLEXUS Q'Bank",
@@ -156,12 +164,34 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'basic',
         SubType: 'collapsable',
         link: '/qbank/adrplexus-qbank',
-        roles: ["Lecturer", "CollegeAdministrator"]
+        roles: ["Lecturer","CollegeAdministrator"]
     },
     {
         id: 'Exams',
         title: 'Exams',
         type: 'collapsable',
+        link: '/exam/list/waiting-for-approval',
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'Exams',
+        title: 'Exams',
+        type: 'collapsable',
+        link: '/exam/list/:guid',
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'Exams',
+        title: 'Exams',
+        type: 'collapsable',
+        link: '/exam/edit/:id',
+        roles: ["CollegeAdministrator","Lecturer"]
+    },
+    {
+        id: 'Students',
+        title: 'Students',
+        type: 'collapsable',
+        link:'/student/list/:guid',
         children: [],
         roles: ["CollegeAdministrator"]
     },
@@ -169,6 +199,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'Students',
         title: 'Students',
         type: 'collapsable',
+        link:'/student/student-report-card/:userId/:courseYear',
         children: [],
         roles: ["CollegeAdministrator"]
     },
@@ -176,9 +207,107 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'Lecturers',
         title: 'Lecturers',
         type: 'collapsable',
+        link:'/lecturer/list/:guid',
         children: [],
         roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'Lecturers',
+        title: 'Lecturers',
+        type: 'collapsable',
+        link:'/lecturer/lecturer-bio/:userId/:courseYear',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'CreateQuestion',
+        title: 'CreateQuestion',
+        type: 'collapsable',
+        link:'/qbank/create',
+        children: [],
+        roles: ["Lecturer"]
+    },
+    {
+        id: 'ListQuestion',
+        title: 'List Question',
+        type: 'collapsable',
+        link:'/qbank/Edit/:questionDetailId',
+        children: [],
+        roles: ["Lecturer"]
+    },
+    {
+        id: 'ListQuestion',
+        title: 'List Question',
+        type: 'collapsable',
+        link:'/qbank/question-list',
+        children: [],
+        roles: ["Lecturer"]
+    },
+    {
+        id: 'CreateQuestion',
+        title: 'Create Question',
+        type: 'collapsable',
+        link:'/exam/create',
+        children: [],
+        roles: ["Lecturer"]
+    },
+    {
+        id: 'QuestionList',
+        title: 'Question List',
+        type: 'collapsable',
+        link:'/exam/created-examlist',
+        children: [],
+        roles: ["Lecturer"]
+    },
+    {
+        id: 'ExamList',
+        title: 'Exam List',
+        type: 'collapsable',
+        link:'/qbank/exam-list',
+        children: [],
+        roles: ["Student"]
+    },
+    {
+        id: 'Subjects',
+        title: 'Subjects',
+        type: 'collapsable',
+        link:'/qbank/subjects',
+        children: [],
+        roles: ["Student"]
+    },
+    {
+        id: 'ExamDetails',
+        title: 'ExamDetails',
+        type: 'collapsable',
+        link:'/qbank/exam-details/:guid',
+        children: [],
+        roles: ["Student"]
+    },
+    {
+        id: 'Gameview',
+        title: 'Gameview',
+        type: 'collapsable',
+        link:'/qbank/game-view/:guid',
+        children: [],
+        roles: ["Student"]
+    },
+    {
+        id: 'GameReview',
+        title: 'GameReview',
+        type: 'collapsable',
+        link:'/qbank/game-review/:guid',
+        children: [],
+        roles: ["Student"]
+    },
+    {
+        id: 'GameAnalytics',
+        title: 'GameAnalytics',
+        type: 'collapsable',
+        link:'/qbank/game-analytics/:guid',
+        children: [],
+        roles: ["Student"]
     }
+
 ];
 export const compactNavigation: FuseNavigationItem[] = [
     {

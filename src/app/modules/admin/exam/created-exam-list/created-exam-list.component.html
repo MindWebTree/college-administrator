@@ -16,7 +16,8 @@
             <mat-step>
                 <ng-template matStepLabel>Waiting for Approval ({{waitingforApprovaldataSource?.paginationData?.count ? waitingforApprovaldataSource?.paginationData?.count:0}})</ng-template>
                 <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
-                    <div class="grid_1" [dataSource]="waitingforApprovaldataSource.ExamList" *ngFor="let exam of waitingforApprovaldataSource.ExamList,let i = index;">
+                    <div class="grid_1 relative" [dataSource]="waitingforApprovaldataSource.ExamList" *ngFor="let exam of waitingforApprovaldataSource.ExamList,let i = index;">
+                        <div class="examtype">{{exam.examMode == 0 ? "Live Exam" : "Scheduled Exam" }}</div>
                         <div class="flex">
                             <div class="w-4/5 text-lg">{{exam.name}}</div>
                             <div class="w-1/5 text-right">
@@ -52,7 +53,9 @@
             <mat-step>
                 <ng-template matStepLabel>Upcoming Exams ({{dataSource?.paginationData?.count?dataSource?.paginationData?.count:0}})</ng-template>
                 <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
-                    <div class="grid_1" [dataSource]="dataSource.ExamList" *ngFor="let exam of dataSource.ExamList,let i = index;">
+                    <div class="grid_1 relative" [dataSource]="dataSource.ExamList" *ngFor="let exam of dataSource.ExamList,let i = index;">
+                        
+                        <div class="examtype">{{exam.examMode == 0 ? "Live Exam" : "Scheduled Exam" }}</div>
                         <div class="flex">
                             <div class="w-4/5 text-lg">{{exam.name}}</div>
                             <div class="w-1/5 text-right">
@@ -88,7 +91,8 @@
             <mat-step>
                 <ng-template matStepLabel>Completed ({{completeddataSource?.paginationData?.count ? completeddataSource?.paginationData?.count : 0}})</ng-template>
                 <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
-                    <div class="grid_1"  [dataSource]="completeddataSource.ExamList" *ngFor="let exam of completeddataSource.ExamList,let i = index;">
+                    <div class="grid_1 relative"  [dataSource]="completeddataSource.ExamList" *ngFor="let exam of completeddataSource.ExamList,let i = index;">
+                        <div class="examtype">{{exam.examMode == 0 ? "Live Exam" : "Scheduled Exam" }}</div>
                         <div class="flex">
                             <div class="text-lg">{{exam.name}}</div>
                         </div>
@@ -117,7 +121,8 @@
             <mat-step>
                 <ng-template matStepLabel>Cancelled ({{cancelleddataSource?.paginationData?.count?cancelleddataSource?.paginationData?.count:0}})</ng-template>
                 <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 block pt-4 flex gap-6">
-                    <div class="grid_1" [dataSource]="cancelleddataSource.ExamList" *ngFor="let exam of cancelleddataSource.ExamList,let i = index;">
+                    <div class="grid_1 relative" [dataSource]="cancelleddataSource.ExamList" *ngFor="let exam of cancelleddataSource.ExamList,let i = index;">
+                        <div class="examtype">{{exam.examMode == 0 ? "Live Exam" : "Scheduled Exam" }}</div>
                         <div class="flex">
                             <div class="w-4/5 text-lg">{{exam.name}}</div>
                             <div class="w-1/5 text-right">

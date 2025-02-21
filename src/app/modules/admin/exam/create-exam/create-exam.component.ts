@@ -156,7 +156,7 @@ export class CreateExamComponent implements OnInit {
 
     this.CreateExamQbank = this._formbuilder.group({
       ExamName: ['', Validators.required],
-      ExamDescription: ['', Validators.required],
+      ExamDescription: [''],
       QbankCategory: ['', Validators.required],
       Studies: ['', Validators.required],
       Subject: ['', Validators.required],
@@ -341,11 +341,11 @@ export class CreateExamComponent implements OnInit {
   }
 
   getExamListing() {
-    if (this.CreateExamQbank.invalid || !this.CreateExamQbank.value.ExamDescription?.trim()) {
-      this.CreateExamQbank.controls['ExamDescription'].setErrors({ required: true });
-      this.CreateExamQbank.markAllAsTouched();
-      return;
-    }
+    // if (this.CreateExamQbank.invalid || !this.CreateExamQbank.value.ExamDescription?.trim()) {
+    //   this.CreateExamQbank.controls['ExamDescription'].setErrors({ required: true });
+    //   this.CreateExamQbank.markAllAsTouched();
+    //   return;
+    // }
 
     this.examDetails = this.CreateExamQbank.value;
     if (this.CreateExamQbank.invalid) {

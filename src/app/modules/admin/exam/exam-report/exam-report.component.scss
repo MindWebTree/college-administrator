@@ -70,6 +70,11 @@ h2 {
     margin: 10px 0;
     background: rgba(var(--fuse-primary-rgb), 0.08) !important;
 }
+::ng-deep .exam-desc p {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
 .percentage {
     color: #28C397;
     font-size: 24px;
@@ -106,6 +111,15 @@ h2 {
     width: fit-content;
     padding: 1px 10px;
     color: #28C397;
+    margin: 0 auto;
+}
+.status-fail {
+    background: #FFF8F8;
+    border: 1px solid #EA4435;
+    border-radius: 20px;
+    width: fit-content;
+    padding: 1px 10px;
+    color: #EA4435;
     margin: 0 auto;
 }
 

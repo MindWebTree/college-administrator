@@ -17,6 +17,16 @@ div {
 ::ng-deep .mat-stepper-horizontal-line {
     display: none;
 }
+::ng-deep .examtype {
+    position: absolute;
+    top: 0;
+    margin: auto;
+    right: 0;
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    width: max-content;
+    padding: 2px 10px;
+    color: white;
+}
 
 ::ng-deep .list_account mat-step-header:first-child {
     pointer-events: none;
@@ -50,6 +60,9 @@ div {
     border-bottom: 3px solid #DCDCDC;
 }
 
+::ng-deep .exam-report .mat-mdc-dialog-inner-container {
+    max-width: 530px;
+}
 
 ::ng-deep mat-stepper {
     background: transparent !important;
@@ -65,7 +78,7 @@ div {
 
 .grid_1 {
     border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
-    padding: 20px 20px;
+    padding: 35px 20px 20px;
     background: white;
     box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), .3);
     border-radius: 4px;
@@ -198,6 +211,7 @@ div {
 
 ::ng-deep .exam-description {
     overflow: hidden;
+    min-height: 82px;
 }
 
 ::ng-deep .exam-description p {

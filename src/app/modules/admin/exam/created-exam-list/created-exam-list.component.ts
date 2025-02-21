@@ -425,6 +425,7 @@ export class CreatedExamListComponent implements OnInit{
     let dialogRef: MatDialogRef<any>;
     dialogRef = this.dialog.open(ExamReportComponent, {
       data: exam,
+      panelClass: 'exam-report'
     });
   }
   ngOnDestroy(): void {

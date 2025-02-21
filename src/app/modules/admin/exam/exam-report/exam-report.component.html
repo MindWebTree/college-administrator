@@ -2,7 +2,7 @@
   <button (click)="onNoClick()" class="float-right">
     <mat-icon>close</mat-icon>
   </button>
-  <h2 class="w-9/12" [innerHtml]="exam.description"></h2>
+  <h2 class="w-9/12 exam-desc" [innerHtml]="exam.description"></h2>
 
   <div class="flex pb-4 stats pt-4">
     <div class="w-4/12 text-xl">{{examReport?.noOfAttende}}/{{examReport?.noOfStudents}}<br><span class="text-sm text-slate-600">Students</span></div>
@@ -47,7 +47,7 @@
     <!-- Score Column -->
     <ng-container matColumnDef="score">
       <th mat-header-cell *matHeaderCellDef> Score </th>
-      <td mat-cell *matCellDef="let element" class="color-red text-sm font-normal"> {{element.percentage}}% </td>
+      <td mat-cell *matCellDef="let element" [ngClass]="element?.resultStatus == 1 ? 'text-[#28C397]' : 'text-[#E1425C]'" class=" text-sm font-normal"> {{element.percentage}}% </td>
     </ng-container>
 
     <!-- Result Column -->
@@ -55,7 +55,7 @@
       <th mat-header-cell *matHeaderCellDef> Result </th>
       <td mat-cell *matCellDef="let element">
         <div class="status-pass text-sm" *ngIf="element?.resultStatus == 1"> Pass </div>
-        <div class="status-pass text-sm" *ngIf="element?.resultStatus == 0"> Fail </div>
+        <div class="status-fail text-sm" *ngIf="element?.resultStatus == 0"> Fail </div>
       </td>
     </ng-container>
 

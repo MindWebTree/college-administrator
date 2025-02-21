@@ -129,7 +129,7 @@ export const appRoutes: Route[] = [
     //dashboard
     {
         path: '',
-        canActivate: [AuthGuard, ChildAuthGuard],
+        canActivate: [AuthGuard],
         canActivateChild: [AuthGuard, ChildAuthGuard],
         component: LayoutComponent,
         resolve: {
@@ -161,6 +161,18 @@ export const appRoutes: Route[] = [
         },
         children: [
             {path: 'attendance', loadChildren: () => import('app/modules/admin/attendence/attendence.routes')},
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'upload', loadChildren: () => import('app/modules/admin/uploadto-s3/upload.routes')},
         ]
     }
     //dashboard End

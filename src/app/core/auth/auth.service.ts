@@ -5,6 +5,7 @@ import { UserService } from 'app/core/user/user.service';
 import { environment } from 'environments/environment';
 import { catchError, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { DataGuardService } from './data.guard';
+import { helperService } from './helper';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     private _httpClient = inject(HttpClient);
     private _dataGuard = inject(DataGuardService);
     private _userService = inject(UserService);
+    private _helperService = inject(helperService);
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -25,8 +27,8 @@ export class AuthService {
     }
 
     get accessToken(): string {
-        // return localStorage.getItem('accessToken') ?? '';
-        return this._dataGuard.getLocalData('accessToken') ?? '';
+        return localStorage.getItem('accessToken') ?? '';
+        // return this._dataGuard.getLocalData('accessToken') ?? '';
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -177,10 +179,38 @@ export class AuthService {
     /**
      * Check the authentication status
      */
+    // check(): Observable<boolean> {
+    //     debugger
+    //     console.log(this.accessToken,"this.accessToken")
+    //     // this.accessToken = this._dataGuard.getLocalData('accessToken')
+    //     // this.accessToken = localStorage.getItem('accessToken') ?? '';
+    //     let _u = this._helperService.getUserDetail();
+    //     // Check if the user is logged in
+    //     if (this._authenticated) {
+    //         return of(true);
+    //     }
+
+    //     // Check the access token availability
+    //     if (!this.accessToken) {
+    //         return of(false);
+    //     }
+
+    //     // Check the access token expire date
+    //     if (AuthUtils.isTokenExpired(this.accessToken)) {
+    //         return of(false);
+    //     }
+
+    //     // If the access token exists, and it didn't expire, sign in using it
+    //     return this.signInUsingToken();
+    // }
     check(): Observable<boolean> {
-        console.log(this.accessToken,"this.accessToken")
         // this.accessToken = this._dataGuard.getLocalData('accessToken')
-        // Check if the user is logged in
+        // this.accessToken = localStorage.getItem('accessToken') ?? '';
+        let _u = this._helperService.getUserDetail();
+        if (_u) {
+            this._authenticated = true;
+
+        }
         if (this._authenticated) {
             return of(true);
         }
@@ -190,13 +220,8 @@ export class AuthService {
             return of(false);
         }
 
-        // Check the access token expire date
-        if (AuthUtils.isTokenExpired(this.accessToken)) {
-            return of(false);
-        }
-
-        // If the access token exists, and it didn't expire, sign in using it
-        return this.signInUsingToken();
+        // If the access token exists and it didn't expire, sign in using it
+        return of(_u ? true : false);
     }
    
     refreshToken(): Observable<any> {
