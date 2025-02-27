@@ -42,34 +42,24 @@ export class QuestionManagementService {
     });
     return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, { headers });
   }
+  getQbankTypesLecturer(qbankCategory): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer/qbanktypes/${qbankCategory}`, {  });
+  }
   getSubjectsbyQbanktypeId(qBankTypeId: number, qbankCategory: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/${qBankTypeId}/${qbankCategory}`, { headers });
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/${qBankTypeId}/${qbankCategory}`, {  });
+  }
+  getSubjectsbyQbanktypeIdLecturer(qBankTypeId: number, qbankCategory: string): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer/subjects/${qBankTypeId}/${qbankCategory}`, {  });
   }
   getTopicsBySubjectId(subjectId: number, qbankCategory: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-topics/${subjectId}/${qbankCategory}`, { headers });
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-topics/${subjectId}/${qbankCategory}`, {  });
   }
 
   questionCreate(_questionData: CreateQuestion) {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.post(`${environment.apiURL}/qbank/create`, { ..._questionData }, { headers });
+    return this._httpClient.post(`${environment.apiURL}/qbank/create`, { ..._questionData }, {  });
   }
   updateQuestion(_questionData: CreateQuestion): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.post(`${environment.apiURL}/qbank/update`, { ..._questionData }, { headers });
+    return this._httpClient.post(`${environment.apiURL}/qbank/update`, { ..._questionData }, {  });
   }
 
 
@@ -82,11 +72,7 @@ export class QuestionManagementService {
     return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/search`, { ..._gridFilter }, { headers });
   }
   getQwnedQuestion(_gridFilter: QuestionListFilter): Observable<CreateQuestion[]> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/owned-questions`, { ..._gridFilter }, { headers });
+    return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/owned-questions`, { ..._gridFilter }, {  });
   }
 
 

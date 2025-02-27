@@ -49,13 +49,13 @@
                             <mat-icon class="rounded-full  text-green-600 absolute right-4 text-xl" *ngIf="choice.isChecked && choice.isCorrect" matTooltip="you select this right">done</mat-icon>
                             <mat-icon class="  mulichoiesWrng" matTooltip="This Choies is correct but you don't select" *ngIf="FilterQuestionData[0]?.questionType==2 && !choice.isChecked && choice.isCorrect ">error</mat-icon>
                         </div>
-                        <h5 class="text-sm font-medium mt-2" *ngIf="!choice.isChecked && !choice.isCorrect && choice.pollCount !== null">
+                        <h5 class="text-sm font-medium mt-2" *ngIf="!choice.isChecked && !choice.isCorrect">
                             {{ (choice.pollCount / getTotalUsers(this.FilterQuestionData[0])) * 100 | number:'1.0-2'
                         }}% marked this Wrong</h5>
-                        <h5 class="text-sm font-medium mt-2" *ngIf="choice.isChecked && !choice.isCorrect && choice.pollCount !== null">
+                        <h5 class="text-sm font-medium mt-2" *ngIf="choice.isChecked && !choice.isCorrect">
                             {{ (choice.pollCount / getTotalUsers(this.FilterQuestionData[0])) * 100 | number:'1.0-2'
                         }}% marked this Wrong</h5>
-                        <h5 class="text-sm font-medium mt-2" *ngIf="choice.isCorrect || (choice.isChecked && choice.isCorrect) && choice.pollCount !== null">
+                        <h5 class="text-sm font-medium mt-2" *ngIf="choice.isCorrect || (choice.isChecked && choice.isCorrect)">
                             {{ (choice.pollCount / getTotalUsers(this.FilterQuestionData[0])) * 100 | number:'1.0-2'
                         }}%  got this correct</h5>
                     </div>

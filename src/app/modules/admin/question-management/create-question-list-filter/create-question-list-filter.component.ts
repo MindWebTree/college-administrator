@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { QbankType, Subjects } from '../question-managemnet.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionManagementService } from '../question-management.service';
 @Component({
   selector: 'app-create-question-list-filter',
@@ -18,12 +18,17 @@ export class CreateQuestionListFilterComponent implements OnInit {
   qbanktype: Array<QbankType> = [];
   subjects: Array<Subjects> = [];
   QuestionListingFilter: FormGroup;
+  showSection: boolean = false;
   constructor(
     private _questionManagementService: QuestionManagementService,
     private activatedRoute: ActivatedRoute,
+    private _router: Router,
     private _formBuilder: FormBuilder,
 
   ) {
+    if(this._router.url == '/qbank/question-list'){
+      this.showSection = true
+    }
     this.QuestionListingFilter = _formBuilder.group({
       QbankType: [''],
       Subject: [''],
@@ -33,18 +38,17 @@ export class CreateQuestionListFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._questionManagementService.getQbankTypes('Owned').subscribe(res => {
+    this._questionManagementService.getQbankTypesLecturer('Owned').subscribe(res => {
       this.qbanktype = res;
     })
   }
   getQbanksubject(QbankTypeID: number) {
-    this._questionManagementService.getSubjectsbyQbanktypeId(QbankTypeID, 'Owned').subscribe((response: any) => {
+    this._questionManagementService.getSubjectsbyQbanktypeIdLecturer(QbankTypeID, 'Owned').subscribe((response: any) => {
       this.subjects = response;
     })
   }
-  sendQuestionFilterValues(): void {
+  sendQuestionFilterValues(): void {   
     const filterValues = this.QuestionListingFilter.value;
-    console.log(filterValues)
     this._questionManagementService.setQbanksfilterValues(filterValues);
   }
   clearall() {

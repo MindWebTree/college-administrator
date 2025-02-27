@@ -44,6 +44,7 @@ export class GameViewComponent implements OnInit {
   currentPopup: string | null = null;
   time: number = 1000;
   timerInterval: any;
+  durationtimerInterval: any;
   timerRunning: boolean = false;
   selectedChoiseId: any;
   durations: any;
@@ -67,6 +68,7 @@ export class GameViewComponent implements OnInit {
   isQuestionTimeExist:boolean=false;
   noOfAnswerd:number=0;
   noOfnotAnswerd:number=0;
+  timeTaken : number = 0;
 
 
   openSnackBar(message: string, action: string) {
@@ -147,6 +149,8 @@ export class GameViewComponent implements OnInit {
       self.QuestionActivaty = res.activity;
       self.questionDetails = res.questions;
       self.examDetails = res.examDetails;
+      this.timeTaken = this.QuestionActivaty.duration
+      this.startTime();
       // self.examType = res.examDetails.examMode;
       if(self.examDetails.duration > 0){
         // self.examDetails.questionDuration=30;
@@ -456,7 +460,7 @@ export class GameViewComponent implements OnInit {
         questionId: self.FilterQuestionData[0]?.questionDetailID,
         courseId: self.examDetails?.courses[0],
         choices: self.choicesId,
-        duration: self.durations
+        duration: self.timeTaken
       };
 
       if (!ischoiesIchekd || !isapiHit) {
@@ -511,6 +515,7 @@ export class GameViewComponent implements OnInit {
     let request = {
       examId: this.ExamId,
       courseId: this.examDetails?.courses[0],
+      duration: this.timeTaken,
       examStatus: examStatus
     }
     self._qbankservice.finishExam(request).then(response => {
@@ -600,7 +605,7 @@ export class GameViewComponent implements OnInit {
       this.finsishExam(2, false);
     }
     this.stopTimer();
-  
+    this.stopTime();
   }
   reportQuestion() {
   
@@ -709,6 +714,16 @@ export class GameViewComponent implements OnInit {
       this.timerRunning = true;
     }
 
+  }
+  startTime() {
+    this.durationtimerInterval = setInterval(() => {
+      this.timeTaken++;
+    }, 1000);
+  }
+  stopTime() {
+    if (this.durationtimerInterval) {
+      clearInterval(this.durationtimerInterval);
+    }
   }
   
   displayTime() {

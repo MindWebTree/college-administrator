@@ -1,4 +1,4 @@
-<form [formGroup]="QuestionListingFilter">
+<form *ngIf="showSection" [formGroup]="QuestionListingFilter">
   <div class="created-questions pb-2">
     <mat-form-field appearance="fill" class="w-60 pl-6">
       <mat-select matInput matNativeControl placeholder="Select QBankType" formControlName="QbankType">
