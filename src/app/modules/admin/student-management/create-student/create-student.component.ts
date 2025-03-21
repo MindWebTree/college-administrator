@@ -30,6 +30,7 @@ export class CreateStudentComponent  {
   Student: studentModel;
   cousreDetails: any = [];
   courses: any = [];
+  batches: any = [];
   courseList: any = [];
   studentImage: any
   isEditing: boolean = true;
@@ -47,7 +48,9 @@ export class CreateStudentComponent  {
     @Inject(MAT_DIALOG_DATA) private _data: any,) {
 
     this.action = _data.action;
-
+    this._studentService.getBatches().subscribe((res: any) => {
+      this.batches = res;
+    });
     if (this.action === 'edit') {
       this.dialogTitle = 'Edit  Profile';
       this.isEditing = false;
@@ -63,7 +66,10 @@ export class CreateStudentComponent  {
       StudentImage: ['',],
       FirstName: ['', Validators.required],
       LastName: ['', Validators.required],
-      CourseYear: ['', Validators.required],
+      Batch: ['', Validators.required],
+      BatchYear: ['', Validators.required],
+      ParentPhoneNumber: ['', Validators.required],
+      ParentEmail: ['', Validators.required],
       RollNumber: ['', Validators.required],
       IsActive: [false],
       PhoneNumber: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
@@ -76,30 +82,38 @@ export class CreateStudentComponent  {
 
     });
 
-    this._studentService.getCourseYaerByCousreGuid().then((responce: any) => {
-      this.courses = responce;
-    });
+    
     // Patch the form if action is edit
     if (this.action === 'edit' && this._data.students) {
 
       this.studentForm.get("Password").clearValidators();
       this.studentForm.get("Password").updateValueAndValidity();
+      console.log(this._data,"_data")
+      this._studentService.getBatches().subscribe((batchRes: any) => {
+        this.batches = batchRes;
+        if (batchRes) {
+          const batchGuid = this.batches.find(b => b.id == this._data.students?.batch?.batchId)?.guid
+          this.SelectBatch(batchGuid);
+          const course = this._data.students.course?.[0]; // Get the first course object from the array
+          this.studentForm.patchValue({
 
-      const course = this._data.students.course?.[0]; // Get the first course object from the array
-      this.studentForm.patchValue({
-
-        StudentImage: this._data.students.imageUrl,
-        FirstName: this._data.students.firstName,
-        LastName: this._data.students.lastName,
-
-        CourseYear: course?.courseYearId, // Bind courseYearId
-        RollNumber: this._data.students.rollNo,
-        PhoneNumber: this._data.students.phoneNumber,
-        IsActive: this._data.students.isActive,
-        Email: this._data.students.email,
-        // Password: this._data.student.password
+            StudentImage: this._data.students.imageUrl,
+            FirstName: this._data.students.firstName,
+            LastName: this._data.students.lastName,
+            Batch: this._data.students?.batch?.batchId,
+            BatchYear: this._data.students?.batch?.batchYearId,
+            ParentPhoneNumber: this._data.students.parentPhoneNumber,
+            ParentEmail: this._data.students?.parentEmail,
+            RollNumber: this._data.students.rollNo,
+            PhoneNumber: this._data.students.phoneNumber,
+            IsActive: this._data.students.isActive,
+            Email: this._data.students.email,
+            // Password: this._data.student.password
+          });
+          this.studentImage = this._data.students.imageUrl; // Update the local variable as well
+        }
       });
-      this.studentImage = this._data.students.imageUrl; // Update the local variable as well
+      
     }
   }
 
@@ -116,7 +130,11 @@ export class CreateStudentComponent  {
   // }
 
 
-
+  SelectBatch(batchGuid){
+    this._studentService.getBatchYearbyBatchGuid(batchGuid).subscribe((responce: any) => {
+      this.courses = responce;
+    });
+  }
   onselectFile(e: any) {
     const file = e.target.files[0];
 
@@ -200,7 +218,7 @@ export class CreateStudentComponent  {
         lastName: this.studentForm.get('LastName').value,
         email: this.studentForm.get('Email').value,
         phoneNumber: this.studentForm.get('PhoneNumber').value,
-        courseYearId: this.studentForm.get('CourseYear').value,
+        courseYearId: this.studentForm.get('BatchYear').value,
         imageUrl: this.studentForm.get('StudentImage').value,
         rollNo: String(this.studentForm.get('RollNumber').value),
         countryId: 0,
@@ -215,7 +233,11 @@ export class CreateStudentComponent  {
         courseType: '',
         phoneCountryCode: '+91',
         year: 0,
-        medicalCourseYear: ''
+        medicalCourseYear: '',
+        batchId: this.studentForm.get('Batch').value,
+        batchYearId: this.studentForm.get('BatchYear').value,
+        parentEmail: this.studentForm.get('ParentEmail').value,
+        parentPhoneNumber: this.studentForm.get('ParentPhoneNumber').value
       }
       if (this.action === 'edit') {
         // Call update API

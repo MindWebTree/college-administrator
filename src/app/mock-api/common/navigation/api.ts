@@ -111,6 +111,8 @@ export class NavigationMockApi {
                 return await this._CommanService.getstudentNavigationList().toPromise();
             case 'Lecturers':
                 return await this._CommanService.getlecturerNavigationList().toPromise();
+            case 'Batch':
+                return await this._CommanService.getBatchList().toPromise();
             default:
                 return [];
         }
@@ -128,6 +130,8 @@ export class NavigationMockApi {
                 return `/student/list/${category.guid}`;
             case 'Lecturers':
                 return `/lecturer/list/${category.guid}`;
+            case 'Batch':
+                return `/batch/${category.guid}`;
             default:
                 return '';
         }
@@ -144,7 +148,7 @@ export class NavigationMockApi {
                 const processedNavs = new Set();
 
                 for (const nav of navigation) {
-                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers') &&
+                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers' || nav.title === 'Batch') &&
                         !processedNavs.has(nav.title)) {
 
                         processedNavs.add(nav.title);
@@ -158,13 +162,22 @@ export class NavigationMockApi {
                                     child.title === category.name);
 
                                 if (!existingNavItem) {
+                                    if (nav.title === 'Batch') {
+                                        nav.children.push({
+                                            id: category.name,
+                                            title: category.name,
+                                            type: 'basic',
+                                            link: this.getNavigationLink(nav.title, category),
+                                        });
+                                    } else {
+                                        nav.children.push({
+                                            id: category.name,
+                                            title: category.name + ' ' + `(${category.count})`,
+                                            type: 'basic',
+                                            link: this.getNavigationLink(nav.title, category),
+                                        });
+                                    }
 
-                                    nav.children.push({
-                                        id: category.name,
-                                        title: category.name + ' ' + `(${category.count})`,
-                                        type: 'basic',
-                                        link: this.getNavigationLink(nav.title, category),
-                                    });
                                 }
                             });
                         } catch (error) {

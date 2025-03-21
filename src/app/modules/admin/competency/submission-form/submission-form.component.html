@@ -1,0 +1,55 @@
+<div class="flex items-center justify-center mt-30" *ngIf="!dataLoaded">
+  <img src="my-images/imgLoder.gif" class="w-15">
+</div>
+<div class="assignment-container" *ngIf="dataLoaded">
+  <div class="flex justify-between">
+    <h2 class="text-xl pb-3">Assignment Submission</h2>
+    <button (click)="CloseMatdilog()" class="float-right"><mat-icon>close</mat-icon></button>
+  </div>
+  
+  <div >
+
+    <div *ngFor="let step of steps">
+      <!-- Step Name as Heading -->
+      <h3 class="step-heading text-lg py-2 text-primary">{{ step.name }}</h3>
+
+      <!-- Criteria Table -->
+      <table class="criteria-table">
+        <thead>
+          <tr>
+            <th>Criteria Name</th>
+            <th>Marks</th>
+            <th>Is Critical</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let criteria of step.criteria">
+            <td class="citeria-name">{{ criteria.description }}</td>
+            <td>{{ criteria.marks }}</td>
+            <td>{{ criteria.isCritical ? 'Yes' : 'No' }}</td>
+            <td>
+              <mat-checkbox *ngIf="actionType == 'submit'" [(ngModel)]="criteria.selected">
+              </mat-checkbox>
+              <mat-checkbox *ngIf="actionType == 'history'" disabled [checked]="criteria.isMarked">
+              </mat-checkbox>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <div *ngIf="actionType == 'submit'" class="total-marks">
+      <strong >Total Marks: </strong> {{ getTotalMarks() }}
+    </div>
+    <div *ngIf="actionType == 'history'"  class="total-marks">
+      <strong>Total Marks: </strong> {{ _data.marks }}
+    </div>
+
+  </div>
+  <!-- Submit Button -->
+  <button *ngIf="actionType == 'submit'" class="submit-assignment-btn" mat-raised-button color="primary" (click)="submitAssignment()">
+    <mat-icon>send</mat-icon> Submit Assessment
+  </button>
+</div>

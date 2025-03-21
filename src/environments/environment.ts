@@ -8,10 +8,10 @@ export const environment = {
     liveQuizNegativeMark: .25,
     tenantname:'careNext',
     questionMarks: 4,
-    // apiURL: "http://192.168.1.2/api/v1",  
+    // apiURL: "http://192.168.1.7/api/v1",  
     apiURL: "https://api.adrplexus.com/college-admin/api/v1",  
     // dynmoDB:"https://z0p411vwsa.execute-api.ap-south-1.amazonaws.com/dev",
-    // externalApiURL: "http://192.168.1.2",
+    // externalApiURL: "http://192.168.1.7",
     externalApiURL: "https://api.adrplexus.com/college-admin",
     tenantvalidateURl: "https://api.adrplexus.com/dev",
     OAuthConfiguration: {

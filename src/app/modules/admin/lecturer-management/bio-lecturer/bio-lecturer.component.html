@@ -11,7 +11,23 @@
                     <div class="grid lg:grid-cols-6 students_details">
                         <div class="col-span-5">
                             <h2 class="text-lg text-[#3C3C3C]">{{lecturer?.firstName}} {{lecturer?.lastName}}</h2>
-                            <h3 class="font-normal text-[#505050] text-[14px] py-2"  *ngFor="let course of lecturer?.courses">{{course.courseYear}}</h3>
+                            <div *ngIf="lecturer?.designation" class="flex gap-2 pt-2">
+                                <mat-icon>work</mat-icon>
+                                <p class="font-normal flex text-[#505050] pt-1">{{lecturer.designation}}</p>
+                            </div>
+                            <div class="flex gap-2 pt-2">
+                                <mat-icon>auto_stories</mat-icon>
+                                <h3 class="font-normal text-[#505050] text-[14px] py-0"  *ngFor="let course of lecturer?.courses">{{course.courseYear}}</h3>
+                            </div>
+                            
+                            <div *ngIf="lecturer?.subjects[0]" class="flex gap-2 pt-2">
+                                <mat-icon>menu_book</mat-icon>
+                                <h3 class="font-normal text-[#505050] text-[14px] py-0">{{lecturer?.subjects[0]?.name}}</h3>
+                            </div>
+                            <div *ngIf="lecturer?.qualification" class="flex gap-2 pt-2">
+                                <mat-icon>school</mat-icon>
+                                <h3 class="font-normal text-[#505050] text-[14px] py-0">{{lecturer?.qualification}}</h3>
+                            </div>
                             <h4 class="font-normal  text-[#505050]  text-[14px]" *ngFor="let qbank of lecturer?.qBankTypes">{{qbank.title}}</h4>
 
                             <p class="py-3 font-normal text-[#505050]  text-[12px]">{{lecturer?.description}}</p>

@@ -41,6 +41,8 @@ export class CreateLecturerComponent {
   subjectDetails: any = [];
   employeeNum: any;
   coursesLoaded: boolean = false;
+  designationList:any;
+  subjects:any;
   openSnackBar(message: string, action: string) {
     this._matSnockbar.open(message, action, {
       duration: 2000,
@@ -75,14 +77,26 @@ export class CreateLecturerComponent {
       FirstName: ['', Validators.required],
       LastName: ['', Validators.required],
       CourseYear: ['', Validators.required],
-      Subjects: ['', Validators.required],
+      Designation: ['', Validators.required],
+      Subject: ['', Validators.required],
+      Subjects: [''],
       EmployeeNo: ['', Validators.required],
+      Qualification: ['', Validators.required],
       IsActive: [false],
       Description: ['', Validators.required],
       PhoneNumber: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
       Email: ['', [Validators.required, Validators.email]],
       Password: ['', this.action === 'edit' ? [] : [Validators.required, Validators.minLength(6)]]
     });
+    this._lecturerService.getDesignation().subscribe(res=>{
+      this.designationList =res;
+    })
+    this.lecturerForm.get('CourseYear').valueChanges.subscribe(res=>{
+      this._lecturerService.getSubjectbyAcademicYear(res.guid).subscribe(res=>{
+        this.subjects = res;
+      })
+    })
+    
 
     // Load course list
     this._lecturerService.cousreList().subscribe((response: any) => {
@@ -106,6 +120,7 @@ export class CreateLecturerComponent {
     ).subscribe();
 
     if (this.action === 'edit' && this._data.lecturer) {
+      console.log(this._data)
       // Wait for both courses and subjects to load
       combineLatest([coursesLoaded$, subjectsLoaded$]).pipe(
         filter(([coursesLoaded, subjectsLoaded]) => coursesLoaded && subjectsLoaded),
@@ -117,29 +132,32 @@ export class CreateLecturerComponent {
         this.employeeNum = this._data.lecturer.rollNo;
         const course:any = this._data.lecturer.courses;
 
-        // const selectedCourse = this.courses.find(c => c.id === course?.courseYearId) || null;
-        const selectedCourse = this._data.lecturer.courses.map(q => q.courseYearId);
-        console.log(this._data.lecturer.courses)
-        this.courseList = this._data.lecturer.courses.map(q => ({
-          ID: q.courseYearId,
-          courseTitle: q.courseYear
-        }));
+        const selectedCourse = this.courses.find(c => c.id === course[0]?.courseYearId) || null;
+        // const selectedCourse = this._data.lecturer.courses.map(q => q.courseYearId);
+        // console.log(this._data.lecturer.courses)
+        // this.courseList = this._data.lecturer.courses.map(q => ({
+        //   ID: q.courseYearId,
+        //   courseTitle: q.courseYear
+        // }));
         // Set the image URL separately
         this.lecturerImage = this._data.lecturer.imageUrl;
 
         // Set subjects
-        const subjectIds = this._data.lecturer.qBankTypes.map(q => q.id);
+        // const subjectIds = this._data.lecturer.qBankTypes.map(q => q.id);
+        const subjectIds = this._data.lecturer?.subjects[0]?.id;
 
         this.lecturerForm.patchValue({
           FirstName: this._data.lecturer.firstName,
           LastName: this._data.lecturer.lastName,
           CourseYear: selectedCourse,
-          Subjects: subjectIds,
+          Subject: subjectIds,
           EmployeeNo: this.employeeNum,
           PhoneNumber: this._data.lecturer.phoneNumber,
           IsActive: this._data.lecturer.isActive,
           Email: this._data.lecturer.email,
-          Description: this._data.lecturer.description
+          Description: this._data.lecturer.description,
+          Qualification: this._data.lecturer.qualification,
+          Designation: this._data.lecturer.designationId
         });
 
         // Set the chips list
@@ -366,21 +384,24 @@ export class CreateLecturerComponent {
         description: this.lecturerForm.get('Description').value,
         // dateOfBirth: '',
         employeeNo: this.lecturerForm.get('EmployeeNo').value,
-        courses: this.courseList.map(course => ({
-          courseId: this.cousreDetails[0].id,
-          courseYearId: course.ID || null,
-          courseYear: course.courseTitle || '',
-          courseName: course.name || ''
-        })),
-        
-        // [{
+        designationId: this.lecturerForm.get('Designation').value,
+        qualification: this.lecturerForm.get('Qualification').value,
+        // courses: this.courseList.map(course => ({
         //   courseId: this.cousreDetails[0].id,
-        //   courseYearId: this.lecturerForm.get('CourseYear').value?.id || null,
-        //   courseYear: this.lecturerForm.get('CourseYear').value?.name || '',
-        //   courseName: this.lecturerForm.get('CourseYear').value?.name || ''
-        // }],
+        //   courseYearId: course.ID || null,
+        //   courseYear: course.courseTitle || '',
+        //   courseName: course.name || ''
+        // })),
+        
+        courses:[{
+          courseId: this.cousreDetails[0].id,
+          courseYearId: this.lecturerForm.get('CourseYear').value?.id || null,
+          courseYear: this.lecturerForm.get('CourseYear').value?.name || '',
+          courseName: this.lecturerForm.get('CourseYear').value?.name || ''
+        }],
         qBankTypeIds: this.subjectList.map(subject => subject.ID),
         qBankTypes: [],
+        subjectIds: [this.lecturerForm.get('Subject').value],
         rollNo: ''
       }
       if (this.action === 'edit') {

@@ -25,6 +25,10 @@ export class studentModel {
     phoneCountryCode: string;
     year: number;
     medicalCourseYear: string;
+    batchId:number;
+    batchYearId:number;
+    parentEmail:string;
+    parentPhoneNumber:string;
     constructor(student) {
         this.id = student.id;
         // this.guid = student.guid;
@@ -50,7 +54,10 @@ export class studentModel {
         this.phoneCountryCode = student.phoneCountryCode;
         this.year = student.year;
         this.medicalCourseYear = student.medicalCourseYear;
-
+        this.batchId = student.batchId;
+        this.batchYearId = student.batchYearId;
+        this.parentEmail = student.parentEmail;
+        this.parentPhoneNumber = student.parentPhoneNumber;
 
     }
 

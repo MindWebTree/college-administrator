@@ -174,6 +174,30 @@ export const appRoutes: Route[] = [
         children: [
             {path: 'upload', loadChildren: () => import('app/modules/admin/uploadto-s3/upload.routes')},
         ]
-    }
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'competency', loadChildren: () => import('app/modules/admin/competency/competency.routes')},
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'batch', loadChildren: () => import('app/modules/admin/Batch/batch.routes')},
+        ]
+    },
     //dashboard End
 ];

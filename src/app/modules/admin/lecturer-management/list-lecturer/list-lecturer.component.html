@@ -8,7 +8,17 @@
             
           
                 <div class="flex flex-wrap sm:flex-nowrap gap-2 items-center">
-              
+                    <div class="mt-2 md:mt-0 flex gap-2 items-center">
+                        <h2>Subject :</h2>
+                        <form>
+                        <mat-form-field>
+                            <mat-select [formControl]="Subject">
+                                <mat-option value="0" (click)="Search()">All</mat-option>
+                                <mat-option [value]="subject.id" *ngFor="let subject of subjects" (click)="Search()">{{subject.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                    </div>
                 <!-- search -->
                  <div class="filter_heading">
                         Search :
@@ -34,7 +44,23 @@
                 <img class="w-min rounded-full min-h-[70px] min-w-[70px] max-w-[70px]  max-h-[70px] object-cover" [src]="user.imageUrl || 'my-images/default-img.png'">
                 <div class="lecture_details col-span-4 content-center">
                     <h2 class="text-lg text-[#3C3C3C]">{{user.firstName}} {{user.lastName}}</h2>
-                    <h3 class="font-normal flex text-[#505050] pt-1" *ngFor="let course of user.courses">{{course.courseYear}}</h3>
+                    <div *ngIf="user.designation" class="flex gap-2 pt-1">
+                        <mat-icon>work</mat-icon>
+                        <p class="font-normal flex text-[#505050] pt-1">{{user.designation}}</p>
+                    </div>
+                    <!-- <div class="flex gap-2 pt-1">
+                        <mat-icon>auto_stories</mat-icon>
+                        <h3 class="font-normal flex text-[#505050] pt-1" *ngFor="let course of user.courses">{{course.courseYear}}</h3>
+                    </div> -->
+                    
+                    <div *ngIf="user?.subjects[0]" class="flex gap-2 pt-1">
+                        <mat-icon>menu_book</mat-icon>
+                        <h3 class="font-normal flex text-[#505050] pt-1">{{user.subjects[0]?.name}}</h3>
+                    </div>
+                    <div *ngIf="user.qualification" class="flex gap-2 pt-1">
+                        <mat-icon>school</mat-icon>
+                        <h3 class="font-normal flex text-[#505050] pt-1">{{user.qualification}}</h3>
+                    </div>
                     <p class="pt-3 text-[#505050] text-[12px] font-normal">{{user.description}}</p>
                     <div class="flex items-center gap-3 pt-4">
                         <h4 class="float-left flex font-normal">Employee No.{{user.rollNo}}</h4>
@@ -66,5 +92,5 @@
     </div>
     <p *ngIf="dataSource.data?.length<=0">No records found</p>
 
-    <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="5" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+    <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="paginator.pageSize" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
 </div>

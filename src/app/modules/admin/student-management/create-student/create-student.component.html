@@ -52,12 +52,19 @@
                  <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('Course').invalid &&  studentForm.get('Course').touched ">Please Type Course</mat-error>
             </mat-form-field>
         </div> -->
-     
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Batch</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select matNativeControl  required formControlName="Batch" placeholder="Year">
+                    <mat-option [value]="batch.id" (click)="SelectBatch(batch.guid)" *ngFor="let batch of batches;let i=index">{{batch.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
         <div class="sm:flex items-baseline edit_profile w-full gap-4">
             <label class="">Year</label><span>:</span>
             <mat-form-field appearance="fill" class="w-full">
-                <mat-select matNativeControl  required formControlName="CourseYear" placeholder="Year">
-                    <mat-option [value]="Course.id" *ngFor="let Course of courses;let i=index">{{Course.name}}</mat-option>
+                <mat-select matNativeControl  required formControlName="BatchYear" placeholder="Year">
+                    <mat-option [value]="Course.id" *ngFor="let Course of courses;let i=index">{{Course.yearName}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -80,6 +87,22 @@
             <mat-form-field class="w-full">
                 <input type="email" matInput class="border" formControlName="Email" placeholder="Email"  required>
          <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('Email').invalid &&  studentForm.get('Email').touched ">Please Type Email</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Parent Mobile No.</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input matInput class="border" formControlName="ParentPhoneNumber" placeholder="Phone Number"  required>
+                 <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('ParentPhoneNumber').invalid &&  studentForm.get('ParentPhoneNumber').touched ">Please Type Parent PhoneNumber</mat-error>
+            </mat-form-field>
+        </div>
+      
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Parent Email</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input type="email" matInput class="border" formControlName="ParentEmail" placeholder="Email"  required>
+         <mat-error class="error-message  ml-1" *ngIf="addStudentError && studentForm.get('ParentEmail').invalid &&  studentForm.get('ParentEmail').touched ">Please Type Parent Email</mat-error>
             </mat-form-field>
         </div>
 

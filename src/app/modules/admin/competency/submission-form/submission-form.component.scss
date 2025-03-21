@@ -1,0 +1,48 @@
+::ng-deep .submit-assignment mat-dialog-container {
+    min-width: 1000px;    
+    max-height: 80vh;
+}
+::ng-deep .submit-assignment tr {
+    text-align: center;
+}
+::ng-deep .criteria-name{
+    max-width: 170px;
+}
+::ng-deep table{
+    width: 100%;
+}
+button.submit-assignment-btn {
+    width: 180px;
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    border-radius: 4px;    
+    margin-top: 10px;
+}
+.submit-assignment-btn mat-icon.mat-icon {
+    color: white;
+    margin-left: 12px;
+}
+::ng-deep td.citeria-name {
+    min-width: 340px;
+    max-width: 340px;
+}
+::ng-deep .assignment-container td {
+    border: 1px solid;
+}
+::ng-deep .assignment-container  th {
+    border: 1px solid;
+    padding: 10px;
+}
+.total-marks {
+    text-align: end;
+    padding: 10px 3px;
+}
+@media only screen and (max-width: 1199px) {
+    ::ng-deep .submit-assignment mat-dialog-container {
+        min-width: auto !important;   
+    }
+}

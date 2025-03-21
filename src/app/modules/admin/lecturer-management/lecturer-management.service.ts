@@ -32,11 +32,7 @@ export class LectureService {
    * @returns {Observable<any>}
    */
   getlectureForGrid(_gridFilter: GridFilter): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.post(`${environment.apiURL}/lecturer/grid`, { ..._gridFilter }, { headers });
+    return this._httpClient.post(`${environment.apiURL}/lecturer/grid`, { ..._gridFilter }, {  });
 
   }
   /**
@@ -48,11 +44,7 @@ export class LectureService {
   getLectureDetailsById(id): Promise<lectureModel> {
     return new Promise((resolve, reject) => {
       const params = new HttpParams().set('userId', id);
-      const headers = new HttpHeaders({
-        'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-      });
-      this._httpClient.get(`${environment.apiURL}/lecturer/get-by-id`, { params, headers })
+      this._httpClient.get(`${environment.apiURL}/lecturer/get-by-id`, { params })
         .subscribe((response: any) => {
           this.lecture = response;
           resolve(this.lecture);
@@ -152,11 +144,7 @@ export class LectureService {
   }
 
   qbankTypeList(qbankCategory: QBankCategory): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, { headers });
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, {  });
 
   }
   // getCourseYaerByCousreGuid(): Promise<any> {
@@ -180,6 +168,15 @@ export class LectureService {
     return this._httpClient.get<any>(`${environment.apiURL}/course/list`);
 
   }
+  getDesignation(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/designations`);
+  }
+  getSubjectbyAcademicYear(guid): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`);
+  }
+  getSubjects(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`);
+  }
   /**
     * Delete Student
     *
@@ -189,12 +186,8 @@ export class LectureService {
 
     return new Promise(() => {
       const params = new HttpParams().set('userId', userId);
-      const headers = new HttpHeaders({
-        'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
 
-      });
-
-      this._httpClient.post(`${environment.apiURL}/lecturer/delete`, {}, { params, headers })
+      this._httpClient.post(`${environment.apiURL}/lecturer/delete`, {}, { params,  })
         .subscribe(response => {
           if (response) {
             this.onlectureManagementChanged.next(this.lecture);
@@ -214,18 +207,10 @@ export class LectureService {
     });
   }
   lecturerAnalyticsListing(_gridFilter: lecturerAnalyticGrid): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.post<any>(`${environment.apiURL}/lecturer/exam-summary-grid`, { ..._gridFilter }, { headers });
+    return this._httpClient.post<any>(`${environment.apiURL}/lecturer/exam-summary-grid`, { ..._gridFilter }, {  });
 
   }
   lecturereQbankSummary(userId): Observable<any> {
-    const headers = new HttpHeaders({
-      'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
-
-    });
-    return this._httpClient.get<any>(`${environment.apiURL}/lecturer/qbank-summary/${userId}`, { headers });
+    return this._httpClient.get<any>(`${environment.apiURL}/lecturer/qbank-summary/${userId}`, {  });
   }
 }

@@ -1,0 +1,59 @@
+<div class="dialog-content-wrapper min-w-[500px] add-integration">
+    <mat-toolbar matDialogTitle class="bg-primary m-0 p-0 flex-row">
+        <mat-toolbar-row class="flex justify-between">
+            <span class="text-[20px] font-semibold text-white">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon class="text-white">close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-4 m-0">
+
+        <form class="event-form w-100-p" [formGroup]="rubricForm" fxLayout="column" fxFlex>
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <mat-label>Name</mat-label>
+                <mat-form-field class="mb-0 block" fxFlex>
+                    <input matInput name="Name" required formControlName="Name"  placeholder="Title">
+                </mat-form-field>
+
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="column" fxLayout.gt-xs="row">
+
+                <!-- <mat-form-field class="mb-0 block" fxFlex>
+                    <input type="number" matInput name="Subject" required formControlName="Subject"  placeholder="Subject">
+                </mat-form-field> -->
+                <mat-label>Subject</mat-label>
+                <mat-select matInput matNativeControl class="subjects" formControlName="Subject" required>
+                    <mat-option disabled value="">Select any</mat-option>
+                    <mat-option *ngFor="let c of subjects" [value]="c.id">{{c.name}}</mat-option>
+                </mat-select>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-6 justify-between" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <button *ngIf="action !=='edit'" mat-raised-button (click)="addRubric()" class="w-16 py-3 rounded-lg bg-primary text-white mat-accent-bg" [disabled]="rubricForm.invalid"
+            aria-label="SAVE">
+            SAVE
+        </button>
+
+        <button *ngIf="action ==='edit'" mat-raised-button (click)="updateRubric()" class="w-16 py-3 rounded-lg bg-primary text-white mat-accent-bg" [disabled]="rubricForm.invalid"
+            aria-label="SAVE">
+            SAVE
+        </button>
+
+        <!-- <button *ngIf="action ==='edit'" mat-icon-button (click)="deleteRubric()" aria-label="Delete" matTooltip="Delete">
+            <mat-icon class="text-black">delete</mat-icon>
+        </button> -->
+
+    </div>
+</div>

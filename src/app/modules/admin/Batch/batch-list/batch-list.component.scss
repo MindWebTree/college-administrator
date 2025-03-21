@@ -1,0 +1,21 @@
+:host{
+    display: block;
+}
+::ng-deep .year-list .mdc-tab.mat-mdc-tab.mat-mdc-focus-indicator {
+    max-width: 110px;
+    padding: 0 !important;
+}
+::ng-deep .year-list.mat-mdc-tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container{
+    margin: 0 !important;
+}
+::ng-deep .year-list.mat-mdc-tab-group .mat-mdc-tab-body-content{
+    padding: 24px 0 !important;
+}
+button#add-student-button {
+    display: flex;
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    padding: 7px 10px;
+    color: white;
+    gap: 5px;
+    align-items: center;
+}

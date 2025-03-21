@@ -13,6 +13,7 @@ export class studentGrid extends GridFilter {
 }
 export class lecturerGrid extends GridFilter {
     courseYearId: string;
+    subjectId: number
 }
 export class studentAnalyticGrid extends GridFilter {
 

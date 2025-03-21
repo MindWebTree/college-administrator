@@ -1,0 +1,79 @@
+:host {
+    display: block;
+}
+
+button.add-data {
+    background: #28C397 !important;
+    // border-radius: 50px !important;
+    box-shadow: none !important;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    gap: 5px;
+    padding: 0px 10px;
+}
+
+::ng-deep .search-input {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 0 10px 0 10px;
+    height: 42px;
+}
+
+::ng-deep .search-input .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+    display: none;
+}
+
+::ng-deep .search-input .mat-mdc-form-field-infix {
+    min-height: 40px !important;
+}
+
+::ng-deep .search-input .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled.mdc-text-field--no-label {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+::ng-deep .search-input .mat-mdc-form-field.mat-form-field-appearance-fill {
+    width: 224px;
+}
+
+::ng-deep .search-input .mat-form-field.mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-input-element {
+    padding: 11px 0 !important;
+}
+
+::ng-deep .mat-form-field.mat-form-field-appearance-fill.mat-focused:not(.mat-form-field-invalid) .mat-form-field-wrapper .mat-form-field-flex {
+    --tw-border-opacity: 1 !important;
+    border-color: black !important;
+}
+
+::ng-deep mat-header-row.mat-header-row {
+    background: #f6f9fb !important;
+}
+
+::ng-deep body.light .mat-input-element,
+body .light .mat-input-element {
+    caret-color: black;
+}
+
+::ng-deep .question-list mat-header-cell.mat-mdc-header-cell {
+    background: #f1f5f9 !important;
+    color: #505050 !important;
+    font-size: 14px;
+    font-weight: 800;
+    border-bottom: 3px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+}
+
+::ng-deep .question-list mat-cell.mat-mdc-cell p {
+    color: #3C3C3C !important;
+    font-size: 14px !important;
+    font-weight: 600;
+}
+
+//to color if checkbox is disable
+::ng-deep .mdc-checkbox .mdc-checkbox__native-control[disabled]:checked~.mdc-checkbox__background {
+    background-color: #9333ea !important;
+}

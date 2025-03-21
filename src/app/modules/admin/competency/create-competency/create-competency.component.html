@@ -1,0 +1,307 @@
+<div class="p-8 create_competency">
+    <h2 class="text-xl text-[#505050]">Create Competency</h2>
+    <form [formGroup]="CreateCompetency" class="flex flex-col pt-4 create_competency_form">
+
+        <div class="flex gap-2">
+            <h4 class="label">Batch *</h4>
+            <mat-form-field>
+                <mat-select formControlName="Batch">
+                    <mat-option value="batch.id" (click)="getBatchYear(batch.guid)" *ngFor="let batch of batches">{{batch.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="flex gap-2">
+            <h4 class="label">Academic Year *</h4>
+            <mat-form-field>
+                <mat-select formControlName="Year">
+                    <mat-option [value]="year.id" (click)="getSubject(year.guid)" *ngFor="let year of academicYears">{{year.yearName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="flex gap-2">
+            <h4 class="label">Practical Team *</h4>
+            <mat-form-field>
+                <mat-select formControlName="Team">
+                    <mat-option value="1">A1-M1</mat-option>
+                    <mat-option value="2">A1-M2</mat-option>
+                    <mat-option value="3">A1-M3</mat-option>
+
+                    <mat-option value="4">A2-M4</mat-option>
+                    <mat-option value="5">A2-M5</mat-option>
+                    <mat-option value="6">A3-M6</mat-option>
+
+                    <mat-option value="7">B1-M7</mat-option>
+                    <mat-option value="8">B1-M8</mat-option>
+                    <mat-option value="9">B1-M9</mat-option>
+
+                    <mat-option value="10">B2-M10</mat-option>
+                    <mat-option value="11">B2-M11</mat-option>
+                    <mat-option value="12">B3-M12</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- <div class="flex gap-2">
+            <h4 class="label">Practical Name *</h4>
+            <mat-form-field>
+                <input matInput formControlName="PracticalName">
+            </mat-form-field>
+        </div> -->
+
+        <div class="flex gap-2">
+            <h4 class="label">Assignment Date *</h4>
+            <mat-form-field class="assignment-date">
+                <input matInput required [matDatepicker]="picker" formControlName="AssignmentDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="CreateCompetency.get('AssignmentDate').touched && CreateCompetency.get('AssignmentDate').invalid">
+                    <span *ngIf="CreateCompetency.get('AssignmentDate').errors?.dateBeforeToday">Assignment date cannot be before today</span>
+                </mat-error>
+              </mat-form-field>
+        </div> 
+        
+        <!-- <div class="flex gap-2">
+            <h4 class="label">Submission Date *</h4>
+            <mat-form-field class="submittion-date">
+                <input matInput required [matDatepicker]="picker1" formControlName="SubmissionDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error *ngIf="CreateCompetency.get('SubmissionDate').touched && CreateCompetency.get('SubmissionDate').invalid">
+                    <span *ngIf="CreateCompetency.get('SubmissionDate').errors?.dateBeforeToday">Submission date cannot be before today</span>
+                    <span *ngIf="CreateCompetency.get('SubmissionDate').errors?.submissionBeforeAssignment">Submission date must be after assignment date</span>
+                </mat-error>
+              </mat-form-field>
+        </div>   -->
+
+        <div class="flex gap-2">
+            <h4 class="label">Subject *</h4>
+            <mat-form-field>
+                <mat-select formControlName="Subject">
+                    <mat-option [value]="subject.id" (click)="getRubric(subject.id)" *ngFor="let subject of subjects">{{subject.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <div class="flex gap-2">
+            <h4 class="label pt-0">Certifiable Competency skills *</h4>
+            <mat-form-field>
+                <mat-select formControlName="Rubric">
+                    <mat-option [value]="rubric.guid" *ngFor="let rubric of rubricConstructions">{{rubric.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+        <div class="flex gap-2">
+            <h4 class="label">Faculty *</h4>
+            <mat-form-field>
+                <mat-select formControlName="Faculty">
+                    <mat-option [value]="lecturer.id" *ngFor="let lecturer of lecturers">{{lecturer.firstName + lecturer.lastName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+
+
+        <div class="flex gap-2">
+            <h4 class="label">Note *</h4>
+            <mat-form-field>
+                <textarea formControlName="Note" matInput></textarea>
+            </mat-form-field>
+        </div>
+        <!-- <h2 class="text-xl add-criteria font-medium">Add Criteria<mat-icon class="add-answer-icon text-white" (click)="openDialogWithTemplateRef(myDialog)">add</mat-icon>
+        </h2> -->
+        <!-- <h2 class="text-base text-[#dc2626] font-medium" *ngIf="criteria?.length <= 0 && errorInForm">Please add criteria; this field is required.</h2> -->
+        <div class="relative">
+        <!-- <div *ngIf="criteria" class="float-left single-choices criteria">
+            <mat-radio-group class="flex gap-3 flex-col" aria-label="Select an option" required>
+                <mat-radio-button *ngFor="let choice of criteria ;let i = index;" [value]="choice.choiceId" [ngClass]="{'radio_checked': choice.isCorrect}" class="block  options_radio" >
+                    <span class="content-center mr-2.5 border border-[#DCDCDC] text-sm px-1 h-5 w-5 rounded" [ngClass]="{'bg-green-500 text-white border-green-500': choice.isCorrect}"><B class="pl-px">{{i + 1}}</B></span>{{choice.name}}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div> -->
+        <div *ngIf="criteria?.length > 0" class="table-criteria">
+            <table style="width:100%">
+                <tr>
+                  <th>Id</th>
+                  <th>Particulars</th>
+                  <th>Marks</th>
+                  <th>Buttons</th>
+                </tr>
+                <tr *ngFor="let choice of criteria ;let i = index;">
+                  <td>{{i + 1}}</td>
+                  <td>{{choice.name}}</td>
+                  <td>{{choice.weightage}}</td>
+                  <td>
+                    <div>
+                        <span mat-raised-button (click)="editQuestionAdditionalChoice(choice,i,updatePopup)">
+                            <mat-icon class="cursor-pointer" mat-list-icon>edit</mat-icon>
+                            </span>
+                            <span mat-raised-button (click)="deleteQuestionAdditionalChoice(i)">
+                             <mat-icon class="cursor-pointer" mat-list-icon>delete</mat-icon>
+                            </span>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+        </div>
+        <!-- <div class="criteriadelete_btns">
+            <div class="editordelete_choice" *ngFor="let choice of  criteria;let i = index;">
+                <span mat-raised-button (click)="editQuestionAdditionalChoice(choice,i,updatePopup)">
+                <mat-icon class="cursor-pointer" mat-list-icon>edit</mat-icon>
+                </span>
+                <span mat-raised-button (click)="deleteQuestionAdditionalChoice(i)">
+                 <mat-icon class="cursor-pointer" mat-list-icon>delete</mat-icon>
+                </span>
+            </div>
+        </div> -->
+     </div>
+        
+        <!-- <button type="submit" matDialogClose class="btn text-center btn-submit p-4 text-white rounded-md addAnswer" (click)="addRadioButton()" >
+            Add Creteria
+          </button> -->
+
+        <div class="flex gap-2">
+            <h4 class="label"></h4>
+            <button class="save-btn" (click)="addAssignment()">Save</button>
+            <button class="cancel-btn">Cancel</button>
+        </div>
+
+    </form>
+</div>
+<ng-template #myDialog class="w-94">
+    <!-- input starts -->
+    <ng-container *ngIf="defalutchoices">
+
+    <div class="flex items-center gap-4 w-full mb-2">
+        <mat-form-field appearance="fill" class="w-full">
+            <input class="" matInput placeholder="Add Criteria" #firstChoice [(ngModel)]="FirstAnswerContent" [ngModelOptions]="{standalone: true}" >
+            <mat-error class="error-message mt-1 ml-1" *ngIf="firstChoice.invalid && (firstChoice.dirty || firstChoice.touched)">Please Enter First Answer</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-24">
+            <input type="number" matInput placeholder="Marks" #firstMarks [(ngModel)]="FirstAnswerMarks" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+    </div>
+
+    <div class="flex items-center gap-4 w-full mb-2">
+        <mat-form-field appearance="fill" class="w-full">
+            <input class="" matInput placeholder="Add Criteria" #secondChoice [(ngModel)]="SecondAnswerContent" [ngModelOptions]="{standalone: true}" >
+            <mat-error class="error-message mt-1 ml-1"  *ngIf="secondChoice.invalid && (secondChoice.dirty || secondChoice.touched)">Please Enter Second Answer</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-24">
+            <input type="number" matInput placeholder="Marks" #secondMarks [(ngModel)]="SecondAnswerMarks" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+    </div>
+    
+    <div class="flex items-center gap-4 w-full mb-2">
+        <mat-form-field appearance="fill" class="w-full">
+            <input class="" matInput placeholder="Add Criteria" #thirdChoice [(ngModel)]="ThirdanswerContent" [ngModelOptions]="{standalone: true}" >
+            <mat-error class="error-message mt-1 ml-1" *ngIf="thirdChoice.invalid && (thirdChoice.dirty || thirdChoice.touched)"> Please Enter Third Answer</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-24">
+            <input type="number" matInput placeholder="Marks" #thirdMarks [(ngModel)]="ThirdAnswerMarks" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+    </div>
+
+    <div class="flex items-center gap-4 w-full mb-2">
+        <mat-form-field appearance="fill" class="w-full">
+            <input class="" matInput placeholder="Add Criteria" #fourthChoice [(ngModel)]="FourthanswerContent" [ngModelOptions]="{standalone: true}" >
+            <mat-error class="error-message mt-1 ml-1" *ngIf="fourthChoice.invalid && (fourthChoice.dirty || fourthChoice.touched)">Please Enter Fourth Answer</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-24">
+            <input type="number" matInput placeholder="Marks" #fourthMarks [(ngModel)]="FourthAnswerMarks" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+    </div>
+
+   </ng-container>
+
+  <ng-container *ngIf="!defalutchoices">
+    <div class="flex items-center gap-4 w-full">
+        <mat-form-field appearance="fill" class="w-full">
+            <input class="w-64" matInput placeholder="Add Answer" #singleChoice [(ngModel)]="FirstAnswerContent" [ngModelOptions]="{standalone: true}">
+            <mat-error class="error-message mt-1 ml-1" *ngIf="singleChoice.invalid && (singleChoice.dirty || singleChoice.touched)"> Please Enter an Answer </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="w-24">
+            <input type="number" matInput placeholder="Marks" #singleMarks [(ngModel)]="FirstAnswerMarks" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+    </div>
+  </ng-container>
+
+<!-- input ends -->
+ <div class="flex items-center justify-between">
+    <button type="submit" matDialogClose class="btn text-center btn-submit p-4 rounded-md addAnswer" (click)="addRadioButton()" *ngIf="!isMultiChoiceQuestion">
+      Add Answer
+    </button>
+
+    <button type="submit" class="btn text-center btn-submit p-4 text-white rounded-md addAnswer" (click)="addCheckBox()" matDialogClose *ngIf="isMultiChoiceQuestion">
+     <!-- [disabled]="defalutchoices ? (!FirstAnswerContent || !SecondAnswerContent || !ThirdanswerContent || !FourthanswerContent) : !FirstAnswerContent"> -->
+     Add Multiple Answer
+    </button>
+
+    <mat-dialog-actions align="end"><button mat-button (click)="currentDialogRef.close()" color="primary">Dismiss</button></mat-dialog-actions>
+</div>
+    <mat-error class="error-message mt-2 ml-1" *ngIf="Choices && Choices.length>=0 && !isSelectedChoice"> Please select Choice </mat-error>
+    </ng-template>
+<!-- <ng-template #myDialog class="w-94">
+    <ng-container *ngIf="defalutchoices">
+
+    <mat-form-field appearance="fill" class="w-full">
+       <input class="" matInput placeholder="Add Criteria" #firstChoice [(ngModel)]="FirstAnswerContent" [ngModelOptions]="{standalone: true}" >
+    <mat-error class="error-message mt-1 ml-1" *ngIf="firstChoice.invalid && (firstChoice.dirty || firstChoice.touched)">Please Enter First Answer</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="w-full">
+        <input class="" matInput placeholder="Add Criteria" #secondChoice [(ngModel)]="SecondAnswerContent" [ngModelOptions]="{standalone: true}" >
+     <mat-error class="error-message mt-1 ml-1"  *ngIf="secondChoice.invalid && (secondChoice.dirty || secondChoice.touched)">Please Enter Second Answer</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field appearance="fill" class="w-full">
+        <input class="" matInput placeholder="Add Criteria" #thirdChoice [(ngModel)]="ThirdanswerContent" [ngModelOptions]="{standalone: true}" >
+    <mat-error class="error-message mt-1 ml-1" *ngIf="thirdChoice.invalid && (thirdChoice.dirty || thirdChoice.touched)"> Please Enter Third Answer</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+        <input class="" matInput placeholder="Add Criteria" #fourthChoice [(ngModel)]="FourthanswerContent" [ngModelOptions]="{standalone: true}" >
+    <mat-error class="error-message mt-1 ml-1" *ngIf="fourthChoice.invalid && (fourthChoice.dirty || fourthChoice.touched)">Please Enter Fourth Answer</mat-error>
+    </mat-form-field>
+
+   </ng-container>
+
+  <ng-container *ngIf="!defalutchoices">
+    <mat-form-field appearance="fill" class="w-full">
+       <input class="w-64" matInput placeholder="Add Answer" #singleChoice [(ngModel)]="FirstAnswerContent"  [ngModelOptions]="{standalone: true}">
+      <mat-error class="error-message mt-1 ml-1" *ngIf="singleChoice.invalid && (singleChoice.dirty || singleChoice.touched)"> Please Enter an Answer </mat-error>
+    </mat-form-field>
+  </ng-container>
+
+ <div class="flex items-center justify-between">
+    <button type="submit" matDialogClose class="btn text-center btn-submit p-4 rounded-md addAnswer" (click)="addRadioButton()" *ngIf="!isMultiChoiceQuestion">
+      Add Answer
+    </button>
+
+    <button type="submit" class="btn text-center btn-submit p-4 text-white rounded-md addAnswer" (click)="addCheckBox()" matDialogClose *ngIf="isMultiChoiceQuestion">
+      Add Multiple Answer
+    </button>
+
+    <mat-dialog-actions align="end"><button mat-button (click)="currentDialogRef.close()" color="primary">Dismiss</button></mat-dialog-actions>
+</div>
+    <mat-error class="error-message mt-2 ml-1" *ngIf="Choices && Choices.length>=0 && !isSelectedChoice"> Please select Choice </mat-error>
+    </ng-template> -->
+    <ng-template #updatePopup class="w-94">
+        <div class="flex items-center gap-4 w-full mb-2">
+            <mat-form-field appearance="fill">
+                <input class="w-64" matInput placeholder="Add Answer" [(ngModel)]="updatedanswer" [ngModelOptions]="{standalone: true}" required>
+                <mat-error class="error-message mt-2 ml-1">Please Enter any Answer</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-24">
+                <input type="number" matInput placeholder="Marks" [(ngModel)]="updatedMarks" [ngModelOptions]="{standalone: true}">
+            </mat-form-field>
+        </div>
+
+        <button type="submit" matDialogClose class=" btn text-center btn-submit bg-primary p-4   text-white rounded-md addAnswer"
+         (click)="updateChoiceanswer(updatedanswer,updatedMarks)">Update Answer</button>
+
+        <mat-dialog-actions align="end"><button mat-button (click)="currentDialogRef.close()" color="primary">Dismiss</button></mat-dialog-actions>
+        </ng-template>

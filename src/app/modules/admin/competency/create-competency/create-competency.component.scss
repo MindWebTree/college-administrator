@@ -1,0 +1,88 @@
+:host{
+    display: block;
+}
+::ng-deep .create_competency mat-form-field .mat-mdc-form-field-infix {
+    min-height: 40px !important;
+}
+// ::ng-deep .create_competency .mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-form-field-subscript-wrapper {
+//     display: none !important;
+// }
+.create_competency_form{
+    width: 700px;
+    margin: 0 auto;
+}
+::ng-deep .create_competency mat-form-field {
+    width: 100%;
+}
+.label{
+    min-width: 130px;
+    max-width: 130px;
+    color: #505050;    
+    padding-top: 12px;
+}
+button.save-btn {
+    background: #0C529A;
+    padding: 10px 40px;
+    color: white;
+    width: 150px;
+    height: 50px;
+}
+button.cancel-btn {
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    padding: 10px 40px;
+    color: white;
+    width: 150px;
+    height: 50px;
+}
+::ng-deep .add-criteria-panel mat-dialog-container {
+    min-width: 600px;
+}
+.add-criteria{
+    background:rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    width: max-content;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px !important;
+    gap: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+::ng-deep .criteria mat-radio-button {
+    border: 1px solid #c1c1c1;
+    padding: 10px 10px;
+}
+::ng-deep .criteria .mdc-radio {
+    display: none;
+}
+::ng-deep .criteriadelete_btns {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    gap: 29px;
+    display: flex;
+    flex-direction: column;
+}
+::ng-deep .table-criteria td {
+    text-align: center;
+    border: 1px solid;
+    padding: 10px;
+    overflow-wrap: anywhere;
+}
+::ng-deep .table-criteria th {
+    text-align: center;
+    border: 1px solid;
+    padding: 10px;
+}
+// ::ng-deep .create_competency .assignment-date.mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-form-field-subscript-wrapper {
+//     display: block !important;
+// }
+// ::ng-deep .create_competency .submittion-date.mat-mdc-form-field.mat-form-field-appearance-fill .mat-mdc-form-field-subscript-wrapper {
+//     display: block !important;
+// }
+@media only screen and (max-width: 1366px) {
+    .create_competency_form{
+        width: 80%;
+        margin: 0;
+    }
+}

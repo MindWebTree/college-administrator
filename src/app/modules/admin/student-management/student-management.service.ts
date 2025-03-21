@@ -164,6 +164,12 @@ export class StudentService {
         }, reject);
     });
   }
+  getBatchYearbyBatchGuid(guid): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`,{});
+  }
+  getBatches(): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/list`,{})
+  }
 
   /**
     * Delete Student

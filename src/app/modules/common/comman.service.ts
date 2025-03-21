@@ -69,6 +69,12 @@ export class CommanService {
       })
     );
   }
+  getBatchList(): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/navigation/`,{}).pipe(
+      tap((response: any) => {
+      })
+    );
+  }
   getLevel(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/levels/`, {});
   }

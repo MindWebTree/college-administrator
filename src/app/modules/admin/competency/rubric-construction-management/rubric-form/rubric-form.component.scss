@@ -1,0 +1,77 @@
+//  @import '../../../../../../@unisun/scss/unisun.scss';
+.checkbox_module_li {
+    font-size: 15px;
+}
+
+.checkbox_module_li input {
+    height: 15px;
+    width: 15px;
+}
+
+.subject-form-dialog .dialog-content-wrapper {
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modules_checkbox {
+    list-style: none;
+    padding-left: 0;
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+
+.exam-form-dialog {
+    // @include media-breakpoint('xs') {
+    //     width: 100%;
+    // }
+    // @include media-breakpoint-up('xs') {
+    //     width: 80% !important;
+    // }
+    .mat-dialog-container {
+        padding: 0;
+        .mat-toolbar {
+            flex: 1 0 auto;
+            min-height: initial;
+        }
+        .toolbar-bottom {
+            height: auto;
+        }
+    }
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+::ng-deep .mat-mdc-slide-toggle .mdc-switch.mdc-switch--selected:enabled .mdc-switch__handle::after {
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    ;
+}
+
+::ng-deep .delete-choice .mat-mdc-dialog-surface.mdc-dialog__surface {
+    padding: 24px !important;
+    min-width: 0 !important;
+    max-width: 278px !important;
+}
+
+//new
+::ng-deep .mat-mdc-dialog-surface.mdc-dialog__surface {
+    padding: 0px;
+}
+
+::ng-deep .add-integration .mdc-switch__icons {
+    display: none;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled {
+    border-color: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+}
+::ng-deep mat-select.subjects {
+    border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity));
+    padding: 10px;
+    border-radius: 4px;
+}

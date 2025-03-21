@@ -25,9 +25,23 @@ export const AdminNavigation: FuseNavigationItem[] = [
         children: [],
         roles: ["CollegeAdministrator"]
     },
+    // {
+    //     id: 'Students',
+    //     title: 'Students',
+    //     type: 'collapsable',
+    //     children: [
+    //         //     {
+    //         //         id: 'createaccount',
+    //         //         title: 'Create Account',
+    //         //         type: 'basic',
+    //         //         link: ''
+    //         // },
+    //     ],
+    //     roles: ["CollegeAdministrator"]
+    // },
     {
-        id: 'Students',
-        title: 'Students',
+        id: 'Lecturers',
+        title: 'Lecturers',
         type: 'collapsable',
         children: [
             //     {
@@ -40,8 +54,8 @@ export const AdminNavigation: FuseNavigationItem[] = [
         roles: ["CollegeAdministrator"]
     },
     {
-        id: 'Lecturers',
-        title: 'Lecturers',
+        id: 'Batch',
+        title: 'Batch',
         type: 'collapsable',
         children: [
             //     {
@@ -50,6 +64,32 @@ export const AdminNavigation: FuseNavigationItem[] = [
             //         type: 'basic',
             //         link: ''
             // },
+        ],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'Competency',
+        title: 'Competency',
+        type: 'collapsable',
+        children: [
+            {
+                id: 'Create Competency',
+                title: 'Create Competency',
+                type: 'basic',
+                link: 'competency/create'
+            },
+            {
+                id: 'List Competency',
+                title: 'List Competency',
+                type: 'basic',
+                link: 'competency/list'
+            },
+            {
+                id: 'RubricConstructionManagement',
+                title: 'Certifiable Competency skills Management',
+                type: 'basic',
+                link: 'competency/rubric-sections'
+            },
         ],
         roles: ["CollegeAdministrator"]
     }
@@ -216,6 +256,70 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Lecturers',
         type: 'collapsable',
         link:'/lecturer/lecturer-bio/:userId/:courseYear',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'competency',
+        title: 'competency',
+        type: 'collapsable',
+        link:'/competency/create',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'competency',
+        title: 'competency',
+        type: 'collapsable',
+        link:'/competency/edit/:id',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'competencylist',
+        title: 'competency',
+        type: 'collapsable',
+        link:'/competency/list',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'competency-student-grid',
+        title: 'competency-student-grid',
+        type: 'collapsable',
+        link:'/competency/student-grid/:guid',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'rubric-sections',
+        title: 'rubric-sections',
+        type: 'collapsable',
+        link:'/competency/rubric-sections',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'sections',
+        title: 'sections',
+        type: 'collapsable',
+        link:'/competency/sections/:guid',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'rubric-criteria-list',
+        title: 'rubric-criteria-list',
+        type: 'collapsable',
+        link:'/competency/rubric-criteria-list/:guid',
+        children: [],
+        roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'batch',
+        title: 'batch',
+        type: 'collapsable',
+        link:'/batch/:guid',
         children: [],
         roles: ["CollegeAdministrator"]
     },

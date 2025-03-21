@@ -1,0 +1,57 @@
+:host{
+    display: block;
+}
+.student-section {
+    background: white;
+    padding: 20px;
+    border: 1px solid rgba(var(--fuse-primary-rgb), .3) !important;
+    border-radius: 4px;
+}
+.Completed-assignment {
+    background: #F8FFFA;
+    padding: 5px 0;
+    border-radius: 44px;
+    min-width: 142px;
+    text-align: center;
+    border: 1px solid #28C397;
+    color: #28C397;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.Completed-assignment mat-icon {
+    color: #28C397;
+    padding-left: 5px;
+}
+.Repeat-assignment {
+    background: #FFFCF5;
+    padding: 5px 0;
+    border-radius: 44px;
+    min-width: 142px;
+    text-align: center;
+    border: 1px solid #F9BC15;
+    color: #F9BC15;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.Repeat-assignment mat-icon {
+    color: #F9BC15;
+    padding-left: 5px;
+}
+.Remedial-assignment {
+    background: #FFEDEB;
+    padding: 5px 0;
+    border-radius: 44px;
+    min-width: 142px;
+    text-align: center;
+    border: 1px solid #EB5B5B;
+    color: #EB5B5B;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.Remedial-assignment mat-icon {
+    color: #EB5B5B;
+    padding-left: 5px;
+}

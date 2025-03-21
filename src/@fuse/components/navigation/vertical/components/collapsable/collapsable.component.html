@@ -25,6 +25,7 @@
                     {{ item.title }}
                 </span>
             </div>
+            
             @if (item.subtitle) {
                 <div class="fuse-vertical-navigation-item-subtitle">
                     <span [ngClass]="item.classes?.subtitle">
@@ -116,4 +117,9 @@
             }
         }
     </div>
+    <!-- @if (item.title === 'Batch') {
+        <ng-container >
+            <app-navigation-btn></app-navigation-btn>
+        </ng-container>
+    } -->
 }

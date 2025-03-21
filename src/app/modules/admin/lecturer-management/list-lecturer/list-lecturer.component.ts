@@ -1,7 +1,7 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -34,12 +34,14 @@ export class ListLecturerComponent {
   dialogContent: TemplateRef<any>;
   _sitePreference: any = SitePreference;
   searchInput: FormControl;
+  Subject: FormControl;
   paginationData: any;
 
   dataSource: LectureManagementDataSource;
 
 
   dialogRef: any;
+  subjects: any;
 
   currentSearchText: string = ''; // added by harsh to track current search
   courseyearId: string = '';
@@ -53,6 +55,7 @@ export class ListLecturerComponent {
   constructor(
     public _matDialog: MatDialog,
     public _route: ActivatedRoute,
+    public _formBuilder: FormBuilder,
     private _lectureService: LectureService, private _router: Router) {
     this._router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -66,7 +69,9 @@ export class ListLecturerComponent {
       this.loadStudentData()
     })
     this.searchInput = new FormControl('');
-
+    this.Subject = new FormControl('0');
+    
+    
   }
 
   loadStudentData() {
@@ -74,6 +79,9 @@ export class ListLecturerComponent {
     this._lectureService.getCourseYearName(this.courseyearId).subscribe((res: any) => {
       this.CourseYear = res.name
     })
+  }
+  Search(){
+    this._lectureService.onlectureManagementChanged.next(true)
   }
 
 
@@ -113,6 +121,9 @@ export class ListLecturerComponent {
     this._unsubscribeAll.complete();
   }
   ngOnInit(): void {
+    this._lectureService.getSubjects().subscribe(res=>{
+      this.subjects =res;
+    })
     this.dataSource = new LectureManagementDataSource(this._lectureService);
 
     this._lectureService.onlectureManagementChanged
@@ -125,7 +136,8 @@ export class ListLecturerComponent {
           keyword: typeof search === "string" ? search : this.currentSearchText,
           orderBy: this.sort?.active == null ? "QueueId" : "QueueId",
           sortOrder: this.sort?.direction == 'desc' ? this.sort.direction : 'asc',
-          courseYearId: this.courseyearId
+          courseYearId: this.courseyearId,
+          subjectId: this.Subject?.value ? parseInt(this.Subject?.value) : 0 
         };
         this.dataSource.loadData(gridFilter);
       });

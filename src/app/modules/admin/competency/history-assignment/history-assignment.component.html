@@ -1,0 +1,42 @@
+<div class="flex items-center justify-center mt-30" *ngIf="!dataLoaded">
+    <img src="my-images/imgLoder.gif" class="w-15">
+</div>
+<div class="student-competency" *ngIf="dataLoaded">
+    <div class="flex justify-between">
+        <h3 class="text-lg font-semibold">History of Assignments Submitted</h3>
+        <button (click)="CloseMatdilog()" class="float-right"><mat-icon>close</mat-icon></button>
+    </div>
+    <div class="mt-3 student-section" *ngFor="let student of students" >
+        <div class="w-full flex gap-4 items-center">
+            <!-- <img class="w-[58px] h-[58px] rounded-full bg-[#D9D9D9]" src=""> -->
+            <div class="w-full block sm:flex justify-between items-center">
+                <div> 
+                    <h3 class="text-primary text-lg font-semibold">{{student.name}}</h3>
+                    <div class="block md:flex gap-3 pt-1 text-lg">
+                        <h4 class="text-base text-[#505050] font-normal" *ngIf="student.status != 1">Attempt: {{student.attempt}}</h4>
+                        <h4 class="text-base text-[#505050] font-normal" *ngIf="student.status != 1">Rating : {{ getRatingLabel(student.rating) }}</h4>
+                        <h4 class="text-base text-[#505050] font-normal" *ngIf="student.status != 1">Marks : {{student.marks}}</h4>
+                        <h4 class="text-base text-[#505050] font-normal" *ngIf="student.status != 1">Completed : {{student.completedOn | date:'dd/MM/yy'}}</h4>
+                    </div>
+                </div>
+                <div class="mt-2 flex gap-2 items-center sm:mt-0">
+                    <div class="Completed-assignment" *ngIf="student.status == 3"><mat-icon>fiber_manual_record</mat-icon>Completed (C)</div>  
+                    <div class="Repeat-assignment" *ngIf="student.status == 6"><mat-icon>fiber_manual_record</mat-icon>Repeat (R)</div>  
+                    <div class="Remedial-assignment" *ngIf="student.status == 7"><mat-icon>fiber_manual_record</mat-icon>Remedial(Re)</div>  
+                    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button (click)="CheckCriteria(student)" mat-menu-item>
+                          <mat-icon>send</mat-icon>
+                          <span>Check Criteria</span>
+                        </button>
+                    </mat-menu>            
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+    
+</div>

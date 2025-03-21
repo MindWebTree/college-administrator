@@ -1,0 +1,119 @@
+<div id="Subtopic" class="page-layout simple left-sidebar inner-sidebar inner-scroll">
+
+    <!-- HEADER -->
+    <div class="flex items-center justify-between p-4">
+        <!--BACK BUTTON-->
+        <!-- <div class="j-e header mat-accent-bg p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start start"
+        fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <a  [routerLink]="['/admin/product/power-reading/subtopic']" mat-raised-button id="add-subtopic-button" aria-label="add subtopic" 
+                [@animate]="{value:'*', params:{delay:'300ms',scale:'.2'}}">
+                <mat-icon>arrow_back</mat-icon>
+        </a>
+        </div> -->
+        <!--BACK BUTTON-->
+        <!-- APP TITLE -->
+
+
+
+        <div class="flex items-center w-1/2 leading-[0]">
+            <a routerLink="['/subject/collection/subject']" id="back_btn" aria-label="back_btn">
+                <!-- <mat-icon class="text-black">arrow_back</mat-icon> -->
+            </a>
+            <div class="logo  flex items-center">
+                <mat-icon class="text-3xl text-primary">
+                    account_box
+                </mat-icon>
+                <span class="text-xl pl-1 font-medium capitalize text-primary">
+                  {{Title}}
+                </span>
+            </div>
+
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- search and add  -->
+        <div class="w-1/2 text-end flex items-center gap-2 justify-end">
+            <!-- <div class="search-input">
+                <mat-icon class="">search</mat-icon>
+                <mat-form-field mat-no-float class="m-0" floatLabel="never">
+                    <input matInput id="search" placeholder="Search" [formControl]="searchInput" class="">
+                </mat-form-field>
+            </div> -->
+            <div>
+                <button mat-raised-button id="add-qbank-button" class="rounded add-data" (click)="addintegration()" aria-label="add qbank">
+                    <mat-icon class="text-white">add</mat-icon> ADD
+                </button>
+            </div>
+        </div>
+        <!--/ search and add  -->
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content">
+
+
+
+        <!-- CENTER -->
+        <div class="center">
+
+            <!-- CONTENT -->
+            <div class="table_question_list  question-list mx-8">
+                <mat-table #table [dataSource]="dataSource.data" (matSortChange)="onSortData($event)" matSort matSortActive="Name" matSortDirection="desc">
+
+                    <!-- Title Column -->
+                    <ng-container matColumnDef="Name">
+                        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <p class="text-truncate font-weight-300">{{row.name }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- IsActive Column -->
+                    <ng-container matColumnDef="IsActive">
+                        <mat-header-cell *matHeaderCellDef>Subject</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <p class="text-boxed m-0 text-truncate font-weight-300">{{row.subjectName}}</p>
+                            <!-- <mat-checkbox class="example-margin text-primary" [checked]="row.IsActive" color="primary" [disabled]="true"></mat-checkbox> -->
+                        </mat-cell>
+                    </ng-container>
+                    <!-- Buttons Column -->
+                    <ng-container matColumnDef="buttons">
+                        <mat-header-cell *matHeaderCellDef class="cell-center">Action</mat-header-cell>
+                        <mat-cell *matCellDef="let row" class="cell-center gap-2">
+                            <span class="cursor-pointer" mat-menu-item aria-label="edit" (click)="editRubric(row)">
+                                <mat-icon color="primary">edit</mat-icon>
+                            </span>
+                            <span class="cursor-pointer" mat-menu-item aria-label="remove" (click)="deleteRubric(row)">
+                                <mat-icon color="primary">delete</mat-icon>
+                            </span>
+                            <span class="cursor-pointer" mat-menu-item arial-label="add" (click)="NavigatetoSteps(row)">
+                                <mat-icon color="primary">add</mat-icon>
+                            </span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Oreder Column -->
+                    <!-- <ng-container matColumnDef="TopicName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TopicName</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <p class="text-truncate font-weight-300" >{{row.TopicName}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" class="exam">
+                    </mat-row>
+                </mat-table>
+                <!-- <mat-paginator class="flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="10" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator> -->
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CENTER -->
+
+    </div>
+    <!-- / CONTENT-->
+
+</div>

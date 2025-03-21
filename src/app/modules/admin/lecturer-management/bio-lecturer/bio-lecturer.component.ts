@@ -42,7 +42,7 @@ export class BioLecturerComponent implements OnInit {
   dialogRef: any;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
   userId: string;
-  lecturer: lectureModel;
+  lecturer: any;
   displayQBanks: QBankType[] = [];
   allQBanks: QBankType[] = [];  // Will store all available question banks
   courseYearName: string;
