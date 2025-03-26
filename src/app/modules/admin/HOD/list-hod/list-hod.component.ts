@@ -9,25 +9,26 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, catchError, debounceTime, distinctUntilChanged, filter, finalize, Observable, of, Subject, takeUntil } from 'rxjs';
-import { LectureService } from '../lecturer-management.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dialog/dialog.component';
 import { MatSort, Sort } from '@angular/material/sort';
 import { DataSource } from '@angular/cdk/collections';
-import { lectureModel } from '../lecturer-management.model';
 import { SitePreference } from 'app/core/auth/app.configs';
-import { CreateLecturerComponent } from '../create-lecturer/create-lecturer.component';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { GridFilter, lecturerGrid } from '../../common/gridFilter';
+import { HODService } from '../HOD.service';
+import { HODModel } from '../HOD.model';
+import { CreateHODComponent } from '../create-hod/create-hod.component';
+
 
 @Component({
-  selector: 'app-list-lecturer',
+  selector: 'app-list-hod',
   standalone: true,
   imports: [MatPaginatorModule, MatIconModule, MatInputModule, MatSelectModule, ReactiveFormsModule, CommonModule, MatButtonModule, OverlayModule, FormsModule],
-  templateUrl: './list-lecturer.component.html',
-  styleUrl: './list-lecturer.component.scss'
+  templateUrl: './list-hod.component.html',
+  styleUrl: './list-hod.component.scss'
 })
-export class ListLecturerComponent {
+export class ListHODComponent {
 
   lectureManagement: any;
   @ViewChild('dialogContent', { static: true })
@@ -37,7 +38,7 @@ export class ListLecturerComponent {
   Subject: FormControl;
   paginationData: any;
 
-  dataSource: LectureManagementDataSource;
+  dataSource: HODManagementDataSource;
 
 
   dialogRef: any;
@@ -56,7 +57,7 @@ export class ListLecturerComponent {
     public _matDialog: MatDialog,
     public _route: ActivatedRoute,
     public _formBuilder: FormBuilder,
-    private _lectureService: LectureService, private _router: Router) {
+    private _HODservice: HODService, private _router: Router) {
     this._router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       takeUntil(this._unsubscribeAll)
@@ -76,13 +77,13 @@ export class ListLecturerComponent {
   }
 
   loadStudentData() {
-    this._lectureService.onlectureManagementChanged.next(true)
-    this._lectureService.getCourseYearName(this.courseyearId).subscribe((res: any) => {
-      this.CourseYear = res.name
-    })
+    this._HODservice.onHODManagementChanged.next(true)
+    // this._HODservice.getCourseYearName(this.courseyearId).subscribe((res: any) => {
+    //   this.CourseYear = res.name
+    // })
   }
   Search(){
-    this._lectureService.onlectureManagementChanged.next(true)
+    this._HODservice.onHODManagementChanged.next(true)
   }
 
 
@@ -95,26 +96,26 @@ export class ListLecturerComponent {
     this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this._lectureService.deleteLecture(user.id);
+        this._HODservice.deleteLecture(user.id);
 
       }
       this.confirmDialogRef = null;
     });
   }
   loadPage() {
-    this._lectureService.onlectureManagementChanged.next(this.lectureManagement);
+    this._HODservice.onHODManagementChanged.next(this.lectureManagement);
   }
 
 
   getNext(event: PageEvent) {
-    this._lectureService.onlectureManagementChanged.next(this.lectureManagement);
+    this._HODservice.onHODManagementChanged.next(this.lectureManagement);
 
   }
 
 
   onSortData(sort: Sort) {
 
-    this._lectureService.onlectureManagementChanged.next(this.lectureManagement);
+    this._HODservice.onHODManagementChanged.next(this.lectureManagement);
   }
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
@@ -122,15 +123,15 @@ export class ListLecturerComponent {
     this._unsubscribeAll.complete();
   }
   getSubjects(){
-    this._lectureService.getSubjectbyAcademicYear(this.courseyearId).subscribe(res=>{
+    this._HODservice.getSubjectbyAcademicYear(this.courseyearId).subscribe(res=>{
       this.subjects =res;
     })
   }
   ngOnInit(): void {
-    this.getSubjects();
-    this.dataSource = new LectureManagementDataSource(this._lectureService);
+    // this.getSubjects();
+    this.dataSource = new HODManagementDataSource(this._HODservice);
 
-    this._lectureService.onlectureManagementChanged
+    this._HODservice.onHODManagementChanged
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(search => {
         this.lectureManagement = search;
@@ -153,15 +154,15 @@ export class ListLecturerComponent {
       )
       .subscribe(searchText => {
         this.currentSearchText = searchText;
-        this._lectureService.onlectureManagementChanged.next(searchText);
+        this._HODservice.onHODManagementChanged.next(searchText);
       });
   }
 
 
   addLecture() {
 
-    var lecturer = new lectureModel({});
-    this.dialogRef = this._matDialog.open(CreateLecturerComponent, {
+    var lecturer = new HODModel({});
+    this.dialogRef = this._matDialog.open(CreateHODComponent, {
       panelClass: 'lecture-form-dialog',
       disableClose: true,
       data: {
@@ -173,8 +174,8 @@ export class ListLecturerComponent {
 
   editLecturer(leacturer: any): void {
 
-    this._lectureService.getLectureDetailsById(leacturer.id).then(response => {
-      this.dialogRef = this._matDialog.open(CreateLecturerComponent, {
+    this._HODservice.getLectureDetailsById(leacturer.id).then(response => {
+      this.dialogRef = this._matDialog.open(CreateHODComponent, {
         panelClass: 'lecture-form-dialog',
         data: {
           lecturer: response,
@@ -194,19 +195,19 @@ export class ListLecturerComponent {
 
 }
 
-export class LectureManagementDataSource extends DataSource<lectureModel> {
+export class HODManagementDataSource extends DataSource<HODModel> {
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public paginationData: any;
   public loading$ = this.loadingSubject.asObservable();
-  data: Array<lectureModel> = []
+  data: Array<HODModel> = []
   /**
    * Constructor
    *
-   * @param {LectureService} _lectureService
+   * @param {LectureService} _HODservice
    */
   constructor(
-    private _lectureService: LectureService
+    private _HODservice: HODService
   ) {
     super();
   }
@@ -216,7 +217,7 @@ export class LectureManagementDataSource extends DataSource<lectureModel> {
    * @returns {Observable<any[]>}
    */
   connect(): Observable<any[]> {
-    return this._lectureService.onlectureManagementChanged;
+    return this._HODservice.onHODManagementChanged;
   }
 
   /**
@@ -227,7 +228,7 @@ export class LectureManagementDataSource extends DataSource<lectureModel> {
 
   loadData(gridFilter: GridFilter): void {
     this.loadingSubject.next(true);
-    this._lectureService.getlectureForGrid(gridFilter)
+    this._HODservice.getHODForGrid(gridFilter)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))

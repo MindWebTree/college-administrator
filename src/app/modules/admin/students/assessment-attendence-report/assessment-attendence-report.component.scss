@@ -1,0 +1,31 @@
+:host{
+    display: block;
+}
+::ng-deep .student-report-list .mdc-tab.mat-mdc-tab.mat-mdc-focus-indicator {
+    max-width: max-content;
+    padding: 0 !important;
+}
+::ng-deep .student-report-list.mat-mdc-tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container{
+    margin: 0 !important;
+}
+::ng-deep .student-report-list.mat-mdc-tab-group .mat-mdc-tab-body-content{
+    padding: 24px 0 !important;
+}
+::ng-deep .student-report-list .mat-mdc-tab-labels {
+    gap: 0 10px;
+}
+button#add-student-button {
+    display: flex;
+    background: rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
+    padding: 7px 10px;
+    color: white;
+    gap: 5px;
+    align-items: center;
+}
+::ng-deep .bulk-upload mat-dialog-container {
+    min-width: 400px;    
+    max-height: 80vh;
+}
+::ng-deep .subject-field .mat-mdc-text-field-wrapper.mdc-text-field {
+    max-height: 50px;
+}

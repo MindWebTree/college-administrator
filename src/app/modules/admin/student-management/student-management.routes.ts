@@ -9,5 +9,5 @@ export default [
     {
         path: 'student-report-card/:userId/:courseYear',
         component: ReportCardComponent,
-    },
+    }
 ] as Routes;

@@ -41,8 +41,15 @@ export class BatchService {
 
   getStudentForGrid(_gridFilter: any): Observable<any> {
     return this._httpClient.post(`${environment.apiURL}/student/grid`, { ..._gridFilter }, {  });
-
   }
+
+  getfutureBatches(): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/batch/future-batches`, {  }, {  });
+  }
+  createBatch(req): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/batch/create`, { ...req });
+  }
+
   bulkUploadUsers(batchGuid,batchYearId,data: any[]): Promise<any> {
     var self = this;
     console.log(JSON.stringify(data))
@@ -54,5 +61,5 @@ export class BatchService {
                 resolve(response);
             }, reject);
     });
-}
+  }
 }

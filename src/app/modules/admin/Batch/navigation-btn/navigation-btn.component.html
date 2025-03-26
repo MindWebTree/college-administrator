@@ -1,4 +1,111 @@
-<button class="flex items-center gap-2 create-batch">
+<button (click)="OpenDialog(createBatch)" class="flex items-center gap-2 create-batch">
     <mat-icon>add</mat-icon>
     <span>Create Batch</span>
 </button>
+<ng-template #createBatch>
+    <form [formGroup]="CreateBatch">
+        <h2 class="font-semibold text-black text-2xl">Create Batch</h2>
+        <div class="flex gap-2 mt-2">
+            <h3 class="batch-year-label font-semibold font-lg">Batch Name</h3>
+            <mat-form-field class="w-full" >
+                <mat-select formControlName="BatchName" >
+                    <mat-option [value]="futureBatch"
+                        *ngFor="let futureBatch of futureBatches">{{futureBatch}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="flex gap-2">
+            <h3 class="batch-year-label font-semibold font-lg"></h3>
+            <div class="flex gap-2 w-full mb-1">
+                <h4 class="w-full font-semibold">Start</h4>
+                <h4 class="w-full font-semibold">End</h4>
+
+            </div>
+        </div>
+        <div class="flex gap-2 mt-2">
+            <h3 class="batch-year-label font-semibold font-lg">First Year</h3>
+            <div class="flex gap-2 w-full">
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="FirstYearStartDate" [matDatepicker]="picker1">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="FirstYearEndDate" [matDatepicker]="picker2">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex gap-2 mt-2">
+            <h3 class="batch-year-label font-semibold font-lg">Second Year</h3>
+            <div class="flex gap-2 w-full">
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="SecondYearStartDate" [matDatepicker]="picker3">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="SecondYearEndDate" [matDatepicker]="picker4">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker4"></mat-datepicker-toggle>
+                    <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex gap-2 mt-2">
+            <h3 class="batch-year-label font-semibold font-lg">Pre Final Year</h3>
+            <div class="flex gap-2 w-full">
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="PreFinalYearStartDate" [matDatepicker]="picker5">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker5"></mat-datepicker-toggle>
+                    <mat-datepicker #picker5></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="PreFinalYearEndDate" [matDatepicker]="picker6">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker6"></mat-datepicker-toggle>
+                    <mat-datepicker #picker6></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex gap-2 mt-2">
+            <h3 class="batch-year-label font-semibold font-lg">Final Year</h3>
+            <div class="flex gap-2 w-full">
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="FinalYearStartDate" [matDatepicker]="picker7">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker7"></mat-datepicker-toggle>
+                    <mat-datepicker #picker7></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="FinalYearEndDate" [matDatepicker]="picker8">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker8"></mat-datepicker-toggle>
+                    <mat-datepicker #picker8></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex gap-2 mt-2">
+            <h3 class="batch-year-label font-semibold font-lg">CRRI</h3>
+            <div class="flex gap-2 w-full">
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="CRRIStartDate" [matDatepicker]="picker9">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker9"></mat-datepicker-toggle>
+                    <mat-datepicker #picker9></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <input matInput formControlName="CRRIEndDate" [matDatepicker]="picker10">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker10"></mat-datepicker-toggle>
+                    <mat-datepicker #picker10></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="flex gap-3 justify-end mt-2">
+            <button mat-raised-button class="cancel-btn" (click)="matDialogClose()">Cancel</button>
+            <button mat-raised-button class="createbatch-btn" (click)="CreateBatchs()">Create Batch</button>
+        </div>
+
+    </form>
+</ng-template>

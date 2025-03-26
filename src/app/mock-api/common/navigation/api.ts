@@ -7,6 +7,7 @@ import {
     compactNavigation,
     defaultNavigation,
     futuristicNavigation,
+    HODNavigation,
     horizontalNavigation,
     LecturerNavigation,
     StudentNavigation,
@@ -31,6 +32,8 @@ export class NavigationMockApi {
         LecturerNavigation;
     public readonly _StudentNavigation: FuseNavigationItem[] =
         StudentNavigation;
+    public readonly _HODNavigation: FuseNavigationItem[] =
+        HODNavigation;
     userDetail: any;
     isnavigationalreadyexiest: boolean = false;
     latestNavigation: any = [];
@@ -66,6 +69,8 @@ export class NavigationMockApi {
                     navigation = this._LecturerNavigation;
                 } else if (this.userDetail?.Roles == "Student") {
                     navigation = this._StudentNavigation;
+                }else if (this.userDetail?.Roles == "HOD") {
+                    navigation = this._HODNavigation;
                 }
 
                 // Populate children for different navigation types
@@ -113,6 +118,8 @@ export class NavigationMockApi {
                 return await this._CommanService.getlecturerNavigationList().toPromise();
             case 'Batch':
                 return await this._CommanService.getBatchList().toPromise();
+            case 'Student':
+                return await this._CommanService.getBatchList().toPromise();
             default:
                 return [];
         }
@@ -132,6 +139,8 @@ export class NavigationMockApi {
                 return `/lecturer/list/${category.guid}`;
             case 'Batch':
                 return `/batch/${category.guid}`;
+            case 'Student':
+                return `/students/${category.guid}`;
             default:
                 return '';
         }
@@ -148,7 +157,7 @@ export class NavigationMockApi {
                 const processedNavs = new Set();
 
                 for (const nav of navigation) {
-                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers' || nav.title === 'Batch') &&
+                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers' || nav.title === 'Batch' || nav.title === 'Student') &&
                         !processedNavs.has(nav.title)) {
 
                         processedNavs.add(nav.title);
@@ -162,7 +171,7 @@ export class NavigationMockApi {
                                     child.title === category.name);
 
                                 if (!existingNavItem) {
-                                    if (nav.title === 'Batch') {
+                                    if (nav.title === 'Batch' || nav.title === 'Student') {
                                         nav.children.push({
                                             id: category.name,
                                             title: category.name,

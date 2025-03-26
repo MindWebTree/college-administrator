@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { BatchService } from '../batch.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, catchError, filter, finalize, Observable, of, Subject, takeUntil } from 'rxjs';
-import { ExceluserFeild, importUser, yearGrid } from '../batch.model';
 import { FormControl } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SitePreference } from 'app/core/auth/app.configs';
@@ -18,17 +16,19 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { studentModel } from '../../student-management/student-management.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { XlsxToJsonService } from '../../common/xlsToJSON';
-
+import { StudentsService } from '../student.service';
+import { BatchService } from '../../Batch/batch.service';
+import { yearGrid, importUser, ExceluserFeild } from '../student.model';
 
 @Component({
-  selector: 'app-batch-list',
+  selector: 'app-student-list',
   standalone: true,
   imports: [CommonModule, MatPaginator, MatTabsModule, MatTableModule, MatIconModule],
   providers: [StudentService, XlsxToJsonService],
-  templateUrl: './batch-list.component.html',
-  styleUrl: './batch-list.component.scss'
+  templateUrl: './student-list.component.html',
+  styleUrl: './student-list.component.scss'
 })
-export class BatchListComponent implements OnInit {
+export class StudentListComponent  implements OnInit {
   years: any;
   batchId: string;
   selectedYear: any = null; // Initialize as null
@@ -60,7 +60,7 @@ export class BatchListComponent implements OnInit {
     private _router: Router,
     private sanitizer: DomSanitizer,
     private _studentService: StudentService,
-    private _batchService: BatchService,
+    private _studentsService: StudentsService,
   ) {
     this._router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -105,7 +105,7 @@ export class BatchListComponent implements OnInit {
   // New method to load batch data
   loadBatchData() {
     // Load years first
-    this._batchService.getYears(this.batchId).subscribe(res => {
+    this._studentsService.getYears(this.batchId).subscribe(res => {
       this.years = res;
       
       // After getting years, select the first year by default
@@ -160,6 +160,10 @@ export class BatchListComponent implements OnInit {
     
     console.log('Sending pagination request with filter:', gridFilter);
     this.dataSource.loadData(gridFilter);
+  }
+  NavigateToReport(userid){
+    const BatchYearGuid = this.years.find(y=> y.id === this.selectedYear)?.guid
+    this._router.navigate([`/students/${this.batchId}/${BatchYearGuid}/${userid}`]);
   }
   
   BulkUpload(event) {
@@ -272,7 +276,7 @@ export class BatchListComponent implements OnInit {
               r.TenantId = row.TenantId;
             }
             else {
-              this._batchService.openSnackBar("wrong Forment Please check", "Close");
+              this._studentsService.openSnackBar("wrong Forment Please check", "Close");
             }
           }
         });
@@ -303,9 +307,9 @@ export class BatchListComponent implements OnInit {
     if (this.parsedData.length > 0) {
       console.log('Uploading data:', this.parsedData);
       // Send the parsed and mapped JSON data to the API
-      this._batchService.bulkUploadUsers(this.batchId, this.selectedYear, this.parsedData).then(response => {
+      this._studentsService.bulkUploadUsers(this.batchId, this.selectedYear, this.parsedData).then(response => {
         if (response) {
-          this._batchService.onFirstYearGridChanged.next(true);
+          this._studentsService.onFirstYearGridChanged.next(true);
           // Clear the file input and data after successful upload
           this.files = [];
           this.parsedData = [];
@@ -316,12 +320,12 @@ export class BatchListComponent implements OnInit {
       });
     } else {
       console.error('No data to upload');
-      this._batchService.openSnackBar("No data to upload", "Close");
+      this._studentsService.openSnackBar("No data to upload", "Close");
     }
   }
   
   ngOnInit(): void {
-    this.dataSource = new FirstYearStudentDataSource(this._batchService);
+    this.dataSource = new FirstYearStudentDataSource(this._studentsService);
     
     // Make sure the paginator is initialized with default values
     if (this.paginator) {
@@ -331,7 +335,7 @@ export class BatchListComponent implements OnInit {
     
     // Initial load handled by constructor and loadBatchData method
     
-    this._batchService.onFirstYearGridChanged
+    this._studentsService.onFirstYearGridChanged
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(search => {
         // Reset pagination to first page when data is refreshed
@@ -381,7 +385,7 @@ export class BatchListComponent implements OnInit {
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._studentService.deleteStudent(user.id);
-        this._batchService.onFirstYearGridChanged.next(true);
+        this._studentsService.onFirstYearGridChanged.next(true);
       }
       this.confirmDialogRef = null;
     });
@@ -397,7 +401,7 @@ export class BatchListComponent implements OnInit {
         }
       });
       this.dialogRef.afterClosed().subscribe(r => {
-        this._batchService.onFirstYearGridChanged.next(true);
+        this._studentsService.onFirstYearGridChanged.next(true);
       })
     })
   }
@@ -413,7 +417,7 @@ export class BatchListComponent implements OnInit {
       }
     });
     this.dialogRef.afterClosed().subscribe(r => {
-      this._batchService.onFirstYearGridChanged.next(true);
+      this._studentsService.onFirstYearGridChanged.next(true);
     })
   }
 }
@@ -425,13 +429,13 @@ export class FirstYearStudentDataSource extends DataSource<any> {
   data: Array<any> = []
   
   constructor(
-    private _batchService: BatchService
+    private _studentsService: StudentsService
   ) {
     super();
   }
 
   connect(): Observable<any[]> {
-    return this._batchService.onFirstYearGridChanged;
+    return this._studentsService.onFirstYearGridChanged;
   }
 
   disconnect(): void {
@@ -443,7 +447,7 @@ export class FirstYearStudentDataSource extends DataSource<any> {
     // Log the filter being used
     console.log('DataSource loading with filter:', gridFilter);
     
-    this._batchService.getStudentForGrid(gridFilter)
+    this._studentsService.getStudentForGrid(gridFilter)
       .pipe(
         catchError((error) => {
           console.error('Error loading grid data:', error);

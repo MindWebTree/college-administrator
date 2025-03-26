@@ -1,0 +1,28 @@
+<div class="p-8" [formGroup]="SendReport">
+    <h2 class="text-3xl font-medium">Settings</h2>
+    <h3 class="mt-2 text-xl">Send Student Report</h3>
+    <mat-form-field class="mt-2">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="SelectDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <div>
+        <h2>Send to</h2>
+        <mat-radio-group class="pt-2" formControlName="UserType">
+            <mat-radio-button value="1">Students</mat-radio-button>
+            <mat-radio-button value="2">Parents</mat-radio-button>
+            <mat-radio-button value="3">Both</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <div class="mt-2">
+        <h2>Report type</h2>
+        <mat-radio-group class="pt-2" formControlName="ReportType" >
+            <mat-radio-button value="1">Attendance</mat-radio-button>
+            <mat-radio-button value="2">Assessment</mat-radio-button>
+            <mat-radio-button value="3">Both</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <button class="mt-2" mat-raised-button (click)="sendReport()">Send IA Report</button>
+   
+</div>

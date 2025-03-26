@@ -199,5 +199,41 @@ export const appRoutes: Route[] = [
             {path: 'batch', loadChildren: () => import('app/modules/admin/Batch/batch.routes')},
         ]
     },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'students', loadChildren: () => import('app/modules/admin/students/student.routes')},
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'setting', loadChildren: () => import('app/modules/admin/settings/settings.routes')},
+        ]
+    },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'hod', loadChildren: () => import('app/modules/admin/HOD/HOD.routes')},
+        ]
+    },
     //dashboard End
 ];

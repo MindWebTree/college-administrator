@@ -1,0 +1,240 @@
+<div class="p-8">
+    <div class="flex gap-2 justify-between">
+        <div class="flex gap-2">
+            <h2 class="text-2xl pt-3">{{studentDetail?.firstName}} {{studentDetail?.lastName}}</h2>
+            <mat-form-field class="min-w-50 subject-field">
+                <mat-select [formControl]="Subject">
+                    <mat-option [value]="subject.id" *ngFor="let subject of subjects"
+                        (click)="Search()">{{subject.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    
+    <div class="flex gap-2 justify-end">
+        <div *ngIf="!ShowInput" class="flex items-center gap-2">      
+            <button (click)="UploadSheet()" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
+                <mat-icon class="text-white">cloud_upload</mat-icon> Bulk Upload</button>  
+        </div>
+        <div *ngIf="ShowInput" class="flex gap-2 items-center">
+            <mat-form-field class="min-w-50">
+                <mat-label>Select Subject</mat-label>
+                <mat-select [formControl]="BulkSubject">
+                    <mat-option [value]="subject.id" *ngFor="let subject of subjects"
+                        (click)="Search()">{{subject.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Choose a date</mat-label>
+                <input matInput [matDatepicker]="picker" [formControl]="BulkDate">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field class="min-w-50">
+                <mat-label>IA No.</mat-label>            
+                <input matInput placeholder="Theory" [formControl]="IANo">
+            </mat-form-field>
+    
+            <button (click)="BulkUpload($event)" class="p-2 cursor-pointer bg-primary min-w-min text-white flex items-center gap-2">
+                <mat-icon class="text-white">cloud_upload</mat-icon> Upload Sheet</button>
+            <input #fileUpload type="file" style="display: none" class="input_fileupload--hidden"
+                (change)="onFileSelected($event)" [(ngModel)]="inputFileName" [accept]="accept"
+                [ngModelOptions]="{standalone: true}">        
+            <div class="flex items-center" *ngFor="let f of files">
+                <span *ngIf="files">{{f.name}}</span>
+                <!-- <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel?deleteButtonLabel:null"
+                    (click)="removeFile($event,f)">
+                    <mat-icon class="text-black">close</mat-icon>
+                </button> -->
+            </div>
+            <button class="h-[50px]" *ngIf="files.length>0" mat-raised-button id="add-student-button" (click)="OnBulkUpdateusers()"
+                aria-label="add qbank" [disabled]="isExcekinRigthformrt">
+                Submit
+            </button>
+            
+            <button mat-icon-button color="primary" (click)="removeFields()">
+                <mat-icon class="text-black">close</mat-icon>
+            </button>
+        </div>
+            
+    </div>
+    <mat-tab-group class="student-report-list mt-2" [selectedIndex]="selected.value"
+    (selectedIndexChange)="yearSelected($event)">
+        <mat-tab label="Interal Assessment"> 
+            <div class="my-3 flex justify-between">      
+                
+            </div>
+            <h2 class="mb-2" *ngIf="dataSource.data?.length <= 0">No Data found</h2>
+            <table *ngIf="dataSource.data?.length >= 0" mat-table [dataSource]="dataSource.data" class="">              
+                <ng-container matColumnDef="Date">
+                  <th mat-header-cell *matHeaderCellDef> Cumulative Date </th>
+                  <td mat-cell *matCellDef="let element"> Till {{element.cumulativeDate | date: 'dd/MM/yy'}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="Theory">
+                  <th mat-header-cell *matHeaderCellDef> Total Theory <br>(100 Marks) </th>
+                  <td mat-cell *matCellDef="let element"> {{element.totalTheory}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="Practical">
+                  <th mat-header-cell *matHeaderCellDef> Total Practical <br> (100 Marks) </th>
+                  <td mat-cell *matCellDef="let element"> {{element.totalPractical}} </td>
+                </ng-container>
+                <ng-container matColumnDef="Total">
+                  <th mat-header-cell *matHeaderCellDef> Total 200 Marks <br> (Theory+Practical) </th>
+                  <td mat-cell *matCellDef="let element"> {{element.totalMarks}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Modify">
+                    <th mat-header-cell *matHeaderCellDef> Modify </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <div class="flex gap-2">
+                            <mat-icon class="cursor-pointer" (click)="deleteAssessment(element)">delete</mat-icon>
+                            <mat-icon class="cursor-pointer" (click)="editAssessments(element)">edit</mat-icon>
+                        </div>
+                    </td>
+                  </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+
+              <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="6" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
+        </mat-tab>
+        <mat-tab label="Attendance"> 
+            <div class="my-3 flex justify-between">     
+            </div>
+            <h2 class="mb-2" *ngIf="AttendancedataSource.data?.length <= 0">No Data found</h2>
+            <table *ngIf="AttendancedataSource.data?.length >= 0" mat-table [dataSource]="AttendancedataSource.data" class="">              
+                <ng-container matColumnDef="Date">
+                  <th mat-header-cell *matHeaderCellDef> Cumulative Date </th>
+                  <td mat-cell *matCellDef="let element"> {{element.cumulativeDate | date: 'dd/MM/yy'}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="Theory">
+                  <th mat-header-cell *matHeaderCellDef> Theory </th>
+                  <td mat-cell *matCellDef="let element"> {{element.theoryAttendance}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="Practical">
+                  <th mat-header-cell *matHeaderCellDef> Practical </th>
+                  <td mat-cell *matCellDef="let element"> {{element.practicalAttendance}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Modify">
+                    <th mat-header-cell *matHeaderCellDef> Modify </th>
+                    <td mat-cell *matCellDef="let element"> 
+                        <div class="flex gap-2">
+                            <mat-icon class="cursor-pointer" (click)="deleteAttendance(element)">delete</mat-icon>
+                            <mat-icon class="cursor-pointer" (click)="editAttendances(element)">edit</mat-icon>
+                        </div>
+                    </td>
+                  </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="AttendancedisplayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: AttendancedisplayedColumns;"></tr>
+              </table>
+
+              <mat-paginator class="mt-8 flex justify-end" [length]="AttendancedataSource.paginationData? AttendancedataSource.paginationData.count:0" [pageSize]="6" (page)="getNextAttendance($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+
+        </mat-tab>
+    </mat-tab-group>
+</div>
+<ng-template #bulkUpload class="w-94">
+    <div class="text-right mt-2">
+        <mat-icon (click)="CloseDialog()">close</mat-icon>
+    </div>
+    <div class="flex flex-col gap-2">
+        <mat-form-field class="min-w-50">
+            <mat-select [formControl]="BulkSubject">
+                <mat-option [value]="subject.id" *ngFor="let subject of subjects"
+                    (click)="Search()">{{subject.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" [formControl]="BulkDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <button (click)="BulkUpload($event)" class="p-2 cursor-pointer bg-primary min-w-min text-white flex items-center gap-2">
+            <mat-icon class="text-white">add</mat-icon> Bulk Upload</button>
+        <input #fileUpload type="file" style="display: none" class="input_fileupload--hidden"
+            (change)="onFileSelected($event)" [(ngModel)]="inputFileName" [accept]="accept"
+            [ngModelOptions]="{standalone: true}">
+    
+        <div *ngFor="let f of files">
+            <span *ngIf="files">{{f.name}}</span>
+            <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel?deleteButtonLabel:null"
+                (click)="removeFile($event,f)">
+                <mat-icon class="text-black">close</mat-icon>
+            </button>
+        </div>
+        <button *ngIf="files.length>0" mat-raised-button id="add-student-button" (click)="OnBulkUpdateusers()"
+            aria-label="add qbank" [disabled]="isExcekinRigthformrt">
+            <mat-icon>add</mat-icon> Submit
+        </button>
+    </div>
+</ng-template>
+<ng-template #apiResponsePopup class="w-94">
+    <div class="text-right mt-2">
+        <mat-icon class="cursor-pointer" (click)="CloseDialog()">close</mat-icon>
+    </div>
+    <div class="flex flex-col gap-2 border p-4">
+        <div class="border border-dashed px-2" *ngFor="let res of apiResponse">
+            {{res}}
+        </div>
+    </div>
+</ng-template>
+<ng-template #editAssessment class="w-94">
+    <div class="text-right mt-2">
+        <mat-icon class="cursor-pointer" (click)="CloseDialog()">close</mat-icon>
+    </div>
+    <form [formGroup]="UpdateAssessment">
+    <div class="flex flex-col gap-2">
+
+        <mat-form-field class="min-w-50">
+            <mat-label>Total Theory</mat-label>            
+            <input matInput placeholder="Theory" formControlName="Theory">
+        </mat-form-field>
+
+        <mat-form-field class="min-w-50">
+            <mat-label>Total Practical</mat-label>
+            <input matInput placeholder="Practical" formControlName="Practical">
+        </mat-form-field>
+
+        <mat-form-field class="min-w-50">
+            <mat-label>Total Marks</mat-label>
+            <input matInput placeholder="Total Marks" formControlName="TotalMarks">
+        </mat-form-field>
+
+        <button (click)="updateAssessment()" class="p-2 cursor-pointer bg-primary text-white flex items-center gap-2 w-48 justify-center">Update Assessment</button>        
+    </div>
+    </form>
+</ng-template>
+<ng-template #editAttendance class="w-94">
+    <div class="text-right mt-2">
+        <mat-icon class="cursor-pointer" (click)="CloseDialog()">close</mat-icon>
+    </div>
+    <form [formGroup]="UpdateAttendance">
+    <div class="flex flex-col gap-2">
+
+        <mat-form-field class="min-w-50">
+            <mat-label>Total Theory</mat-label>            
+            <input matInput placeholder="Theory" formControlName="Theory">
+        </mat-form-field>
+
+        <mat-form-field class="min-w-50">
+            <mat-label>Total Practical</mat-label>
+            <input matInput placeholder="Practical" formControlName="Practical">
+        </mat-form-field>
+
+        <button (click)="updateAttendance()" class="p-2 cursor-pointer bg-primary text-white flex items-center gap-2 w-48 justify-center">Update Attendance</button>        
+    </div>
+    </form>
+</ng-template>

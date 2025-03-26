@@ -25,6 +25,20 @@ export const AdminNavigation: FuseNavigationItem[] = [
         children: [],
         roles: ["CollegeAdministrator"]
     },
+    {
+        id: 'Student',
+        title: 'Student',
+        type: 'collapsable',
+        children: [
+            //     {
+            //         id: 'createaccount',
+            //         title: 'Create Account',
+            //         type: 'basic',
+            //         link: ''
+            // },
+        ],
+        roles: ["CollegeAdministrator"]
+    },
     // {
     //     id: 'Students',
     //     title: 'Students',
@@ -92,7 +106,23 @@ export const AdminNavigation: FuseNavigationItem[] = [
             },
         ],
         roles: ["CollegeAdministrator"]
-    }
+    },
+    {
+        id: 'Settings',
+        title: 'Settings',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/setting',
+        roles: ["CollegeAdministrator","HOD"]
+    },
+    {
+        id: 'HOD',
+        title: 'HOD',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/hod/list',
+        roles: ["CollegeAdministrator","HOD"]
+    },
 ];
 export const LecturerNavigation: FuseNavigationItem[] = [
     {
@@ -173,6 +203,22 @@ export const StudentNavigation: FuseNavigationItem[] = [
         link: '/qbank/exam-list'
     },
 ];
+export const HODNavigation: FuseNavigationItem[] = [
+    {
+            id: 'Student',
+            title: 'Student',
+            type: 'collapsable',
+            children: [
+                //     {
+                //         id: 'createaccount',
+                //         title: 'Create Account',
+                //         type: 'basic',
+                //         link: ''
+                // },
+            ],
+            roles: ["CollegeAdministrator"]
+    },
+];
 export const defaultNavigation: FuseNavigationItem[] = [
     // {
     //     id: 'example',
@@ -188,7 +234,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'basic',
         icon: 'heroicons_outline:chart-pie',
         link: '/dashboard',
-        roles: ["Lecturer", "CollegeAdministrator", "Student"]
+        roles: ["Lecturer", "CollegeAdministrator", "Student","HOD"]
     },  
     {
         id: "ADrPLEXUS Q'Bank",
@@ -410,7 +456,39 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link:'/qbank/game-analytics/:guid',
         children: [],
         roles: ["Student"]
-    }
+    },
+    {
+        id: 'Students-List',
+        title: 'Students-List',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/students/:guid',
+        roles: ["CollegeAdministrator","HOD"]
+    },
+    {
+        id: 'Students-Report',
+        title: 'Students-Report',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/students/:guid/:batchYearId/:id',
+        roles: ["CollegeAdministrator","HOD"]
+    },
+    {
+        id: 'Setting',
+        title: 'Setting',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/setting',
+        roles: ["CollegeAdministrator","HOD"]
+    },
+    {
+        id: 'ListofHOD',
+        title: 'ListofHOD',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/hod/list',
+        roles: ["CollegeAdministrator","HOD"]
+    },
 
 ];
 export const compactNavigation: FuseNavigationItem[] = [

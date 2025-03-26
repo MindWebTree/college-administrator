@@ -1,0 +1,162 @@
+<div class="p-2 add-student">
+    <div class="flex item-center justify-between">
+        <h2 class="text-xl">{{dialogTitle}}</h2>
+        <button (click)="CloseMatdilog()" class="float-right"><mat-icon>close</mat-icon></button>
+    </div>
+
+    <form [formGroup]="lecturerForm">
+        <div class="py-4 flex justify-center">
+            <div>
+                <img class="rounded-full w-30 h-auto"   [src]="lecturerImage || 'my-images/default-img.png'">
+            </div>
+
+            <div class="flex flex-col justify-center gap-2 ml-4">
+                <label class="custom-file-upload">Change Photo
+                <input type="file" class="image-upload" (change)="onselectFile($event)" formControlName="lecturerImage"></label>
+                <button mat-button class="delete_btn text-primary bg-primary/10" (click)="removeSelectedFile()">Delete Photo</button>
+                             <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('lecturerImage').invalid &&  lecturerForm.get('lecturerImage').touched ">Select Image</mat-error>
+            </div>
+
+        </div>
+
+        <div class="sm:flex items-baseline edit_profile w-full gap-4" >
+            <label class="">Registered No.</label><span>:</span>
+            <!-- <h2 class="pb-4" >{{employeeNum}}</h2> -->
+            <mat-form-field class="w-full"  >
+                <input matInput class="border" formControlName="EmployeeNo" placeholder="A2321313"  required >
+                  <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('EmployeeNo').invalid &&  lecturerForm.get('EmployeeNo').touched ">Please Write Employee No</mat-error>
+            </mat-form-field>
+          
+        </div>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">First Name</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input matInput class="border" formControlName="FirstName" placeholder="First Name"  required>
+                  <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('FirstName').invalid &&  lecturerForm.get('FirstName').touched ">Please Type FirstName</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Last Name</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input matInput class="border" formControlName="LastName" placeholder="last  Name"  required>
+                  <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('LastName').invalid &&  lecturerForm.get('LastName').touched ">Please Type LastName</mat-error>
+            </mat-form-field>
+        </div>
+       
+     
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Year</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select matNativeControl  required formControlName="CourseYear" placeholder="Year">
+                    <mat-option [value]="Course" *ngFor="let Course of courses;let i=index">{{Course.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Subject</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select matNativeControl  required formControlName="Subject" placeholder="Subject">
+                    <mat-option [value]="Subject.id" *ngFor="let Subject of subjects;let i=index">{{Subject.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!-- <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Designation</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select matNativeControl  required formControlName="Designation" placeholder="Designation">
+                    <mat-option [value]="designation.id" *ngFor="let designation of designationList;let i=index">{{designation.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>      -->
+        <div class="sm:flex items-baseline edit_profile w-full gap-4" >
+            <label class="">Qualification</label><span>:</span>
+            <mat-form-field class="w-full"  >
+                <input matInput class="border" formControlName="Qualification" placeholder="Qualification"  required >
+                  <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('Qualification').invalid &&  lecturerForm.get('Qualification').touched ">Please Write Qualification</mat-error>
+            </mat-form-field>          
+        </div>   
+        <!-- <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Year</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select multiple matNativeControl required formControlName="CourseYear" placeholder="CourseYear">
+                    <mat-option [value]="Course.id" *ngFor="let Course of courses;let i=index"
+                        (click)="onSelectCourseYear(Course)"
+                        >{{Course.name}}</mat-option>
+                </mat-select>
+                <mat-error class="error-message  ml-1"
+                    *ngIf="addLecturerError && lecturerForm.get('CourseYear').invalid &&  lecturerForm.get('CourseYear').touched ">Please
+                    Select Subjects</mat-error>
+            </mat-form-field>
+        </div> -->
+        <!-- <mat-chip-listbox #chipList class="subject_chips error-lecturer">
+            <mat-chip-option *ngFor="let c of courseList,let i = index;" [selectable]="true" selected="true"
+                [removable]="false" class="text-primary">
+                {{c.courseTitle}} <button (click)="removeCourseYear(i,c.ID)"><mat-icon color="primary"
+                        class="text-primary mt-[5px]">cancel</mat-icon></button>
+            </mat-chip-option>
+        </mat-chip-listbox> -->
+        <!-- <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Qbanks</label><span>:</span>
+            <mat-form-field appearance="fill" class="w-full">
+                <mat-select multiple matNativeControl required formControlName="Subjects" placeholder="Subjects">
+                    <mat-option [value]="subject.id" *ngFor="let subject of subjectDetails;let i=index"
+                        (click)="onSelectSubject(subject)"
+                        [selected]="lecturerForm.get('Subjects').value?.includes(subject.id)">{{subject.title}}</mat-option>
+                </mat-select>
+                <mat-error class="error-message  ml-1"
+                    *ngIf="addLecturerError && lecturerForm.get('Subjects').invalid &&  lecturerForm.get('Subjects').touched ">Please
+                    Select Subjects</mat-error>
+            </mat-form-field>
+        </div> -->
+        <mat-chip-listbox #chipList class="subject_chips error-lecturer">
+            <mat-chip-option *ngFor="let c of subjectList,let i = index;" [selectable]="true" selected="true"
+                [removable]="false" class="text-primary">
+                {{c.subjectTitle}} <button (click)="removeSubjects(i,c.ID)"><mat-icon color="primary"
+                        class="text-primary mt-[5px]">cancel</mat-icon></button>
+            </mat-chip-option>
+        </mat-chip-listbox>
+      
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Mobile No.</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input matInput class="border" formControlName="PhoneNumber" placeholder="Phone Number"  required>
+                 <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('PhoneNumber').invalid &&  lecturerForm.get('PhoneNumber').touched ">Please Type PhoneNumber</mat-error>
+            </mat-form-field>
+        </div>
+      
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Email</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input type="email" matInput class="border" formControlName="Email" placeholder="Email"  required>
+         <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('Email').invalid &&  lecturerForm.get('Email').touched ">Please Type Email</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Description</label><span>:</span>
+            <mat-form-field class="w-full">
+                <textarea matInput matInput class="border" formControlName="Description" placeholder="Description"  required></textarea>
+         <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('Description').invalid &&  lecturerForm.get('Description').touched ">Please Write Description</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="sm:flex items-baseline edit_profile w-full gap-4">
+            <label class="">Password</label><span>:</span>
+            <mat-form-field class="w-full">
+                <input type="email" matInput class="border" formControlName="Password" placeholder="Password"  >
+         <mat-error class="error-message  ml-1" *ngIf="addLecturerError && lecturerForm.get('Password').invalid &&  lecturerForm.get('Password').touched">
+             <ng-container *ngIf="lecturerForm.get('Password').errors?.required">Please Type  Password</ng-container>
+                <ng-container *ngIf="lecturerForm.get('Password').errors?.minlength">Password must be at least 6 characters long</ng-container>
+         </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="sm:flex items-center edit_profile w-full gap-4">
+            <label class="">Status</label><span>:</span>
+            <mat-slide-toggle formControlName="IsActive"><span>{{this.lecturerForm.get('IsActive')?.value ? 'Active' : 'Inactive'}}</span></mat-slide-toggle>
+        </div>
+        <div class="text-center sm:flex items-baseline edit_profile w-full gap-4 justify-center">
+          
+            <button *ngIf="this.action === 'new'" mat-button class="save_btn font-normal" (click)="onSave()" aria-label="SAVE">Save</button>
+            <button *ngIf="this.action === 'edit'" mat-button class="save_btn font-normal" (click)="onSave()" aria-label="UPDATE">Update</button>
+            <button mat-button class="cancel_btn font-normal bg-primary" (click)="CloseMatdilog()">Cancel</button>
+        </div>
+    </form>
+</div>

@@ -8,3 +8,19 @@
     justify-content: center;
     margin-bottom: 20px;
 }
+::ng-deep .create-batchs .mat-mdc-dialog-container{
+    width: 700px;
+    max-height: 80vh;
+}
+.batch-year-label {
+    min-width: 110px;
+    padding-top: 16px;
+}
+.createbatch-btn {
+    background-color: #28C397 !important;
+    color: white !important;
+    border-radius: 5px !important;
+}
+.cancel-btn {
+    border-radius: 5px !important;
+}

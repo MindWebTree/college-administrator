@@ -3,34 +3,35 @@
         <form>
             <div class="flex flex-wrap sm:flex-nowrap justify-between py-2 items-center">
                 <div>
-                    <h2 class="text-xl font-medium text-[#505050]">{{CourseYear}} ({{dataSource.paginationData? dataSource.paginationData.count:0}})</h2>
+                    <h2 class="text-xl font-medium text-[#505050]">HOD(Head of Department)</h2>
                 </div>
             
           
                 <div class="flex flex-wrap sm:flex-nowrap gap-2 items-center">
-                    <div class="mt-2 md:mt-0 flex gap-2 items-center">
+                    <!-- <div class="mt-2 md:mt-0 flex gap-2 items-center">
                         <h2>Subject :</h2>
                         <form>
-                        <mat-form-field class="min-w-50">
-                            <mat-select [formControl]="Subject">
-                                <mat-option value="0" (click)="Search()">All</mat-option>
-                                <mat-option [value]="subject.id" *ngFor="let subject of subjects" (click)="Search()">{{subject.name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </form>
+                            <mat-form-field class="min-w-50">
+                                <mat-select [formControl]="Subject">
+                                    <mat-option value="0" (click)="Search()">All</mat-option>
+                                    <mat-option [value]="subject.id" *ngFor="let subject of subjects"
+                                        (click)="Search()">{{subject.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
                     </div>
-                <!-- search -->
-                 <div class="filter_heading">
+                    <div class="filter_heading">
                         Search :
                     </div>
-                 <div class="search-input">
-                <mat-icon class="">search</mat-icon>
-                <mat-form-field mat-no-float class="m-0" floatLabel="never">
-       
-                    <input matInput id="search" placeholder="Search" [formControl]="searchInput" class="">
-                </mat-form-field>
-            </div>
-                <button class="add-data"(click)="addLecture()"><mat-icon class="text-white cursor-pointer">add</mat-icon> ADD</button>
+                    <div class="search-input">
+                        <mat-icon class="">search</mat-icon>
+                        <mat-form-field mat-no-float class="m-0" floatLabel="never">
+                
+                            <input matInput id="search" placeholder="Search" [formControl]="searchInput" class="">
+                        </mat-form-field>
+                    </div> -->
+                    <button class="add-data" (click)="addLecture()"><mat-icon class="text-white cursor-pointer">add</mat-icon>
+                        ADD</button>
                 </div>
             </div>
         </form>
@@ -82,9 +83,9 @@
                         <div class="text-[#A9A9A9] font-normal">Mobile No.<br><span class="text-[#505050]">{{user.phoneCountryCode}} {{user.phoneNumber}}</span></div>
                         <div class="text-[#A9A9A9] font-normal">Email<br><span class="text-[#505050]">{{user.email}}</span></div>
                     </div>
-                    <a>
+                    <!-- <a>
                         <button class="view_report_card text-white" (click)="onNavigate(user)">View More Bio</button>
-                    </a>
+                    </a> -->
                 </div>
                 <div></div>
             </div>
