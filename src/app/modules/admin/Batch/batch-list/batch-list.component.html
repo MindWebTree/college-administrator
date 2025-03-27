@@ -7,6 +7,8 @@
             <div class="my-3 flex justify-between">            
                 <h2 class="text-xl">Personal Info</h2>
                 <div class="flex items-center gap-2">
+                  <button (click)="getSelectedRows()" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
+                    <mat-icon class="text-white">check_circle</mat-icon> Assign Group</button>
                   <button (click)="addStudent(element)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
                     <mat-icon class="text-white">add</mat-icon> Add</button>
                   <button (click)="BulkUpload($event)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
@@ -43,6 +45,34 @@
                 <ng-container matColumnDef="UpdatedAt">
                   <th mat-header-cell *matHeaderCellDef> Updated At </th>
                   <td mat-cell *matCellDef="let element"> {{element.updatedOn | date: 'dd/MM/yy'}} </td>
+                </ng-container>
+
+                                <ng-container matColumnDef="Select">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox
+                      [checked]="isAllSelected()"
+                      [indeterminate]="isSomeSelected()"
+                      (change)="toggleAllSelection($event)">
+                      <!-- <b *ngIf="getSelectedCount() > 0">Selected: {{getSelectedCount()}}</b> -->
+                      <ng-container *ngIf="getSelectedCount() > 0; else groupName">
+                        <b>Selected: {{getSelectedCount()}}</b>
+                      </ng-container>
+                      <ng-template #groupName>
+                        <b>Group Name</b>
+                      </ng-template>
+                    </mat-checkbox>
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    <ng-container *ngIf="element.groupName; else checkboxTemplate">
+                      {{element.groupName}}
+                    </ng-container>
+                    <ng-template #checkboxTemplate>
+                      <mat-checkbox
+                        [checked]="element.selected"
+                        (change)="toggleSelection(element, $event)">
+                      </mat-checkbox>
+                    </ng-template>
+                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Buttons">

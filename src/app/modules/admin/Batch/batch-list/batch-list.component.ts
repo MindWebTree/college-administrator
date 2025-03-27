@@ -18,12 +18,13 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { studentModel } from '../../student-management/student-management.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { XlsxToJsonService } from '../../common/xlsToJSON';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @Component({
   selector: 'app-batch-list',
   standalone: true,
-  imports: [CommonModule, MatPaginator, MatTabsModule, MatTableModule, MatIconModule],
+  imports: [CommonModule, MatPaginator, MatTabsModule, MatTableModule, MatIconModule, MatCheckboxModule],
   providers: [StudentService, XlsxToJsonService],
   templateUrl: './batch-list.component.html',
   styleUrl: './batch-list.component.scss'
@@ -32,7 +33,7 @@ export class BatchListComponent implements OnInit {
   years: any;
   batchId: string;
   selectedYear: any = null; // Initialize as null
-  displayedColumns: string[] = ['Name', 'RollNo', 'UpdatedAt', 'Buttons'];
+  displayedColumns: string[] = ['Name', 'RollNo', 'UpdatedAt', 'Select', 'Buttons'];
   dataSource: FirstYearStudentDataSource;
   selected = new FormControl(0);
   dialogRef: any;
@@ -415,6 +416,43 @@ export class BatchListComponent implements OnInit {
     this.dialogRef.afterClosed().subscribe(r => {
       this._batchService.onFirstYearGridChanged.next(true);
     })
+  }
+
+  isAllSelected() {
+    if (!this.dataSource?.data) return false;
+    return this.dataSource.data.length > 0 && this.dataSource.data.every(row => row.selected);
+  }
+
+  isSomeSelected() {
+    if (!this.dataSource?.data) return false;
+    return this.dataSource.data.some(row => row.selected) && !this.isAllSelected();
+  }
+
+  toggleAllSelection(event: any) {
+    if (!this.dataSource?.data) return;
+    const checked = event.checked;
+    this.dataSource.data.forEach(row => {
+      row.selected = checked;
+    });
+  }
+
+  toggleSelection(row: any, event: any) {
+    row.selected = event.checked;
+  }
+
+  getSelectedRows() {
+    if (!this.dataSource?.data) return;
+    const selectedRows = this.dataSource.data.filter(row => row.selected);
+    const selectedIds = selectedRows.map(row => row.id);
+    console.log('Selected Row IDs:', selectedIds);
+    console.log('Selected Rows:', selectedRows);
+  }
+
+  getSelectedCount(): number {
+    if (!this.dataSource?.data) {
+      return 0;
+    }
+    return this.dataSource.data.filter(item => item.selected).length;
   }
 }
 
