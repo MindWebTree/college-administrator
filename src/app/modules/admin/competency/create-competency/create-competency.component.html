@@ -6,7 +6,7 @@
             <h4 class="label">Batch *</h4>
             <mat-form-field>
                 <mat-select formControlName="Batch">
-                    <mat-option value="batch.id" (click)="getBatchYear(batch.guid)" *ngFor="let batch of batches">{{batch.name}}</mat-option>
+                    <mat-option [value]="batch.id" (click)="getBatchYear(batch.guid)" *ngFor="let batch of batches">{{batch.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -19,28 +19,31 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        
+        <div class="flex gap-2">
+            <h4 class="label">Subject *</h4>
+            <mat-form-field>
+                <mat-select formControlName="Subject">
+                    <mat-option [value]="subject.id" (click)="getRubric(subject.id)" *ngFor="let subject of subjects">{{subject.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
 
         <div class="flex gap-2">
             <h4 class="label">Practical Team *</h4>
-            <mat-form-field>
-                <mat-select formControlName="Team">
-                    <mat-option value="1">A1-M1</mat-option>
-                    <mat-option value="2">A1-M2</mat-option>
-                    <mat-option value="3">A1-M3</mat-option>
-
-                    <mat-option value="4">A2-M4</mat-option>
-                    <mat-option value="5">A2-M5</mat-option>
-                    <mat-option value="6">A3-M6</mat-option>
-
-                    <mat-option value="7">B1-M7</mat-option>
-                    <mat-option value="8">B1-M8</mat-option>
-                    <mat-option value="9">B1-M9</mat-option>
-
-                    <mat-option value="10">B2-M10</mat-option>
-                    <mat-option value="11">B2-M11</mat-option>
-                    <mat-option value="12">B3-M12</mat-option>
-                </mat-select>
-            </mat-form-field>
+            <div class="w-full">
+                <mat-form-field>
+                    <mat-select formControlName="Team">
+                        <mat-option [value]="team.id" (click)="TeamSelected(team)" *ngFor="let team of teams">{{team.name}}</mat-option>
+                    </mat-select>                    
+                </mat-form-field>   
+                <div *ngIf="SelectedTeam" class="flex gap-4 pb-4">                
+                    <div *ngIf="SelectedTeam?.mentorName">Mentor : {{SelectedTeam?.mentorName}}</div>
+                    <div *ngIf="SelectedTeam?.noOfStudents">Students : {{SelectedTeam?.noOfStudents}}</div>
+                </div> 
+            </div>
+            
         </div>
 
         <!-- <div class="flex gap-2">
@@ -74,16 +77,6 @@
                 </mat-error>
               </mat-form-field>
         </div>   -->
-
-        <div class="flex gap-2">
-            <h4 class="label">Subject *</h4>
-            <mat-form-field>
-                <mat-select formControlName="Subject">
-                    <mat-option [value]="subject.id" (click)="getRubric(subject.id)" *ngFor="let subject of subjects">{{subject.name}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-        </div>
 
         <div class="flex gap-2">
             <h4 class="label pt-0">Certifiable Competency skills *</h4>

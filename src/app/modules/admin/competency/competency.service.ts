@@ -120,6 +120,9 @@ export class CompetencyService {
   getRubricConstructiongird(_gridFilter: any): Observable<any> {
     return this._httpClient.post(`${environment.apiURL}/rubricconstruction/list`, { });
   }
+  getTeams(_gridFilter: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/teammanagement/faculty-team`, { ..._gridFilter });
+  }
   getRubricConstructionbyid(id): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-by-guid/${id}`, { }).subscribe(res => {

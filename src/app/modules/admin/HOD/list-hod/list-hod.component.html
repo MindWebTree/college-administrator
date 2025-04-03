@@ -32,6 +32,23 @@
                     </div> -->
                     <button class="add-data" (click)="addLecture()"><mat-icon class="text-white cursor-pointer">add</mat-icon>
                         ADD</button>
+                    <button (click)="BulkUpload($event)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
+                        <mat-icon class="text-white">add</mat-icon> Bulk Upload</button>
+                      <input #fileUpload type="file" style="display: none" class="input_fileupload--hidden"
+                        (change)="onFileSelected($event)" [(ngModel)]="inputFileName" [accept]="accept"
+                        [ngModelOptions]="{standalone: true}">
+                    
+                      <div *ngFor="let f of files">
+                        <span *ngIf="files">{{f.name}}</span>
+                        <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel?deleteButtonLabel:null"
+                          (click)="removeFile($event,f)">
+                          <mat-icon class="text-black">close</mat-icon>
+                        </button>
+                      </div>
+                      <button *ngIf="files.length>0" mat-raised-button id="add-student-button" (click)="OnBulkUpdateusers()"
+                        aria-label="add qbank" [disabled]="isExcekinRigthformrt">
+                        <mat-icon>add</mat-icon> Submit
+                    </button>
                 </div>
             </div>
         </form>

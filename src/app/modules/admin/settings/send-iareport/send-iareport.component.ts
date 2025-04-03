@@ -43,7 +43,7 @@ export class SendIAReportComponent {
     }
     console.log(req)
     this._servicesService.sendReport(req).subscribe(res=>{
-      this._servicesService.openSnackBar('Report Send Sucessfully','close')
+      this._servicesService.openSnackBar('Report Scheduled Sucessfully','close')
     })
   }
 }

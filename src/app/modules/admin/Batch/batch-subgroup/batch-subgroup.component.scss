@@ -22,11 +22,13 @@ button#add-student-button {
 ::ng-deep .year-list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Name.mat-column-Name {
     max-width: 100px;
 }
-::ng-deep .batch_list th.mat-mdc-header-cell.mdc-data-table__header-cell.cdk-header-cell.cdk-column-Select.mat-column-Select {
+::ng-deep .batch_list th.mat-mdc-header-cell.mdc-data-table__header-cell.cdk-header-cell.cdk-column-Select.mat-column-Select,
+::ng-deep .batch_list th.mat-mdc-header-cell.mdc-data-table__header-cell.cdk-header-cell.cdk-column-Promote.mat-column-Promote {
     max-width: 100px;
     text-align: center;
 }
-::ng-deep .batch_list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Select.mat-column-Select {
+::ng-deep .batch_list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Select.mat-column-Select,
+::ng-deep .batch_list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Promote.mat-column-Promote {
     max-width: 100px;
     text-align: center;
 }

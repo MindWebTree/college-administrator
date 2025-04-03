@@ -15,8 +15,8 @@
                             <mat-option>1</mat-option>
                         </mat-select> -->
                         <mat-select disableRipple [(ngModel)]="LevelID" (selectionChange)="search()" formControlName="Level">
-                            <mat-option [value]="0" selected>All</mat-option>
-                            <mat-option *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
+                            <mat-option class="field-option" [value]="0" selected>All</mat-option>
+                            <mat-option class="field-option" *ngFor="let level of competenecyLevel" [value]="level.id">{{level.title}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div class="filter_heading text-[#505050] text-[14px] font-normal ">
@@ -28,8 +28,8 @@
                             <mat-option>1</mat-option>
                         </mat-select> -->
                         <mat-select disableRipple [(ngModel)]="LevelIDOfQuestion" (selectionChange)="search()" formControlName="LevelOfquestion">
-                            <mat-option [value]="0">All</mat-option>
-                            <mat-option *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
+                            <mat-option class="field-option" [value]="0">All</mat-option>
+                            <mat-option class="field-option" *ngFor="let level of levelquestion" [value]="level.id">{{level.title}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div class="filter_heading text-[#505050] text-[14px] font-normal">
@@ -37,8 +37,8 @@
                     </div>
                     <mat-form-field appearance="fill" class="flex filter_input xyz lg:w-min w-full min-w-50">
                         <mat-select matNativeControl [(ngModel)]="TagID" (selectionChange)="search()" formControlName="tags">
-                            <mat-option [value]="0">All</mat-option>
-                            <mat-option *ngFor="let tag of Tags,let i = index;" [value]="tag.id">{{tag.name}}</mat-option>
+                            <mat-option class="field-option" [value]="0">All</mat-option>
+                            <mat-option class="field-option" *ngFor="let tag of Tags,let i = index;" [value]="tag.id">{{tag.name}}</mat-option>
 
                         </mat-select>
                     </mat-form-field>

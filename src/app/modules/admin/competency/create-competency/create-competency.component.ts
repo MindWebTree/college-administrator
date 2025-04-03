@@ -49,11 +49,13 @@ export class CreateCompetencyComponent  implements OnInit{
   isSelectedChoice: boolean = true;
   errorInForm: boolean = false;
   editDeleteChoiceIndex: number;
+  teams:any;
   
   updatedanswer = "";
   updatedMarks = 0;
   assignmentid:string;
   assignmentDetails:any;
+  SelectedTeam:any;
 
   constructor(
     private _formBuilder : FormBuilder,
@@ -168,6 +170,14 @@ export class CreateCompetencyComponent  implements OnInit{
     this._competencyService.getRubricConstruction(subjectid).subscribe(res=>{
       this.rubricConstructions = res;
     });
+    let req = {
+      batchId: this.CreateCompetency.get('Batch').value,
+      batchYearId: this.CreateCompetency.get('Year').value,
+      subjectId: subjectid,
+    }
+    this._competencyService.getTeams(req).subscribe(res=>{
+      this.teams =res
+    })
   }
   getBatchYear(batchGuid){
     this._competencyService.getBatchYear(batchGuid).subscribe(res=>{
@@ -182,6 +192,9 @@ export class CreateCompetencyComponent  implements OnInit{
         this.rubricConstructions = [];
       }
     });
+  }
+  TeamSelected(team){
+    this.SelectedTeam = team
   }
 
   addAssignment() {

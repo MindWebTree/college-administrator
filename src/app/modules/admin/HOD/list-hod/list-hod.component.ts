@@ -1,6 +1,6 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, TemplateRef, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,6 +19,7 @@ import { GridFilter, lecturerGrid } from '../../common/gridFilter';
 import { HODService } from '../HOD.service';
 import { HODModel } from '../HOD.model';
 import { CreateHODComponent } from '../create-hod/create-hod.component';
+import { XlsxToJsonService } from '../../common/xlsToJSON';
 
 
 @Component({
@@ -47,6 +48,12 @@ export class ListHODComponent {
   currentSearchText: string = ''; // added by harsh to track current search
   courseyearId: string = '';
   CourseYear: string = '';
+  inputFileName: string;
+  @Input() files: File[] = [];
+  @Input() multiple;
+  parsedData: any[] = [];
+  @ViewChild('fileUpload') fileUpload: ElementRef;
+  accept: string = '.xlsx, .xls';
 
   private _unsubscribeAll: Subject<void> = new Subject<void>();
 
@@ -56,6 +63,7 @@ export class ListHODComponent {
   constructor(
     public _matDialog: MatDialog,
     public _route: ActivatedRoute,
+    public xlsxToJsonService: XlsxToJsonService,
     public _formBuilder: FormBuilder,
     private _HODservice: HODService, private _router: Router) {
     this._router.events.pipe(
@@ -74,6 +82,118 @@ export class ListHODComponent {
     this.Subject = new FormControl('0');
     
     
+  }
+
+  BulkUpload(event) {
+    if (this.fileUpload && this.fileUpload.nativeElement) {
+      this.fileUpload.nativeElement.click();
+    }
+  }
+  validate(file: File) {
+    for (const f of this.files) {
+      if (f.name === file.name
+        && f.lastModified === file.lastModified
+        && f.size === f.size
+        && f.type === f.type
+      ) {
+        return false
+      }
+    }
+    return true
+  }
+  
+  public result: any;
+  
+  clearInputElement() {
+    if (this.fileUpload && this.fileUpload.nativeElement) {
+      this.fileUpload.nativeElement.value = '';
+    }
+  }
+  
+  isMultiple(): boolean {
+    return this.multiple
+  }
+  
+  SortOrder(results: any) {
+    return results.sort(function (id1, id2) {
+      return id1.QueueID - id2.QueueID;
+    });
+  }
+  
+  onFileSelected(event: any) {
+    this.files = [];
+    const file = event.target.files[0];
+    if (file) {
+      const object = {};
+      this.xlsxToJsonService.processFileToJson(object, file).subscribe((jsonData: any) => {
+        const sheetData = jsonData.sheets.Sheet1; // Access Sheet1
+        // Map the parsed data to the required structure
+        this.parsedData = sheetData.map((item: any) => {
+          const nameParts = item.Name.trim().split(' ')
+          // Last part is the last name
+          const lastName = nameParts.pop();
+
+          // Join the remaining parts as the first name
+          const firstName = nameParts.join(' ');
+          return {
+            firstName: firstName,
+            lastName: lastName,
+            email: item.Email.toString(),
+            phoneNumber: item.MobileNumber.toString(),
+            password: item.Password.toString(),
+            description: item.Description,
+            qualification: item.Description,
+            emailConfirmed: true,
+            phoneNumberConfirmed: true,
+            employeeNo: item.RollNo.toString(),
+            phoneCountryCode: '+91',
+            courseType:'',
+            courses: [
+              {
+                courseId: 325,
+                courseYearId: parseInt(item.Year),
+                courseYear: '',
+                courseName: ''
+              }
+            ],
+            subjectIds: [
+              item.Subject
+            ],
+            isActive: true
+          }
+        });
+        console.log('Mapped Data:', this.parsedData);
+      });
+      this.files.push(file);
+    }
+  }
+  removeFile(event, file) {
+    let ix
+    if (this.files && -1 !== (ix = this.files.indexOf(file))) {
+      this.files.splice(ix, 1)
+      this.clearInputElement();
+    }
+  }
+  
+  OnBulkUpdateusers() {
+    if (this.parsedData.length > 0) {
+      console.log('Uploading data:', this.parsedData);
+      // Send the parsed and mapped JSON data to the API
+      this._HODservice.bulkUploadHOD(this.parsedData).then(response => {
+        if (response) {
+          this._HODservice.onHODManagementChanged.next(true);
+          // Clear the file input and data after successful upload
+          this.files = [];
+          this.parsedData = [];
+          this.clearInputElement();
+        }
+      }, error => {
+        console.error('Bulk upload failed', error);
+      });
+    } else {
+      console.error('No data to upload');
+      this._HODservice.openSnackBar("No data to upload", "Close");
+    }
   }
 
   loadStudentData() {

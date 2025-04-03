@@ -120,6 +120,8 @@ export class NavigationMockApi {
                 return await this._CommanService.getBatchList().toPromise();
             case 'Student':
                 return await this._CommanService.getBatchList().toPromise();
+            case 'Subgroup':
+                return await this._CommanService.getBatchList().toPromise();
             default:
                 return [];
         }
@@ -141,6 +143,8 @@ export class NavigationMockApi {
                 return `/batch/${category.guid}`;
             case 'Student':
                 return `/students/${category.guid}`;
+            case 'Subgroup':
+                return `/batch/sub-group/${category.guid}`;
             default:
                 return '';
         }
@@ -157,7 +161,7 @@ export class NavigationMockApi {
                 const processedNavs = new Set();
 
                 for (const nav of navigation) {
-                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers' || nav.title === 'Batch' || nav.title === 'Student') &&
+                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers' || nav.title === 'Batch' || nav.title === 'Student' || nav.title === 'Subgroup') &&
                         !processedNavs.has(nav.title)) {
 
                         processedNavs.add(nav.title);
@@ -171,7 +175,7 @@ export class NavigationMockApi {
                                     child.title === category.name);
 
                                 if (!existingNavItem) {
-                                    if (nav.title === 'Batch' || nav.title === 'Student') {
+                                    if (nav.title === 'Batch' || nav.title === 'Student' || nav.title === 'Subgroup') {
                                         nav.children.push({
                                             id: category.name,
                                             title: category.name,

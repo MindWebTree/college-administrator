@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit(): void {
     this._userAccount = this._helperService.getUserDetail();
-    this.showAdminDashboard = this._userAccount.Roles === 'CollegeAdministrator';
+    this.showAdminDashboard = this._userAccount.Roles === 'CollegeAdministrator' || this._userAccount.Roles === 'HOD';
     this.showLecturerDashboard = this._userAccount.Roles === 'Lecturer';
     this.showStudentDashboard = this._userAccount.Roles === 'Student';
   }

@@ -6,7 +6,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, catchError, filter, finalize, Observable, of, Subject, takeUntil } from 'rxjs';
-import { ExceluserFeild, importUser, yearGrid } from '../batch.model';
+import { ExceluserFeild, importUser, HODStudentGrid } from '../batch.model';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SitePreference } from 'app/core/auth/app.configs';
@@ -22,20 +22,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 
-
 @Component({
-  selector: 'app-batch-list',
+  selector: 'app-batch-subgroup',
   standalone: true,
   imports: [CommonModule, MatPaginator, MatButtonModule, MatSelectModule,  MatTabsModule, MatTableModule, MatIconModule, MatCheckboxModule, ReactiveFormsModule, FormsModule],
   providers: [StudentService, XlsxToJsonService],
-  templateUrl: './batch-list.component.html',
-  styleUrl: './batch-list.component.scss'
+  templateUrl: './batch-subgroup.component.html',
+  styleUrl: './batch-subgroup.component.scss'
 })
-export class BatchListComponent implements OnInit {
+export class BatchSubgroupComponent  implements OnInit {
   years: any;
   batchId: string;
   selectedYear: any = null; // Initialize as null
-  displayedColumns: string[] = ['Name', 'RollNo', 'UpdatedAt', 'Select', 'Buttons'];
+  displayedColumns: string[] = ['Name', 'RollNo', 'Select','UpdatedAt', 'Buttons','Promote'];
   dataSource: FirstYearStudentDataSource;
   selected = new FormControl(0);
   dialogRef: any;
@@ -54,15 +53,17 @@ export class BatchListComponent implements OnInit {
   inputFileName: string;
   currentPageSize: number = SitePreference.PAGE.GridRowViewCount;
   currentPageIndex: number = 0;
-  subjects:any;
   teams:any;
-  Subject: FormControl;
+  parentteams:any;
+  filteredteams:any;
   Team: FormControl;  
+  ParentTeam: FormControl;  
   @ViewChild('assignTeam') assignTeam!: ElementRef;
+  @ViewChild('promoteToNextYear') promoteToNextYear!: ElementRef;
 
   private xlsxToJsonService: XlsxToJsonService = new XlsxToJsonService();
   selectedStudentIds: any[];
-
+  selectedPromoteStudentIds: any[];
   constructor(
     public _matDialog: MatDialog,
     private _route: ActivatedRoute,
@@ -72,13 +73,12 @@ export class BatchListComponent implements OnInit {
     private _studentService: StudentService,
     private _batchService: BatchService,
   ) {
-    this._batchService.getSubjects().subscribe(res=>{
-      this.subjects = res;
-      this.Subject = new FormControl(res[0].id)
-    })
     this._batchService.getTeams().subscribe(res=>{
-      this.teams = res;
-      this.Team = new FormControl(res[0].id)
+      this.teams = res;      
+      this.parentteams = this.teams.filter(t=>t.parentTeamId ==0);
+      this.ParentTeam = new FormControl(this.parentteams[0].id);
+      this.GetTeams(this.parentteams[0].id);
+      
     })
     this._router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -87,7 +87,7 @@ export class BatchListComponent implements OnInit {
       // Reset state when navigating to this component
       this.resetComponentState();
       this.batchId = this._route.snapshot.params['guid'];
-      this.loadBatchData();
+      this.loadStudentData();
     });
     
     this._route.params.subscribe(res => {
@@ -95,7 +95,7 @@ export class BatchListComponent implements OnInit {
       if (this.batchId !== res.guid) {
         this.resetComponentState();
         this.batchId = res.guid;
-        this.loadBatchData();
+        this.loadStudentData();
       }
     });
   }
@@ -139,39 +139,26 @@ export class BatchListComponent implements OnInit {
   
   // New method to load student data
   loadStudentData() {
-    if (!this.selectedYear) {
-      console.warn('Cannot load student data: No year selected');
-      return;
-    }
-    console.log(this.Subject,this.subjects,"this.Subject")
     
-    let gridFilter: yearGrid = {
+    let gridFilter: HODStudentGrid = {
       pageNumber: this.currentPageIndex + 1,
       pageSize: this.currentPageSize,
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      averageType: "",
-      average: 0,
-      batchId: this.batchId,
-      batchYearId: this.selectedYear,
-      subjectId: this.Subject?.value
+      batchId: this.batchId
     };
     
     this.dataSource.loadData(gridFilter);
   }
   SubjectSelected(){
-    let gridFilter: yearGrid = {
+    let gridFilter: HODStudentGrid = {
       pageNumber: this.currentPageIndex + 1,
       pageSize: this.currentPageSize,
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      averageType: "",
-      average: 0,
-      batchId: this.batchId,
-      batchYearId: this.selectedYear,
-      subjectId:this.Subject?.value
+      batchId: this.batchId
     };
     
     this.dataSource.loadData(gridFilter);
@@ -181,17 +168,13 @@ export class BatchListComponent implements OnInit {
     this.currentPageIndex = event.pageIndex;
     this.currentPageSize = event.pageSize;
     
-    let gridFilter: yearGrid = {
+    let gridFilter: HODStudentGrid = {
       pageNumber: this.currentPageIndex + 1,
       pageSize: this.currentPageSize,
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      averageType: "",
-      average: 0,
-      batchId: this.batchId,
-      batchYearId: this.selectedYear,
-      subjectId: this.Subject?.value
+      batchId: this.batchId
     };
     this.dataSource.loadData(gridFilter);
   }
@@ -342,7 +325,7 @@ export class BatchListComponent implements OnInit {
       // Send the parsed and mapped JSON data to the API
       this._batchService.bulkUploadUsers(this.batchId, this.selectedYear, this.parsedData).then(response => {
         if (response) {
-          this._batchService.onFirstYearGridChanged.next(true);
+          this._batchService.onSubGroupGridChanged.next(true);
           // Clear the file input and data after successful upload
           this.files = [];
           this.parsedData = [];
@@ -368,16 +351,16 @@ export class BatchListComponent implements OnInit {
     
     // Initial load handled by constructor and loadBatchData method
     
-    this._batchService.onFirstYearGridChanged
+    this._batchService.onSubGroupGridChanged
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(search => {
-        if (search === 'reset') {
-          this.currentPageIndex = 0;
-          if (this.paginator) {
-            this.paginator.pageIndex = 0;
-          }
+        // Reset pagination to first page when data is refreshed
+        this.currentPageIndex = 0;
+        if (this.paginator) {
+          this.paginator.pageIndex = 0;
         }
         
+        console.log("3");
         this.loadStudentData();
       });
   }
@@ -397,29 +380,59 @@ export class BatchListComponent implements OnInit {
       this.dataSource.disconnect();
     }
   }
+  isAllPromoteSelected() {
+    if (!this.dataSource?.data) return false;
+    return this.dataSource.data.length > 0 && this.dataSource.data.every(row => row.promoteSelected);
+  }
   
-  yearSelected(event: any) {
-
-    if (this.years && this.years.length > 0) {
-      this.selectedYear = this.years[event]?.id;
-      
-      // Reset pagination when changing year
-      this.currentPageIndex = 0;
-      if (this.paginator) {
-        this.paginator.pageIndex = 0;
-      }
-      this._batchService.getSubjects().subscribe(res=>{
-      this.subjects = res;
-      this.Subject = new FormControl(res[0].id)
-    })
-    this._batchService.getTeams().subscribe(res=>{
-      this.teams = res;
-      this.Team = new FormControl(res[0].id)
-    })
-      
-    console.log("2");
-      this.loadStudentData();
+  isSomePromoteSelected() {
+    if (!this.dataSource?.data) return false;
+    return this.dataSource.data.some(row => row.promoteSelected) && !this.isAllPromoteSelected();
+  }
+  
+  toggleAllPromoteSelection(event: any) {
+    if (!this.dataSource?.data) return;
+    const checked = event.checked;
+    this.dataSource.data.forEach(row => {
+      row.promoteSelected = checked;
+    });
+  }
+  
+  togglePromoteSelection(row: any, event: any) {
+    row.promoteSelected = event.checked;
+  }
+  
+  getPromotedCount(): number {
+    if (!this.dataSource?.data) {
+      return 0;
     }
+    return this.dataSource.data.filter(item => item.promoteSelected).length;
+  }
+  
+  // yearSelected(event: any) {
+
+  //   if (this.years && this.years.length > 0) {
+  //     this.selectedYear = this.years[event]?.id;
+      
+  //     // Reset pagination when changing year
+  //     this.currentPageIndex = 0;
+  //     if (this.paginator) {
+  //       this.paginator.pageIndex = 0;
+  //     }
+  //   this._batchService.getTeams().subscribe(res=>{
+  //     this.teams = res;      
+  //     this.parentteams = this.teams.filter(t=>t.parentTeamId ==0);
+  //     this.ParentTeam = new FormControl(this.parentteams[0].id);
+  //     this.GetTeams(this.parentteams[0].id);
+  //   })
+      
+  //   console.log("2");
+  //     this.loadStudentData();
+  //   }
+  // }
+  GetTeams(teamId){
+    this.filteredteams = this.teams.filter(t => t.parentTeamId == teamId);
+    this.Team = new FormControl(this.filteredteams[0].id);
   }
   
   deleteStudent(user) {
@@ -430,7 +443,7 @@ export class BatchListComponent implements OnInit {
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._studentService.deleteStudent(user.id);
-        this._batchService.onFirstYearGridChanged.next(true);
+        this._batchService.onSubGroupGridChanged.next(true);
       }
       this.confirmDialogRef = null;
     });
@@ -446,7 +459,7 @@ export class BatchListComponent implements OnInit {
         }
       });
       this.dialogRef.afterClosed().subscribe(r => {
-        this._batchService.onFirstYearGridChanged.next(true);
+        this._batchService.onSubGroupGridChanged.next(true);
       })
     })
   }
@@ -462,7 +475,7 @@ export class BatchListComponent implements OnInit {
       }
     });
     this.dialogRef.afterClosed().subscribe(r => {
-      this._batchService.onFirstYearGridChanged.next(true);
+      this._batchService.onSubGroupGridChanged.next(true);
     })
   }
 
@@ -504,12 +517,28 @@ export class BatchListComponent implements OnInit {
       this._batchService.openSnackBar('Select minimum one Student to Assign Group','close')
     }
   }
-
+  PromoteToNextYear(){
+    if (!this.dataSource?.data) return;
+    const selectedRows = this.dataSource.data.filter(row => row.promoteSelected);
+    this.selectedPromoteStudentIds = selectedRows.map(row => row.id);
+    console.log(this.selectedPromoteStudentIds,"studentId");
+    if(this.selectedPromoteStudentIds?.length > 0){
+      this.OpenDialog(this.promoteToNextYear);
+    }else{
+      this._batchService.openSnackBar('Select minimum one Student to Promote','close')
+    }
+  }
   getSelectedCount(): number {
     if (!this.dataSource?.data) {
       return 0;
     }
     return this.dataSource.data.filter(item => item.selected).length;
+  }
+  getPromoteCount(): number {
+    if (!this.dataSource?.data) {
+      return 0;
+    }
+    return this.dataSource.data.filter(item => item.promoteSelected).length;
   }
   closeMatdialog(){
     this._matDialog.closeAll();
@@ -519,26 +548,37 @@ export class BatchListComponent implements OnInit {
       studentId: this.selectedStudentIds,
       teamId: this.Team?.value,
       batchGuid: this.batchId,
-      batchYearId: this.selectedYear,
-      subjectId: this.Subject?.value,
+      batchYearId: 0
     }
     this._batchService.mapTeam(req).subscribe(res=>{
       this._batchService.openSnackBar('Team Assigned','close');
       this.closeMatdialog();
-      let gridFilter: yearGrid = {
+      let gridFilter: HODStudentGrid = {
         pageNumber: this.currentPageIndex + 1,
         pageSize: this.currentPageSize,
         keyword: '',
         orderBy: '',
         sortOrder: '',
-        averageType: "",
-        average: 0,
-        batchId: this.batchId,
-        batchYearId: this.selectedYear,
-        subjectId: this.Subject?.value
+        batchId: this.batchId
       };
       this.dataSource.loadData(gridFilter);
     })
+  }
+  PromoteToYear() {
+    console.log(this.selectedPromoteStudentIds,"studentId");
+    this._batchService.promoteToNextYear(this.selectedPromoteStudentIds).subscribe(res => {
+        this._batchService.openSnackBar(res, 'close');
+        this.closeMatdialog();
+        let gridFilter: HODStudentGrid = {
+          pageNumber: this.currentPageIndex + 1,
+          pageSize: this.currentPageSize,
+          keyword: '',
+          orderBy: '',
+          sortOrder: '',
+          batchId: this.batchId
+        };
+        this.dataSource.loadData(gridFilter);
+    });
   }
 }
 
@@ -555,18 +595,18 @@ export class FirstYearStudentDataSource extends DataSource<any> {
   }
 
   connect(): Observable<any[]> {
-    return this._batchService.onFirstYearGridChanged;
+    return this._batchService.onSubGroupGridChanged;
   }
 
   disconnect(): void {
   }
 
-  loadData(gridFilter: yearGrid): void {
+  loadData(gridFilter: HODStudentGrid): void {
     this.loadingSubject.next(true);
     
     // Log the filter being used
     
-    this._batchService.getStudentForGrid(gridFilter)
+    this._batchService.getHODStudentForGrid(gridFilter)
       .pipe(
         catchError((error) => {
           console.error('Error loading grid data:', error);

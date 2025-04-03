@@ -12,10 +12,7 @@ import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 export class BatchService {
 
   onFirstYearGridChanged: BehaviorSubject<any>;
-  onSecondYearGridChanged: BehaviorSubject<any>;
-  onThirdYearGridChanged: BehaviorSubject<any>;
-  onFourthYearGridChanged: BehaviorSubject<any>;
-  onFifthYearGridChanged: BehaviorSubject<any>;
+  onSubGroupGridChanged: BehaviorSubject<any>;
 
   openSnackBar(message: string, action: string) {
     this._matSnockbar.open(message, action, {
@@ -29,18 +26,23 @@ export class BatchService {
     private _navigationService: NavigationMockApi
   ) {
     this.onFirstYearGridChanged = new BehaviorSubject([]);
-    this.onSecondYearGridChanged = new BehaviorSubject([]);
-    this.onThirdYearGridChanged = new BehaviorSubject([]);
-    this.onFourthYearGridChanged = new BehaviorSubject([]);
-    this.onFifthYearGridChanged = new BehaviorSubject([]);
+    this.onSubGroupGridChanged = new BehaviorSubject([]);
   }
 
   getYears(guid): Observable<any> {
     return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`,{})
   }
-
+  getSubjects(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`);
+  }
+  getTeams(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/teammanagement/list`);
+  }
   getStudentForGrid(_gridFilter: any): Observable<any> {
     return this._httpClient.post(`${environment.apiURL}/student/grid`, { ..._gridFilter }, {  });
+  }
+  getHODStudentForGrid(_gridFilter: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/hod/student-grid/${_gridFilter?.batchId}`, { ..._gridFilter }, {  });
   }
 
   getfutureBatches(): Observable<any> {
@@ -49,7 +51,12 @@ export class BatchService {
   createBatch(req): Observable<any> {
     return this._httpClient.post(`${environment.apiURL}/batch/create`, { ...req });
   }
-
+  mapTeam(req): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/teammanagement/map-user-team`, { ...req });
+  }
+  promoteToNextYear(req:any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/hod/promote-students`, req);
+}
   bulkUploadUsers(batchGuid,batchYearId,data: any[]): Promise<any> {
     var self = this;
     console.log(JSON.stringify(data))

@@ -6,11 +6,15 @@ export class GridFilter {
     sortOrder: string;
 
 }
+export class HODStudentGrid extends GridFilter {
+    batchId:string;
+}
 export class yearGrid extends GridFilter {
     averageType:string;
     average:number;
     batchId:string;
     batchYearId:number;
+    subjectId?:number;
 }
 export class importUser {
     UserName: string;

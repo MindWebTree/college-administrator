@@ -187,7 +187,7 @@ export class HODService {
     return new Promise(() => {
       const params = new HttpParams().set('userId', userId);
 
-      this._httpClient.post(`${environment.apiURL}/lecturer/delete`, {}, { params,  })
+      this._httpClient.post(`${environment.apiURL}/hod/delete`, {}, { params,  })
         .subscribe(response => {
           if (response) {
             this.onHODManagementChanged.next(this.lecture);
@@ -212,5 +212,17 @@ export class HODService {
   }
   lecturereQbankSummary(userId): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/lecturer/qbank-summary/${userId}`, {  });
+  }
+  bulkUploadHOD(data: any[]): Promise<any> {
+    var self = this;
+    console.log(JSON.stringify(data))
+    return new Promise((resolve, reject) => {
+
+      this._httpClient.post(`${environment.apiURL}/hod/bulk-create`, [...data])
+        .subscribe((response: any) => {
+          this.openSnackBar(response, "Close");
+          resolve(response);
+        }, reject);
+    });
   }
 }

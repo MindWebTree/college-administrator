@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { BatchService } from '../batch.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
+import { NavigationService } from 'app/core/navigation/navigation.service';
 
 @Component({
   selector: 'app-navigation-btn',
@@ -29,6 +30,7 @@ export class NavigationBtnComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
+    private _navigationTypeService: NavigationService,
     private _batchService: BatchService,
     private _navigationMockApi: NavigationMockApi,
     private datePipe: DatePipe
@@ -143,7 +145,12 @@ export class NavigationBtnComponent implements OnInit {
         this.matDialogClose();
         this._batchService.openSnackBar('Batch Created SuccessFully','close');
         setTimeout(() => {          
-        this._navigationMockApi.registerHandlers();
+          this._navigationMockApi.fetchDynamicNavigation(this._navigationMockApi._AdminNavigation).then(updatedNavigation => {
+
+            // Explicitly trigger a navigation refresh
+            this._navigationTypeService.refreshNavigation();
+  
+          });
         }, 100);
       })
     }

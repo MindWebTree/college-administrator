@@ -1,26 +1,12 @@
-<div class="p-8 batch_list">
+<div class="p-8">
 
     <h2 class="text-xl">Batch</h2>
-    <mat-tab-group class="year-list mt-2" [selectedIndex]="selected.value"
+    <mat-tab-group class="students-list mt-2" [selectedIndex]="selected.value"
     (selectedIndexChange)="yearSelected($event)">
         <mat-tab [label]="year.yearName" *ngFor="let year of years"> 
-            <div class="my-3 flex justify-between">
-              <div class="flex gap-2">         
-                <h2 class="text-xl pt-3">Personal Info</h2>
-                <mat-form-field class="min-w-50">
-                  <mat-select [formControl]="Subject">
-                      <mat-option [value]="subject.id" *ngFor="let subject of subjects" (click)="SubjectSelected()">{{subject.name}}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>   
+            <div class="my-3 flex justify-between">            
+                <h2 class="text-xl">Personal Info</h2>
                 <div class="flex items-center gap-2">
-                  <mat-form-field class="min-w-50 team-field">
-                    <mat-select [formControl]="Team">
-                        <mat-option [value]="team.id" *ngFor="let team of teams">{{team.name}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <button (click)="getSelectedRows()" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
-                    <mat-icon class="text-white">check_circle</mat-icon> Assign Group</button>
                   <button (click)="addStudent(element)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
                     <mat-icon class="text-white">add</mat-icon> Add</button>
                   <button (click)="BulkUpload($event)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
@@ -46,7 +32,7 @@
             <table *ngIf="dataSource.data?.length >= 0" mat-table [dataSource]="dataSource.data" class="">              
                 <ng-container matColumnDef="Name">
                   <th mat-header-cell *matHeaderCellDef> Student Name </th>
-                  <td mat-cell *matCellDef="let element"> {{element.firstName}} {{element.lastName}}</td>
+                  <td mat-cell *matCellDef="let element"> <button (click)="NavigateToReport(element.id)">{{element.firstName}} {{element.lastName}} </button></td>
                 </ng-container>
               
                 <ng-container matColumnDef="RollNo">
@@ -57,34 +43,6 @@
                 <ng-container matColumnDef="UpdatedAt">
                   <th mat-header-cell *matHeaderCellDef> Updated At </th>
                   <td mat-cell *matCellDef="let element"> {{element.updatedOn | date: 'dd/MM/yy'}} </td>
-                </ng-container>
-
-                                <ng-container matColumnDef="Select">
-                  <th mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox
-                      [checked]="isAllSelected()"
-                      [indeterminate]="isSomeSelected()"
-                      (change)="toggleAllSelection($event)">
-                      <!-- <b *ngIf="getSelectedCount() > 0">Selected: {{getSelectedCount()}}</b> -->
-                      <ng-container *ngIf="getSelectedCount() > 0; else groupName">
-                        <b>Group Name {{getSelectedCount()}}</b>
-                      </ng-container>
-                      <ng-template #groupName>
-                        <b>Group Name</b>
-                      </ng-template>
-                    </mat-checkbox>
-                  </th>
-                  <td mat-cell *matCellDef="let element">
-                    <ng-container *ngIf="element.teamDetails?.length > 0; else checkboxTemplate">
-                      {{element?.teamDetails[0]?.name}}
-                    </ng-container>
-                    <ng-template #checkboxTemplate>
-                      <mat-checkbox
-                        [checked]="element.selected"
-                        (change)="toggleSelection(element, $event)">
-                      </mat-checkbox>
-                    </ng-template>
-                  </td>
                 </ng-container>
 
                 <ng-container matColumnDef="Buttons">
@@ -106,12 +64,3 @@
         </mat-tab>
     </mat-tab-group>
 </div>
-<ng-template #assignTeam>
-  <div>
-    <h3>Are you sure you want to assign {{getSelectedCount()}} students?</h3>
-    <div class="flex justify-end gap-3 mt-6">
-      <button mat-raised-button class="cursor-pointer" (click)="closeMatdialog()">Cancel</button>
-      <button mat-raised-button class="cursor-pointer assign-btn bg-primary text-white" (click)="AssignTeam()">Assign</button>
-    </div>
-  </div>
-</ng-template>
