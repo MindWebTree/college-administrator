@@ -14,6 +14,7 @@ import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 export class LectureService {
 
   lecture: lectureModel;
+  onLecturerGridChanged: BehaviorSubject<any>;
   onlectureManagementChanged: BehaviorSubject<any>;
   openSnackBar(message: string, action: string) {
     this._matSnockbar.open(message, action, {
@@ -24,6 +25,7 @@ export class LectureService {
     private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onlectureManagementChanged = new BehaviorSubject([]);
+    this.onLecturerGridChanged = new BehaviorSubject([]);
   }
 
   /**
@@ -32,7 +34,7 @@ export class LectureService {
    * @returns {Observable<any>}
    */
   getlectureForGrid(_gridFilter: GridFilter): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/lecturer/grid`, { ..._gridFilter }, {  });
+    return this._httpClient.post(`${environment.apiURL}/lecturer/grid`, { ..._gridFilter }, {});
 
   }
   /**
@@ -144,7 +146,7 @@ export class LectureService {
   }
 
   qbankTypeList(qbankCategory: QBankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, {  });
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, {});
 
   }
   // getCourseYaerByCousreGuid(): Promise<any> {
@@ -187,7 +189,7 @@ export class LectureService {
     return new Promise(() => {
       const params = new HttpParams().set('userId', userId);
 
-      this._httpClient.post(`${environment.apiURL}/lecturer/delete`, {}, { params,  })
+      this._httpClient.post(`${environment.apiURL}/lecturer/delete`, {}, { params, })
         .subscribe(response => {
           if (response) {
             this.onlectureManagementChanged.next(this.lecture);
@@ -207,10 +209,56 @@ export class LectureService {
     });
   }
   lecturerAnalyticsListing(_gridFilter: lecturerAnalyticGrid): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/lecturer/exam-summary-grid`, { ..._gridFilter }, {  });
+    return this._httpClient.post<any>(`${environment.apiURL}/lecturer/exam-summary-grid`, { ..._gridFilter }, {});
 
   }
   lecturereQbankSummary(userId): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/lecturer/qbank-summary/${userId}`, {  });
+    return this._httpClient.get<any>(`${environment.apiURL}/lecturer/qbank-summary/${userId}`, {});
   }
+  getTeams(): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/teammanagement/list`);
+  }
+  getYears(guid): Observable<any> {
+    console.log('ssssss'+guid);
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`, {})
+  }
+  bulkUploadUsers(batchGuid, batchYearId, data: any[]): Promise<any> {
+    var self = this;
+    console.log(JSON.stringify(data))
+    return new Promise((resolve, reject) => {
+
+      this._httpClient.post(`${environment.apiURL}/student/bulk-create/${batchGuid}/${batchYearId}`, [...data])
+        .subscribe((response: any) => {
+          this.openSnackBar(response, "Close");
+          resolve(response);
+        }, reject);
+    });
+  }
+  mapTeam(req): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/teammanagement/map-user-team`, { ...req });
+  }
+  promoteToNextYear(req: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/hod/promote-students`, req);
+  }
+  getHODStudentForGrid(_gridFilter: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/lecturer/grid/`, { ..._gridFilter }, {});
+  }
+
+
+  // Method to get lecturers
+  getLecturers(): Observable<any> {
+    return this._httpClient.get(`${environment.apiURL}/lecturer/list`);
+  }
+  getBatch(): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/batch/list`, {});
+  }
+  AssignTeam(AssignTeam: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/teammanagement/map-faculty-team/`, { ...AssignTeam }, {});
+  }
+  getHod(): Observable<any> {
+    return this._httpClient.get(`${environment.apiURL}/hod/get-by-id`,{});  }
 }
+
+
+
+

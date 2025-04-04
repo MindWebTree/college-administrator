@@ -115,7 +115,7 @@ export class NavigationMockApi {
             case 'Students':
                 return await this._CommanService.getstudentNavigationList().toPromise();
             case 'Lecturers':
-                return await this._CommanService.getlecturerNavigationList().toPromise();
+                return await this._CommanService.getBatchList().toPromise();
             case 'Batch':
                 return await this._CommanService.getBatchList().toPromise();
             case 'Student':
@@ -175,7 +175,7 @@ export class NavigationMockApi {
                                     child.title === category.name);
 
                                 if (!existingNavItem) {
-                                    if (nav.title === 'Batch' || nav.title === 'Student' || nav.title === 'Subgroup') {
+                                    if (nav.title === 'Batch' || nav.title === 'Student' || nav.title === 'Subgroup' || nav.title === 'Lecturers') {
                                         nav.children.push({
                                             id: category.name,
                                             title: category.name,

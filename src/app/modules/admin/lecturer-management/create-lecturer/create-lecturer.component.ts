@@ -161,10 +161,10 @@ export class CreateLecturerComponent {
         });
 
         // Set the chips list
-        this.subjectList = this._data.lecturer.qBankTypes.map(q => ({
-          ID: q.id,
-          subjectTitle: q.title
-        }));
+        // this.subjectList = this._data.lecturer.qBankTypes.map(q => ({
+        //   ID: q.id,
+        //   subjectTitle: q.title
+        // }));
       });
     }
   }
@@ -399,7 +399,7 @@ export class CreateLecturerComponent {
           courseYear: this.lecturerForm.get('CourseYear').value?.name || '',
           courseName: this.lecturerForm.get('CourseYear').value?.name || ''
         }],
-        qBankTypeIds: this.subjectList.map(subject => subject.ID),
+        // qBankTypeIds: this.subjectList.map(subject => subject.ID),
         qBankTypes: [],
         subjectIds: [this.lecturerForm.get('Subject').value],
         rollNo: ''
