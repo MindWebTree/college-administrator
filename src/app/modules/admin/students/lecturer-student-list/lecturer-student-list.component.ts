@@ -5,7 +5,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, catchError, filter, finalize, Observable, of, Subject, takeUntil } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SitePreference } from 'app/core/auth/app.configs';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,24 +16,26 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { studentModel } from '../../student-management/student-management.model';
 import { DomSanitizer } from '@angular/platform-browser';
 import { XlsxToJsonService } from '../../common/xlsToJSON';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 import { StudentsService } from '../student.service';
-import { BatchService } from '../../Batch/batch.service';
-import { yearGrid, importUser, ExceluserFeild } from '../student.model';
+import { LecturerStudentGrid } from '../student.model';
 
 @Component({
   selector: 'app-lecturer-student-list',
   standalone: true,
-  imports: [CommonModule, MatPaginator, MatTabsModule, MatTableModule, MatIconModule],
+  imports: [CommonModule, MatPaginator, MatButtonModule, MatSelectModule,  MatTabsModule, MatTableModule, MatIconModule, MatCheckboxModule, ReactiveFormsModule, FormsModule],
   providers: [StudentService, XlsxToJsonService],
   templateUrl: './lecturer-student-list.component.html',
   styleUrl: './lecturer-student-list.component.scss'
 })
-export class LecturerStudentListComponent implements OnInit {
+export class LecturerStudentListComponent  implements OnInit {
   years: any;
   batchId: string;
   selectedYear: any = null; // Initialize as null
-  displayedColumns: string[] = ['Name', 'RollNo', 'UpdatedAt', 'Buttons'];
-  dataSource: StudentDataSource;
+  displayedColumns: string[] = ['Name', 'RollNo', 'Select','UpdatedAt'];
+  dataSource: FirstYearStudentDataSource;
   selected = new FormControl(0);
   dialogRef: any;
   confirmDialogRef: MatDialogRef<ConfirmDialogComponent>;
@@ -51,14 +53,25 @@ export class LecturerStudentListComponent implements OnInit {
   inputFileName: string;
   currentPageSize: number = SitePreference.PAGE.GridRowViewCount;
   currentPageIndex: number = 0;
+  teams:any;
+  groupteams:any;
+  parentteams:any;
+  filteredteams:any;
+  Team: FormControl;  
+  ParentTeam: FormControl;  
+  GroupTeam: FormControl;  
+  @ViewChild('assignTeam') assignTeam!: ElementRef;
+  @ViewChild('promoteToNextYear') promoteToNextYear!: ElementRef;
 
   private xlsxToJsonService: XlsxToJsonService = new XlsxToJsonService();
-
+  selectedStudentIds: any[];
+  selectedPromoteStudentIds: any[];
   constructor(
     public _matDialog: MatDialog,
     private _route: ActivatedRoute,
     private _router: Router,
     private sanitizer: DomSanitizer,
+    private dialog: MatDialog,
     private _studentService: StudentService,
     private _studentsService: StudentsService,
   ) {
@@ -69,7 +82,7 @@ export class LecturerStudentListComponent implements OnInit {
       // Reset state when navigating to this component
       this.resetComponentState();
       this.batchId = this._route.snapshot.params['guid'];
-      this.loadBatchData();
+      this.loadStudentData();
     });
     
     this._route.params.subscribe(res => {
@@ -77,7 +90,7 @@ export class LecturerStudentListComponent implements OnInit {
       if (this.batchId !== res.guid) {
         this.resetComponentState();
         this.batchId = res.guid;
-        this.loadBatchData();
+        this.loadStudentData();
       }
     });
   }
@@ -113,6 +126,7 @@ export class LecturerStudentListComponent implements OnInit {
         this.selectedYear = this.years[0]?.id;
         
         // Then load student data for the selected year
+        console.log("1");
         this.loadStudentData();
       }
     });
@@ -120,212 +134,58 @@ export class LecturerStudentListComponent implements OnInit {
   
   // New method to load student data
   loadStudentData() {
-    if (!this.selectedYear) {
-      console.warn('Cannot load student data: No year selected');
-      return;
-    }
     
-    let gridFilter: yearGrid = {
+    let gridFilter: LecturerStudentGrid = {
       pageNumber: this.currentPageIndex + 1,
       pageSize: this.currentPageSize,
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      averageType: "",
-      average: 0,
       batchId: this.batchId,
-      batchYearId: this.selectedYear
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
     };
     
-    console.log('Loading data with filter:', gridFilter);
+    this.dataSource.loadData(gridFilter);
+  }
+  SubjectSelected(){
+    let gridFilter: LecturerStudentGrid = {
+      pageNumber: this.currentPageIndex + 1,
+      pageSize: this.currentPageSize,
+      keyword: '',
+      orderBy: '',
+      sortOrder: '',
+      batchId: this.batchId,
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
+    };
+    
     this.dataSource.loadData(gridFilter);
   }
   
   getNext(event: PageEvent) {
-    console.log('Pagination event:', event);
     this.currentPageIndex = event.pageIndex;
     this.currentPageSize = event.pageSize;
     
-    let gridFilter: yearGrid = {
+    let gridFilter: LecturerStudentGrid = {
       pageNumber: this.currentPageIndex + 1,
       pageSize: this.currentPageSize,
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      averageType: "",
-      average: 0,
       batchId: this.batchId,
-      batchYearId: this.selectedYear
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
     };
-    
-    console.log('Sending pagination request with filter:', gridFilter);
     this.dataSource.loadData(gridFilter);
   }
-  NavigateToReport(userid){
-    const BatchYearGuid = this.years.find(y=> y.id === this.selectedYear)?.guid
-    this._router.navigate([`/students/${this.batchId}/${BatchYearGuid}/${userid}`]);
-  }
-  
-  BulkUpload(event) {
-    if (this.fileUpload && this.fileUpload.nativeElement) {
-      this.fileUpload.nativeElement.click();
-    }
-  }
-  
-  validate(file: File) {
-    for (const f of this.files) {
-      if (f.name === file.name
-        && f.lastModified === file.lastModified
-        && f.size === f.size
-        && f.type === f.type
-      ) {
-        return false
-      }
-    }
-    return true
-  }
-  
-  public result: any;
-  
-  clearInputElement() {
-    if (this.fileUpload && this.fileUpload.nativeElement) {
-      this.fileUpload.nativeElement.value = '';
-    }
-  }
-  
-  isMultiple(): boolean {
-    return this.multiple
-  }
-  
-  SortOrder(results: any) {
-    return results.sort(function (id1, id2) {
-      return id1.QueueID - id2.QueueID;
+  OpenDialog(templateRef: any): MatDialogRef<any> {
+    return this.dialog.open(templateRef, {
+      panelClass: 'assign-tema',
+      // disableClose: true
     });
   }
   
-  onFileSelected(event: any) {
-    this.files = [];
-    const file = event.target.files[0];
-    if (file) {
-      const object = {};
-      this.xlsxToJsonService.processFileToJson(object, file).subscribe((jsonData: any) => {
-        const sheetData = jsonData.sheets.Sheet1; // Access Sheet1
-        // Map the parsed data to the required structure
-        this.parsedData = sheetData.map((item: any) => {
-          const nameParts = item.Name.trim().split(' ')
-          // Last part is the last name
-          const lastName = nameParts.pop();
-
-          // Join the remaining parts as the first name
-          const firstName = nameParts.join(' ');
-          return {
-            firstName: firstName,
-            lastName: lastName,
-            email: item.Email.toString(),
-            phoneNumber: item.MobileNumber.toString(),
-            rollNo: item.RollNo.toString(),
-            password: item.Password.toString(),
-            batchId: item.Batch,
-            batchYearId: item.BatchYear,
-            parentEmail: item.ParentEmail.toString(),
-            parentPhoneNumber: item.ParentMobileNumber.toString(),
-            CourseType: "",
-            ImageUrl: "",
-            MedicalCourseYear: "",
-            PhoneCountryCode: "",
-            isActive: true
-          }
-        });
-        console.log('Mapped Data:', this.parsedData);
-      });
-      this.files.push(file);
-    }
-  }
-  
-  handleFile(event) {
-    var self = this;
-    let file = event.target.files[0];
-    try {
-      this.xlsxToJsonService.processFileToJson({}, file).subscribe(data => {
-        this.result = data['sheets'].Sheet1;
-
-        if (!this.result) {
-          this.result = data['sheets'];
-          if (this.result.data) {
-            this.result = this.result.data;
-          }
-        }
-        self.users = [];
-
-        var r: importUser = new importUser({});
-
-        self.result.forEach((row: ExceluserFeild) => {
-          if (row.UserName) {
-            if (row.Email) {
-              if (r.UserName && r.TenantId) {
-                self.users.push(r);
-                r = new importUser({});
-              }
-
-              r.UserName = row.UserName;
-              r.Email = row.Email;
-              r.Mobile = row.Mobile;
-              r.Password = row.Password;
-              r.IsActive = row.Active;
-              r.RoleID = row.RoleID;
-              r.TenantId = row.TenantId;
-            }
-            else {
-              this._studentsService.openSnackBar("wrong Forment Please check", "Close");
-            }
-          }
-        });
-
-        if (r.UserName) {
-          self.users.push(r);
-          r = new importUser({});
-        }
-        self.users = self.SortOrder(self.users);
-      })
-    }
-    catch (e) {
-      console.error('Error handling file:', e);
-    }
-    finally {
-    }
-  }
-  
-  removeFile(event, file) {
-    let ix
-    if (this.files && -1 !== (ix = this.files.indexOf(file))) {
-      this.files.splice(ix, 1)
-      this.clearInputElement();
-    }
-  }
-  
-  OnBulkUpdateusers() {
-    if (this.parsedData.length > 0) {
-      console.log('Uploading data:', this.parsedData);
-      // Send the parsed and mapped JSON data to the API
-      this._studentsService.bulkUploadUsers(this.batchId, this.selectedYear, this.parsedData).then(response => {
-        if (response) {
-          this._studentsService.onFirstYearGridChanged.next(true);
-          // Clear the file input and data after successful upload
-          this.files = [];
-          this.parsedData = [];
-          this.clearInputElement();
-        }
-      }, error => {
-        console.error('Bulk upload failed', error);
-      });
-    } else {
-      console.error('No data to upload');
-      this._studentsService.openSnackBar("No data to upload", "Close");
-    }
-  }
-  
+ 
   ngOnInit(): void {
-    this.dataSource = new StudentDataSource(this._studentsService);
+    this.dataSource = new FirstYearStudentDataSource(this._studentsService);
     
     // Make sure the paginator is initialized with default values
     if (this.paginator) {
@@ -335,7 +195,7 @@ export class LecturerStudentListComponent implements OnInit {
     
     // Initial load handled by constructor and loadBatchData method
     
-    this._studentsService.onFirstYearGridChanged
+    this._studentsService.onStudentLecturerGridChanged
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(search => {
         // Reset pagination to first page when data is refreshed
@@ -343,6 +203,8 @@ export class LecturerStudentListComponent implements OnInit {
         if (this.paginator) {
           this.paginator.pageIndex = 0;
         }
+        
+        console.log("3");
         this.loadStudentData();
       });
   }
@@ -362,19 +224,74 @@ export class LecturerStudentListComponent implements OnInit {
       this.dataSource.disconnect();
     }
   }
+  isAllPromoteSelected() {
+    if (!this.dataSource?.data) return false;
+    return this.dataSource.data.length > 0 && this.dataSource.data.every(row => row.promoteSelected);
+  }
   
-  yearSelected(event: any) {
-    if (this.years && this.years.length > 0) {
-      this.selectedYear = this.years[event]?.id;
-      
-      // Reset pagination when changing year
-      this.currentPageIndex = 0;
-      if (this.paginator) {
-        this.paginator.pageIndex = 0;
-      }
-      
-      this.loadStudentData();
+  isSomePromoteSelected() {
+    if (!this.dataSource?.data) return false;
+    return this.dataSource.data.some(row => row.promoteSelected) && !this.isAllPromoteSelected();
+  }
+  
+  toggleAllPromoteSelection(event: any) {
+    if (!this.dataSource?.data) return;
+    const checked = event.checked;
+    this.dataSource.data.forEach(row => {
+      row.promoteSelected = checked;
+    });
+  }
+  
+  togglePromoteSelection(row: any, event: any) {
+    row.promoteSelected = event.checked;
+  }
+  
+  getPromotedCount(): number {
+    if (!this.dataSource?.data) {
+      return 0;
     }
+    return this.dataSource.data.filter(item => item.promoteSelected).length;
+  }
+  
+  // yearSelected(event: any) {
+
+  //   if (this.years && this.years.length > 0) {
+  //     this.selectedYear = this.years[event]?.id;
+      
+  //     // Reset pagination when changing year
+  //     this.currentPageIndex = 0;
+  //     if (this.paginator) {
+  //       this.paginator.pageIndex = 0;
+  //     }
+  //   this._studentsService.getTeams().subscribe(res=>{
+  //     this.teams = res;      
+  //     this.parentteams = this.teams.filter(t=>t.parentTeamId ==0);
+  //     this.ParentTeam = new FormControl(this.parentteams[0].id);
+  //     this.GetTeams(this.parentteams[0].id);
+  //   })
+      
+  //   console.log("2");
+  //     this.loadStudentData();
+  //   }
+  // }
+  ParentGetTeams(teamId){
+    this.parentteams = this.teams.filter(t => t.parentTeamId == teamId);
+    this.ParentTeam = new FormControl(this.parentteams[0].id);
+    this.GetTeams(this.parentteams[0].id);
+    let gridFilter: LecturerStudentGrid = {
+      pageNumber: this.currentPageIndex + 1,
+      pageSize: this.currentPageSize,
+      keyword: '',
+      orderBy: '',
+      sortOrder: '',
+      batchId: this.batchId,
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
+    };
+    this.dataSource.loadData(gridFilter);
+  }
+  GetTeams(teamId){
+    this.filteredteams = this.teams.filter(t => t.parentTeamId == teamId);
+    this.Team = new FormControl(this.filteredteams[0].id);
   }
   
   deleteStudent(user) {
@@ -385,7 +302,7 @@ export class LecturerStudentListComponent implements OnInit {
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this._studentService.deleteStudent(user.id);
-        this._studentsService.onFirstYearGridChanged.next(true);
+        this._studentsService.onStudentLecturerGridChanged.next(true);
       }
       this.confirmDialogRef = null;
     });
@@ -401,7 +318,7 @@ export class LecturerStudentListComponent implements OnInit {
         }
       });
       this.dialogRef.afterClosed().subscribe(r => {
-        this._studentsService.onFirstYearGridChanged.next(true);
+        this._studentsService.onStudentLecturerGridChanged.next(true);
       })
     })
   }
@@ -417,12 +334,77 @@ export class LecturerStudentListComponent implements OnInit {
       }
     });
     this.dialogRef.afterClosed().subscribe(r => {
-      this._studentsService.onFirstYearGridChanged.next(true);
+      this._studentsService.onStudentLecturerGridChanged.next(true);
     })
+  }
+
+  isAllSelected() {
+    if (!this.dataSource?.data) return false;
+    const selectableStudents = this.dataSource.data.filter(row => !row.teamDetails?.length);
+    return selectableStudents.length > 0 && selectableStudents.every(row => row.selected);
+  }
+
+  isSomeSelected() {
+    if (!this.dataSource?.data) return false;
+    const selectableStudents = this.dataSource.data.filter(row => !row.teamDetails?.length);
+    return selectableStudents.some(row => row.selected) && !this.isAllSelected();
+  }
+
+  toggleAllSelection(event: any) {
+    if (!this.dataSource?.data) return;
+    const checked = event.checked;
+    this.dataSource.data.forEach(row => {
+      if (!row.teamDetails?.length) {
+        row.selected = checked;
+      }
+    });
+  }
+
+  toggleSelection(row: any, event: any) {
+    if (!row.teamDetails?.length) {
+      row.selected = event.checked;
+    }
+  }
+
+  getSelectedRows() {
+    if (!this.dataSource?.data) return;
+    const selectedRows = this.dataSource.data.filter(row => row.selected);
+    this.selectedStudentIds = selectedRows.map(row => row.id);
+    if(this.selectedStudentIds?.length > 0){
+      this.OpenDialog(this.assignTeam);
+    }else{
+      this._studentsService.openSnackBar('Select minimum one Student to Assign Group','close')
+    }
+  }
+  PromoteToNextYear(){
+    if (!this.dataSource?.data) return;
+    const selectedRows = this.dataSource.data.filter(row => row.promoteSelected);
+    this.selectedPromoteStudentIds = selectedRows.map(row => row.id);
+    console.log(this.selectedPromoteStudentIds,"studentId");
+    if(this.selectedPromoteStudentIds?.length > 0){
+      this.OpenDialog(this.promoteToNextYear);
+    }else{
+      this._studentsService.openSnackBar('Select minimum one Student to Promote','close')
+    }
+  }
+  getSelectedCount(): number {
+    if (!this.dataSource?.data) {
+      return 0;
+    }
+    return this.dataSource.data.filter(item => item.selected).length;
+  }
+  getPromoteCount(): number {
+    if (!this.dataSource?.data) {
+      return 0;
+    }
+    return this.dataSource.data.filter(item => item.promoteSelected).length;
+  }
+  closeMatdialog(){
+    this._matDialog.closeAll();
   }
 }
 
-export class StudentDataSource extends DataSource<any> {
+export class FirstYearStudentDataSource extends DataSource<any> {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public paginationData: any;
   public loading$ = this.loadingSubject.asObservable();
@@ -435,19 +417,18 @@ export class StudentDataSource extends DataSource<any> {
   }
 
   connect(): Observable<any[]> {
-    return this._studentsService.onFirstYearGridChanged;
+    return this._studentsService.onStudentLecturerGridChanged;
   }
 
   disconnect(): void {
   }
 
-  loadData(gridFilter: yearGrid): void {
+  loadData(gridFilter: LecturerStudentGrid): void {
     this.loadingSubject.next(true);
     
     // Log the filter being used
-    console.log('DataSource loading with filter:', gridFilter);
     
-    this._studentsService.getStudentForGrid(gridFilter)
+    this._studentsService.getStudentLecturerForGrid(gridFilter)
       .pipe(
         catchError((error) => {
           console.error('Error loading grid data:', error);
@@ -463,12 +444,8 @@ export class StudentDataSource extends DataSource<any> {
           pageNumber: response.currentPage || 1,
           pageSize: response.pageSize || 10
         };
+        console.log(gridFilter,response,"response")
         
-        // Log the response data
-        console.log('Grid data loaded:', {
-          dataLength: this.data?.length || 0,
-          pagination: this.paginationData
-        });
       });
   }
 }

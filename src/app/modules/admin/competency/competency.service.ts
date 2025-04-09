@@ -111,8 +111,8 @@ export class CompetencyService {
   getSubjects(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`);
   }
-  getRubricConstruction(subjectid): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/list/${subjectid}`, {});
+  getRubricConstruction(): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/list`, {});
   }
   getFaculty(): Observable<any> {
     return this._httpClient.get(`${environment.apiURL}/lecturer/list`);

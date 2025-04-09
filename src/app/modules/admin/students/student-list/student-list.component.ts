@@ -19,6 +19,7 @@ import { XlsxToJsonService } from '../../common/xlsToJSON';
 import { StudentsService } from '../student.service';
 import { BatchService } from '../../Batch/batch.service';
 import { yearGrid, importUser, ExceluserFeild } from '../student.model';
+import { helperService } from 'app/core/auth/helper';
 
 @Component({
   selector: 'app-student-list',
@@ -51,6 +52,7 @@ export class StudentListComponent  implements OnInit {
   inputFileName: string;
   currentPageSize: number = SitePreference.PAGE.GridRowViewCount;
   currentPageIndex: number = 0;
+  _userDetail:any;
 
   private xlsxToJsonService: XlsxToJsonService = new XlsxToJsonService();
 
@@ -59,6 +61,7 @@ export class StudentListComponent  implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     private sanitizer: DomSanitizer,
+    private _helperService: helperService,
     private _studentService: StudentService,
     private _studentsService: StudentsService,
   ) {
@@ -134,7 +137,8 @@ export class StudentListComponent  implements OnInit {
       averageType: "",
       average: 0,
       batchId: this.batchId,
-      batchYearId: this.selectedYear
+      batchYearId: this.selectedYear,
+      teamId : 0
     };
     
     console.log('Loading data with filter:', gridFilter);
@@ -155,15 +159,19 @@ export class StudentListComponent  implements OnInit {
       averageType: "",
       average: 0,
       batchId: this.batchId,
-      batchYearId: this.selectedYear
+      batchYearId: this.selectedYear,
+      teamId : 0
     };
     
     console.log('Sending pagination request with filter:', gridFilter);
     this.dataSource.loadData(gridFilter);
   }
   NavigateToReport(userid){
-    const BatchYearGuid = this.years.find(y=> y.id === this.selectedYear)?.guid
-    this._router.navigate([`/students/${this.batchId}/${BatchYearGuid}/${userid}`]);
+    this._userDetail = this._helperService.getUserDetail();
+    if(this._userDetail?.Roles == 'HOD'){      
+      const BatchYearGuid = this.years.find(y=> y.id === this.selectedYear)?.guid
+      this._router.navigate([`/students/${this.batchId}/${BatchYearGuid}/${userid}`]);
+    }
   }
   
   BulkUpload(event) {
@@ -384,8 +392,10 @@ export class StudentListComponent  implements OnInit {
     this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this._studentService.deleteStudent(user.id);
-        this._studentsService.onFirstYearGridChanged.next(true);
+        this._studentService.deleteStudent(user.id).subscribe(res=>{
+          console.log(res,"res")
+          this.loadStudentData();
+        });
       }
       this.confirmDialogRef = null;
     });

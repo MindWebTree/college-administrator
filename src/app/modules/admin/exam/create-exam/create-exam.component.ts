@@ -88,7 +88,9 @@ export class CreateExamComponent implements OnInit {
   Qbank: Array<Qbank> = [];
   subjects: Array<Subjects> = [];
   CBME: Array<QbankcmbCode> = [];
-  Courses: Array<Course> = [];
+  // Courses: Array<Course> = [];
+  Batches:any;
+  BatchYears:any;
   competenecyLevel: Array<CompetenecyLevel> = []
   levelquestion: Array<LevelQuestion> = []
   topics: Array<Topic> = [];
@@ -149,6 +151,7 @@ export class CreateExamComponent implements OnInit {
     private _examService: ExamService,
     private _errorHendling: ApiErrorHandlerService
   ) {
+    this.GetBatches();
 
     this.ckeConfig = CKEDITOR_CONFIG;
 
@@ -172,7 +175,9 @@ export class CreateExamComponent implements OnInit {
         tags: [0]
       }),
       this.CreateExamSchedule = this._formbuilder.group({
-        students: ['', Validators.required],
+        // students: ['', Validators.required],
+        Batch: ['', Validators.required],
+        BatchYear: ['', Validators.required],
         examType: [1],
         ExamDate: ['', Validators.required],
         ExamEndDate: ['', Validators.required],
@@ -197,22 +202,32 @@ export class CreateExamComponent implements OnInit {
         filebrowserUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Files',
         filebrowserImageUploadUrl: 'https://ckeditor.com/apps/ckfinder/3.4.5/core/connector/php/connector.php?command=QuickUpload&type=Images',
       };
-    this._commonService.getstudentNavigationList().subscribe(res => {
-      this.Courses = res;
+  }
+  GetBatches(){
+    this._examService.getBatch().subscribe(res => {
+      this.Batches = res;
+    })
+  }
+  OnBatchSelect(batchGuid){
+    this._examService.getBatchYear(batchGuid).subscribe(res => {
+      this.BatchYears = res;
     })
   }
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(res => {
-
       this.examId = res.id;
       if (this.examId) {
         this._examService.getExamByid(this.examId).subscribe(res => {
           this.editExamDetails = res;
-          console.log(this.editExamDetails, "this.editExamDetails")
+          const batchGuid = this.Batches?.find(b=> b.id == this.editExamDetails.batches[0]?.batchId)?.guid;
+          console.log(batchGuid,"batchGuid")
+          this.OnBatchSelect(batchGuid);
           this.qBankCategorySelected = this.editExamDetails.qbankCategory;
-
+          
           this.getQbank(this.qBankCategorySelected, true);
-          this.getQbanksubject(this.editExamDetails.qBankTypeId);
+          this.getQbanksubject(this.editExamDetails.qBankTypeId);          
+          this.CreateExamSchedule.get('Batch').patchValue(batchGuid);
+          this.CreateExamSchedule.get('BatchYear').patchValue(this.editExamDetails?.batches[0]?.batchYearId);
           const date = this.editExamDetails.examDate.split('T')[0];
           const examEndDate = this.editExamDetails.examEndDate?.split('T')[0];
           const startTime = this.editExamDetails.examDate.split('T')[1].substring(0, 5);
@@ -234,12 +249,12 @@ export class CreateExamComponent implements OnInit {
                 this.OnclickCmbeCode(cbmeCodeId);
               });
               let courseSelected: any = [];
-              this.editExamDetails?.courses.forEach((course) => {
-                courseSelected.push(course.courseYearId);
-                const selectedCourseCount = this.Courses.find(c => c.id == course.courseYearId)?.count
-                this.studentCourseList.push({ courseYearId: course.courseYearId, CourseYear: course.courseYear, noOfStudent: selectedCourseCount, courseId: course.courseId });
+              // this.editExamDetails?.courses.forEach((course) => {
+              //   courseSelected.push(course.courseYearId);
+              //   const selectedCourseCount = this.Courses.find(c => c.id == course.courseYearId)?.count
+              //   this.studentCourseList.push({ courseYearId: course.courseYearId, CourseYear: course.courseYear, noOfStudent: selectedCourseCount, courseId: course.courseId });
 
-              });
+              // });
 
 
               this.QuestionSelected = this.editExamDetails.questions;
@@ -262,7 +277,7 @@ export class CreateExamComponent implements OnInit {
                 // tags: this.editExamDetails.tags
               });
               this.CreateExamSchedule.patchValue({
-                students: courseSelected,
+                // students: courseSelected,
                 examType: this.editExamDetails.examMode,
                 ShuffleAnswer: this.editExamDetails.shuffleAnswer,
                 ShuffleQuestion: this.editExamDetails.shuffleQuestion,
@@ -539,21 +554,21 @@ export class CreateExamComponent implements OnInit {
     }
   }
   // Remove Course from List 
-  OnclickCourse(course) {
-    var index = this.studentCourseList.findIndex(i => i.courseYearId == course.id);
-    if (index > -1) {
-      this.studentCourseList.splice(index, 1)
-    } else {
-      this.studentCourseList.push({ courseYearId: course.id, CourseYear: course.name, noOfStudent: course.count, courseId: course.courseId });
-    }
-  }
+  // OnclickCourse(course) {
+  //   var index = this.studentCourseList.findIndex(i => i.courseYearId == course.id);
+  //   if (index > -1) {
+  //     this.studentCourseList.splice(index, 1)
+  //   } else {
+  //     this.studentCourseList.push({ courseYearId: course.id, CourseYear: course.name, noOfStudent: course.count, courseId: course.courseId });
+  //   }
+  // }
 
-  removeCouse(index: number, text: any) {
-    this.studentCourseList.splice(index, 1);
-    const students = this.CreateExamSchedule.get('students').value as string[];
-    this.removeFirst(students, text);
-    this.CreateExamSchedule.get('students').setValue(students);
-  }
+  // removeCouse(index: number, text: any) {
+  //   this.studentCourseList.splice(index, 1);
+  //   const students = this.CreateExamSchedule.get('students').value as string[];
+  //   this.removeFirst(students, text);
+  //   this.CreateExamSchedule.get('students').setValue(students);
+  // }
   // Calclute Exam Duration 
   calculateDuration() {
 
@@ -752,6 +767,7 @@ export class CreateExamComponent implements OnInit {
   }
   // Create Exam 
   Onsubmit() {
+    const batchid = this.Batches?.find(b=>b.guid == this.CreateExamSchedule.get('Batch')?.value)?.id
     if (this.CreateExamSchedule.get('examType')?.value == 0) {
       this.CreateExamSchedule.get('ExamEndDate')?.clearValidators();
       this.CreateExamSchedule.get('ExamEndDate')?.updateValueAndValidity();
@@ -794,7 +810,15 @@ export class CreateExamComponent implements OnInit {
         // levelId: this.CreateExamQbank.get('CompetencyLevel').value,
         // levelIdOfQuestion: this.CreateExamQbank.get('LevelofQuestions').value,
         noOfQuestions: this.CreateExamQbank.get('NumberofQuestions').value,
-        courses: this.studentCourseList?.length > 0 ? this.studentCourseList : [],
+        // courses: this.studentCourseList?.length > 0 ? this.studentCourseList : [],
+        batches: [
+          {
+            batchId: batchid,
+            batchYearId: this.CreateExamSchedule.get('BatchYear').value,
+            batch: "",
+            batchYear: ""
+          }
+        ],
         // examType: this.CreateExamSchedule.get('examType').value,
         examStatus: 0,
         id: 0,
@@ -818,7 +842,8 @@ export class CreateExamComponent implements OnInit {
         evaluationCompleteOn: null,
         noOfStudents: this.CreateExamQbank.get('NumberofQuestions').value,
         numberOfAttendees: 0,
-        averageDuration: 0
+        averageDuration: 0,
+        courses: []
       }
 
       this._examService.CreateExam(FormData).subscribe(response => {
@@ -884,7 +909,15 @@ export class CreateExamComponent implements OnInit {
         evaluationCompleteOn: null,
         noOfStudents: this.CreateExamQbank.get('NumberofQuestions').value,
         numberOfAttendees: 0,
-        averageDuration: 0
+        averageDuration: 0,
+        batches: [
+          {
+            batchId: batchid,
+            batchYearId: this.CreateExamSchedule.get('BatchYear').value,
+            batch: "",
+            batchYear: ""
+          }
+        ],
       }
 
       this._examService.UpdateExam(FormData).subscribe(response => {

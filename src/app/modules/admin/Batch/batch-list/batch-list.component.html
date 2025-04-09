@@ -21,7 +21,7 @@
                   </mat-form-field>
                   <button (click)="getSelectedRows()" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
                     <mat-icon class="text-white">check_circle</mat-icon> Assign Group</button>
-                  <button (click)="addStudent(element)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
+                  <!-- <button (click)="addStudent(element)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
                     <mat-icon class="text-white">add</mat-icon> Add</button>
                   <button (click)="BulkUpload($event)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
                     <mat-icon class="text-white">add</mat-icon> Bulk Upload</button>
@@ -39,7 +39,7 @@
                   <button *ngIf="files.length>0" mat-raised-button id="add-student-button" (click)="OnBulkUpdateusers()"
                     aria-label="add qbank" [disabled]="isExcekinRigthformrt">
                     <mat-icon>add</mat-icon> Submit
-                  </button>
+                  </button> -->
                 </div>
             </div>
             <h2 class="mb-2" *ngIf="dataSource.data?.length <= 0">No Students found</h2>
@@ -92,7 +92,7 @@
                     <td mat-cell *matCellDef="let element"> 
                         <div class="flex gap-2">
                             <mat-icon class="cursor-pointer" (click)="deleteStudent(element)">delete</mat-icon>
-                            <mat-icon class="cursor-pointer" (click)="editStudent(element)">edit</mat-icon>
+                            <!-- <mat-icon class="cursor-pointer" (click)="editStudent(element)">edit</mat-icon> -->
                         </div>
                     </td>
                   </ng-container>
@@ -101,7 +101,7 @@
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
               </table>
 
-              <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="6" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
+              <mat-paginator class="mt-8 flex justify-end" [length]="dataSource.paginationData? dataSource.paginationData.count:0" [pageSize]="10" (page)="getNext($event)" [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"></mat-paginator>
 
         </mat-tab>
     </mat-tab-group>

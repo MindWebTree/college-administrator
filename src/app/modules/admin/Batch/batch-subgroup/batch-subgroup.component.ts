@@ -54,10 +54,12 @@ export class BatchSubgroupComponent  implements OnInit {
   currentPageSize: number = SitePreference.PAGE.GridRowViewCount;
   currentPageIndex: number = 0;
   teams:any;
+  groupteams:any;
   parentteams:any;
   filteredteams:any;
   Team: FormControl;  
   ParentTeam: FormControl;  
+  GroupTeam: FormControl;  
   @ViewChild('assignTeam') assignTeam!: ElementRef;
   @ViewChild('promoteToNextYear') promoteToNextYear!: ElementRef;
 
@@ -75,9 +77,9 @@ export class BatchSubgroupComponent  implements OnInit {
   ) {
     this._batchService.getTeams().subscribe(res=>{
       this.teams = res;      
-      this.parentteams = this.teams.filter(t=>t.parentTeamId ==0);
-      this.ParentTeam = new FormControl(this.parentteams[0].id);
-      this.GetTeams(this.parentteams[0].id);
+      this.groupteams = this.teams.filter(t=>t.parentTeamId ==0);
+      this.GroupTeam = new FormControl(this.groupteams[0].id);
+      this.ParentGetTeams(this.groupteams[0].id);
       
     })
     this._router.events.pipe(
@@ -146,7 +148,8 @@ export class BatchSubgroupComponent  implements OnInit {
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      batchId: this.batchId
+      batchId: this.batchId,
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
     };
     
     this.dataSource.loadData(gridFilter);
@@ -158,7 +161,8 @@ export class BatchSubgroupComponent  implements OnInit {
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      batchId: this.batchId
+      batchId: this.batchId,
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
     };
     
     this.dataSource.loadData(gridFilter);
@@ -174,7 +178,8 @@ export class BatchSubgroupComponent  implements OnInit {
       keyword: '',
       orderBy: '',
       sortOrder: '',
-      batchId: this.batchId
+      batchId: this.batchId,
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
     };
     this.dataSource.loadData(gridFilter);
   }
@@ -430,6 +435,21 @@ export class BatchSubgroupComponent  implements OnInit {
   //     this.loadStudentData();
   //   }
   // }
+  ParentGetTeams(teamId){
+    this.parentteams = this.teams.filter(t => t.parentTeamId == teamId);
+    this.ParentTeam = new FormControl(this.parentteams[0].id);
+    this.GetTeams(this.parentteams[0].id);
+    let gridFilter: HODStudentGrid = {
+      pageNumber: this.currentPageIndex + 1,
+      pageSize: this.currentPageSize,
+      keyword: '',
+      orderBy: '',
+      sortOrder: '',
+      batchId: this.batchId,
+      teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
+    };
+    this.dataSource.loadData(gridFilter);
+  }
   GetTeams(teamId){
     this.filteredteams = this.teams.filter(t => t.parentTeamId == teamId);
     this.Team = new FormControl(this.filteredteams[0].id);
@@ -559,7 +579,8 @@ export class BatchSubgroupComponent  implements OnInit {
         keyword: '',
         orderBy: '',
         sortOrder: '',
-        batchId: this.batchId
+        batchId: this.batchId,
+        teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
       };
       this.dataSource.loadData(gridFilter);
     })
@@ -575,7 +596,8 @@ export class BatchSubgroupComponent  implements OnInit {
           keyword: '',
           orderBy: '',
           sortOrder: '',
-          batchId: this.batchId
+          batchId: this.batchId,
+          teamId: this.GroupTeam?.value ? parseInt(this.GroupTeam?.value) : 0
         };
         this.dataSource.loadData(gridFilter);
     });

@@ -62,7 +62,7 @@
     </div>
     <mat-tab-group class="student-report-list mt-2" [selectedIndex]="selected.value"
     (selectedIndexChange)="yearSelected($event)">
-        <mat-tab label="Interal Assessment"> 
+        <mat-tab label="Internal Assessment"> 
             <div class="my-3 flex justify-between">      
                 
             </div>
@@ -74,16 +74,40 @@
                 </ng-container>
               
                 <ng-container matColumnDef="Theory">
-                  <th mat-header-cell *matHeaderCellDef> Total Theory <br>(100 Marks) </th>
+                  <th mat-header-cell *matHeaderCellDef class="cursor-pointer" (click)="sortData('Theory')">
+                    Total Theory (100 Marks)
+                    <mat-icon *ngIf="sortColumn === 'Theory'" class="text-sm">
+                      {{sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}
+                    </mat-icon>
+                    <mat-icon *ngIf="sortColumn === ''" class="text-sm">
+                        arrow_downward
+                      </mat-icon>
+                  </th>
                   <td mat-cell *matCellDef="let element"> {{element.totalTheory}} </td>
                 </ng-container>
               
                 <ng-container matColumnDef="Practical">
-                  <th mat-header-cell *matHeaderCellDef> Total Practical <br> (100 Marks) </th>
+                  <th mat-header-cell *matHeaderCellDef class="cursor-pointer" (click)="sortData('Practical')">
+                    Total Practical (100 Marks)
+                    <mat-icon *ngIf="sortColumn === 'Practical'" class="text-sm">
+                      {{sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}
+                    </mat-icon>
+                    <mat-icon *ngIf="sortColumn === ''" class="text-sm">
+                        arrow_downward
+                      </mat-icon>
+                  </th>
                   <td mat-cell *matCellDef="let element"> {{element.totalPractical}} </td>
                 </ng-container>
                 <ng-container matColumnDef="Total">
-                  <th mat-header-cell *matHeaderCellDef> Total 200 Marks <br> (Theory+Practical) </th>
+                  <th mat-header-cell *matHeaderCellDef class="cursor-pointer" (click)="sortData('Total')">
+                    Total 200 Marks (Theory+Practical)
+                    <mat-icon *ngIf="sortColumn === 'Total'" class="text-sm">
+                      {{sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}
+                    </mat-icon>
+                    <mat-icon *ngIf="sortColumn === ''" class="text-sm">
+                        arrow_downward
+                      </mat-icon>
+                  </th>
                   <td mat-cell *matCellDef="let element"> {{element.totalMarks}} </td>
                 </ng-container>
 
@@ -110,17 +134,31 @@
             <h2 class="mb-2" *ngIf="AttendancedataSource.data?.length <= 0">No Data found</h2>
             <table *ngIf="AttendancedataSource.data?.length >= 0" mat-table [dataSource]="AttendancedataSource.data" class="">              
                 <ng-container matColumnDef="Date">
-                  <th mat-header-cell *matHeaderCellDef> Cumulative Date </th>
+                  <th mat-header-cell *matHeaderCellDef (click)="sortAttendanceData('Date')">Date</th>
                   <td mat-cell *matCellDef="let element"> {{element.cumulativeDate | date: 'dd/MM/yy'}} </td>
                 </ng-container>
               
                 <ng-container matColumnDef="Theory">
-                  <th mat-header-cell *matHeaderCellDef> Theory </th>
+                  <th mat-header-cell *matHeaderCellDef class="cursor-pointer" (click)="sortAttendanceData('Theory')">Theory
+                    <mat-icon *ngIf="attendanceSortColumn === 'Theory'" class="text-sm">
+                        {{attendanceSortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}
+                      </mat-icon>
+                      <mat-icon *ngIf="attendanceSortColumn === ''" class="text-sm">
+                        arrow_downward
+                      </mat-icon>
+                  </th>
                   <td mat-cell *matCellDef="let element"> {{element.theoryAttendance}} </td>
                 </ng-container>
               
                 <ng-container matColumnDef="Practical">
-                  <th mat-header-cell *matHeaderCellDef> Practical </th>
+                  <th mat-header-cell *matHeaderCellDef class="cursor-pointer" (click)="sortAttendanceData('Practical')">Practical
+                    <mat-icon *ngIf="attendanceSortColumn === 'Practical'" class="text-sm">
+                      {{attendanceSortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}
+                    </mat-icon>
+                    <mat-icon *ngIf="attendanceSortColumn === ''" class="text-sm">
+                        arrow_downward
+                      </mat-icon>
+                  </th>
                   <td mat-cell *matCellDef="let element"> {{element.practicalAttendance}} </td>
                 </ng-container>
 

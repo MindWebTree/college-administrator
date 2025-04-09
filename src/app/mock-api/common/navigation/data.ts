@@ -10,8 +10,8 @@ export const AdminNavigation: FuseNavigationItem[] = [
         roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
-        id: "ADrPLEXUS Q'Bank",
-        title: "ADrPLEXUS Q'Bank",
+        id: "Owned Questions",
+        title: "Owned Questions",
         type: 'basic',
         SubType: 'collapsable',
         // icon : 'heroicons_outline:chart-pie',
@@ -19,88 +19,38 @@ export const AdminNavigation: FuseNavigationItem[] = [
         roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
-        id: 'Exams',
-        title: 'Exams',
-        type: 'collapsable',
-        children: [],
-        roles: ["CollegeAdministrator"]
+        id: 'HOD',
+        title: 'HOD',
+        type: 'basic',
+        link: '/hod/list',
+        roles: ["CollegeAdministrator","HOD"]
     },
-    
     // {
-    //     id: 'Students',
-    //     title: 'Students',
+    //     id: 'Lecturers',
+    //     title: 'Lecturers',
     //     type: 'collapsable',
-    //     children: [
-    //         //     {
-    //         //         id: 'createaccount',
-    //         //         title: 'Create Account',
-    //         //         type: 'basic',
-    //         //         link: ''
-    //         // },
-    //     ],
-    //     roles: ["CollegeAdministrator"]
+    //     children: []
     // },
     {
-        id: 'Lecturers',
-        title: 'Lecturers',
+        id: 'Student',
+        title: 'Student',
         type: 'collapsable',
-        children: [
-            //     {
-            //         id: 'createaccount',
-            //         title: 'Create Account',
-            //         type: 'basic',
-            //         link: ''
-            // },
-        ],
+        children: [],
         roles: ["CollegeAdministrator"]
     },
     {
         id: 'Batch',
         title: 'Batch',
         type: 'collapsable',
-        children: [
-            //     {
-            //         id: 'createaccount',
-            //         title: 'Create Account',
-            //         type: 'basic',
-            //         link: ''
-            // },
-        ],
+        children: [],
         roles: ["CollegeAdministrator"]
     },
     {
-        id: 'Competency',
-        title: 'Competency',
+        id: 'Exams',
+        title: 'Exams',
         type: 'collapsable',
-        children: [
-            {
-                id: 'Create Competency',
-                title: 'Create Competency',
-                type: 'basic',
-                link: 'competency/create'
-            },
-            {
-                id: 'List Competency',
-                title: 'List Competency',
-                type: 'basic',
-                link: 'competency/list'
-            },
-            {
-                id: 'RubricConstructionManagement',
-                title: 'Certifiable Competency skills Management',
-                type: 'basic',
-                link: 'competency/rubric-sections'
-            },
-        ],
+        children: [],
         roles: ["CollegeAdministrator"]
-    },
-    {
-        id: 'HOD',
-        title: 'HOD',
-        type: 'basic',
-        // icon : 'heroicons_outline:chart-pie',
-        link: '/hod/list',
-        roles: ["CollegeAdministrator","HOD"]
     },
 ];
 export const LecturerNavigation: FuseNavigationItem[] = [
@@ -112,8 +62,8 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         link: '/dashboard'
     },
     {
-        id: "ADrPLEXUS Q'Bank",
-        title: "ADrPLEXUS Q'Bank",
+        id: "Owned Questions",
+        title: "Owned Questions",
         type: 'basic',
         SubType: 'collapsable',
         link: '/qbank/adrplexus-qbank',
@@ -171,38 +121,19 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         children: [
             {
-                id: 'Create Competency',
-                title: 'Create Competency',
-                type: 'basic',
-                link: 'competency/create'
-            },
-            {
                 id: 'List Competency',
                 title: 'List Competency',
                 type: 'basic',
                 link: 'competency/list'
-            },
-            {
-                id: 'RubricConstructionManagement',
-                title: 'Certifiable Competency skills Management',
-                type: 'basic',
-                link: 'competency/rubric-sections'
-            },
+            }
         ],
         roles: ["CollegeAdministrator"]
     },
     {
-        id: 'Student',
-        title: 'Student',
+        id: 'Assigned Student',
+        title: 'Assigned Student',
         type: 'collapsable',
-        children: [
-            //     {
-            //         id: 'createaccount',
-            //         title: 'Create Account',
-            //         type: 'basic',
-            //         link: ''
-            // },
-        ],
+        children: [],
         roles: ["CollegeAdministrator"]
     },
 ];
@@ -260,13 +191,45 @@ export const HODNavigation: FuseNavigationItem[] = [
         roles: ["CollegeAdministrator"]
     },
     {
+        id: 'Lecturers',
+        title: 'Lecturers',
+        type: 'collapsable',
+        children: []
+    },
+    {
+        id: 'Competency',
+        title: 'Competency',
+        type: 'collapsable',
+        children: [
+            {
+                id: 'Create Competency',
+                title: 'Create Competency',
+                type: 'basic',
+                link: 'competency/create'
+            },
+            {
+                id: 'List Competency',
+                title: 'List Competency',
+                type: 'basic',
+                link: 'competency/list'
+            },
+            {
+                id: 'RubricConstructionManagement',
+                title: 'Certifiable Competency skills Management',
+                type: 'basic',
+                link: 'competency/rubric-sections'
+            },
+        ],
+        roles: ["CollegeAdministrator"]
+    },
+    {
         id: 'Settings',
         title: 'Settings',
         type: 'basic',
         // icon : 'heroicons_outline:chart-pie',
         link: '/setting',
         roles: ["CollegeAdministrator","HOD"]
-    },
+    }
 ];
 export const defaultNavigation: FuseNavigationItem[] = [
     // {
@@ -344,7 +307,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/lecturer/list/:guid',
         children: [],
-        roles: ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator","HOD"]
     },
     {
         id: 'Lecturers',
@@ -352,7 +315,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/lecturer/lecturer-bio/:userId/:courseYear',
         children: [],
-        roles: ["CollegeAdministrator"]
+        roles: ["CollegeAdministrator","HOD"]
     },
     {
         id: 'competency',
@@ -360,7 +323,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/competency/create',
         children: [],
-        roles: ["CollegeAdministrator","Lecturer"]
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
         id: 'competency',
@@ -368,7 +331,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/competency/edit/:id',
         children: [],
-        roles: ["CollegeAdministrator","Lecturer"]
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
         id: 'competencylist',
@@ -376,7 +339,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/competency/list',
         children: [],
-        roles: ["CollegeAdministrator","Lecturer"]
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
         id: 'competency-student-grid',
@@ -384,7 +347,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/competency/student-grid/:guid',
         children: [],
-        roles: ["CollegeAdministrator","Lecturer"]
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
         id: 'rubric-sections',
@@ -392,7 +355,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/competency/rubric-sections',
         children: [],
-        roles: ["CollegeAdministrator","Lecturer"]
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
         id: 'sections',
@@ -400,7 +363,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/competency/sections/:guid',
         children: [],
-        roles: ["CollegeAdministrator","Lecturer"]
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
         id: 'rubric-criteria-list',
@@ -408,7 +371,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'collapsable',
         link:'/competency/rubric-criteria-list/:guid',
         children: [],
-        roles: ["CollegeAdministrator","Lecturer"]
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
         id: 'batch',
@@ -513,6 +476,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link:'/qbank/game-analytics/:guid',
         children: [],
         roles: ["Student"]
+    },
+    {
+        id: 'Students-List',
+        title: 'Students-List',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/students/:guid',
+        roles: ["CollegeAdministrator","HOD","Lecturer"]
     },
     {
         id: 'Students-List',

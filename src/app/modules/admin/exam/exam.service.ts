@@ -102,6 +102,18 @@ export class ExamService {
   getExamReport(id): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/exam/exam-report/${id}`)
   }
+  getBatch(): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/list/`,{}).pipe(
+      tap((response: any) => {
+      })
+    );
+  };
+  getBatchYear(guid): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`,{}).pipe(
+      tap((response: any) => {
+      })
+    );
+  };
   
 
 }

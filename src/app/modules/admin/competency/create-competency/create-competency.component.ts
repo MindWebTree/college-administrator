@@ -76,15 +76,18 @@ export class CreateCompetencyComponent  implements OnInit{
               this._competencyService.getBatchYear(res?.batchGuid).subscribe(ress=>{
                 this.academicYears = ress;
                 if (ress) {
-                  let AcademicGuid = this.academicYears.find(year => year.id == res?.academicYearId)?.guid;
+                  let AcademicGuid = this.academicYears.find(year => year.id == res?.batchYearId)?.guid;
                   this.getSubject(AcademicGuid, true);
-                  this.getRubric(res?.subjectId);
+                  this.CreateCompetency.get('Batch').patchValue(res?.batchId)
+                  this.CreateCompetency.get('Year').patchValue(res?.batchYearId)                  
+                  this.getRubric();
+
                   this.criteria = res?.competencyCriteria;
     
                   this.CreateCompetency.patchValue({
                     Batch: res?.batchId,
-                    Year: res?.academicYearId,
-                    Team: "1",
+                    Year: res?.batchYearId,
+                    Team: res?.teamId,
                     // PracticalName: res?.name,
                     AssignmentDate: res?.assignmentDate,
                     // SubmissionDate: res?.submissionDate,
@@ -94,6 +97,7 @@ export class CreateCompetencyComponent  implements OnInit{
                     Rubric: res?.rubricConstructionId,
                     Note: res?.notes
                   })
+                  this.getTeam(true);
                 }
               });
               
@@ -101,14 +105,16 @@ export class CreateCompetencyComponent  implements OnInit{
               
             })
           }
-        })
-        
+        })       
+        console.log(this.teams,"teams");
+        let team = this.teams?.find(t => t.id == this.assignmentDetails?.teamId);
+        console.log(team,"team1");
+        this.TeamSelected(team);
       }
     })
     this._competencyService.getBatch().subscribe(res=>{
       this.batches = res;
     })
-
     
     this._competencyService.getFaculty().subscribe(res=>{
       this.lecturers = res
@@ -116,19 +122,35 @@ export class CreateCompetencyComponent  implements OnInit{
 
     this.CreateCompetency = this._formBuilder.group({
       Batch: ['', Validators.required],
-      Year: ['', Validators.required],
-      Team: ['', Validators.required],
+      Year: [''],
+      Team: [''],
       // PracticalName: ['', Validators.required],
       AssignmentDate: ['', [Validators.required, this.dateNotBeforeTodayValidator()]],
       // SubmissionDate: ['', [Validators.required, this.dateNotBeforeTodayValidator()]],
-      Subject: ['', Validators.required],
+      Subject: [''],
       Rubric: ['', Validators.required],
       Faculty: ['', Validators.required],
       Criteria: [''],
       Note: ['', Validators.required]
     }, {  });
     // }, { validators: this.submissionDateAfterAssignmentDateValidator() });
-
+    this.getRubric();
+  }
+  getTeam(isEdit:boolean=false){
+    let req = {
+      batchId: this.CreateCompetency.get('Batch').value,
+      batchYearId: 0,
+      subjectId: 0,
+    }
+    this._competencyService.getTeams(req).subscribe(res=>{
+      this.teams =res;
+      if(isEdit){
+        console.log(this.teams,"teams");
+        let team = this.teams?.find(t => t.id == this.assignmentDetails?.teamId);
+        console.log(team,"team1");
+        this.TeamSelected(team);
+      }
+    })
   }
   dateNotBeforeTodayValidator(){
     return (control: any) => {
@@ -165,20 +187,24 @@ export class CreateCompetencyComponent  implements OnInit{
     };
   }
 
-
-  getRubric(subjectid){
-    this._competencyService.getRubricConstruction(subjectid).subscribe(res=>{
-      this.rubricConstructions = res;
-    });
-    let req = {
-      batchId: this.CreateCompetency.get('Batch').value,
-      batchYearId: this.CreateCompetency.get('Year').value,
-      subjectId: subjectid,
-    }
-    this._competencyService.getTeams(req).subscribe(res=>{
-      this.teams =res
-    })
+  getRubric(){
+    this._competencyService.getRubricConstruction().subscribe(res=>{
+          this.rubricConstructions = res;
+        });
   }
+  // getRubric(subjectid){
+  //   this._competencyService.getRubricConstruction(subjectid).subscribe(res=>{
+  //     this.rubricConstructions = res;
+  //   });
+  //   let req = {
+  //     batchId: this.CreateCompetency.get('Batch').value,
+  //     batchYearId: this.CreateCompetency.get('Year').value,
+  //     subjectId: subjectid,
+  //   }
+  //   this._competencyService.getTeams(req).subscribe(res=>{
+  //     this.teams =res
+  //   })
+  // }
   getBatchYear(batchGuid){
     this._competencyService.getBatchYear(batchGuid).subscribe(res=>{
       this.academicYears = res;
@@ -199,18 +225,20 @@ export class CreateCompetencyComponent  implements OnInit{
 
   addAssignment() {
     if (this.CreateCompetency.invalid) {
+      console.log(this.CreateCompetency.invalid,"this.CreateCompetency.invalid",this.CreateCompetency)
     } else {
       if (this.assignmentid) {
         let req: competency = {
           id: this.assignmentDetails.id,
           // guid: '',
           isActive: true,
-          batchId: 1,
-          academicYearId: this.CreateCompetency.get('Year').value,
+          batchId: this.CreateCompetency.get('Batch').value,
+          teamId: this.CreateCompetency.get('Team').value,
+          batchYearId: 0,
           // name: this.CreateCompetency.get('PracticalName').value,
           assignmentDate: this.CreateCompetency.get('AssignmentDate').value,
           // submissionDate: this.CreateCompetency.get('SubmissionDate').value,
-          subjectId: this.CreateCompetency.get('Subject').value,
+          subjectId: 0,
           facultyId: this.CreateCompetency.get('Faculty').value,
           notes: this.CreateCompetency.get('Note').value,
           rubricConstructionId: this.CreateCompetency.get('Rubric').value
@@ -224,15 +252,16 @@ export class CreateCompetencyComponent  implements OnInit{
           id: 0,
           // guid: '',
           isActive: true,
-          batchId: 1,
-          academicYearId: this.CreateCompetency.get('Year').value,
+          batchId: this.CreateCompetency.get('Batch').value,
+          batchYearId: 0,
           // name: this.CreateCompetency.get('PracticalName').value,
           assignmentDate: this.CreateCompetency.get('AssignmentDate').value,
           // submissionDate: this.CreateCompetency.get('SubmissionDate').value,
-          subjectId: this.CreateCompetency.get('Subject').value,
+          subjectId: 0,
           facultyId: this.CreateCompetency.get('Faculty').value,
           notes: this.CreateCompetency.get('Note').value,
-          rubricConstructionId: this.CreateCompetency.get('Rubric').value
+          rubricConstructionId: this.CreateCompetency.get('Rubric').value,
+          teamId: this.CreateCompetency.get('Team').value
         }
         this._competencyService.createAssignment(req).then(res => {
           this.openSnackBar("Assignment Created Successfully", "Close");

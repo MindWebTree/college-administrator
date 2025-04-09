@@ -8,6 +8,7 @@ export class GridFilter {
 }
 export class HODStudentGrid extends GridFilter {
     batchId:string;
+    teamId:number
 }
 export class yearGrid extends GridFilter {
     averageType:string;
@@ -15,6 +16,7 @@ export class yearGrid extends GridFilter {
     batchId:string;
     batchYearId:number;
     subjectId?:number;
+    teamId:number;
 }
 export class importUser {
     UserName: string;

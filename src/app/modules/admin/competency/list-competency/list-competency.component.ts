@@ -13,6 +13,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { SitePreference } from 'app/core/auth/app.configs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SubmissionFormComponent } from '../submission-form/submission-form.component';
+import { helperService } from 'app/core/auth/helper';
 
 @Component({
   selector: 'app-list-competency',
@@ -34,6 +35,7 @@ export class ListCompetencyComponent implements OnInit {
   batches:any;
   _sitePreference: any = SitePreference;
   confirmDialogRef:MatDialogRef<any>;
+  userDetails: any;
 
   @ViewChild('completedPaginator', { static: true }) completedpaginator: MatPaginator;
   @ViewChild('upcomingPaginator', { static: true }) upcomingpaginator: MatPaginator;
@@ -42,6 +44,7 @@ export class ListCompetencyComponent implements OnInit {
     private _competencyService: CompetencyService,
     private _router: Router,
     private _matDialog: MatDialog,
+    private _helperService: helperService,
     private _formBuilder: FormBuilder,
   ) {
     this._unsubscribeAll = new Subject<void>();
@@ -58,6 +61,8 @@ export class ListCompetencyComponent implements OnInit {
     });
     
     this.searchInput = new FormControl('');
+    this.userDetails = this._helperService.getUserDetail();
+    console.log(this.userDetails?.Roles,"");
   }
   SubmitAssignment(){
     this.confirmDialogRef = this._matDialog.open(SubmissionFormComponent, {

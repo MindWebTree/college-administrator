@@ -25,7 +25,8 @@ export class competency {
     guid?: string;
     isActive: boolean;
     batchId: number;
-    academicYearId: string;
+    batchYearId: number;
+    teamId: number;
     name?: string;
     assignmentDate: string;
     submissionDate?: string;

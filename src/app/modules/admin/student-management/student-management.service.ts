@@ -170,40 +170,44 @@ export class StudentService {
   getBatches(): Observable<any> {
     return this._httpClient.post<any>(`${environment.apiURL}/batch/list`,{})
   }
+  deleteStudent(userId): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/student/delete/?userId=${userId}`,{})
+  }
 
   /**
     * Delete Student
     *
     * @param user
     */
-  deleteStudent(userId): Promise<any> {
+  // deleteStudent(userId): Promise<any> {
 
-    return new Promise(() => {
-      const params = new HttpParams().set('userId', userId);
-      const headers = new HttpHeaders({
-        'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
+  //   return new Promise(() => {
+  //     const params = new HttpParams().set('userId', userId);
+  //     const headers = new HttpHeaders({
+  //       'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
 
-      });
+  //     });
 
-      this._httpClient.post(`${environment.apiURL}/student/delete`, {}, { params, headers })
-        .subscribe(response => {
-          if (response) {
-            this.onStudentManagementChanged.next(this.student);
-            // to refresh  count in navigation
-            this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
+  //     this._httpClient.post(`${environment.apiURL}/student/delete`, {}, { params, headers })
+  //       .subscribe(response => {
+  //         if (response) {
+  //           // to refresh  count in navigation
+  //           // this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
 
-              // Explicitly trigger a navigation refresh
-              this._navigationTypeService.refreshNavigation();
+  //           //   // Explicitly trigger a navigation refresh
+  //           //   this._navigationTypeService.refreshNavigation();
 
-            });
-            this.openSnackBar("Successfully removed.", "Close");
-          }
-          else {
-            this.openSnackBar("Failed", "Close");
-          }
-        });
-    });
-  }
+  //           // });
+  //           this.openSnackBar("Successfully removed.", "Close");
+  //           return response;
+  //         }
+  //         else {
+  //           this.openSnackBar("Failed", "Close");
+  //           return response;
+  //         }
+  //       });
+  //   });
+  // }
   studentExamAnalyticsListing(_gridFilter: studentAnalyticGrid): Observable<any> {
     const headers = new HttpHeaders({
       'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',

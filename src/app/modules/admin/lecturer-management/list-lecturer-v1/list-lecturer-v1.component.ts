@@ -296,13 +296,11 @@ export class ListLecturerV1Component  implements OnInit {
             lastName: lastName,
             email: item.Email.toString(),
             phoneNumber: item.MobileNumber.toString(),
-            rollNo: item.RollNo.toString(),
+            EmployeeNo: item.RollNo.toString(),
             password: item.Password.toString(),
-            batchId: item.Batch,
-            batchYearId: item.BatchYear,
-            parentEmail: item.ParentEmail.toString(),
-            parentPhoneNumber: item.ParentMobileNumber.toString(),
+            qualification: item.Qualification.toString(),
             CourseType: "",
+            Description: "",
             ImageUrl: "",
             MedicalCourseYear: "",
             PhoneCountryCode: "",
@@ -378,7 +376,7 @@ export class ListLecturerV1Component  implements OnInit {
   OnBulkUpdateusers() {
     if (this.parsedData.length > 0) {
       // Send the parsed and mapped JSON data to the API
-      this._lectureService.bulkUploadUsers(this.batchId, this.selectedYear, this.parsedData).then(response => {
+      this._lectureService.bulkUploadUsers(this.parsedData).then(response => {
         if (response) {
           this._lectureService.onLecturerGridChanged.next(true);
           // Clear the file input and data after successful upload
@@ -497,8 +495,9 @@ export class ListLecturerV1Component  implements OnInit {
     this.confirmDialogRef.componentInstance.confirmMessage = 'Are you sure you want to delete?';
     this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this._lectureService.deleteLecture(user.id);
-        this._lectureService.onLecturerGridChanged.next(true);
+        this._lectureService.deleteLecture(user.id).subscribe(res=>{
+          this._lectureService.onLecturerGridChanged.next(true);
+        });
       }
       this.confirmDialogRef = null;
     });

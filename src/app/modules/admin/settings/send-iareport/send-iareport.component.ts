@@ -41,9 +41,12 @@ export class SendIAReportComponent {
       isAttendenceEmail: reportType == 3 || reportType == 1 ,
       isMarksEmail: reportType == 3 || reportType == 2 ,
     }
-    console.log(req)
     this._servicesService.sendReport(req).subscribe(res=>{
-      this._servicesService.openSnackBar('Report Scheduled Sucessfully','close')
+      if(res){
+        this._servicesService.openSnackBar('Report Scheduled Sucessfully','close');
+      }else{
+        this._servicesService.openSnackBar('Report Scheduling Failed','close');
+      }
     })
   }
 }

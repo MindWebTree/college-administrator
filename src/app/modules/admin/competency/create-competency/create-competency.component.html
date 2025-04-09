@@ -6,21 +6,21 @@
             <h4 class="label">Batch *</h4>
             <mat-form-field>
                 <mat-select formControlName="Batch">
-                    <mat-option [value]="batch.id" (click)="getBatchYear(batch.guid)" *ngFor="let batch of batches">{{batch.name}}</mat-option>
+                    <mat-option [value]="batch.id" (click)="getTeam(batch.guid)" *ngFor="let batch of batches">{{batch.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
 
-        <div class="flex gap-2">
+        <!-- <div class="flex gap-2">
             <h4 class="label">Academic Year *</h4>
             <mat-form-field>
                 <mat-select formControlName="Year">
                     <mat-option [value]="year.id" (click)="getSubject(year.guid)" *ngFor="let year of academicYears">{{year.yearName}}</mat-option>
                 </mat-select>
             </mat-form-field>
-        </div>
+        </div> -->
         
-        <div class="flex gap-2">
+        <!-- <div class="flex gap-2">
             <h4 class="label">Subject *</h4>
             <mat-form-field>
                 <mat-select formControlName="Subject">
@@ -28,7 +28,7 @@
                 </mat-select>
             </mat-form-field>
 
-        </div>
+        </div> -->
 
         <div class="flex gap-2">
             <h4 class="label">Practical Team *</h4>
@@ -92,7 +92,7 @@
             <h4 class="label">Faculty *</h4>
             <mat-form-field>
                 <mat-select formControlName="Faculty">
-                    <mat-option [value]="lecturer.id" *ngFor="let lecturer of lecturers">{{lecturer.firstName + lecturer.lastName}}</mat-option>
+                    <mat-option [value]="lecturer.id" *ngFor="let lecturer of lecturers">{{lecturer.firstName + ' ' + lecturer.lastName}}</mat-option>
                 </mat-select>
             </mat-form-field>
 

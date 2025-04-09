@@ -12,7 +12,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="mt-2 md:mt-0 flex gap-2 items-center">
+            <!-- <div class="mt-2 md:mt-0 flex gap-2 items-center">
                 <h2>Academic Year :</h2>
                 <mat-form-field>
                     <mat-select formControlName="AcademicYear">
@@ -20,7 +20,7 @@
                         <mat-option [value]="year.id" (click)="Search()" *ngFor="let year of academicYears">{{year.yearName}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
+            </div> -->
         </div>
         </form>
     </div>
@@ -42,7 +42,7 @@
                 <h5 class="text-[#505050] font-light">Competecy Starts : {{assignment.assignmentDate | date: 'MMM d, y'}}</h5>
             </div>
             <div class="flex justify-between items-center gap-2">
-                <div>
+                <div *ngIf="userDetails?.Roles == 'HOD'">
                     <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                         <mat-icon>more_vert</mat-icon>
                     </button>

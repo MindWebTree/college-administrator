@@ -16,4 +16,8 @@ export default [
         path: ':guid/:batchYearId/:id',
         component: AssessmentAttendenceReportComponent,
     },
+    {
+        path: 'lecturer/:guid',
+        component: AssessmentAttendenceReportComponent,
+    },
 ] as Routes;

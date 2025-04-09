@@ -10,6 +10,11 @@
               </div>   
                 <div class="flex items-center gap-2">
                   <mat-form-field class="team-field">
+                    <mat-select [formControl]="GroupTeam">
+                        <mat-option [value]="groupteam.id" (click)="ParentGetTeams(groupteam.id)" *ngFor="let groupteam of groupteams">{{groupteam.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                  <mat-form-field class="team-field">
                       <mat-select [formControl]="ParentTeam">
                           <mat-option [value]="team.id" (click)="GetTeams(team.id)" *ngFor="let team of parentteams">{{team.name}}</mat-option>
                       </mat-select>

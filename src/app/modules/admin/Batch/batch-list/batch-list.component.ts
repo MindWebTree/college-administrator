@@ -155,7 +155,8 @@ export class BatchListComponent implements OnInit {
       average: 0,
       batchId: this.batchId,
       batchYearId: this.selectedYear,
-      subjectId: this.Subject?.value
+      subjectId: this.Subject?.value,
+      teamId: 0
     };
     
     this.dataSource.loadData(gridFilter);
@@ -171,7 +172,8 @@ export class BatchListComponent implements OnInit {
       average: 0,
       batchId: this.batchId,
       batchYearId: this.selectedYear,
-      subjectId:this.Subject?.value
+      subjectId:this.Subject?.value,
+      teamId: 0
     };
     
     this.dataSource.loadData(gridFilter);
@@ -191,7 +193,8 @@ export class BatchListComponent implements OnInit {
       average: 0,
       batchId: this.batchId,
       batchYearId: this.selectedYear,
-      subjectId: this.Subject?.value
+      subjectId: this.Subject?.value,
+      teamId: 0
     };
     this.dataSource.loadData(gridFilter);
   }
@@ -535,7 +538,8 @@ export class BatchListComponent implements OnInit {
         average: 0,
         batchId: this.batchId,
         batchYearId: this.selectedYear,
-        subjectId: this.Subject?.value
+        subjectId: this.Subject?.value,
+        teamId:0
       };
       this.dataSource.loadData(gridFilter);
     })

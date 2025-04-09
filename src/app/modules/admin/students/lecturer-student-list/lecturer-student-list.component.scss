@@ -1,14 +1,14 @@
 :host{
     display: block;
 }
-::ng-deep .students-list .mdc-tab.mat-mdc-tab.mat-mdc-focus-indicator {
+::ng-deep .year-list .mdc-tab.mat-mdc-tab.mat-mdc-focus-indicator {
     max-width: 110px;
     padding: 0 !important;
 }
-::ng-deep .students-list.mat-mdc-tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container{
+::ng-deep .year-list.mat-mdc-tab-group .mat-mdc-tab-header .mat-mdc-tab-label-container{
     margin: 0 !important;
 }
-::ng-deep .students-list.mat-mdc-tab-group .mat-mdc-tab-body-content{
+::ng-deep .year-list.mat-mdc-tab-group .mat-mdc-tab-body-content{
     padding: 24px 0 !important;
 }
 button#add-student-button {
@@ -19,6 +19,19 @@ button#add-student-button {
     gap: 5px;
     align-items: center;
 }
-::ng-deep .students-list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Name.mat-column-Name {
+::ng-deep .year-list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Name.mat-column-Name {
     max-width: 100px;
+}
+::ng-deep .batch_list th.mat-mdc-header-cell.mdc-data-table__header-cell.cdk-header-cell.cdk-column-Select.mat-column-Select,
+::ng-deep .batch_list th.mat-mdc-header-cell.mdc-data-table__header-cell.cdk-header-cell.cdk-column-Promote.mat-column-Promote {
+    max-width: 100px;
+    text-align: center;
+}
+::ng-deep .batch_list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Select.mat-column-Select,
+::ng-deep .batch_list td.mat-mdc-cell.mdc-data-table__cell.cdk-cell.cdk-column-Promote.mat-column-Promote {
+    max-width: 100px;
+    text-align: center;
+}
+::ng-deep .team-field .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align{
+    display: none;
 }

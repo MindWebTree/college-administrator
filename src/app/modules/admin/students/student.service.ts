@@ -13,6 +13,7 @@ import { studentModel } from '../student-management/student-management.model';
 export class StudentsService {
 
   onFirstYearGridChanged: BehaviorSubject<any>;
+  onStudentLecturerGridChanged: BehaviorSubject<any>;
   onAttendanceGridChanged: BehaviorSubject<any>;
   onAssessmentGridChanged: BehaviorSubject<any>;
 
@@ -28,6 +29,7 @@ export class StudentsService {
     private _navigationService: NavigationMockApi
   ) {
     this.onFirstYearGridChanged = new BehaviorSubject([]);
+    this.onStudentLecturerGridChanged = new BehaviorSubject([]);
     this.onAttendanceGridChanged = new BehaviorSubject([]);
     this.onAssessmentGridChanged = new BehaviorSubject([]);
   }
@@ -47,6 +49,9 @@ export class StudentsService {
   getAssessmentForGrid(_gridFilter: any): Observable<any> {
     return this._httpClient.post(`${environment.apiURL}/academic/assesment-grid`, { ..._gridFilter }, {});
 
+  }
+  getStudentLecturerForGrid(_gridFilter: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/lecturer/student-grid`, { ..._gridFilter }, {  });
   }
   getStudentDetailsById(id): Promise<studentModel> {
     return new Promise((resolve, reject) => {

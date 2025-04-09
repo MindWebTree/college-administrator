@@ -37,13 +37,19 @@ export class ListHODComponent {
   _sitePreference: any = SitePreference;
   searchInput: FormControl;
   Subject: FormControl;
+  BulkYear: FormControl;
+  BulkSubject: FormControl;
   paginationData: any;
+  private rawFileData: any[] = [];
 
   dataSource: HODManagementDataSource;
 
 
   dialogRef: any;
   subjects: any;
+  subject: any;
+  years: any;
+
 
   currentSearchText: string = ''; // added by harsh to track current search
   courseyearId: string = '';
@@ -80,6 +86,8 @@ export class ListHODComponent {
     })
     this.searchInput = new FormControl('');
     this.Subject = new FormControl('0');
+    this.BulkYear = new FormControl('0');
+    this.BulkSubject = new FormControl('0');
     
     
   }
@@ -120,51 +128,65 @@ export class ListHODComponent {
     });
   }
   
+  // onFileSelected(event: any) {
+  //   let year = this.years.find(y=>y.guid == this.BulkYear?.value)?.id
+  //   this.files = [];
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const object = {};
+  //     this.xlsxToJsonService.processFileToJson(object, file).subscribe((jsonData: any) => {
+  //       const sheetData = jsonData.sheets.Sheet1; // Access Sheet1
+  //       // Map the parsed data to the required structure
+  //       this.parsedData = sheetData.map((item: any) => {
+  //         const nameParts = item.Name.trim().split(' ')
+  //         // Last part is the last name
+  //         const lastName = nameParts.pop();
+
+  //         // Join the remaining parts as the first name
+  //         const firstName = nameParts.join(' ');
+  //         return {
+  //           firstName: firstName,
+  //           lastName: lastName,
+  //           email: item.Email.toString(),
+  //           phoneNumber: item.MobileNumber.toString(),
+  //           password: item.Password.toString(),
+  //           description: item.Description,
+  //           qualification: item.Description,
+  //           emailConfirmed: true,
+  //           phoneNumberConfirmed: true,
+  //           employeeNo: item.RollNo.toString(),
+  //           phoneCountryCode: '+91',
+  //           courseType:'',
+  //           courses: [
+  //             {
+  //               courseId: 325,
+  //               courseYearId: parseInt(year),
+  //               courseYear: '',
+  //               courseName: ''
+  //             }
+  //           ],
+  //           subjectIds: [
+  //             parseInt(this.BulkSubject?.value)
+  //           ],
+  //           isActive: true
+  //         }
+  //       });
+  //       console.log('Mapped Data:', this.parsedData);
+  //     });
+  //     this.files.push(file);
+  //   }
+  // }
   onFileSelected(event: any) {
     this.files = [];
     const file = event.target.files[0];
     if (file) {
+      // Just store the file and parse the raw data without mapping yet
       const object = {};
       this.xlsxToJsonService.processFileToJson(object, file).subscribe((jsonData: any) => {
-        const sheetData = jsonData.sheets.Sheet1; // Access Sheet1
-        // Map the parsed data to the required structure
-        this.parsedData = sheetData.map((item: any) => {
-          const nameParts = item.Name.trim().split(' ')
-          // Last part is the last name
-          const lastName = nameParts.pop();
-
-          // Join the remaining parts as the first name
-          const firstName = nameParts.join(' ');
-          return {
-            firstName: firstName,
-            lastName: lastName,
-            email: item.Email.toString(),
-            phoneNumber: item.MobileNumber.toString(),
-            password: item.Password.toString(),
-            description: item.Description,
-            qualification: item.Description,
-            emailConfirmed: true,
-            phoneNumberConfirmed: true,
-            employeeNo: item.RollNo.toString(),
-            phoneCountryCode: '+91',
-            courseType:'',
-            courses: [
-              {
-                courseId: 325,
-                courseYearId: parseInt(item.Year),
-                courseYear: '',
-                courseName: ''
-              }
-            ],
-            subjectIds: [
-              item.Subject
-            ],
-            isActive: true
-          }
-        });
-        console.log('Mapped Data:', this.parsedData);
+        const sheetData = jsonData.sheets.Sheet1;
+        this.rawFileData = sheetData; // Store the raw data
+        this.files.push(file);
       });
-      this.files.push(file);
     }
   }
   removeFile(event, file) {
@@ -175,16 +197,78 @@ export class ListHODComponent {
     }
   }
   
+  // OnBulkUpdateusers() {
+  //   if (this.parsedData.length > 0) {
+  //     console.log('Uploading data:', this.parsedData);
+  //     // Send the parsed and mapped JSON data to the API
+  //     this._HODservice.bulkUploadHOD(this.parsedData).then(response => {
+  //       if (response) {
+  //         this._HODservice.onHODManagementChanged.next(true);
+  //         // Clear the file input and data after successful upload
+  //         this.files = [];
+  //         this.parsedData = [];
+  //         this.clearInputElement();
+  //       }
+  //     }, error => {
+  //       console.error('Bulk upload failed', error);
+  //     });
+  //   } else {
+  //     console.error('No data to upload');
+  //     this._HODservice.openSnackBar("No data to upload", "Close");
+  //   }
+  // }
   OnBulkUpdateusers() {
-    if (this.parsedData.length > 0) {
-      console.log('Uploading data:', this.parsedData);
-      // Send the parsed and mapped JSON data to the API
+    if (this.rawFileData.length > 0) {
+      // Get the current year and subject values
+      const yearValue = this.BulkYear.value;
+      const subjectValue = this.BulkSubject.value;
+      const year = this.years.find(y => y.guid == yearValue)?.id;
+      
+      console.log('Current year:', yearValue, 'Current subject:', subjectValue);
+      
+      // Map the raw data to the required structure with current form values
+      this.parsedData = this.rawFileData.map((item: any) => {
+        const nameParts = item.Name.trim().split(' ');
+        const lastName = nameParts.pop();
+        const firstName = nameParts.join(' ');
+        
+        return {
+          firstName: firstName,
+          lastName: lastName,
+          email: item.Email.toString(),
+          phoneNumber: item.MobileNumber.toString(),
+          password: item.Password.toString(),
+          description: item.Description,
+          qualification: item.Description,
+          emailConfirmed: true,
+          phoneNumberConfirmed: true,
+          employeeNo: item.RegisteredNo.toString(),
+          phoneCountryCode: '+91',
+          courseType: '',
+          courses: [
+            {
+              courseId: 325,
+              courseYearId: parseInt(year),
+              courseYear: '',
+              courseName: ''
+            }
+          ],
+          subjectIds: [
+            parseInt(subjectValue)
+          ],
+          isActive: true
+        };
+      });
+      
+      console.log('Final payload:', this.parsedData);
+      
+      // Send the data to API
       this._HODservice.bulkUploadHOD(this.parsedData).then(response => {
         if (response) {
           this._HODservice.onHODManagementChanged.next(true);
-          // Clear the file input and data after successful upload
           this.files = [];
           this.parsedData = [];
+          this.rawFileData = []; // Clear the raw data as well
           this.clearInputElement();
         }
       }, error => {
@@ -232,6 +316,26 @@ export class ListHODComponent {
 
   }
 
+  GetYears(){
+    this._HODservice.getCourseYear().subscribe(res=>{
+      this.years = res;  
+      if (res && res.length > 0) {    
+      this.BulkYear.setValue(res[0]?.guid);
+      this.SelectYear(res[0]?.guid)
+      }
+    })
+  }
+  SelectYear(yearGuid){
+    this._HODservice.getSubjectbyAcademicYear(yearGuid).subscribe(res=>{
+
+    if (res && res.length > 0) {
+      this.subject = res;
+      this.BulkSubject.setValue(res[0]?.id);
+    }
+    })
+  }
+ 
+
 
   onSortData(sort: Sort) {
 
@@ -248,7 +352,7 @@ export class ListHODComponent {
     })
   }
   ngOnInit(): void {
-    // this.getSubjects();
+    this.GetYears();
     this.dataSource = new HODManagementDataSource(this._HODservice);
 
     this._HODservice.onHODManagementChanged

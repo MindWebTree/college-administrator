@@ -65,7 +65,8 @@ export class CreateExam{
     noOfStudents: number;
     courses: Array<Course>;
     numberOfAttendees: number;
-    averageDuration: number
+    averageDuration: number;
+    batches:Array<any>;
 
 }
 export class Course {

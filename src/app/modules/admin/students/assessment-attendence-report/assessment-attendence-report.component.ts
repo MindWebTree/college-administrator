@@ -81,6 +81,13 @@ export class AssessmentAttendenceReportComponent  implements OnInit {
 
   private xlsxToJsonService: XlsxToJsonService = new XlsxToJsonService();
 
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+
+  // Add these properties for attendance sorting
+  attendanceSortColumn: string = '';
+  attendanceSortDirection: 'asc' | 'desc' = 'asc';
+
   constructor(
     public _matDialog: MatDialog,
     private _route: ActivatedRoute,
@@ -203,8 +210,8 @@ export class AssessmentAttendenceReportComponent  implements OnInit {
       pageNumber: this.currentPageIndex + 1,
       pageSize: this.currentPageSize,
       keyword: '',
-      orderBy: '',
-      sortOrder: '',
+      orderBy: this.sortColumn === 'Total' ? 'Total' : this.sortColumn,
+      sortOrder: this.sortDirection,
       subjectId: parseInt(this.Subject?.value),
       studentId: this.studentId
     };    
@@ -215,8 +222,8 @@ export class AssessmentAttendenceReportComponent  implements OnInit {
       pageNumber: this.currentPageIndex + 1,
       pageSize: this.currentPageSize,
       keyword: '',
-      orderBy: '',
-      sortOrder: '',
+      orderBy: this.attendanceSortColumn,
+      sortOrder: this.attendanceSortDirection,
       subjectId: parseInt(this.Subject?.value),
       studentId: this.studentId
     };
@@ -548,6 +555,27 @@ export class AssessmentAttendenceReportComponent  implements OnInit {
     this.dialogRef.afterClosed().subscribe(r => {
       this._studentsService.onFirstYearGridChanged.next(true);
     })
+  }
+
+  sortData(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    this.loadAssessmentData();
+  }
+
+  // Add new method for attendance sorting
+  sortAttendanceData(column: string) {
+    if (this.attendanceSortColumn === column) {
+      this.attendanceSortDirection = this.attendanceSortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.attendanceSortColumn = column;
+      this.attendanceSortDirection = 'asc';
+    }
+    this.loadAttendanceData();
   }
 }
 

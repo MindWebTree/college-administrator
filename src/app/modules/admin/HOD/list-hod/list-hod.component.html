@@ -30,20 +30,38 @@
                             <input matInput id="search" placeholder="Search" [formControl]="searchInput" class="">
                         </mat-form-field>
                     </div> -->
-                    <button class="add-data" (click)="addLecture()"><mat-icon class="text-white cursor-pointer">add</mat-icon>
+                    <button class="add-data mt-6" (click)="addLecture()"><mat-icon class="text-white cursor-pointer">add</mat-icon>
                         ADD</button>
-                    <button (click)="BulkUpload($event)" class="p-2 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
+                    <button (click)="BulkUpload($event)" class="p-2 mt-6 cursor-pointer bg-[#28C397] text-white flex items-center gap-2">
                         <mat-icon class="text-white">add</mat-icon> Bulk Upload</button>
                       <input #fileUpload type="file" style="display: none" class="input_fileupload--hidden"
                         (change)="onFileSelected($event)" [(ngModel)]="inputFileName" [accept]="accept"
                         [ngModelOptions]="{standalone: true}">
                     
                       <div *ngFor="let f of files">
-                        <span *ngIf="files">{{f.name}}</span>
-                        <button mat-icon-button color="primary" [attr.title]="deleteButtonLabel?deleteButtonLabel:null"
+                        <div class="flex gap-2">
+                            <mat-form-field class="min-w-50">
+                                <mat-label>Select Year</mat-label>
+                                <mat-select [formControl]="BulkYear">
+                                    <mat-option [value]="year.guid" *ngFor="let year of years"
+                                       (click)="SelectYear(year.guid)" >{{year.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>   
+                            <mat-form-field class="min-w-50">
+                                <mat-label>Select Subject</mat-label>
+                                <mat-select [formControl]="BulkSubject">
+                                    <mat-option [value]="s.id" *ngFor="let s of subject"
+                                        >{{s.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>      
+                            <span class="pt-10" *ngIf="files">{{f.name}}</span>    
+                            <button class="pt-10 mt-2" mat-icon-button color="primary" [attr.title]="deleteButtonLabel?deleteButtonLabel:null"
                           (click)="removeFile($event,f)">
                           <mat-icon class="text-black">close</mat-icon>
-                        </button>
+                        </button>   
+                        
+                        </div>
+                        
                       </div>
                       <button *ngIf="files.length>0" mat-raised-button id="add-student-button" (click)="OnBulkUpdateusers()"
                         aria-label="add qbank" [disabled]="isExcekinRigthformrt">

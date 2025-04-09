@@ -120,6 +120,8 @@ export class NavigationMockApi {
                 return await this._CommanService.getBatchList().toPromise();
             case 'Student':
                 return await this._CommanService.getBatchList().toPromise();
+            case 'Assigned Student':
+                return await this._CommanService.getBatchList().toPromise();
             case 'Subgroup':
                 return await this._CommanService.getBatchList().toPromise();
             default:
@@ -143,6 +145,8 @@ export class NavigationMockApi {
                 return `/batch/${category.guid}`;
             case 'Student':
                 return `/students/${category.guid}`;
+            case 'Assigned Student':
+                return `/students/lecturer/${category.guid}`;
             case 'Subgroup':
                 return `/batch/sub-group/${category.guid}`;
             default:
@@ -161,7 +165,7 @@ export class NavigationMockApi {
                 const processedNavs = new Set();
 
                 for (const nav of navigation) {
-                    if ((nav.title === 'Exams' || nav.title === 'Students' || nav.title === 'Lecturers' || nav.title === 'Batch' || nav.title === 'Student' || nav.title === 'Subgroup') &&
+                    if ((nav.title === 'Exams' || nav.title === 'Assigned Student' || nav.title === 'Students' || nav.title === 'Lecturers' || nav.title === 'Batch' || nav.title === 'Student' || nav.title === 'Subgroup') &&
                         !processedNavs.has(nav.title)) {
 
                         processedNavs.add(nav.title);
@@ -175,7 +179,7 @@ export class NavigationMockApi {
                                     child.title === category.name);
 
                                 if (!existingNavItem) {
-                                    if (nav.title === 'Batch' || nav.title === 'Student' || nav.title === 'Subgroup' || nav.title === 'Lecturers') {
+                                    if (nav.title === 'Batch' || nav.title === 'Assigned Student' || nav.title === 'Student' || nav.title === 'Subgroup' || nav.title === 'Lecturers') {
                                         nav.children.push({
                                             id: category.name,
                                             title: category.name,

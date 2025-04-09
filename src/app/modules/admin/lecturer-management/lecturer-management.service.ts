@@ -184,30 +184,33 @@ export class LectureService {
     *
     * @param user
     */
-  deleteLecture(userId): Promise<any> {
-
-    return new Promise(() => {
-      const params = new HttpParams().set('userId', userId);
-
-      this._httpClient.post(`${environment.apiURL}/lecturer/delete`, {}, { params, })
-        .subscribe(response => {
-          if (response) {
-            this.onlectureManagementChanged.next(this.lecture);
-            // to refresh  count in navigation
-            this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
-
-              // Explicitly trigger a navigation refresh
-              this._navigationTypeService.refreshNavigation();
-
-            });
-            this.openSnackBar("Successfully removed.", "Close");
-          }
-          else {
-            this.openSnackBar("Failed", "Close");
-          }
-        });
-    });
+  deleteLecture(userId): Observable<any> {
+    return this._httpClient.post<any>(`${environment.apiURL}/lecturer/delete?userId=${userId}`,{});
   }
+  // deleteLecture(userId): Promise<any> {
+
+  //   return new Promise(() => {
+  //     const params = new HttpParams().set('userId', userId);
+
+  //     this._httpClient.post(`${environment.apiURL}/lecturer/delete`, {}, { params, })
+  //       .subscribe(response => {
+  //         if (response) {
+  //           this.onlectureManagementChanged.next(this.lecture);
+  //           // to refresh  count in navigation
+  //           this._navigationService.fetchDynamicNavigation(this._navigationService._StudentNavigation).then(updatedNavigation => {
+
+  //             // Explicitly trigger a navigation refresh
+  //             this._navigationTypeService.refreshNavigation();
+
+  //           });
+  //           this.openSnackBar("Successfully removed.", "Close");
+  //         }
+  //         else {
+  //           this.openSnackBar("Failed", "Close");
+  //         }
+  //       });
+  //   });
+  // }
   lecturerAnalyticsListing(_gridFilter: lecturerAnalyticGrid): Observable<any> {
     return this._httpClient.post<any>(`${environment.apiURL}/lecturer/exam-summary-grid`, { ..._gridFilter }, {});
 
@@ -222,12 +225,12 @@ export class LectureService {
     console.log('ssssss'+guid);
     return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`, {})
   }
-  bulkUploadUsers(batchGuid, batchYearId, data: any[]): Promise<any> {
+  bulkUploadUsers(data: any[]): Promise<any> {
     var self = this;
     console.log(JSON.stringify(data))
     return new Promise((resolve, reject) => {
 
-      this._httpClient.post(`${environment.apiURL}/student/bulk-create/${batchGuid}/${batchYearId}`, [...data])
+      this._httpClient.post(`${environment.apiURL}/lecturer/bulk-create`, [...data])
         .subscribe((response: any) => {
           this.openSnackBar(response, "Close");
           resolve(response);

@@ -19,6 +19,15 @@ export class yearGrid extends GridFilter {
     average:number;
     batchId:string;
     batchYearId:number;
+    teamId: number;
+}
+export class LecturerStudentGrid extends GridFilter {
+    // averageType:string;
+    // average:number;
+    batchId:string;
+    // batchYearId:number;
+    // subjectId:number;
+    teamId: number;
 }
 export class importUser {
     UserName: string;

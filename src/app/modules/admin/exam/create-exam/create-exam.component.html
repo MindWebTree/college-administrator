@@ -376,26 +376,36 @@
 
                     <div class="flex items-center sm-block">
                         <div class="sm-pt-2 min-w-165 text-[#505050]">
-                            <label class="text-[#505050]">Select Courses</label>
+                            <label class="text-[#505050]">Select Batch</label>
                         </div>
                         <span class="semicolm_span">:</span>
                         <mat-form-field class="form-element block">
-                            <mat-select multiple formControlName="students" placeholder="Select Course">
+                            <mat-select formControlName="Batch" placeholder="Select Batch">
                                 <!-- <mat-option disabled value=''>Select any</mat-option> -->
-                                <mat-option [value]="Course.id" *ngFor="let Course of Courses;let i=index " (click)="OnclickCourse(Course)">{{Course.name}}({{Course.count}})</mat-option>
+                                <mat-option [value]="Batch.guid" *ngFor="let Batch of Batches;let i=index " (click)="OnBatchSelect(Batch.guid)">{{Batch.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div> 
+                    <control-messages class="exam-error" [control]="CreateExamSchedule.controls.Batch" fieldName="Batches" [showSubmitError]="IsSheduleFormHasError"></control-messages>
+                    
+                    <div class="flex items-center sm-block">
+                        <div class="sm-pt-2 min-w-165 text-[#505050]">
+                            <label class="text-[#505050]">Select BatchYear</label>
+                        </div>
+                        <span class="semicolm_span">:</span>
+                        <mat-form-field class="form-element block">
+                            <mat-select formControlName="BatchYear" placeholder="Select BatchYear">
+                                <!-- <mat-option disabled value=''>Select any</mat-option> -->
+                                <mat-option [value]="year.id" *ngFor="let year of BatchYears;let i=index ">{{year.yearName}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
                     </div>
-                    <mat-chip-list #chipList class="student_chips">
-                        <mat-chip *ngFor="let student of studentCourseList,let i = index;" [selectable]="true" selected="true" [removable]="false">
-                            {{student.CourseYear}}({{student.noOfStudent}}) <button (click)="removeCouse(i,student.courseYearId)"><mat-icon>cancel</mat-icon></button>
-                        </mat-chip>
-                    </mat-chip-list>
-                    <control-messages class="exam-error" [control]="CreateExamSchedule.controls.students" fieldName="Courses" [showSubmitError]="IsSheduleFormHasError"></control-messages>
+                    <control-messages class="exam-error" [control]="CreateExamSchedule.controls.BatchYear" fieldName="BatchYears" [showSubmitError]="IsSheduleFormHasError"></control-messages>
                     <mat-radio-group class="exam-type" aria-label="Select an option" formControlName="examType">
                         <!-- <mat-radio-button [value]="0">Live Exam</mat-radio-button> -->
-                        <mat-radio-button [value]="1" class="pl-8">Schedule</mat-radio-button>
+                        <mat-radio-button [value]="1" class="">Schedule</mat-radio-button>
                     </mat-radio-group>
                     <div class="quiz_scheduling" >
                         <mat-form-field appearance="fill">
