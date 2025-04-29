@@ -93,6 +93,9 @@ export class CommanService {
   getSubjects(qbanktypeId, qBankCategory): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/${qbanktypeId}/${qBankCategory}`, {});
   }
+  getLecturerSubjects(qbanktypeId, qBankCategory): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/lecturer-access/${qbanktypeId}/${qBankCategory}`, {});
+  }
   getTopics(subjectId, qBankCategory): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/get-topics/${subjectId}/${qBankCategory}`, {});
   }

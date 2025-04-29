@@ -235,5 +235,17 @@ export const appRoutes: Route[] = [
             {path: 'hod', loadChildren: () => import('app/modules/admin/HOD/HOD.routes')},
         ]
     },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'certificate', loadChildren: () => import('app/modules/admin/certificate/certificate.routes')},
+        ]
+    },
     //dashboard End
 ];

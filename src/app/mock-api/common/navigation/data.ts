@@ -10,8 +10,8 @@ export const AdminNavigation: FuseNavigationItem[] = [
         roles: ["Lecturer", "CollegeAdministrator"]
     },
     {
-        id: "Owned Questions",
-        title: "Owned Questions",
+        id: "ADRQbank",
+        title: "ADR Qbank",
         type: 'basic',
         SubType: 'collapsable',
         // icon : 'heroicons_outline:chart-pie',
@@ -62,8 +62,8 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         link: '/dashboard'
     },
     {
-        id: "Owned Questions",
-        title: "Owned Questions",
+        id: "ADRQbank",
+        title: "ADR Qbank",
         type: 'basic',
         SubType: 'collapsable',
         link: '/qbank/adrplexus-qbank',
@@ -147,10 +147,24 @@ export const StudentNavigation: FuseNavigationItem[] = [
     },
     {
         id: 'qbank',
-        title: 'QBanks',
+        title: 'Assignments',
         type: 'basic',
         // icon : 'heroicons_outline:chart-pie',
         link: '/qbank/exam-list'
+    },
+    {
+        id: 'Competency',
+        title: 'Competency',
+        type: 'collapsable',
+        children: [
+            {
+                id: 'List Competency',
+                title: 'List Competency',
+                type: 'basic',
+                link: 'competency/student'
+            }
+        ],
+        roles: ["CollegeAdministrator"]
     },
 ];
 export const HODNavigation: FuseNavigationItem[] = [
@@ -240,6 +254,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
     //     link: '/example',
     //     roles: ["Lecturer", "CollegeAdministrator", "Student"]
     // },
+    {
+        id: 'dashboard',
+        title: 'dashboard',
+        type: 'basic',
+        icon: 'heroicons_outline:chart-pie',
+        link: '/certificate/:id',
+        roles: ["Lecturer", "CollegeAdministrator", "Student","HOD"]
+    },  
     {
         id: 'dashboard',
         title: 'dashboard',
@@ -340,6 +362,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link:'/competency/list',
         children: [],
         roles: ["CollegeAdministrator","Lecturer","HOD"]
+    },
+    {
+        id: 'competencylist',
+        title: 'competency',
+        type: 'collapsable',
+        link:'/competency/student',
+        children: [],
+        roles: ["Student"]
     },
     {
         id: 'competency-student-grid',

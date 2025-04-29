@@ -5,6 +5,7 @@ import { StudentCompetencyComponent } from './student-competency/student-compete
 import { RubricListComponent } from './rubric-construction-management/rubric-list/rubric-list.component';
 import { StepListComponent } from './step-management/step-list/step-list.component';
 import { CriteriaListComponent } from './criteria-management/criteria-list/criteria-list.component';
+import { StudentCompetencyListComponent } from './student-competency-list/student-competency-list.component';
 export default [
     {
         path: 'create',
@@ -33,5 +34,9 @@ export default [
     {
         path: 'rubric-criteria-list/:guid',
         component: CriteriaListComponent,
+    },
+    {
+        path: 'student',
+        component: StudentCompetencyListComponent,
     },
 ] as Routes;

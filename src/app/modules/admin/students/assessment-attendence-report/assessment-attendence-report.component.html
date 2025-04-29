@@ -69,7 +69,7 @@
             <h2 class="mb-2" *ngIf="dataSource.data?.length <= 0">No Data found</h2>
             <table *ngIf="dataSource.data?.length >= 0" mat-table [dataSource]="dataSource.data" class="">              
                 <ng-container matColumnDef="Date">
-                  <th mat-header-cell *matHeaderCellDef> Cumulative Date </th>
+                  <th mat-header-cell *matHeaderCellDef> Internal Assessment Date </th>
                   <td mat-cell *matCellDef="let element"> Till {{element.cumulativeDate | date: 'dd/MM/yy'}} </td>
                 </ng-container>
               
@@ -134,7 +134,7 @@
             <h2 class="mb-2" *ngIf="AttendancedataSource.data?.length <= 0">No Data found</h2>
             <table *ngIf="AttendancedataSource.data?.length >= 0" mat-table [dataSource]="AttendancedataSource.data" class="">              
                 <ng-container matColumnDef="Date">
-                  <th mat-header-cell *matHeaderCellDef (click)="sortAttendanceData('Date')">Date</th>
+                  <th mat-header-cell *matHeaderCellDef (click)="sortAttendanceData('Date')">Cumulative Date</th>
                   <td mat-cell *matCellDef="let element"> {{element.cumulativeDate | date: 'dd/MM/yy'}} </td>
                 </ng-container>
               

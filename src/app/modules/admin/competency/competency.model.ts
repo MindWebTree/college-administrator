@@ -12,6 +12,14 @@ export class competencyGrid extends GridFilter {
     status: number;
     conductedBy: string;
 }
+export class studentCompetecyGrid extends GridFilter {
+    averageType: string;
+    average: number;
+    batchId: string;
+    batchYearId: number;
+    subjectId: number;
+    teamId: number;
+}
 export class StudentGrid extends GridFilter {
     competencyAssignmentGuid: string;
 }

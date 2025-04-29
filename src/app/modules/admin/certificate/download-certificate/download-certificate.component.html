@@ -1,0 +1,41 @@
+<div id="certificate" class="certificate-container">
+    <div class="section-certificate">
+    <div class="main-section">
+        <div>
+            <img src="my-images/download.png" class="w-60 mx-auto">
+            <h2 class="pt-2 text-primary heading-certificate mx-auto">CERTIFICATE FOR SKILL COMPETENCY</h2>
+        </div>
+        <div class="mx-auto max-w-[720px] relative">
+            <div class="pt-10 mx-auto text-xl text-center">
+                <span>This is to Certify that</span><br>
+                <span><strong>{{student?.studentName}}</strong></span><br>
+                <span>has demonstrated competency in</span><br>
+                <span><strong>{{student?.competencyName}}</strong> </span><br>
+                <span>as Mandated by National Medical Commissions with a score of <strong>{{student?.marks * 10}}</strong> %</span><br>
+                <span>in the examination held on <strong>{{student?.heldOn | date: 'dd/MM/yyyy'}}</strong></span><br>
+            </div>
+            <div class="flex justify-between pt-10 mt-6">
+                <div>
+                    <span>_______</span><br>
+                    <span class="font-semibold text-lg">H.O.D : {{student?.hodName}}</span><br>
+                    <span class="font-semibold text-lg">Department: {{student?.department}}</span><br>
+                </div>
+                <div>
+                    <span>_______</span><br>
+                    <span class="font-semibold text-lg">Assessor : {{student?.facultyName}}</span><br>
+                </div>
+            </div>
+            
+            <div class="roll-number-section">
+                <h2 class="font-semibold text-lg pb-2">Roll No: {{student?.rollno}}</h2>
+                <div class="box"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="download-button">
+      <button (click)="downloadCertificate()">Download PDF</button>
+    </div>
+</div>
+  </div>
+  

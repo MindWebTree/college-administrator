@@ -42,7 +42,6 @@ export class CreatedExamListComponent implements OnInit{
   status: number;
   _sitePreference: any = SitePreference;
   private _unsubscribeAll: Subject<void> = new Subject<void>();
-  courseYearId : string = "";
   ExamReSchedule : FormGroup
   date: string;
   startTime: string;
@@ -84,12 +83,8 @@ export class CreatedExamListComponent implements OnInit{
       filter(event => event instanceof NavigationEnd),
       takeUntil(this._unsubscribeAll)
     ).subscribe(() => {
-      this.courseYearId = this._route.snapshot.params['guid'];
       this.loadExamData();
     });
-    this._route.params.subscribe(res=>{
-      this.courseYearId = res.guid
-    })
     
   }
   private loadExamData(): void {
@@ -113,7 +108,7 @@ export class CreatedExamListComponent implements OnInit{
       orderBy: '',
       sortOrder: '',
       examStatus: ExamStatus.WaitingForApproval,
-      courseYearId: this.courseYearId
+      batchYearId: 0
   };
   this.waitingforApprovaldataSource.getExamList(gridFilter, this.status);
 
@@ -126,7 +121,7 @@ export class CreatedExamListComponent implements OnInit{
       orderBy: '',
       sortOrder: '',
       examStatus: ExamStatus.New,
-      courseYearId: this.courseYearId
+      batchYearId: 0
   };
   this.dataSource.getExamList(gridFilter, this.status);
 
@@ -139,7 +134,7 @@ export class CreatedExamListComponent implements OnInit{
       orderBy: '',
       sortOrder: '',
       examStatus: ExamStatus.Completed,
-      courseYearId: this.courseYearId
+      batchYearId: 0
   };
   this.completeddataSource.getExamList(gridFilter, this.status);
 
@@ -152,7 +147,7 @@ export class CreatedExamListComponent implements OnInit{
       orderBy: '',
       sortOrder: '',
       examStatus: ExamStatus.Cancelled,
-      courseYearId: this.courseYearId
+      batchYearId: 0
   };
   this.cancelleddataSource.getExamList(gridFilter, this.status);
 
@@ -202,7 +197,7 @@ export class CreatedExamListComponent implements OnInit{
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.WaitingForApproval,
-        courseYearId: null
+        batchYearId: 0
       };
       this.waitingforApprovaldataSource.getExamList(gridFilter, this.status);
     })
@@ -214,7 +209,7 @@ export class CreatedExamListComponent implements OnInit{
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.New,
-        courseYearId: this.courseYearId
+        batchYearId: 0
       };
       this.dataSource.getExamList(gridFilter, this.status);
     })
@@ -226,7 +221,7 @@ export class CreatedExamListComponent implements OnInit{
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.Completed,
-        courseYearId: this.courseYearId
+        batchYearId: 0
       };
       this.completeddataSource.getExamList(gridFilter, this.status);
     })
@@ -238,7 +233,7 @@ export class CreatedExamListComponent implements OnInit{
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.Cancelled,
-        courseYearId: this.courseYearId
+        batchYearId: 0
       };
       this.cancelleddataSource.getExamList(gridFilter, this.status);
     })

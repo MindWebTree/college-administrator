@@ -1,0 +1,69 @@
+<div class="list-competency p-8">
+    <div class="block md:flex justify-between">
+        <h2 class="text-xl text-[#505050] font-medium" (click)="SubmitAssignment()">List of Competency</h2>
+        <form [formGroup]="ListCompetencyFilters">
+        <div class="block md:flex gap-2 filter-list-competency">
+            <div class="mt-2 md:mt-0 flex gap-2 items-center">
+                <h2>Batch :</h2>
+                <mat-form-field>
+                    <mat-select formControlName="BatchYear">
+                        <mat-option value="0" (click)="Search()">All</mat-option>
+                        <mat-option [value]="batch.id" *ngFor="let batch of batches" (click)="Search()">{{batch.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <!-- <div class="mt-2 md:mt-0 flex gap-2 items-center">
+                <h2>Academic Year :</h2>
+                <mat-form-field>
+                    <mat-select formControlName="AcademicYear">
+                        <mat-option value="0" (click)="Search()">All</mat-option>
+                        <mat-option [value]="year.id" (click)="Search()" *ngFor="let year of academicYears">{{year.yearName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div> -->
+        </div>
+        </form>
+    </div>
+    <div class="py-4">
+        <input [formControl]="searchInput" class="search-assignment" placeholder="Enter competency name, date, contacted by..." matInput>
+    </div>
+    <div>
+        <h2 *ngIf="completedAssignment?.length <= 0" class="text-base font-normal py-4 mb-2">No data available</h2>
+        <div *ngFor="let assignment of completedAssignment" class="flex mt-2 completed-assignment justify-between p-6 items-center">
+            <div>
+                <h3 class="font-semibold text-xl text-primary">{{assignment.rubricConstructionName}}</h3>
+                <div class="block md:flex gap-6 pt-3">
+                    <h4 class="text-[#505050] font-medium">Batch : {{assignment.batch}}</h4>
+                    <h4 class="text-[#505050] font-medium">Academic Year : {{assignment.academicYear}}</h4>
+                    <h4 class="text-[#505050] font-medium">Subject : {{assignment.subjectName}}</h4>
+                </div>
+                <div class="block md:flex gap-6">
+                    <h5 class="text-[#505050] font-light">Created on {{assignment.createdOn | date: 'MMM d, y'}}</h5>
+                    <h5 class="text-[#505050] font-light">Contacted by {{assignment.facultyName}}</h5>
+                    <h5 class="text-[#505050] font-light">Last updated  {{assignment?.updatedOn ? (assignment?.updatedOn | date: 'MMM d, y, h:mm:ss a') : (assignment?.createdOn  | date: 'MMM d, y, h:mm:ss a') }}</h5>
+                </div>
+            </div>
+            <div *ngIf="assignment?.status == 3">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <!-- <button (click)="editAssignment(assignment)" mat-menu-item>
+                      <mat-icon>edit</mat-icon>
+                      <span>Edit</span>
+                    </button> -->
+                    <button (click)="GetCertificate(assignment?.guid)" mat-menu-item>
+                        <mat-icon>school</mat-icon>
+                        <span>Get Certificate</span>
+                      </button>
+                </mat-menu>
+            </div>
+        </div>
+        <mat-paginator #completedPaginator
+            [length]="paginationData ? paginationData.count:0" 
+            [pageSize]="completedpaginator.pageSize == undefined ? _sitePreference.PAGE.GridRowViewCount : completedpaginator.pageSize" 
+            [pageSizeOptions]="_sitePreference.PAGE.GridRowViewPageSizeOptions"
+            (page)="getNext($event)">
+        </mat-paginator>
+    </div>
+</div>

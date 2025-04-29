@@ -95,7 +95,7 @@ export class HODService {
      */
   updateLecturer(lecturer: HODModel): Promise<any> {
     return new Promise((resolve, reject) => {
-      this._httpClient.post(`${environment.apiURL}/lecturer/update`, { ...lecturer })
+      this._httpClient.post(`${environment.apiURL}/hod/update`, { ...lecturer })
         .subscribe(
           (response: any) => {
             if (response) {

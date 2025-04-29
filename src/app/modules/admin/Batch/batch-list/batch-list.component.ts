@@ -72,10 +72,7 @@ export class BatchListComponent implements OnInit {
     private _studentService: StudentService,
     private _batchService: BatchService,
   ) {
-    this._batchService.getSubjects().subscribe(res=>{
-      this.subjects = res;
-      this.Subject = new FormControl(res[0].id)
-    })
+    
     this._batchService.getTeams().subscribe(res=>{
       this.teams = res;
       this.Team = new FormControl(res[0].id)
@@ -122,7 +119,11 @@ export class BatchListComponent implements OnInit {
   
   // New method to load batch data
   loadBatchData() {
-    // Load years first
+    this._batchService.getSubjects().subscribe(Subjectres=>{
+      this.subjects = Subjectres;
+      this.Subject = new FormControl(Subjectres[0].id)
+      if (this.subjects && this.subjects.length > 0) {
+         // Load years first
     this._batchService.getYears(this.batchId).subscribe(res => {
       this.years = res;
       
@@ -131,10 +132,12 @@ export class BatchListComponent implements OnInit {
         this.selectedYear = this.years[0]?.id;
         
         // Then load student data for the selected year
-        console.log("1");
         this.loadStudentData();
       }
     });
+      }
+    })
+   
   }
   
   // New method to load student data

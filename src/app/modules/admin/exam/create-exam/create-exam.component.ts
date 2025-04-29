@@ -437,7 +437,7 @@ export class CreateExamComponent implements OnInit {
   }
   // Get Qbank Subject 
   getQbanksubject(QbankTypeID: number) {
-    this._commonService.getSubjects(QbankTypeID, this.qBankCategorySelected).subscribe((response: any) => {
+    this._commonService.getLecturerSubjects(QbankTypeID, this.qBankCategorySelected).subscribe((response: any) => {
       this.subjects = response;
       if (!this.subjects.find(s => s.id == this.CreateExamQbank.get('Subject').value)) {
         this.CreateExamQbank.get('Subject').setValue('');

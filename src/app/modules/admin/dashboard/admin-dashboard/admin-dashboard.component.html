@@ -11,7 +11,7 @@
                     <ng-template carouselSlide *ngFor="let c of courseYear">
                         <a class="card border-0">
                             <div class="card-body" [ngClass]="{'year-one': c.name  === 'First Year','year-two': c.name  === 'Second Year','year-three': c.name  === 'Third Year','year-four': c.name  === 'Fourth Year'}">
-                               <h2 class="text-[#505050] text-[14px] font-normal">{{ c.name }} {{ today | date:'yyyy' }}-{{ (today.getFullYear() + 1) }}</h2>
+                               <h2 class="text-[#505050] text-[14px] font-normal">{{c.batchName}} {{c.batchYear}}</h2>
                                 <h3 class="text-[#0C529A] text-[36px] font-medium">{{c.noOfStudents}}<span class="text-primary text-[14px]"> / Students</span></h3>
                             </div>
                         </a>

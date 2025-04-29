@@ -132,10 +132,10 @@ export class NavigationMockApi {
     private getNavigationLink(type: string, category: any): string {
         switch (type) {
             case 'Exams':
-                if (category.name == 'Waiting For Approval') {
+                if (category.batchName == 'Waiting For Approval') {
                     return `/exam/list/waiting-for-approval`;
                 } else {
-                    return `/exam/list/${category.guid}`;
+                    return `/exam/list/${category.batchYearId}`;
                 }
             case 'Students':
                 return `/student/list/${category.guid}`;
@@ -186,6 +186,41 @@ export class NavigationMockApi {
                                             type: 'basic',
                                             link: this.getNavigationLink(nav.title, category),
                                         });
+                                    } else if (nav.title === 'Exams') {
+                                        // First, handle the special "Waiting For Approval" category
+                                        if (category.batchName === 'Waiting For Approval') {
+                                            nav.children.push({
+                                                id: category.batchName,
+                                                title: category.batchName + ' ' + `(${category.count})`,
+                                                type: 'basic',
+                                                link: this.getNavigationLink(nav.title, category),
+                                            });
+                                        } else {
+                                            // For other categories, group by batchName
+                                            const batchParentId = category.batchName.replace(/\s+/g, '-').toLowerCase();
+                                            
+                                            // Check if parent batch already exists
+                                            let batchParent = nav.children.find(item => item.id === batchParentId);
+                                            
+                                            if (!batchParent) {
+                                                // Create parent if it doesn't exist
+                                                batchParent = {
+                                                    id: batchParentId,
+                                                    title: category.batchName,
+                                                    type: 'collapsable',
+                                                    children: []
+                                                };
+                                                nav.children.push(batchParent);
+                                            }
+                                            
+                                            // Add year item as child of batch parent
+                                            batchParent.children.push({
+                                                id: `${batchParentId}-${category.batchYearId}`,
+                                                title: category.batchYear + ' ' + `(${category.count})`,
+                                                type: 'basic',
+                                                link: this.getNavigationLink(nav.title, category),
+                                            });
+                                        }
                                     } else {
                                         nav.children.push({
                                             id: category.name,

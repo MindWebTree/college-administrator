@@ -59,7 +59,7 @@ export class WaitingForApprovalComponent implements OnInit {
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.WaitingForApproval,
-        courseYearId: null
+        batchYearId: 0
       };
       this.dataSource.getExamList(gridFilter, this.status)
     })

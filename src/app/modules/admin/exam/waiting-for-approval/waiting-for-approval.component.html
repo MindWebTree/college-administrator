@@ -19,7 +19,7 @@
                     <div class="w-4/12 text-primary">{{exam.noOfQuestions}}<br><span>Questions</span></div>
                     <div class="w-4/12 text-primary">{{exam.examDuration | duration}}<br><span>Hours</span></div>
                 </div>
-                <h2 class="pt-1 truncate">Year : {{exam.courseYears}}</h2>
+                <!-- <h2 class="pt-1 truncate">Year : {{exam.courseYears}}</h2> -->
                 <h2 class="pt-1 truncate">Subject : {{exam.topics}}</h2>
                 <h2 class="pt-1">Exam Create by : {{exam.createdBy}}</h2>
                 <h2 class="pt-1" *ngIf="exam.qbankCategory != 2">Questions : {{exam.qbankCategory}} Question</h2>

@@ -115,7 +115,7 @@ export class ExamListComponent implements OnInit {
       orderBy: '',
       sortOrder: '',
       examStatus: ExamStatus.New,
-      courseYearId: this.courseYearId
+      batchYearId: parseInt(this.courseYearId)
     };
     this.dataSource.getExamList(gridFilter, this.status);
 
@@ -128,7 +128,7 @@ export class ExamListComponent implements OnInit {
       orderBy: '',
       sortOrder: '',
       examStatus: ExamStatus.Completed,
-      courseYearId: this.courseYearId
+      batchYearId: parseInt(this.courseYearId)
     };
     this.completeddataSource.getExamList(gridFilter, this.status);
 
@@ -141,7 +141,7 @@ export class ExamListComponent implements OnInit {
       orderBy: '',
       sortOrder: '',
       examStatus: ExamStatus.Cancelled,
-      courseYearId: this.courseYearId
+      batchYearId: parseInt(this.courseYearId)
     };
     this.cancelleddataSource.getExamList(gridFilter, this.status);
 
@@ -190,7 +190,7 @@ export class ExamListComponent implements OnInit {
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.New,
-        courseYearId: this.courseYearId
+        batchYearId: parseInt(this.courseYearId)
       };
       this.dataSource.getExamList(gridFilter, this.status);
     })
@@ -202,7 +202,7 @@ export class ExamListComponent implements OnInit {
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.Completed,
-        courseYearId: this.courseYearId
+        batchYearId: parseInt(this.courseYearId)
       };
       this.completeddataSource.getExamList(gridFilter, this.status);
     })
@@ -214,7 +214,7 @@ export class ExamListComponent implements OnInit {
         orderBy: '',
         sortOrder: '',
         examStatus: ExamStatus.Cancelled,
-        courseYearId: this.courseYearId
+        batchYearId: parseInt(this.courseYearId)
       };
       this.cancelleddataSource.getExamList(gridFilter, this.status);
     })

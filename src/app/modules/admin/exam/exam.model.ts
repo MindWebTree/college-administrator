@@ -6,7 +6,7 @@ export class ExamList{
     orderBy: string;
     sortOrder: string;
     examStatus: number;
-    courseYearId?: string
+    batchYearId?: number
 }
 export class CreateExam{
     // name:string;

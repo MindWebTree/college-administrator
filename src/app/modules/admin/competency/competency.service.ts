@@ -7,7 +7,7 @@ import { studentAnalyticGrid, studentGrid } from '../common/gridFilter';
 import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { studentModel } from '../student-management/student-management.model';
-import { competency, competencyGrid, StudentGrid } from './competency.model';
+import { competency, competencyGrid, studentCompetecyGrid, StudentGrid } from './competency.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,7 @@ export class CompetencyService {
   onSubjectGridChanged: BehaviorSubject<any>;
   onCompetencyStudentChanged: BehaviorSubject<any>;
   onHistoryGridChanged: BehaviorSubject<any>;
+  onStudentCompetecyGridChanged: BehaviorSubject<any>;
 
   private titleSubject = new BehaviorSubject<string>('');
   public title$ = this.titleSubject.asObservable();  
@@ -54,6 +55,7 @@ export class CompetencyService {
     this.onSubjectGridChanged = new BehaviorSubject([]);
     this.onCompetencyStudentChanged = new BehaviorSubject([]);
     this.onHistoryGridChanged = new BehaviorSubject([]);
+    this.onStudentCompetecyGridChanged = new BehaviorSubject([]);
   }
 
   /**
@@ -92,6 +94,14 @@ export class CompetencyService {
   getAssignmentGrid(req: competencyGrid): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/competency/grid`, { ...req }).subscribe(res => {
+        resolve(res);
+      });
+
+    })
+  }
+  getStudentCompetencyGrid(req: studentCompetecyGrid): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.post(`${environment.apiURL}/student/competency-grid`, { ...req }).subscribe(res => {
         resolve(res);
       });
 
