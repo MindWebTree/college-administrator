@@ -35,6 +35,9 @@ export class BatchService {
   getSubjects(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`);
   }
+  getSubjectsbyYear(guid): Observable<any> {
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`);
+  }
   getTeams(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/teammanagement/list`);
   }

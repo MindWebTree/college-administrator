@@ -408,13 +408,13 @@ export class BatchListComponent implements OnInit {
 
     if (this.years && this.years.length > 0) {
       this.selectedYear = this.years[event]?.id;
-      
+      const selectyearGuid = this.years[event]?.guid;
       // Reset pagination when changing year
       this.currentPageIndex = 0;
       if (this.paginator) {
         this.paginator.pageIndex = 0;
       }
-      this._batchService.getSubjects().subscribe(res=>{
+      this._batchService.getSubjectsbyYear(selectyearGuid).subscribe(res=>{
       this.subjects = res;
       this.Subject = new FormControl(res[0].id)
     })
