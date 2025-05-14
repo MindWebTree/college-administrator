@@ -396,6 +396,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         roles: ["CollegeAdministrator","Lecturer","HOD"]
     },
     {
+        id: 'grading',
+        title: 'grading',
+        type: 'collapsable',
+        link:'/competency/grading/:id',
+        children: [],
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
+    },
+    {
         id: 'rubric-criteria-list',
         title: 'rubric-criteria-list',
         type: 'collapsable',

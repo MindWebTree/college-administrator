@@ -1,0 +1,79 @@
+<div class="p-8">
+<h2 class="mat-headline">Define Grading Rules</h2>
+
+<form [formGroup]="gradingRulesForm" (ngSubmit)="onSubmit()">
+  <div formArrayName="rules">
+    <mat-card *ngFor="let rule of rules.controls; let i = index" [formGroupName]="i" class="rule-card">
+      <mat-card-title>Rule {{ i + 1 }}</mat-card-title>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Grade Label</mat-label>
+        <input matInput formControlName="label" placeholder="e.g. Exceeds Expectations" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Condition Logic</mat-label>
+        <mat-select formControlName="logic">
+          <mat-option value="AND">AND</mat-option>
+          <mat-option value="OR">OR</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div formArrayName="conditions">
+        <mat-card *ngFor="let condition of getConditions(rule).controls; let j = index" [formGroupName]="j" class="condition-card">
+          <mat-card-subtitle>Condition {{ j + 1 }}</mat-card-subtitle>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Score Operator</mat-label>
+            <mat-select formControlName="scoreOperator">
+              <mat-option value=">">&gt;</mat-option>
+              <mat-option value=">=">&gt;=</mat-option>
+              <mat-option value="==">==</mat-option>
+              <mat-option value="<">&lt;</mat-option>
+              <mat-option value="<=">&lt;=</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Score Value</mat-label>
+            <input type="number" matInput formControlName="scoreValue" placeholder="e.g. 7" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Question Type</mat-label>
+            <mat-select formControlName="questionType">
+              <mat-option value="correct">Correct</mat-option>
+              <mat-option value="incorrect">Incorrect</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Questions</mat-label>
+            <mat-select formControlName="questions" multiple>
+              <mat-option *ngFor="let q of questionOptions" [value]="q">Q{{ q }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Minimum Required</mat-label>
+            <mat-select formControlName="minRequired">
+              <mat-option *ngFor="let m of minRequiredOptions" [value]="m">{{ m }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-icon-button color="warn" (click)="removeCondition(rule, j)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card>
+      </div>
+
+      <button mat-button color="primary" (click)="addCondition(rule)">+ Add Condition</button>
+      <button mat-button color="warn" (click)="removeRule(i)">- Remove Rule</button>
+    </mat-card>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="addRule()">+ Add New Rule</button>
+  <br /><br />
+  <button mat-raised-button color="accent" type="submit">Save Rules</button>
+</form>
+</div>
