@@ -37,6 +37,23 @@ export class CertificateService {
   getCertificateDetials(id): Observable<any> {
     return this._httpClient.post(`${environment.apiURL}/student/competency-certificate/${id}`, {  });
   }
+
+  getCertificate(id): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._httpClient.post(`${environment.apiURL}/student/download-certificate?compentencyGuid=${id}`, {}, {
+        responseType: 'text' as 'json'
+      }).subscribe(
+        res => {
+          resolve(res);
+        },
+        error => {
+          console.error('API Error:', error);
+          reject(error);
+        }
+      );
+    });
+  }
+  
 }
 
 

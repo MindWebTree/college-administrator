@@ -29,6 +29,27 @@ export type linearChartOptions = {
 })
 export class StudentDashboardComponent  implements OnInit {
   public linearChartOptions: ApexOptions = {};
+  assignedTeams:any=[];
+  // assignedTeams = [
+  //   {
+  //     code: 'A1-M1',
+  //     mentors: [
+  //       { name: 'Dr. Anil Rao', role: 'Mentor 1', photoUrl: 'assets/anil.jpg' },
+  //     ],
+  //     lecturers: [
+  //       { name: 'Prof. Rakesh Patil', subject: 'Emergency Medicine', photoUrl: 'assets/rakesh.jpg' }
+  //     ]
+  //   },
+  //   {
+  //     code: 'A2-M1',
+  //     mentors: [
+  //       { name: 'Dr. Priya Sharma', role: 'Mentor 1', photoUrl: 'assets/priya.jpg' }
+  //     ],
+  //     lecturers: [
+  //       { name: 'Dr. Sameer Khan', subject: 'Public Health', photoUrl: 'assets/sameer.jpg' }
+  //     ]
+  //   }
+  // ];
   _studentUpcomingExam: any = [];
   _userAccount: any;
   dataSource = new MatTableDataSource<any>();
@@ -47,6 +68,9 @@ export class StudentDashboardComponent  implements OnInit {
     };
     this._dashBoard.getStudentExamSummaryGrid(studentExamSummary).subscribe((response: any) => {
       this.dataSource = response.data;
+    });
+    this._dashBoard.getAssignedTeamDetails().subscribe((response: any) => {
+      this.assignedTeams = response;
     });
     this._dashBoard.getStudentiUpcomingExam().subscribe((response: any) => {
       this._studentUpcomingExam = response;

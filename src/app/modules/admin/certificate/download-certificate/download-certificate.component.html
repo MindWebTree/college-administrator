@@ -1,4 +1,4 @@
-<div id="certificate" class="certificate-container">
+<!-- <div id="certificate" class="certificate-container">
     <div class="section-certificate">
     <div class="main-section">
         <div>
@@ -38,4 +38,63 @@
     </div>
 </div>
   </div>
+
+   -->
+
+   <!-- <div id="certificate" class="certificate-container">
+    <div class="section-certificate">
+    <div class="main-section">
+            <img [src]="certificate" type="application/pdf" class="w-60 mx-auto">        
+    </div>
+    <div class="download-button">
+      <button (click)="downloadCertificate()">Download PDF</button>
+    </div>
+</div>
+  </div> -->
+  <div class="main-section">
+    <!-- Use iframe or object to display PDF -->
+    <div *ngIf="certificate; else loadingTemplate" class="certificate-container">
+      
+      <!-- Option 1: Using iframe (Recommended) -->
+      <iframe  style="height: 80vh;"
+        [src]="certificate" 
+        width="100%" 
+        height="600px"
+        frameborder="0"
+        type="application/pdf">
+        <p>Your browser does not support PDFs. 
+          <a [href]="certificateUrl" target="_blank">Download the PDF</a>
+        </p>
+      </iframe>
+      
+      <!-- Option 2: Using object (Alternative) -->
+      <!--
+      <object 
+        [data]="certificate" 
+        type="application/pdf" 
+        width="100%" 
+        height="600px">
+        <p>Your browser does not support PDFs. 
+          <a [href]="certificateUrl" target="_blank">Download the PDF</a>
+        </p>
+      </object>
+      -->
+      
+      <!-- Download button -->
+      <div class="download-section" style="text-align: center; margin-top: 20px;">
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="downloadCertificate()">
+          Download Certificate
+        </button>
+      </div>
+    </div>
   
+    <!-- Loading template -->
+    <ng-template #loadingTemplate>
+      <div class="loading-container" style="text-align: center; padding: 50px;">
+        <p>Loading certificate...</p>
+      </div>
+    </ng-template>
+  </div>

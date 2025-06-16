@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+.full-width {
+  width: 100%;
+}
+
+.rule-card, .condition-card {
+  margin-bottom: 20px;
+  padding: 15px;
+}
+.condition-card {
+  margin-left: 20px;
+  border-left: 4px solid #ccc;
+}

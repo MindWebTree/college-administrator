@@ -36,7 +36,8 @@ export class CreateLecturerComponent {
   courses: any = [];
   subjectList: any = [];
   courseList: any = [];
-  lecturerImage: any
+  lecturerImage: any  
+  signature: any;
   isEditing: boolean = true;
   subjectDetails: any = [];
   employeeNum: any;
@@ -74,6 +75,7 @@ export class CreateLecturerComponent {
 
     this.lecturerForm = this._formbuilder.group({
       lecturerImage: ['',],
+      signature: [''],
       FirstName: ['', Validators.required],
       LastName: ['', Validators.required],
       CourseYear: ['', Validators.required],
@@ -141,6 +143,7 @@ export class CreateLecturerComponent {
         // }));
         // Set the image URL separately
         this.lecturerImage = this._data.lecturer.imageUrl;
+        this.signature = this._data.lecturer.signature;
 
         // Set subjects
         // const subjectIds = this._data.lecturer.qBankTypes.map(q => q.id);
@@ -286,6 +289,45 @@ export class CreateLecturerComponent {
     this.lecturerImage = ''; // Reset the image URL
 
   }
+  onSignatureselectFile(e: any) {
+    const file = e.target.files[0];
+
+    if (file) {
+      const validImageTypes = ['image/jpeg', 'image/png'];
+      const fileType = file.type;
+
+      if (!validImageTypes.includes(fileType)) {
+        alert("Invalid image type. Please select a JPEG or PNG file.");
+        return;
+      }
+
+      const fileSizeKB = file.size / 1024;
+
+      if (fileSizeKB > 700) {
+        alert("File size exceeds the maximum limit of 700KB.");
+        return;
+      }
+      this._lecturerService.uploadImage(file).subscribe((response: any) => {
+
+        if (response) {
+
+          this.signature = response.url
+          this.lecturerForm.get('signature')?.setValue(this.signature);
+         this.lecturerForm.get('signature')?.markAsTouched();
+          // this.lecturerForm.get('LecturerImage').setValue(this.lecturerImage)
+        }
+        // Handle the API response as needed
+      });
+
+    }
+  }
+
+  removeSignatureSelectedFile() {
+    this.signature = ''; // Reset the image URL
+    this.lecturerForm.get('signature')?.setValue('');
+  this.lecturerForm.get('signature')?.markAsTouched();
+
+  }
 
   onSelectCourseYear(courseYear: any){
     const currentValues = this.lecturerForm.get('CourseYear').value || [];
@@ -355,8 +397,25 @@ export class CreateLecturerComponent {
       array.splice(index, 1);
     }
   }
-
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      control?.markAsTouched({ onlySelf: true });
+      
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
   onSave() {
+    this.markFormGroupTouched(this.lecturerForm);
+
+    const signatureControl = this.lecturerForm.get('signature');
+  if (!this.signature && !signatureControl?.value) {
+    signatureControl?.setErrors({ required: true });
+  } else {
+    signatureControl?.setErrors(null);
+  }
 
     if (this.lecturerForm.invalid) {
       this.errorhandling.handleError(this.lecturerForm);
@@ -372,6 +431,7 @@ export class CreateLecturerComponent {
         email: this.lecturerForm.get('Email').value,
         phoneNumber: this.lecturerForm.get('PhoneNumber').value,
         imageUrl: this.lecturerImage,
+        signature: this.signature || signatureControl?.value || '',
         countryId: 0,
         stateId: 0,
         collegeId: 0,

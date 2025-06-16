@@ -52,6 +52,20 @@ export const AdminNavigation: FuseNavigationItem[] = [
         children: [],
         roles: ["CollegeAdministrator"]
     },
+    {
+        id: 'Competency',
+        title: 'Competency',
+        type: 'collapsable',
+        children: [
+            {
+                id: 'List Competency',
+                title: 'List Competency',
+                type: 'basic',
+                link: 'competency/list'
+            }
+        ],
+        roles: ["CollegeAdministrator"]
+    },
 ];
 export const LecturerNavigation: FuseNavigationItem[] = [
     {
@@ -335,7 +349,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         id: 'Lecturers',
         title: 'Lecturers',
         type: 'collapsable',
-        link:'/lecturer/lecturer-bio/:userId/:courseYear',
+        link:'/lecturer/lecturer-bio/:userId',
         children: [],
         roles: ["CollegeAdministrator","HOD"]
     },
@@ -392,6 +406,14 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'sections',
         type: 'collapsable',
         link:'/competency/sections/:guid',
+        children: [],
+        roles: ["CollegeAdministrator","Lecturer","HOD"]
+    },
+    {
+        id: 'grading',
+        title: 'grading',
+        type: 'collapsable',
+        link:'/competency/grading/:id',
         children: [],
         roles: ["CollegeAdministrator","Lecturer","HOD"]
     },

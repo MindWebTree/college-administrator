@@ -18,6 +18,7 @@ export class HODModel {
     emailConfirmed: boolean;
     phoneNumberConfirmed: boolean;
     imageUrl: string;
+    signature: string;
     courseType: string;
     qualification: string;
     employeeNo: string;
@@ -47,6 +48,7 @@ export class HODModel {
         this.emailConfirmed = lecture.emailConfirmed;
         this.phoneNumberConfirmed = lecture.phoneNumberConfirmed;
         this.imageUrl = lecture.imageUrl || '';
+        this.signature = lecture.signature || '';
         this.courseType = lecture.courseType;
         this.qualification = lecture.qualification;
         this.phoneCountryCode = lecture.phoneCountryCode;

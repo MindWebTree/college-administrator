@@ -6,6 +6,7 @@ import { RubricListComponent } from './rubric-construction-management/rubric-lis
 import { StepListComponent } from './step-management/step-list/step-list.component';
 import { CriteriaListComponent } from './criteria-management/criteria-list/criteria-list.component';
 import { StudentCompetencyListComponent } from './student-competency-list/student-competency-list.component';
+import { GradingComponent } from './grading/grading.component';
 export default [
     {
         path: 'create',
@@ -26,6 +27,10 @@ export default [
     {
         path: 'rubric-sections',
         component: RubricListComponent,
+    },
+    {
+        path: 'grading/:id',
+        component: GradingComponent,
     },
     {
         path: 'sections/:guid',

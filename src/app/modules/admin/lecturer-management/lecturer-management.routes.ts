@@ -9,7 +9,7 @@ export default [
     //     component: ListLecturerComponent,
     // },
     {
-        path: 'lecturer-bio/:userId/:courseYear',
+        path: 'lecturer-bio/:userId',
         component: BioLecturerComponent,
     },
     {

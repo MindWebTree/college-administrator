@@ -152,6 +152,22 @@
             <label class="">Status</label><span>:</span>
             <mat-slide-toggle formControlName="IsActive"><span>{{this.lecturerForm.get('IsActive')?.value ? 'Active' : 'Inactive'}}</span></mat-slide-toggle>
         </div>
+        <div class="py-4 flex justify-center">
+            <div>
+                <img class="w-30 h-auto" [src]="signature || 'my-images/default-signature.png'">
+            </div>
+
+            <div class="flex flex-col justify-center gap-2 ml-4">
+                <label class="custom-file-upload min-w-[250px]">Change Signature
+                    <input type="file" class="image-upload" (change)="onSignatureselectFile($event)"
+                        formControlName="signature"></label>
+                <button mat-button class="delete_btn text-primary bg-primary/10 min-w-[250px]"
+                    (click)="removeSignatureSelectedFile()">Delete Signature</button>
+                    <mat-error class="error-message ml-1" *ngIf="addLecturerError && lecturerForm.get('signature')?.invalid && lecturerForm.get('signature')?.touched">Select Signature</mat-error>
+                
+            </div>
+
+        </div>
         <div class="text-center sm:flex items-baseline edit_profile w-full gap-4 justify-center">
           
             <button *ngIf="this.action === 'new'" mat-button class="save_btn font-normal" (click)="onSave()" aria-label="SAVE">Save</button>

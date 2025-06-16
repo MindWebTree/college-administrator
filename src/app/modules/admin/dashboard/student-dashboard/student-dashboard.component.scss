@@ -198,6 +198,22 @@
 //         width: 180% !important;
 //     }
 // }
+.assigned-section {
+    background-color: #f9fafb;
+    border-radius: 1rem;
+  
+    .section-title {
+      color: #1f2937;
+      font-weight: bold;
+    }
+  
+    .card {
+      transition: transform 0.2s ease-in-out;
+      &:hover {
+        transform: translateY(-4px);
+      }
+    }
+  }
 :host {
     display: block;
     width: 100%;

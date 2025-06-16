@@ -36,7 +36,7 @@ export class ListLecturerV1Component  implements OnInit {
   years: any;
   batchId: string;
   selectedYear: any = null; // Initialize as null
-  displayedColumns: string[] = ['Name', 'MobileNo','Qualification','AssignedTeam','Buttons']
+  displayedColumns: string[] = ['Name', 'MobileNo','Qualification','AssignedTeam','Buttons', 'Bio']
   dataSource: FirstYearStudentDataSource;
   selected = new FormControl(0);
   dialogRef: any;
@@ -531,6 +531,10 @@ export class ListLecturerV1Component  implements OnInit {
         console.error('Error loading lecturers:', error);
       }
     );
+  }
+
+  gotoLecturerBio(element){
+    this._router.navigate([`/lecturer/lecturer-bio/${element?.id}`]);
   }
   
   editStudent(user: any) {

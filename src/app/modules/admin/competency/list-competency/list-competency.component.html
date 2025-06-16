@@ -53,7 +53,7 @@
                         </button>
                     </mat-menu>
                 </div>
-                <button class="start-assignment" (click)="Start(assignment)">{{assignment?.noOfSubmissions > 0 ? 'Resume' : 'Start'}}</button>
+                <button *ngIf="userDetails?.Roles == 'Lecturer'" class="start-assignment" (click)="Start(assignment)">{{assignment?.noOfSubmissions > 0 ? 'Resume' : 'Start'}}</button>
             </div>
         </div>
         <mat-paginator #upcomingPaginator

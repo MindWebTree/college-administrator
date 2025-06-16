@@ -506,6 +506,10 @@ mat-expansion-panel.mat-expansion-panel {
     border: 1px solid rgba(var(--fuse-primary-rgb), var(--tw-text-opacity)) !important;
     box-shadow: 0px 0px 10px rgba(var(--fuse-primary-rgb), .3) !important;
 }
+::ng-deep mat-expansion-panel.mat-expansion-panel.border-red  {
+    border: 1px solid #00e700 !important;
+    box-shadow: 0px 0px 10px #8bc98b !important;
+}
 
 .last-stepper.stepper_div::before {
     height: 0 !important;

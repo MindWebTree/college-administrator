@@ -206,6 +206,7 @@ export class CreateExamComponent implements OnInit {
   GetBatches(){
     this._examService.getBatch().subscribe(res => {
       this.Batches = res;
+      console.log(this.Batches,"this.Batchesfnc")
     })
   }
   OnBatchSelect(batchGuid){
@@ -219,142 +220,110 @@ export class CreateExamComponent implements OnInit {
       if (this.examId) {
         this._examService.getExamByid(this.examId).subscribe(res => {
           this.editExamDetails = res;
-          const batchGuid = this.Batches?.find(b=> b.id == this.editExamDetails.batches[0]?.batchId)?.guid;
-          console.log(batchGuid,"batchGuid")
-          this.OnBatchSelect(batchGuid);
-          this.qBankCategorySelected = this.editExamDetails.qbankCategory;
-          
-          this.getQbank(this.qBankCategorySelected, true);
-          this.getQbanksubject(this.editExamDetails.qBankTypeId);          
-          this.CreateExamSchedule.get('Batch').patchValue(batchGuid);
-          this.CreateExamSchedule.get('BatchYear').patchValue(this.editExamDetails?.batches[0]?.batchYearId);
-          const date = this.editExamDetails.examDate.split('T')[0];
-          const examEndDate = this.editExamDetails.examEndDate?.split('T')[0];
-          const startTime = this.editExamDetails.examDate.split('T')[1].substring(0, 5);
-          console.log(startTime, "startTime")
-          const endTime = this.editExamDetails.examEndDate?.split('T')[1].substring(0, 5);
-          this.CreateExamSchedule.get('ExamDate').patchValue(date);
-          this.CreateExamSchedule.get('ExamEndDate').patchValue(examEndDate);
-          this.CreateExamSchedule.get('StartTime').patchValue(startTime);
-          this.CreateExamSchedule.get('EndTime').patchValue(endTime);
-          console.log(this.CreateExamSchedule.get('ExamDate').value)
-          this._commonService.getTopics(this.editExamDetails.subjectId, this.qBankCategorySelected).subscribe(res => {
-            if (res) {
-              this.topics = res;
-              this.selectSubject(this.editExamDetails.subjectId, true);
-              this.editExamDetails?.topics.forEach((topicId) => {
-                this.OnclickTopic(topicId, "");
+  
+          // Wait for Batches data to be available
+          this.waitForBatchesData().then(() => {
+            const batchGuid = this.Batches?.find(b => b.id == this.editExamDetails.batches[0]?.batchId)?.guid;
+  
+            if (batchGuid) {
+              this.OnBatchSelect(batchGuid);
+              this.qBankCategorySelected = this.editExamDetails.qbankCategory;
+              this.getQbank(this.qBankCategorySelected, true);
+              this.getQbanksubject(this.editExamDetails.qBankTypeId);
+  
+              this.CreateExamSchedule.get('Batch').patchValue(batchGuid);
+              this.CreateExamSchedule.get('BatchYear').patchValue(this.editExamDetails?.batches[0]?.batchYearId);
+  
+              const date = this.editExamDetails.examDate.split('T')[0];
+              const examEndDate = this.editExamDetails.examEndDate?.split('T')[0];
+              const startTime = this.editExamDetails.examDate.split('T')[1].substring(0, 5);
+              const endTime = this.editExamDetails.examEndDate?.split('T')[1].substring(0, 5);
+  
+              this.CreateExamSchedule.get('ExamDate').patchValue(date);
+              this.CreateExamSchedule.get('ExamEndDate').patchValue(examEndDate);
+              this.CreateExamSchedule.get('StartTime').patchValue(startTime);
+              this.CreateExamSchedule.get('EndTime').patchValue(endTime);
+  
+              this._commonService.getTopics(this.editExamDetails.subjectId, this.qBankCategorySelected).subscribe(res => {
+                if (res) {
+                  this.topics = res;
+                  this.selectSubject(this.editExamDetails.subjectId, true);
+  
+                  this.editExamDetails?.topics.forEach((topicId) => {
+                    this.OnclickTopic(topicId, "");
+                  });
+                  this.editExamDetails?.cbmeCodeId.forEach((cbmeCodeId) => {
+                    this.OnclickCmbeCode(cbmeCodeId);
+                  });
+  
+                  this.QuestionSelected = this.editExamDetails.questions;
+  
+                  this.CreateExamQbank.patchValue({
+                    ExamName: this.editExamDetails.name,
+                    ExamDescription: this.editExamDetails.description,
+                    QbankCategory: this.editExamDetails.qbankCategoryId,
+                    Studies: this.editExamDetails.qBankTypeId,
+                    Subject: this.editExamDetails.subjectId,
+                    Topic: this.editExamDetails.topics.map(t => t),
+                    CBMECode: this.editExamDetails.cbmeCodeId,
+                    CompetencyLevel: this.editExamDetails.competencyLevelId,
+                    LevelofQuestions: this.editExamDetails.levelOfQuestionId,
+                    NumberofQuestions: this.editExamDetails.noOfQuestions
+                  });
+  
+                  this.CreateListFilter.patchValue({
+                    tags: this.editExamDetails.tags
+                  });
+  
+                  this.CreateExamSchedule.patchValue({
+                    examType: this.editExamDetails.examMode,
+                    ShuffleAnswer: this.editExamDetails.shuffleAnswer,
+                    ShuffleQuestion: this.editExamDetails.shuffleQuestion,
+                    viewResult: this.editExamDetails.canViewResult,
+                    Percentage: this.editExamDetails.percentagePassMarks
+                  });
+                }
               });
-              this.editExamDetails?.cbmeCodeId.forEach((cbmeCodeId) => {
-                this.OnclickCmbeCode(cbmeCodeId);
-              });
-              let courseSelected: any = [];
-              // this.editExamDetails?.courses.forEach((course) => {
-              //   courseSelected.push(course.courseYearId);
-              //   const selectedCourseCount = this.Courses.find(c => c.id == course.courseYearId)?.count
-              //   this.studentCourseList.push({ courseYearId: course.courseYearId, CourseYear: course.courseYear, noOfStudent: selectedCourseCount, courseId: course.courseId });
-
-              // });
-
-
-              this.QuestionSelected = this.editExamDetails.questions;
-
-              console.log(this.CreateExamQbank.get('Topic').value, "value topic11")
-              this.CreateExamQbank.patchValue({
-                ExamName: this.editExamDetails.name,
-                ExamDescription: this.editExamDetails.description,
-                QbankCategory: this.editExamDetails.qbankCategoryId,
-                Studies: this.editExamDetails.qBankTypeId,
-                Subject: this.editExamDetails.subjectId,
-                Topic: this.editExamDetails.topics.map(t => t),
-                CBMECode: this.editExamDetails.cbmeCodeId,
-                CompetencyLevel: this.editExamDetails.competencyLevelId,
-                LevelofQuestions: this.editExamDetails.levelOfQuestionId,
-                NumberofQuestions: this.editExamDetails.noOfQuestions
-              });
-
-              this.CreateListFilter.patchValue({
-                // tags: this.editExamDetails.tags
-              });
-              this.CreateExamSchedule.patchValue({
-                // students: courseSelected,
-                examType: this.editExamDetails.examMode,
-                ShuffleAnswer: this.editExamDetails.shuffleAnswer,
-                ShuffleQuestion: this.editExamDetails.shuffleQuestion,
-                viewResult: this.editExamDetails.canViewResult,
-                Percentage: this.editExamDetails.percentagePassMarks
-              })
-
             }
-
-          })
-
-        })
-      }
-    })
-    this.minTime = parseInt(this.minDate.toTimeString().split(' ')[0]);
-    this.status = 0;
-    this._commonService.getQBankCategory().subscribe(res => {
-      this.QbankCategory = res;
-
-    }, (error) => {
-      this._errorHendling.handleError(error);
-    }
-    )
-    this._commonService.geTags().subscribe(res => {
-      this.Tags = res;
-
-    }, (error) => {
-      this._errorHendling.handleError(error);
-    }
-    )
-    //Get Courses 
-    // this._commonService.getCourses().subscribe(response => {
-    //   this.Courses = response.data;
-    // }, (error) => {
-    //   this._errorHendling.handleError(error);
-    // })
-
-    // this.competenecyLevel = this.activatedRoute.snapshot.data.competenecyLevel;//get capetencyLevel
-    // this.levelquestion = this.activatedRoute.snapshot.data.levelquestion; // get LevelofQuestion
-    // this.Tags = this.activatedRoute.snapshot.data.tags; // get tags 
-    // this.userid = this._helpservice.getUserDetail().Id; // get userId
-    // this.qbanktype = this.activatedRoute.snapshot.data.qbanktype;   //Get Qbanks 
-
-
-    //to enable diable % Subscribe to changes in the 'viewResult' control
-    // this.CreateExamSchedule.get('viewResult')?.valueChanges.subscribe(value => {
-    //   const percentageControl = this.CreateExamSchedule.get('Percentage');
-
-    //   if (percentageControl) {
-    //     if (value) {
-    //       percentageControl.enable();
-    //     } else {
-    //       percentageControl.disable();
-    //     }
-    //   }
-    // });
-    //to enable diable Evaluation Subscribe to changes in the 'viewResult' control
-    this.CreateExamSchedule.get('Evaluation')?.valueChanges.subscribe(value => {
-      const Evaluation = this.CreateExamSchedule.get('Evaluationtime');
-
-      if (Evaluation) {
-        if (value) {
-          Evaluation.enable();
-        } else {
-          Evaluation.disable();
-        }
+          });
+        });
       }
     });
-    this._commonService.getLevel().subscribe(res => {
-      this.competenecyLevel = res;
-    })
-    this._commonService.getLevelofQuestions().subscribe(res => {
-      this.levelquestion = res;
-    })
-
+  
+    this.GetInitialData();
   }
+  private waitForBatchesData(): Promise<void> {
+    return new Promise(resolve => {
+      const checkData = () => {
+        if (this.Batches && this.Batches.length > 0) {
+          resolve();
+        } else {
+          setTimeout(checkData, 100); // Retry after 100ms
+        }
+      };
+      checkData();
+    });
+  }
+  
+  GetInitialData() {
+    this._commonService.getQBankCategory().subscribe(
+      res => {
+        this.QbankCategory = res;
+      },
+      error => {
+        this._errorHendling.handleError(error);
+      }
+    );
 
+    this._commonService.geTags().subscribe(
+      res => {
+        this.Tags = res;
+      },
+      error => {
+        this._errorHendling.handleError(error);
+      }
+    );
+  }
   getExamListing() {
     // if (this.CreateExamQbank.invalid || !this.CreateExamQbank.value.ExamDescription?.trim()) {
     //   this.CreateExamQbank.controls['ExamDescription'].setErrors({ required: true });
@@ -896,7 +865,7 @@ export class CreateExamComponent implements OnInit {
         levelOfQuestionId: this.CreateExamQbank.get('LevelofQuestions').value,
         examDuration: 0,
         examMode: this.CreateExamSchedule.get('examType').value,
-        tags: [this.CreateListFilter.get('tags').value],
+        tags: this.CreateListFilter.get('tags').value,
         configuration: '',
         questions: this.QuestionSelected,
         examDate: formattedExamStartDate,
@@ -930,10 +899,16 @@ export class CreateExamComponent implements OnInit {
           })
         }
       }, (error) => {
-        this._errorHendling.handleError(error)
+        this.showSnackBar(error?.error?.exception);
       }
       )
     }
+  }
+  showSnackBar(message: string): void {
+    this._snackBar.open(message, 'Close', {
+      duration: 3000,
+      verticalPosition: 'top'
+    });
   }
   combineDateTime(date: Date | string, time?: string): string {
     if (!date || !time) {

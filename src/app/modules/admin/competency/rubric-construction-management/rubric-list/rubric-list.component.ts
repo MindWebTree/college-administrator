@@ -249,6 +249,9 @@ export class RubricListComponent  implements OnInit {
   NavigatetoSteps(row){
     this._router.navigate([`/competency/sections/${row.guid}`])
   }
+  NavigatetoGrading(row){
+    this._router.navigate([`/competency/grading/${row.guid}`])
+  }
 
 
 

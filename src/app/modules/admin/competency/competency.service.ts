@@ -400,6 +400,21 @@ export class CompetencyService {
     })
   }
 
+
+  // grading rules
+   getQuestionbyGuid(guid:string): Observable<any> {
+    return this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-criteria-list/${guid}`);
+  }
+  getGradingRules(guid:string): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/get-rule?rubriceId=${guid}`,{});
+  }
+  createGradingRules(rubric: any): Observable<any> {
+    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/create-rule`, rubric);
+  }
+  updateGradingRules(rubric: any): Observable<any> {
+    return this._httpClient.patch(`${environment.apiURL}/rubricconstruction/update-rule`, rubric);
+  }
+
 }
 
 

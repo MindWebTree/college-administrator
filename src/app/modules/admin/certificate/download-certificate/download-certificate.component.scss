@@ -1,94 +1,97 @@
-.certificate-container {
-  width: 1000px;
-  height: 700px;
-  padding: 40px;
-  border: 2px solid #ccc;
-  font-family: 'Arial', sans-serif;
-  position: relative;
-  background: #fff;
-  background-size: cover;
-  margin: auto;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+:host{
+  display: block;
 }
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  height: 60px;
-}
-
-.roll-no {
-  border: 1px solid #007BFF;
-  padding: 10px;
-  font-weight: bold;
-}
-
-.content {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.content h2 {
-  font-size: 24px;
-  margin: 20px 0;
-  text-transform: uppercase;
-}
-
-.content h3 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.student-image {
-  width: 100px;
-  height: 120px;
-  object-fit: cover;
-  border: 1px solid #000;
-  margin-top: 20px;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 60px;
-  padding: 0 50px;
-}
-
-.footer .left,
-.footer .right {
-  text-align: center;
-}
-
-.download-button {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.heading-certificate{
-  font-family: "Oswald", sans-serif;
-  font-size: 50px !important;
-  margin: 0 auto;
-  text-align: center;
-  font-weight: 800;
-  text-shadow: 3px 3px 2px #b9b9b9;
-}
-.roll-number-section {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-.roll-number-section .box {
-  border: 1px solid;
-  width: 100px;
-  height: 100px;
-}
-.certificate-container{
-  background-image: url(../../../../../../public/my-images/certificate-bg.png);
-}
-// .section-certificate{
-//   background-image: url(../../../../../../public/my-images/bg-fav.png);
+// .certificate-container {
+//   width: 1000px;
+//   height: 700px;
+//   padding: 40px;
+//   border: 2px solid #ccc;
+//   font-family: 'Arial', sans-serif;
+//   position: relative;
+//   background: #fff;
+//   background-size: cover;
+//   margin: auto;
+//   box-shadow: 0 0 10px rgba(0,0,0,0.2);
 // }
+
+// .header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// }
+
+// .logo {
+//   height: 60px;
+// }
+
+// .roll-no {
+//   border: 1px solid #007BFF;
+//   padding: 10px;
+//   font-weight: bold;
+// }
+
+// .content {
+//   text-align: center;
+//   margin-top: 40px;
+// }
+
+// .content h2 {
+//   font-size: 24px;
+//   margin: 20px 0;
+//   text-transform: uppercase;
+// }
+
+// .content h3 {
+//   font-size: 20px;
+//   margin-bottom: 10px;
+// }
+
+// .student-image {
+//   width: 100px;
+//   height: 120px;
+//   object-fit: cover;
+//   border: 1px solid #000;
+//   margin-top: 20px;
+// }
+
+// .footer {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-top: 60px;
+//   padding: 0 50px;
+// }
+
+// .footer .left,
+// .footer .right {
+//   text-align: center;
+// }
+
+// .download-button {
+//   text-align: center;
+//   margin-top: 30px;
+// }
+
+// .heading-certificate{
+//   font-family: "Oswald", sans-serif;
+//   font-size: 50px !important;
+//   margin: 0 auto;
+//   text-align: center;
+//   font-weight: 800;
+//   text-shadow: 3px 3px 2px #b9b9b9;
+// }
+// .roll-number-section {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+// }
+// .roll-number-section .box {
+//   border: 1px solid;
+//   width: 100px;
+//   height: 100px;
+// }
+// .certificate-container{
+//   background-image: url(../../../../../../public/my-images/certificate-bg.png);
+// }
+// // .section-certificate{
+// //   background-image: url(../../../../../../public/my-images/bg-fav.png);
+// // }

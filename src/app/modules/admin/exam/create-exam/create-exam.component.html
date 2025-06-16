@@ -268,7 +268,7 @@
 
                     <div class="accordian-outer" [dataSource]="dataSource?.QuestionList" *ngFor="let question of dataSource?.QuestionList,let i = index;">
                         <mat-accordion>
-                            <mat-expansion-panel hideToggle class="mt-4" >
+                            <mat-expansion-panel hideToggle class="mt-4" [ngClass]="{'border-red':question.categoryName == 'Owned'}">
                                 <mat-expansion-panel-header class="h-24 bg-white">
                                     <mat-panel-title class="font-semibold " [innerHtml]="question.questionTitle">
                                     </mat-panel-title>
