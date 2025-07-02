@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { CreateQuestion } from './question-management.model';
 import { environment } from 'environments/environment';
 import { QuestionListFilter } from '../common/QuestionModel';
+import { ApiErrorHandlerService } from '../common/api-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class QuestionManagementService {
     });
   }
   constructor(private _httpClient: HttpClient,
-    private _matSnockbar: MatSnackBar
+    private _matSnockbar: MatSnackBar,
+    private _errorHandling: ApiErrorHandlerService
   ) {
     this.question_list = new BehaviorSubject([]);
   }
@@ -40,27 +42,83 @@ export class QuestionManagementService {
       'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
 
     });
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, { headers });
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, { headers }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getQbankTypesLecturer(qbankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer/qbanktypes/${qbankCategory}`, {  });
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer/qbanktypes/${qbankCategory}`, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getSubjectsbyQbanktypeId(qBankTypeId: number, qbankCategory: string): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/${qBankTypeId}/${qbankCategory}`, {  });
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/${qBankTypeId}/${qbankCategory}`, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getSubjectsbyQbanktypeIdLecturer(qBankTypeId: number, qbankCategory: string): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer/subjects/${qBankTypeId}/${qbankCategory}`, {  });
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer/subjects/${qBankTypeId}/${qbankCategory}`, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getTopicsBySubjectId(subjectId: number, qbankCategory: string): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-topics/${subjectId}/${qbankCategory}`, {  });
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-topics/${subjectId}/${qbankCategory}`, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
   questionCreate(_questionData: CreateQuestion) {
-    return this._httpClient.post(`${environment.apiURL}/qbank/create`, { ..._questionData }, {  });
-  }
+    return this._httpClient.post(`${environment.apiURL}/qbank/create`, { ..._questionData }, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   updateQuestion(_questionData: CreateQuestion): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/qbank/update`, { ..._questionData }, {  });
-  }
+    return this._httpClient.post(`${environment.apiURL}/qbank/update`, { ..._questionData }, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
 
 
@@ -69,16 +127,40 @@ export class QuestionManagementService {
       'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
 
     });
-    return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/search`, { ..._gridFilter }, { headers });
-  }
+    return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/search`, { ..._gridFilter }, { headers }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getQwnedQuestion(_gridFilter: QuestionListFilter): Observable<CreateQuestion[]> {
-    return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/owned-questions`, { ..._gridFilter }, {  });
-  }
+    return this._httpClient.post<CreateQuestion[]>(`${environment.apiURL}/qbank/owned-questions`, { ..._gridFilter }, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
 
   getQuestionbyID(questionDetailID: number): Observable<CreateQuestion[]> {
-    return this._httpClient.get<CreateQuestion[]>(`${environment.apiURL}/qbank/get-by-id/${questionDetailID}`);
-  }
+    return this._httpClient.get<CreateQuestion[]>(`${environment.apiURL}/qbank/get-by-id/${questionDetailID}`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
   // deleteQuestion(questionDetailID: number): Observable<any> {
   //   const headers = new HttpHeaders({
@@ -114,8 +196,16 @@ export class QuestionManagementService {
 
 
   getCbmeCodeByTopicId(topicId): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/admin/cbmecode/${topicId}/list`, {},);
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/admin/cbmecode/${topicId}/list`, {},).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
 
 }

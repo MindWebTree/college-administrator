@@ -33,7 +33,7 @@
 }
 .login_right_section {
     background-image: url(../../../../../public/my-images/college-pic.jpeg);
-    background-position: center center;
+    background-position: left center;
     background-size: cover;
     background-repeat: no-repeat;
     padding-top: 90px;

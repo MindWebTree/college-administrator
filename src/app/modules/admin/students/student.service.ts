@@ -1,11 +1,12 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'environments/environment';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 import { studentModel } from '../student-management/student-management.model';
+import { ApiErrorHandlerService } from '../common/api-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class StudentsService {
   constructor(
     private _httpClient: HttpClient,
     private _matSnockbar: MatSnackBar,
+    private _errorHandling: ApiErrorHandlerService,
     private _navigationTypeService: NavigationService,
     private _navigationService: NavigationMockApi
   ) {
@@ -35,24 +37,61 @@ export class StudentsService {
   }
 
   getYears(guid): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`, {})
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
   getStudentForGrid(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/student/grid`, { ..._gridFilter }, {});
-
-  }
+    return this._httpClient.post(`${environment.apiURL}/student/grid`, { ..._gridFilter }, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getAttendanceForGrid(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/academic/attendence-grid`, { ..._gridFilter }, {});
-
-  }
+    return this._httpClient.post(`${environment.apiURL}/academic/attendence-grid`, { ..._gridFilter }, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getAssessmentForGrid(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/academic/assesment-grid`, { ..._gridFilter }, {});
-
-  }
+    return this._httpClient.post(`${environment.apiURL}/academic/assesment-grid`, { ..._gridFilter }, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getStudentLecturerForGrid(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/lecturer/student-grid`, { ..._gridFilter }, {  });
-  }
+    return this._httpClient.post(`${environment.apiURL}/lecturer/student-grid`, { ..._gridFilter }, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getStudentDetailsById(id): Promise<studentModel> {
     return new Promise((resolve, reject) => {
       const params = new HttpParams().set('userId', id);
@@ -64,8 +103,16 @@ export class StudentsService {
     );
   }
   getSubjectbyBatchYear(guid): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`);
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   bulkUploadUsers(batchGuid, batchYearId, data: any[]): Promise<any> {
     var self = this;
     console.log(JSON.stringify(data))
@@ -91,15 +138,47 @@ export class StudentsService {
     });
   }
   updateAssessment(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/academic/assesment-update`, { ..._gridFilter }, {});
-  }
+    return this._httpClient.post(`${environment.apiURL}/academic/assesment-update`, { ..._gridFilter }, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   updateAttendance(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/academic/attendence-update`, { ..._gridFilter }, {});
-  }
+    return this._httpClient.post(`${environment.apiURL}/academic/attendence-update`, { ..._gridFilter }, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   deleteAssessment(id): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/academic/assesment-delete/${id}`, {}, {});
-  }
+    return this._httpClient.post(`${environment.apiURL}/academic/assesment-delete/${id}`, {}, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   deleteAttendance(id): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/academic/attendence-delete/${id}`, {}, {});
-  }
+    return this._httpClient.post(`${environment.apiURL}/academic/attendence-delete/${id}`, {}, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 }

@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { studentAnalytics, studentModel } from './student-management.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'environments/environment';
 import { studentAnalyticGrid, studentGrid } from '../common/gridFilter';
 import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 import { NavigationService } from 'app/core/navigation/navigation.service';
+import { ApiErrorHandlerService } from '../common/api-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class StudentService {
     });
   }
   constructor(private _httpClient: HttpClient,
-    private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
+    private _matSnockbar: MatSnackBar,private _errorHandling: ApiErrorHandlerService, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onStudentManagementChanged = new BehaviorSubject([]);
     this.onStudentListChanged = new BehaviorSubject([]);
@@ -37,9 +38,16 @@ export class StudentService {
       'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
 
     });
-    return this._httpClient.post(`${environment.apiURL}/student/grid`, { ..._gridFilter }, { headers });
-
-  }
+    return this._httpClient.post(`${environment.apiURL}/student/grid`, { ..._gridFilter }, { headers }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
 
   /**
@@ -149,12 +157,27 @@ export class StudentService {
   }
 
   cousreList(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/course/list`);
-
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/course/list`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getCourseYearName(guid) {
-    return this._httpClient.get(`${environment.apiURL}/course/courseyear-by-guid?courseYearId=${guid}`, {});
-  }
+    return this._httpClient.get(`${environment.apiURL}/course/courseyear-by-guid?courseYearId=${guid}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getCourseYaerByCousreGuid(): Promise<any> {
     return new Promise((resolve, reject) => {
       // const params = new HttpParams().set('courseId', guid);
@@ -165,14 +188,38 @@ export class StudentService {
     });
   }
   getBatchYearbyBatchGuid(guid): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`,{});
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`,{}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getBatches(): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/batch/list`,{})
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/batch/list`,{}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   deleteStudent(userId): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/student/delete/?userId=${userId}`,{})
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/student/delete/?userId=${userId}`,{}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
   /**
     * Delete Student
@@ -213,15 +260,38 @@ export class StudentService {
       'Tenant': '8932d354-1dd2-4ace-81ed-25d9809d9f86',
 
     });
-    return this._httpClient.post<any>(`${environment.apiURL}/student/exam-summary-grid`, { ..._gridFilter }, { headers });
-
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/student/exam-summary-grid`, { ..._gridFilter }, { headers }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   studentSubjectSummary(userId): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks/${userId}`, { });
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/student/subjectwiseaveragemarks/${userId}`, { }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   studentAttendance(payload): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/attendence/get-grid-attendance-by-user/`, { ...payload});
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/attendence/get-grid-attendance-by-user/`, { ...payload}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 }
 
 

@@ -25,6 +25,7 @@
         "@angular/platform-browser-dynamic": "18.0.1",
         "@angular/router": "18.0.1",
         "@auth0/angular-jwt": "^5.2.0",
+        "@microsoft/signalr": "^8.0.7",
         "@ngneat/transloco": "6.0.4",
         "@types/ckeditor": "^4.9.10",
         "apexcharts": "3.49.1",

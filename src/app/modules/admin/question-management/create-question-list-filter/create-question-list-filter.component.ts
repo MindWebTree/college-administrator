@@ -38,9 +38,9 @@ export class CreateQuestionListFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._questionManagementService.getQbankTypesLecturer('Owned').subscribe(res => {
-      this.qbanktype = res;
-    })
+    // this._questionManagementService.getQbankTypesLecturer('Owned').subscribe(res => {
+    //   this.qbanktype = res;
+    // })
   }
   getQbanksubject(QbankTypeID: number) {
     this._questionManagementService.getSubjectsbyQbanktypeIdLecturer(QbankTypeID, 'Owned').subscribe((response: any) => {

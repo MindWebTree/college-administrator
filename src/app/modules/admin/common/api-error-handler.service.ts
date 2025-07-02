@@ -18,7 +18,7 @@ export class ApiErrorHandlerService {
         this.showSnackBar("Not Found Please Contact supporter"
         );
       } else {
-        this.showSnackBar('Something wrong Please Contact supporter');
+        this.showSnackBar(error.error.exception);
       }
     } else {
       // Handle non-HTTP errors

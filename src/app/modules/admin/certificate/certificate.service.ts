@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'environments/environment';
 import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 import { NavigationService } from 'app/core/navigation/navigation.service';
+import { ApiErrorHandlerService } from '../common/api-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,13 +30,21 @@ export class CertificateService {
       this.ModuleTitle.next(newTitle);
   }
   constructor(private _httpClient: HttpClient,
-    private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
+    private _matSnockbar: MatSnackBar,private _errorHandling: ApiErrorHandlerService, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onStudentManagementChanged = new BehaviorSubject([]);
   }
 
   getCertificateDetials(id): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/student/competency-certificate/${id}`, {  });
+    return this._httpClient.post(`${environment.apiURL}/student/competency-certificate/${id}`, {  }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
 
   getCertificate(id): Promise<any> {
@@ -47,7 +56,7 @@ export class CertificateService {
           resolve(res);
         },
         error => {
-          console.error('API Error:', error);
+          this._errorHandling.handleError(error);
           reject(error);
         }
       );

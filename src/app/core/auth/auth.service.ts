@@ -6,6 +6,7 @@ import { environment } from 'environments/environment';
 import { catchError, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { DataGuardService } from './data.guard';
 import { helperService } from './helper';
+import { SignalRService } from 'app/modules/admin/common/signalr.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     private _dataGuard = inject(DataGuardService);
     private _userService = inject(UserService);
     private _helperService = inject(helperService);
+    // private _signalRService = inject(SignalRService );
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -86,6 +88,9 @@ export class AuthService {
                 // Store the access token in the local storage
                 this.accessToken = response.token;
 
+                //  Connect SignalR once globally
+                // this._signalRService.connect();
+
                 // Set the authenticated flag to true
                 this._authenticated = true;
 
@@ -139,6 +144,9 @@ export class AuthService {
     signOut(): Observable<any> {
         // Remove the access token from the local storage
         localStorage.removeItem('accessToken');
+
+        // Disconnect SignalR
+        // this._signalRService.disconnect();
 
         // Set the authenticated flag to false
         this._authenticated = false;

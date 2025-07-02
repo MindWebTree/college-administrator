@@ -8,6 +8,7 @@ import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { studentModel } from '../student-management/student-management.model';
 import { competency, competencyGrid, studentCompetecyGrid, StudentGrid } from './competency.model';
+import { ApiErrorHandlerService } from '../common/api-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class CompetencyService {
       this.ModuleTitle.next(newTitle);
   }
   constructor(private _httpClient: HttpClient,
-    private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
+    private _matSnockbar: MatSnackBar, private _errorHandling: ApiErrorHandlerService, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onStudentManagementChanged = new BehaviorSubject([]);
     this.onRubricListChanged = new BehaviorSubject([]);
@@ -66,12 +67,22 @@ export class CompetencyService {
   getBatch(): Observable<any> {
     return this._httpClient.post<any>(`${environment.apiURL}/batch/list/`,{}).pipe(
       tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
       })
     );
   };
   getBatchYear(guid): Observable<any> {
     return this._httpClient.post<any>(`${environment.apiURL}/batch/batchyears/${guid}`,{}).pipe(
       tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
       })
     );
   };
@@ -79,7 +90,11 @@ export class CompetencyService {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/competency/create`, { ...req }).subscribe(res => {
           resolve(res);
-      });
+      }),
+      catchError((error)=>{
+        this._errorHandling.handleError(error);
+        return throwError(()=> error)
+      })
 
     })
   }
@@ -87,7 +102,11 @@ export class CompetencyService {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/competency/update`, { ...req }).subscribe(res => {
           resolve(res);
-      });
+      }),
+      catchError((error)=>{
+        this._errorHandling.handleError(error);
+        return throwError(()=> error)
+      })
 
     })
   }
@@ -95,7 +114,11 @@ export class CompetencyService {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/competency/grid`, { ...req }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error)=>{
+        this._errorHandling.handleError(error);
+        return throwError(()=> error)
+      })
 
     })
   }
@@ -103,7 +126,11 @@ export class CompetencyService {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/student/competency-grid`, { ...req }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error)=>{
+        this._errorHandling.handleError(error);
+        return throwError(()=> error)
+      })
 
     })
   }
@@ -111,33 +138,89 @@ export class CompetencyService {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/competency/get-by-guid/${id}`, { }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error)=>{
+        this._errorHandling.handleError(error);
+        return throwError(()=> error)
+      })
 
     })
   }
   getSubject(guid): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`);
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getSubjects(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`);
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getRubricConstruction(): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/list`, {});
-  }
+    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/list`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getFaculty(): Observable<any> {
-    return this._httpClient.get(`${environment.apiURL}/lecturer/list`);
-  }
+    return this._httpClient.get(`${environment.apiURL}/lecturer/list`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getRubricConstructiongird(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/list`, { });
-  }
+    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/list`, { }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getTeams(_gridFilter: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/teammanagement/faculty-team`, { ..._gridFilter });
-  }
+    return this._httpClient.post(`${environment.apiURL}/teammanagement/faculty-team`, { ..._gridFilter }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getRubricConstructionbyid(id): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-by-guid/${id}`, { }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
 
     })
   }
@@ -209,13 +292,25 @@ export class CompetencyService {
   }
 
   getStepgrid(guid): Observable<any> {
-    return this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-sections/${guid}`, { });
-  }
+    return this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-sections/${guid}`, { }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getStepbyid(id): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-section-by-guid/${id}`, { }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
 
     })
   }
@@ -287,13 +382,25 @@ export class CompetencyService {
   }
 
   getCriteriagrid(guid): Observable<any> {
-    return this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-criteria-list/${guid}`, { });
-  }
+    return this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-criteria-list/${guid}`, { }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getCriteriabyid(id): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-criteria-by-guid/${id}`, { }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
 
     })
   }
@@ -368,7 +475,11 @@ export class CompetencyService {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/competency/student/grid`, { ...req }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
 
     })
   }
@@ -377,25 +488,44 @@ export class CompetencyService {
     return new Promise((resolve, reject) => {
       this._httpClient.get(`${environment.apiURL}/rubricconstruction/detail/get-by-guid/${guid}`, { }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
 
     })
   }
 
-  SubmitAssignment(req: any,competencyGuid ,studentId ): Promise<any> {
+  SubmitAssignment(req: any, competencyGuid: string, studentId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      this._httpClient.post(`${environment.apiURL}/competency/submit/${competencyGuid}/${studentId}`, { ...req }).subscribe(res => {
-        resolve(res);
-      });
-
-    })
+      this._httpClient.post(`${environment.apiURL}/competency/submit/${competencyGuid}/${studentId}`, { ...req })
+        .pipe(
+          catchError((error) => {
+            this._errorHandling.handleError(error);
+            reject(error); // Reject the Promise
+            return throwError(() => error); // Still return the error to complete observable
+          })
+        )
+        .subscribe({
+          next: (res) => resolve(res),
+          error: (err) => {
+            // Optional: fallback rejection if something slips past catchError
+            reject(err);
+          }
+        });
+    });
   }
 
   getHistoryAssignment(req: any,competencyGuid ,studentId ): Promise<any> {
     return new Promise((resolve, reject) => {
       this._httpClient.post(`${environment.apiURL}/competency/submission-history/${competencyGuid}/${studentId}`, { ...req }).subscribe(res => {
         resolve(res);
-      });
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
 
     })
   }
@@ -403,17 +533,49 @@ export class CompetencyService {
 
   // grading rules
    getQuestionbyGuid(guid:string): Observable<any> {
-    return this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-criteria-list/${guid}`);
-  }
+    return this._httpClient.get(`${environment.apiURL}/rubricconstruction/get-criteria-list/${guid}`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getGradingRules(guid:string): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/get-rule?rubriceId=${guid}`,{});
-  }
+    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/get-rule?rubriceId=${guid}`,{}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   createGradingRules(rubric: any): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/create-rule`, rubric);
-  }
+    return this._httpClient.post(`${environment.apiURL}/rubricconstruction/create-rule`, rubric).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   updateGradingRules(rubric: any): Observable<any> {
-    return this._httpClient.patch(`${environment.apiURL}/rubricconstruction/update-rule`, rubric);
-  }
+    return this._httpClient.patch(`${environment.apiURL}/rubricconstruction/update-rule`, rubric).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
 }
 

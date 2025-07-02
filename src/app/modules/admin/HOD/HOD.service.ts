@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, catchError, map, Observable } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import { HODModel, QBankCategory } from './HOD.model';
 import { environment } from 'environments/environment';
 import { GridFilter, lecturerAnalyticGrid } from '../common/gridFilter';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { NavigationMockApi } from 'app/mock-api/common/navigation/api';
+import { ApiErrorHandlerService } from '../common/api-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class HODService {
     });
   }
   constructor(private _httpClient: HttpClient,
-    private _matSnockbar: MatSnackBar, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
+    private _matSnockbar: MatSnackBar,private _errorHandling: ApiErrorHandlerService, private _navigationTypeService: NavigationService, private _navigationService: NavigationMockApi
   ) {
     this.onHODManagementChanged = new BehaviorSubject([]);
   }
@@ -32,9 +33,16 @@ export class HODService {
    * @returns {Observable<any>}
    */
   getHODForGrid(_gridFilter: GridFilter): Observable<any> {
-    return this._httpClient.post(`${environment.apiURL}/hod/grid`, { ..._gridFilter }, {  });
-
-  }
+    return this._httpClient.post(`${environment.apiURL}/hod/grid`, { ..._gridFilter }, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   /**
          * Get lecture by Id
          *
@@ -144,9 +152,16 @@ export class HODService {
   }
 
   qbankTypeList(qbankCategory: QBankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, {  });
-
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/${qbankCategory}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   // getCourseYaerByCousreGuid(): Promise<any> {
   //   return new Promise((resolve, reject) => {
   //     // const params = new HttpParams().set('courseId', guid);
@@ -158,25 +173,72 @@ export class HODService {
   // }
 
   getCourseYear(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/course/courseyear`)
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/course/courseyear`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getCourseYearName(guid) {
-    return this._httpClient.get(`${environment.apiURL}/course/courseyear-by-guid?courseYearId=${guid}`, {});
-  }
+    return this._httpClient.get(`${environment.apiURL}/course/courseyear-by-guid?courseYearId=${guid}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
 
   cousreList(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/course/list`);
-
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/course/list`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getDesignation(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/designations`);
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/designations`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getSubjectbyAcademicYear(guid): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`);
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/academicyear/${guid}`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   getSubjects(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`);
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   /**
     * Delete Student
     *
@@ -187,7 +249,7 @@ export class HODService {
     return new Promise(() => {
       const params = new HttpParams().set('userId', userId);
 
-      this._httpClient.post(`${environment.apiURL}/hod/delete`, {}, { params,  })
+      this._httpClient.post(`${environment.apiURL}/hod/delete`, {}, { params, })
         .subscribe(response => {
           if (response) {
             this.onHODManagementChanged.next(this.lecture);
@@ -207,12 +269,27 @@ export class HODService {
     });
   }
   lecturerAnalyticsListing(_gridFilter: lecturerAnalyticGrid): Observable<any> {
-    return this._httpClient.post<any>(`${environment.apiURL}/lecturer/exam-summary-grid`, { ..._gridFilter }, {  });
-
-  }
+    return this._httpClient.post<any>(`${environment.apiURL}/lecturer/exam-summary-grid`, { ..._gridFilter }, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   lecturereQbankSummary(userId): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/lecturer/qbank-summary/${userId}`, {  });
-  }
+    return this._httpClient.get<any>(`${environment.apiURL}/lecturer/qbank-summary/${userId}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
+  };
   bulkUploadHOD(data: any[]): Promise<any> {
     var self = this;
     console.log(JSON.stringify(data))

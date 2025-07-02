@@ -247,5 +247,17 @@ export const appRoutes: Route[] = [
             {path: 'certificate', loadChildren: () => import('app/modules/admin/certificate/certificate.routes')},
         ]
     },
+    {
+        path: '',
+        canActivate: [AuthGuard,ChildAuthGuard],
+        canActivateChild: [AuthGuard,ChildAuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: initialDataResolver
+        },
+        children: [
+            {path: 'chat', loadChildren: () => import('app/modules/admin/chat/chat.routes')},
+        ]
+    },
     //dashboard End
 ];

@@ -6,8 +6,9 @@ import { User } from 'app/core/user/user.types';
 // import { QuestionListFilter, QuestionListModel, Tag } from 'app/modules/admin/Models/QuestionModel/QuestionModel';
 // import { CompetenecyLevel, Course, GridFilter, LevelQuestion, QbankType, QbankcmbCode, StudentFilter, Subjects, Topic } from 'app/modules/admin/Models/commonModels/commonModel';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { QuestionListFilter, QuestionListModel, QuestionSearchList } from '../admin/qbank/QuestionModel';
+import { ApiErrorHandlerService } from '../admin/common/api-error-handler.service';
 // import * as FileSaver from 'file-saver';
 // import * as XLSX from 'xlsx';
 // import { gameCourse } from 'app/modules/admin/Models/courseModels/courseModel';
@@ -41,6 +42,7 @@ export class CommanService {
   question_list: BehaviorSubject<any>;
   constructor(
     private _httpClient: HttpClient,
+    private _errorHandling: ApiErrorHandlerService,
     private _matSnockbar: MatSnackBar) {
     this.onCoursesChanged = new BehaviorSubject({});
     this.question_list = new BehaviorSubject([]);
@@ -53,54 +55,145 @@ export class CommanService {
   getexamCategory(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/exam-navigation/`).pipe(
       tap((response: any) => {
-
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
       })
     );
   }
   getstudentNavigationList(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/student-navigation/`).pipe(
       tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
       })
     );
   }
   getlecturerNavigationList(): Observable<any> {
     return this._httpClient.get<any>(`${environment.apiURL}/common/lecturer-navigation/`).pipe(
       tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
       })
     );
   }
   getBatchList(): Observable<any> {
     return this._httpClient.post<any>(`${environment.apiURL}/batch/navigation/`,{}).pipe(
       tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
       })
     );
   }
   getLevel(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/levels/`, {});
+    return this._httpClient.get<any>(`${environment.apiURL}/common/levels/`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getLevelofQuestions(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-levelofquestion`, {});
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-levelofquestion`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   geTags(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/tags`, {});
+    return this._httpClient.get<any>(`${environment.apiURL}/common/tags`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getQBankCategory(): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/qbankcategories/`);
+    return this._httpClient.get<any>(`${environment.apiURL}/common/qbankcategories/`).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getQBankTypes(qBankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/` + qBankCategory);
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-qbanktypes/` + qBankCategory).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getSubjects(qbanktypeId, qBankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/${qbanktypeId}/${qBankCategory}`, {});
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/${qbanktypeId}/${qBankCategory}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getLecturerSubjects(qbanktypeId, qBankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/lecturer-access/${qbanktypeId}/${qBankCategory}`, {});
+    return this._httpClient.get<any>(`${environment.apiURL}/common/subjects/lecturer-access/${qbanktypeId}/${qBankCategory}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getTopics(subjectId, qBankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/get-topics/${subjectId}/${qBankCategory}`, {});
+    return this._httpClient.get<any>(`${environment.apiURL}/common/get-topics/${subjectId}/${qBankCategory}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getCBMECode(topicId, qBankCategory): Observable<any> {
-    return this._httpClient.get<any>(`${environment.apiURL}/common/cbmecode/${topicId}/${qBankCategory}`, {});
+    return this._httpClient.get<any>(`${environment.apiURL}/common/cbmecode/${topicId}/${qBankCategory}`, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
 
 
@@ -127,10 +220,26 @@ export class CommanService {
   //   //end ExelFile
 
   getQuestion(_gridFilter: QuestionSearchList): Observable<QuestionListModel[]> {
-    return this._httpClient.post<QuestionListModel[]>(`${environment.apiURL}/qbank/search/`, { ..._gridFilter });
+    return this._httpClient.post<QuestionListModel[]>(`${environment.apiURL}/qbank/search/`, { ..._gridFilter }).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   getQuestionbyID(questionDetailID: number): Observable<QuestionListModel[]> {
-    return this._httpClient.get<QuestionListModel[]>(`${environment.apiURL}/qbank/get-by-id/` + questionDetailID, {});
+    return this._httpClient.get<QuestionListModel[]>(`${environment.apiURL}/qbank/get-by-id/` + questionDetailID, {}).pipe(
+      tap((response: any) => {
+        return response
+      }),
+      catchError((error) => {
+        this._errorHandling.handleError(error);
+        return throwError(() => error);
+      })
+    );
   }
   //   deleteQuestion(questionDetailID: number): Observable<QuestionListModel[]> {
   //     return this._httpClient.post<QuestionListModel[]>(`${environment.apiURL}/qbank/search/delete/` + questionDetailID, {});

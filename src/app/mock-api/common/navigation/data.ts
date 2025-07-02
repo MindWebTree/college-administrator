@@ -150,6 +150,13 @@ export const LecturerNavigation: FuseNavigationItem[] = [
         children: [],
         roles: ["CollegeAdministrator"]
     },
+    {
+        id: 'Chat',
+        title: 'Chat',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/chat'
+    },
 ];
 export const StudentNavigation: FuseNavigationItem[] = [
     {
@@ -179,6 +186,13 @@ export const StudentNavigation: FuseNavigationItem[] = [
             }
         ],
         roles: ["CollegeAdministrator"]
+    },
+    {
+        id: 'Chat',
+        title: 'Chat',
+        type: 'basic',
+        // icon : 'heroicons_outline:chart-pie',
+        link: '/chat'
     },
 ];
 export const HODNavigation: FuseNavigationItem[] = [
@@ -277,12 +291,12 @@ export const defaultNavigation: FuseNavigationItem[] = [
         roles: ["Lecturer", "CollegeAdministrator", "Student","HOD"]
     },  
     {
-        id: 'dashboard',
-        title: 'dashboard',
+        id: 'Chat',
+        title: 'Chat',
         type: 'basic',
         icon: 'heroicons_outline:chart-pie',
-        link: '/dashboard',
-        roles: ["Lecturer", "CollegeAdministrator", "Student","HOD"]
+        link: '/chat',
+        roles: ["Lecturer","Student"]
     },  
     {
         id: "ADrPLEXUS Q'Bank",
