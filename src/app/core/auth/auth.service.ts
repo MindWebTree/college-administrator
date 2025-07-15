@@ -15,7 +15,7 @@ export class AuthService {
     private _dataGuard = inject(DataGuardService);
     private _userService = inject(UserService);
     private _helperService = inject(helperService);
-    // private _signalRService = inject(SignalRService );
+    private _signalRService = inject(SignalRService );
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -88,9 +88,6 @@ export class AuthService {
                 // Store the access token in the local storage
                 this.accessToken = response.token;
 
-                //  Connect SignalR once globally
-                // this._signalRService.connect();
-
                 // Set the authenticated flag to true
                 this._authenticated = true;
 
@@ -146,7 +143,7 @@ export class AuthService {
         localStorage.removeItem('accessToken');
 
         // Disconnect SignalR
-        // this._signalRService.disconnect();
+        this._signalRService.disconnect();
 
         // Set the authenticated flag to false
         this._authenticated = false;

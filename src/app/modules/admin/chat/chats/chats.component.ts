@@ -24,6 +24,7 @@ import { interval, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from '@microsoft/signalr';
 import { environment } from 'environments/environment';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { SignalRService } from '../../common/signalr.service';
 
 
 @Component({
@@ -65,11 +66,15 @@ export class ChatsComponent implements OnInit, OnDestroy, OnChanges {
     constructor(
         private _chatService: ChatService,
         private _router: Router,
+        private _signalRService: SignalRService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _changeDetectorRef: ChangeDetectorRef
     ) {
         
-        this._hubConnection = this._chatService._Connection.getValue();
+        // this._hubConnection = this._chatService._Connection.getValue();
+        this._signalRService.connection$.subscribe(res=>{
+            this._hubConnection = res;
+        })
         this._router.events.subscribe(() => {
             this.currentUrl = this._router.url;
           });

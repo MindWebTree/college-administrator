@@ -19,6 +19,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 import { DataGuardService } from 'app/core/auth/data.guard';
+import { SignalRService } from 'app/modules/admin/common/signalr.service';
 
 @Component({
     selector: 'auth-sign-in',
@@ -58,6 +59,7 @@ export class AuthSignInComponent implements OnInit {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _authService: AuthService,
+        private _signalRService: SignalRService,
         private _formBuilder: UntypedFormBuilder,
         private dataService: DataGuardService,
         private _router: Router
@@ -114,6 +116,12 @@ export class AuthSignInComponent implements OnInit {
                     if (response) {
                         this.dataService.setLocalData('accessToken', response.token);
                         this.dataService.setLocalData('refreshToken', response.refreshToken);
+                        
+                        let token = this.dataService.getLocalData('accessToken');
+                        //  Connect SignalR once globally
+                        if(token){
+                            this._signalRService.connect();
+                        }
                         this._router.navigate(['/dashboard']);
                     }
                     // }

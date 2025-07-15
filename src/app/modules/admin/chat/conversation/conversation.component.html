@@ -110,9 +110,9 @@
                                     class="relative max-w-3/4 rounded-lg px-3 py-2"
                                     [ngClass]="{
                                         'bg-blue-500 text-blue-50':
-                                            message.isMine,
+                                            message.isMine && message?.messageType == 0,
                                         'bg-gray-500 text-gray-50':
-                                            !message.isMine,
+                                            !message.isMine && message?.messageType == 0,
                                     }"
                                 >
                                     <!-- Speech bubble tail -->
@@ -121,7 +121,7 @@
                                         chat[i + 1].isMine !==
                                             message.isMine
                                     ) {
-                                        <div
+                                        <div *ngIf="message?.messageType == 0"
                                             class="absolute bottom-0 w-3"
                                             [ngClass]="{
                                                 '-right-1 -mr-px mb-px text-blue-500':
@@ -138,10 +138,17 @@
                                         </div>
                                     }
                                     <!-- Message -->
-                                    <div
+                                    <div *ngIf="message?.messageType == 0"
                                         class="min-w-4 leading-5"
                                         [innerHTML]="message.message"
                                     ></div>
+                                    <div *ngIf="message?.messageType == 1">
+                                        <!-- <audio controls controlsList="nodownload" class="no-download" [src]="message.message"></audio> -->
+                                        <audio controls controlsList="nodownload" class="no-download" preload="metadata">     
+                                            <source [src]="message.message" type="audio/mp3">
+                                            <source [src]="message.message" type="audio/mp4">
+                                        </audio>
+                                    </div>
                                 </div>
                                 <!-- Time -->
                                 @if (
@@ -169,7 +176,7 @@
 
                 <!-- Message field -->
                 <div
-                    class="flex items-end border-t bg-gray-50 p-4 dark:bg-transparent"
+                    class="flex items-end border-t bg-gray-50 p-4 dark:bg-transparent justify-end w-full"
                 >
                     <!-- <div class="my-px flex h-11 items-center">
                         <button mat-icon-button>
@@ -183,7 +190,7 @@
                             ></mat-icon>
                         </button>
                     </div> -->
-                    <mat-form-field 
+                    <mat-form-field  *ngIf="showInput"
                         class="fuse-mat-dense fuse-mat-rounded fuse-mat-bold ml-4 w-full"
                         subscriptSizing="dynamic"
                     >
@@ -195,11 +202,40 @@
                         ></textarea>
                     </mat-form-field>
                     <div class="my-px ml-4 flex h-11 items-center">
-                        <button mat-icon-button (click)="SendMessage()">
-                            <mat-icon
-                                [svgIcon]="'heroicons_outline:paper-airplane'"
-                            ></mat-icon>
+                        <button *ngIf="showSendButton" mat-icon-button (click)="SendMessage()">
+                            <mat-icon [svgIcon]="'heroicons_outline:paper-airplane'"></mat-icon>
                         </button>
+                        <!-- Start Recording -->
+                        <button mat-icon-button *ngIf="!isRecording" (click)="startRecording()" matTooltip="Start Recording">
+                            <mat-icon svgIcon="heroicons_outline:microphone"></mat-icon>
+                        </button>
+                    
+                        <!-- <button mat-icon-button *ngIf="isRecording" (click)="pauseRecording()" matTooltip="Pause">
+                            <mat-icon svgIcon="heroicons_outline:pause"></mat-icon>
+                        </button>
+                    
+                        <button mat-icon-button *ngIf="isRecording" (click)="resumeRecording()" matTooltip="Resume">
+                            <mat-icon svgIcon="heroicons_outline:play"></mat-icon>
+                        </button> -->
+
+                        <!-- Optional: Timer -->
+                        <div *ngIf="isRecording" class="text-gray-500 font-medium">
+                            {{ formattedRecordingTime  }}
+                        </div>
+                        <canvas *ngIf="isRecording" #voiceVisualizerCanvas width="300" height="60" style="width: 120px; padding-left: 10px;"></canvas>
+
+                    
+                        <!-- Cancel Recording -->
+                        <button mat-icon-button *ngIf="isRecording" (click)="stopRecording(false)" matTooltip="Cancel">
+                            <mat-icon svgIcon="heroicons_outline:trash"></mat-icon>
+                        </button>
+                    
+                        <!-- Stop & Send Recording -->
+                        <button mat-icon-button *ngIf="isRecording" (click)="stopRecording(true)" matTooltip="Send">                            
+                            <mat-icon [svgIcon]="'heroicons_outline:paper-airplane'"></mat-icon>
+                        </button>
+                    
+                        
                     </div>
                 </div>
             </mat-drawer-content>

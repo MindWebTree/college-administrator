@@ -45,47 +45,47 @@ const conversationResolver = (
         })
     );
 };
-const makeConnection = () => {
-    const dataService = inject(DataGuardService);
-    const chatService = inject(ChatService);
+// const makeConnection = () => {
+//     const dataService = inject(DataGuardService);
+//     const chatService = inject(ChatService);
 
-    return new Promise<boolean>((resolve, reject) => {
-        const existingConnection = chatService._Connection.getValue();
+//     return new Promise<boolean>((resolve, reject) => {
+//         const existingConnection = chatService._Connection.getValue();
 
-        if (existingConnection && existingConnection.state === 'Connected') {
-            // Already connected, no need to reconnect
-            console.log('SignalR already connected');
-            return resolve(true);
-        }
+//         if (existingConnection && existingConnection.state === 'Connected') {
+//             // Already connected, no need to reconnect
+//             console.log('SignalR already connected');
+//             return resolve(true);
+//         }
 
-        const token = dataService.getLocalData('accessToken');
-        const cleanedToken = token?.replace(/^"|"$/g, '');
+//         const token = dataService.getLocalData('accessToken');
+//         const cleanedToken = token?.replace(/^"|"$/g, '');
 
-        const _hubConnection = new HubConnectionBuilder()
-            .withUrl(`${environment.externalApiURL}/chathub`, {
-                accessTokenFactory: () => cleanedToken || '',
-            })
-            .withAutomaticReconnect()
-            .build();
+//         const _hubConnection = new HubConnectionBuilder()
+//             .withUrl(`${environment.externalApiURL}/chathub`, {
+//                 accessTokenFactory: () => cleanedToken || '',
+//             })
+//             .withAutomaticReconnect()
+//             .build();
 
-        _hubConnection.on('MessageReceived', (message) => {
-            console.log('Received:', message);
-        });
+//         _hubConnection.on('MessageReceived', (message) => {
+//             console.log('Received:', message);
+//         });
 
-        _hubConnection
-            .start()
-            .then(() => {
-                console.log('SignalR connection started');
-                chatService._Connection.next(_hubConnection);
-                resolve(true);
-            })
-            .catch((err) => {
-                console.error('SignalR connection error:', err);
-                chatService._Connection.next(null);
-                reject(err);
-            });
-    });
-};
+//         _hubConnection
+//             .start()
+//             .then(() => {
+//                 console.log('SignalR connection started');
+//                 chatService._Connection.next(_hubConnection);
+//                 resolve(true);
+//             })
+//             .catch((err) => {
+//                 console.error('SignalR connection error:', err);
+//                 chatService._Connection.next(null);
+//                 reject(err);
+//             });
+//     });
+// };
 const checkThread = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
     const chatService = inject(ChatService);
     const router = inject(Router);
@@ -128,7 +128,7 @@ export default [
         path: '',
         component: ChatComponent,
         resolve: {
-            makeConnection
+            // makeConnection
         },
         children: [
             {
@@ -144,7 +144,7 @@ export default [
                         path: ':id',
                         component: ConversationComponent,
                         resolve: {
-                            makeConnection,
+                            // makeConnection,
                             checkThread
                         },
                     },

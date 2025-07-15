@@ -5,6 +5,7 @@ import {environment} from 'environments/environment'
 import {
     BehaviorSubject,
     Observable,
+    catchError,
     filter,
     map,
     of,
@@ -18,7 +19,7 @@ import {
 export class ChatService {
     public _threadDetails: BehaviorSubject<any> = new BehaviorSubject(null);
     public _allThreads: BehaviorSubject<any> = new BehaviorSubject(null);
-    public _Connection: BehaviorSubject<any> = new BehaviorSubject(null);
+    // public _Connection: BehaviorSubject<any> = new BehaviorSubject(null);
     private _chat: BehaviorSubject<Chat> = new BehaviorSubject(null);
     private _chats: BehaviorSubject<Chat[]> = new BehaviorSubject(null);
     private _contact: BehaviorSubject<Contact> = new BehaviorSubject(null);
@@ -232,6 +233,27 @@ export class ChatService {
             })
         );
     }
+    getPresignedUrl(blob): Observable<any> {
+        console.log(blob,"blob")
+        const formData = new FormData();
+        formData.append('upload', blob, blob.name);
+    
+        return this._httpClient.post(`${environment.tenantvalidateURl}/files/upload/audio`, formData)
+          .pipe(
+            map((response: any) => {
+              return {
+                fileName: response?.fileName || '',
+                uploaded: response?.uploaded || 0,
+                url: response?.url || ''
+              };
+            }),
+            catchError(error => {
+              console.error('Error uploading file:', error);
+              console.error('Full Error Response:', error);
+              throw error;
+            })
+          );
+      }
     GetThreadDetail(threadId): Observable<any> {
         return this._httpClient.get<any>(`${environment.apiURL}/chat/ chat-thread-details?threadguid=${threadId}`,{}).pipe(
             tap((response: any) => {
